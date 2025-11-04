@@ -2,7 +2,7 @@
 
 <ion-content [fullscreen]="true">
 
-  <app-spinner *ngIf="mostrar_spinnet"></app-spinner>
+  <app-spinner *ngIf="mostrar_spinner" [tipo]="tipo_spinner" [text]="texto_spinner" [sub_text]="textoSub_spinner"></app-spinner>
   <app-otros-seguros [refreshKey]="islandKey" *ngIf="tipoDispocitivo === 'telefono'"></app-otros-seguros>
 
   <div class="fondo-seguros">
@@ -424,7 +424,26 @@
 
             <ul class="cov-list">
 
-             
+              <!-- EXTREP siempre se muestra manualmente -->
+              <li class="cov-row">
+                <div class="left">
+                  <span class="label">Extensión de reparación en agencia</span>
+                </div>
+                <div class="right">
+                  <div class="extrep-container">
+                    <span class="val" *ngIf="extrepStatus">{{ getEXTREPAmount() }}</span>
+                    <div class="toggle-switch">
+                      <label class="toggle">
+                        <input type="checkbox" [checked]="extrepStatus" (change)="toggleExtrep()">
+                        <span class="slider">
+                          <span class="slider-text-off">OFF</span>
+                          <span class="slider-text-on">ON</span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </li>
 
               <!-- Las demás coberturas del array -->
               <li class="cov-row" *ngFor="let c of covs">

@@ -27,13 +27,13 @@ export class PdfService {
             doc.addImage(headerUrl, 'PNG', 0, 0, pageWidth, 250);
 
             // Cargar y agregar logo sobre el encabezado
-            const logoResponse = await fetch('/assets/pdf/LOGO.png');
+            const logoResponse = await fetch('/assets/pdf/LOGO-CRABI.png');
             const logoBlob = await logoResponse.blob();
             const logoUrl = URL.createObjectURL(logoBlob);
             doc.addImage(logoUrl, 'PNG', margin - 2, 2, 30, 28);
 
             // Cargar y agregar logo sobre el encabezado - LADO DERECHO
-            const logoCrabi = await fetch('/assets/pdf/LOGO-CRABI.png');
+            const logoCrabi = await fetch('/assets/pdf/LOGO.png');
             const logoBlobCrabi = await logoCrabi.blob();
             const logoUrlCrabi = URL.createObjectURL(logoBlobCrabi);
             doc.addImage(logoUrlCrabi, 'PNG', pageWidth - margin - 30, 33, 30, 28);
@@ -50,21 +50,31 @@ export class PdfService {
         }
 
         // Fecha (siempre visible)
+        const columnaIzquierdaP = margin + 62;
+        doc.setFontSize(6);
+        doc.setFont('helvetica');
+        doc.setTextColor(255, 255, 255);
+        doc.text(`
+            Esta cotización se emite a solicitud del usuario, quien certifica que su vehículo no es 
+              de uso comercial (Uber, Didi, otros).  Ni salvamento (recuperado por Pérdida Total).
+        `, columnaIzquierdaP, 4);
+
+        // Fecha (siempre visible)
         const columnaIzquierdaT = margin + 52;
         doc.setFontSize(20);
         doc.setFont('helvetica', 'bold');
         doc.setTextColor(255, 255, 255);
-        doc.text(`COTIZACIÓN DE SEGURO`,columnaIzquierdaT, 22);
+        doc.text(`COTIZACIÓN DE SEGURO`, columnaIzquierdaT, 22);
 
-        // Fecha (siempre visible)
+        // Fecha de generación con formato mejorado
         doc.setFontSize(9);
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(255, 255, 255);
-        doc.text(`Generado: ${new Date().toLocaleDateString('es-MX')}`, pageWidth - margin, 32, { align: 'right' });
+        doc.text(`Generado: ${this.formatFechaFormal(new Date())}`, pageWidth - margin, 32, { align: 'right' });
 
         yPosition = 45;
 
-        // --- VIGENCIA ---
+        // --- VIGENCIA con formato mejorado ---
         doc.setTextColor(0, 0, 0);
         doc.setFontSize(10);
         doc.setFont('helvetica');
@@ -73,9 +83,8 @@ export class PdfService {
         const vigenciaHasta = new Date();
         vigenciaHasta.setFullYear(vigenciaHasta.getFullYear() + 1);
 
-        doc.text(`Vigencia: ${vigenciaDesde.toLocaleDateString('es-MX')} - ${vigenciaHasta.toLocaleDateString('es-MX')} (1 año)`, margin, yPosition);
+        doc.text(`Vigencia: ${this.formatFechaFormal(vigenciaDesde)} - ${this.formatFechaFormal(vigenciaHasta)} (1 año)`, margin, yPosition);
         yPosition += 15;
-
 
         // --- DATOS DEL VEHÍCULO Y CLIENTE UNO AL LADO DEL OTRO ---
         const columnaIzquierda = margin;
@@ -99,9 +108,17 @@ export class PdfService {
         const vehicleLines = [
             `Marca: ${quote.vehicle?.brand?.name || datosCoche.marca}`,
             `Modelo: ${quote.vehicle?.model?.name || datosCoche.modelo}`,
-            `Año: ${quote.vehicle?.year?.name || datosCoche.anio}`,
-            `Versión: ${quote.vehicle?.version?.name || datosCoche.version}`
+            `Año: ${quote.vehicle?.year?.name || datosCoche.anio}`
         ];
+
+        // Manejar versión con texto completo en múltiples líneas
+        const versionText = `Versión: ${quote.vehicle?.version?.name || datosCoche.version}`;
+        const versionLines = this.wrapText(versionText, 35); // 35 caracteres por línea
+
+        // Agregar todas las líneas de versión
+        versionLines.forEach((line: string, index: number) => {
+            vehicleLines.push(index === 0 ? line : `  ${line}`);
+        });
 
         let tempY = yPosition;
         vehicleLines.forEach(line => {
@@ -109,9 +126,9 @@ export class PdfService {
             tempY += 5;
         });
 
-        // Datos del CLIENTE (NEGRO)
+        // Datos del CLIENTE (NEGRO) - Fecha de nacimiento con formato mejorado
         const clientLines = [
-            `Fecha de nacimiento: ${this.formatFecha(datosCoche.nacimiento)}`,
+            `Fecha de nacimiento: ${this.formatFechaNacimiento(datosCoche.nacimiento)}`,
             `Código postal: ${quote.region?.postal_code || datosCoche.cp}`,
             `Género: ${datosCoche.genero || 'No especificado'}`,
             `Estado civil: ${datosCoche.estadoCivil || 'No especificado'}`
@@ -123,12 +140,13 @@ export class PdfService {
             tempY += 5;
         });
 
-        // Ajustar yPosition al final de la columna más larga
-        yPosition = Math.max(
-            yPosition + (vehicleLines.length * 5),
-            yPosition + (clientLines.length * 5)
-        ) + 10;
+        // Calcular la altura máxima usada por ambas columnas
+        const alturaVehiculo = vehicleLines.length * 5;
+        const alturaCliente = clientLines.length * 5;
+        const alturaMaxima = Math.max(alturaVehiculo, alturaCliente);
 
+        // Ajustar yPosition al final de la columna más larga
+        yPosition = yPosition + alturaMaxima + 10;
         // --- COBERTURAS INCLUIDAS (TÍTULO EN ROJO) ---
 
         doc.setFillColor(220, 53, 69);
@@ -226,7 +244,7 @@ export class PdfService {
                     margin: { left: margin, right: margin }
                 });
 
-                yPosition = (doc as any).lastAutoTable.finalY + 20;
+                yPosition = (doc as any).lastAutoTable.finalY + 15;
 
                 // --- DESCUENTO ---
                 if (plan.discount) {
@@ -243,19 +261,19 @@ export class PdfService {
 
                     if (discountText) {
                         doc.text(discountText, pageWidth / 2, yPosition, { align: 'center' });
-                        yPosition += 8;
+                        yPosition += 0;
                     }
                 }
             }
         }
 
         // --- FOOTER ---
-        let footerY = 270;
+        let footerY1 = 270;
         if (yPosition > 250) {
-            footerY = Math.min(280, yPosition + 15);
-            if (footerY > 280) {
+            footerY1 = Math.min(280, yPosition + 15);
+            if (footerY1 > 280) {
                 doc.addPage();
-                footerY = 20;
+                footerY1 = 20;
             }
         }
 
@@ -264,13 +282,32 @@ export class PdfService {
         doc.setTextColor(100, 100, 100);
         doc.setFont('helvetica', 'normal');
 
-        const notes = [
+        const notes1 = [
+            `•  Observaciones: Esta cotización solo es ilustrativa, no es válida como póliza, por lo que no forma parte del contrato de seguro. La entrega
+                de esta cotización no implica la emisión de póliza alguna. Cualquier cambio en la información con la que se elaboró 
+                esta cotización genera ajuste en las condiciones y precio del producto`,
+        ];
+
+        notes1.forEach((note, index) => {
+            doc.text(note, pageWidth / 2, footerY1 + (index * 3), { align: 'center' });
+        });
+
+        let footerY2 = 282;
+        if (yPosition > 250) {
+            footerY2 = Math.min(280, yPosition + 15);
+            if (footerY2 > 280) {
+                doc.addPage();
+                footerY2 = 20;
+            }
+        }
+
+        const notes2 = [
             '• Cotización válida por 30 días • Precios en MXN • Deducible por evento',
             'Woaw Seguros - www.woaw.com.mx - Tel: +52 (442) 77 06 776'
         ];
 
-        notes.forEach((note, index) => {
-            doc.text(note, pageWidth / 2, footerY + (index * 3), { align: 'center' });
+        notes2.forEach((note, index) => {
+            doc.text(note, pageWidth / 2, footerY2 + (index * 3), { align: 'center' });
         });
 
         // Convertir a Blob
@@ -321,6 +358,49 @@ export class PdfService {
             console.error('Error al descargar PDF:', error);
             throw error;
         }
+    }
+
+    // NUEVO: Función para formatear fechas de manera formal con meses abreviados
+    private formatFechaFormal(fecha: Date): string {
+        const meses = [
+            'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+        ];
+        
+        const dia = fecha.getDate();
+        const mes = meses[fecha.getMonth()];
+        const anio = fecha.getFullYear();
+        
+        return `${dia} ${mes} ${anio}`;
+    }
+
+    // NUEVO: Función para formatear fecha de nacimiento
+    private formatFechaNacimiento(nacimiento: any): string {
+        if (!nacimiento) return 'No especificado';
+        
+        const meses = [
+            'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+        ];
+        
+        // Si ya es un objeto con día, mes, año
+        if (nacimiento.dia && nacimiento.mes && nacimiento.anio) {
+            const mesIndex = parseInt(nacimiento.mes) - 1;
+            const mesAbrev = meses[mesIndex] || nacimiento.mes;
+            return `${nacimiento.dia} ${mesAbrev} ${nacimiento.anio}`;
+        }
+        
+        // Si es una fecha string o Date
+        try {
+            const fecha = new Date(nacimiento);
+            if (!isNaN(fecha.getTime())) {
+                return this.formatFechaFormal(fecha);
+            }
+        } catch (error) {
+            console.error('Error formateando fecha de nacimiento:', error);
+        }
+        
+        return 'No especificado';
     }
 
     // Métodos auxiliares (sin cambios)
@@ -375,5 +455,27 @@ export class PdfService {
         }
 
         return this.formatMoney(payment.total);
+    }
+
+    private wrapText(text: string, maxLength: number): string[] {
+        if (!text) return [''];
+
+        const words = text.split(' ');
+        const lines: string[] = [];
+        let currentLine = '';
+
+        words.forEach((word: string) => {
+            const testLine = currentLine ? `${currentLine} ${word}` : word;
+
+            if (testLine.length <= maxLength) {
+                currentLine = testLine;
+            } else {
+                if (currentLine) lines.push(currentLine);
+                currentLine = word;
+            }
+        });
+
+        if (currentLine) lines.push(currentLine);
+        return lines;
     }
 }
