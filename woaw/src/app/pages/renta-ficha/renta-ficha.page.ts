@@ -10,6 +10,10 @@ interface Ubicacion { ciudad: string; estado: string; }
 type EstadoRenta = 'disponible' | 'rentado' | 'inactivo' | 'mantenimiento';
 
 interface Rental {
+aireAcondicionado: any;
+camaraReversa: any;
+bluetooth: any;
+tipoVehiculo: string;
   _id: string;
   marca: string;
   modelo: string;
