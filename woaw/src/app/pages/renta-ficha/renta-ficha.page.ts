@@ -63,12 +63,12 @@ interface Rental {
 })
 export class RentaFichaPage implements OnInit {
   private readonly LOGIN_ROUTE = '/login';
-
+  public id_car: string | null = null;
   loading = true;
   rental: Rental | null = null;
   isLoggedIn = false;
   highlightedRange: Array<{ date: string; textColor?: string; backgroundColor?: string }> = [];
-  ocupadasISO = new Set<string>(); // YYYY-MM-DD bloqueados
+  ocupadasISO = new Set<string>();
   highlightedDisabled: Array<{ date: string; textColor?: string; backgroundColor?: string }> = [];
 
   get mergedHighlights() {
@@ -128,6 +128,7 @@ export class RentaFichaPage implements OnInit {
     this.general.tokenExistente$.pipe(take(1)).subscribe((estado) => {
       this.isLoggedIn = estado;
       const id = this.route.snapshot.paramMap.get('id')!;
+      this.id_car = id;
       this.cargar(id);
       this.cdr.markForCheck();
     });
@@ -395,11 +396,11 @@ export class RentaFichaPage implements OnInit {
   }
 
   contactarWhatsApp(): void {
+    if (!this.id_car?.trim()) return;
     if (!this.rental) return;
 
     const numero = "524427706776";
-    const urlActual = window.location.href;
-    const mensaje = `Hola, estoy interesado en rentar: \n\n🚗 *${this.rental.marca} ${this.rental.modelo}*. \n\n🔗 ${urlActual}`;
+    const mensaje = `Hola, estoy interesado en rentar: \n\n🚗 *${this.rental.marca} ${this.rental.modelo}*. \n\n🔗 https://wo-aw.com/renta-ficha/${this.id_car}`;
     const texto = encodeURIComponent(mensaje);
     window.open(`https://api.whatsapp.com/send?phone=${numero}&text=${texto}`, "_blank");
   }

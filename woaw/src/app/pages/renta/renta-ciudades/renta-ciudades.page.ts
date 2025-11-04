@@ -253,6 +253,7 @@ import { HistorealSearchComponent } from '../../../components/historeal-search/h
 export class RentaCiudadesPage implements OnInit {
   overlayLoaded = false;
   imgenPrincipal: string = '';
+  public mostrar_spinnet: boolean = true;
 
   constructor(
     private popoverCtrl: PopoverController,
@@ -265,7 +266,7 @@ export class RentaCiudadesPage implements OnInit {
     this.cargaimagen();
   }
   async cargaimagen() {
-    this.imgenPrincipal = '/assets/autos/publicidad/renta.webp';
+    this.imgenPrincipal = '/assets/renta/renta_principal.png';
     this.generalService.addPreload(this.imgenPrincipal, 'image');
     try {
       await Promise.all([

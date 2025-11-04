@@ -30,6 +30,11 @@ export class SegurosPage implements OnInit {
   currentStep = 1;
   islandKey = 0;
 
+  public mostrar_spinner: boolean = false;
+  public tipo_spinner: number = 0;
+  public texto_spinner: string = 'Cargando...';
+  public textoSub_spinner: string = 'Espere un momento';
+
   public selectDM_valor: number = 5;
   public selectDM_status: boolean = false;
   public selectRT_valor: number = 10;
@@ -62,7 +67,6 @@ export class SegurosPage implements OnInit {
     'Cotizar'
   ];
 
-  mostrar_spinnet: boolean = false;
   selectedPlanIndexes = new Set<number>();
   // Selecciones previas
   selectedMarcaId: number | null = null;
@@ -589,14 +593,13 @@ export class SegurosPage implements OnInit {
       }
     )
   }
-
   // ---------- COTIZACION ----------
   private HacerCotizacion(data: any) {
-    this.mostrar_spinnet = true;
+    this.mostrar_spinner = true;
     this.seguros.CotizacionEstimada(data).subscribe({
       next: (resp) => {
         setTimeout(() => {
-          this.mostrar_spinnet = false;
+          this.mostrar_spinner = false;
           this.quote = resp.response;
           this.cotizacion = !!this.quote;
 
@@ -630,7 +633,7 @@ export class SegurosPage implements OnInit {
         }, 2500);
       },
       error: (err) => {
-        this.mostrar_spinnet = false;
+        this.mostrar_spinner = false;
         console.error('Error al cotizar:', err);
         this.mostrarAlertaError(err);
       }
@@ -770,7 +773,6 @@ export class SegurosPage implements OnInit {
       restTotal
     };
   }
-
   // ----- CREAR PERSONA -----
   async confirmarCrearPersona() {
     await this.CrearPersona();
@@ -941,7 +943,6 @@ export class SegurosPage implements OnInit {
     };
     return map[norm] ?? norm;
   }
-
   // BUSCADOR -----
   isSelected(id: number): boolean {
     return this.form.get('marca')?.value === id;
@@ -1022,7 +1023,6 @@ export class SegurosPage implements OnInit {
   selectOtherBrand(): void {
     this.router.navigateByUrl('/seguros/cotizar-manual');
   }
-
   public onModeloSeleccionado(event: any) {
     const modeloId: number = event.detail.value;
     if (modeloId) {
@@ -1043,7 +1043,6 @@ export class SegurosPage implements OnInit {
       this.form.get('version')?.disable({ emitEvent: false });
     }
   }
-
   // ----- Cotizador dinamico -----
   hasValidCoverageInfo(c: any): boolean {
     if (c.label === 'Daños Materiales' || c.label === 'Robo Total') {
@@ -1053,7 +1052,7 @@ export class SegurosPage implements OnInit {
     return !!(c.amountText || c.deductible != null);
   }
   public selectDeductible(n: number) {
-    this.mostrar_spinnet = true;
+    this.mostrar_spinner = true;
     this.selectDM_status = true;
     this.selectDM_valor = n;
     setTimeout(() => {
@@ -1061,7 +1060,7 @@ export class SegurosPage implements OnInit {
     }, 1000);
   }
   public selectRTDeductible(n: number) {
-    this.mostrar_spinnet = true;
+    this.mostrar_spinner = true;
     this.selectRT_status = true;
     this.selectRT_valor = n;
     setTimeout(() => {
@@ -1074,7 +1073,7 @@ export class SegurosPage implements OnInit {
     } else if (this.extrepStatus === false) {
       this.extrepStatus = true
     }
-    this.mostrar_spinnet = true;
+    this.mostrar_spinner = true;
     setTimeout(() => {
       this.HacerCotizacion(this.buildCotizacionDTO());
     }, 1000);
@@ -1248,25 +1247,29 @@ export class SegurosPage implements OnInit {
 
     return dto;
   }
-
   descargarCotizacionPDF(): void {
     if (!this.quote) {
       this.generalService.alert('Error', 'No hay cotización para descargar', 'warning');
       return;
     }
 
-    try {
-      const datosCocheStorage = localStorage.getItem('datosCoche');
-      const datosCoche = datosCocheStorage ? JSON.parse(datosCocheStorage) : {};
+    this.show_spinner(true, 2, 'Descargar PDF...', 'Espere un momento');
+    setTimeout(() => {
+      try {
+        const datosCocheStorage = localStorage.getItem('datosCoche');
+        const datosCoche = datosCocheStorage ? JSON.parse(datosCocheStorage) : {};
 
-      const coberturas = this.activePlan ? this.getPlanCoverages(this.activePlan) : [];
+        const coberturas = this.activePlan ? this.getPlanCoverages(this.activePlan) : [];
 
-      this.pdfService.descargarPDF(this.quote, datosCoche, coberturas);
-
-    } catch (error) {
-      console.error('Error al generar PDF:', error);
-      this.generalService.alert('Error', 'No se pudo generar el PDF', 'danger');
-    }
+        this.pdfService.descargarPDF(this.quote, datosCoche, coberturas);
+        this.hide_spinner();
+      } catch (error) {
+        console.error('Error al generar PDF:', error);
+        this.generalService.alert('Error', 'No se pudo generar el PDF', 'danger');
+      } finally {
+        this.hide_spinner();
+      }
+    }, 1000);
   }
   previsualizarPDF(): void {
     if (!this.quote) {
@@ -1274,20 +1277,24 @@ export class SegurosPage implements OnInit {
       return;
     }
 
-    try {
-      const datosCocheStorage = localStorage.getItem('datosCoche');
-      const datosCoche = datosCocheStorage ? JSON.parse(datosCocheStorage) : {};
+    this.show_spinner(true, 6, 'Preparando PDF...', 'Espere un momento');
+    setTimeout(() => {
+      try {
+        const datosCocheStorage = localStorage.getItem('datosCoche');
+        const datosCoche = datosCocheStorage ? JSON.parse(datosCocheStorage) : {};
 
-      const coberturas = this.activePlan ? this.getPlanCoverages(this.activePlan) : [];
+        const coberturas = this.activePlan ? this.getPlanCoverages(this.activePlan) : [];
 
-      this.pdfService.previsualizarPDF(this.quote, datosCoche, coberturas);
-
-    } catch (error) {
-      console.error('Error al generar PDF:', error);
-      this.generalService.alert('Error', 'No se pudo generar el PDF', 'danger');
-    }
+        this.pdfService.previsualizarPDF(this.quote, datosCoche, coberturas);
+        this.hide_spinner();
+      } catch (error) {
+        console.error('Error al generar PDF:', error);
+        this.generalService.alert('Error', 'No se pudo generar el PDF', 'danger');
+      } finally {
+        this.hide_spinner();
+      }
+    }, 1000);
   }
-
   // --------- 
   getDAMount(): string {
     if (!this.quote || !this.quote.plans || !this.quote.plans[0]) return '';
@@ -1323,7 +1330,7 @@ export class SegurosPage implements OnInit {
     return extrepCoverage?.premium ? this.fmtMoney(extrepCoverage.premium) : '';
   }
   public removerCuponExistente() {
-    this.mostrar_spinnet = true;
+    this.mostrar_spinner = true;
     this.cuponExistente = false;
     this.cupon = '';
     const datosCocheStorage = localStorage.getItem('datosCoche');
@@ -1337,5 +1344,18 @@ export class SegurosPage implements OnInit {
         this.HacerCotizacion(this.buildCotizacionDTO());
       }, 1000);
     }
+  }
+  // ----- SPINNER -----
+  private show_spinner(status: boolean, tipo: number, tex: string, texsub: string) {
+    this.tipo_spinner = tipo;
+    this.texto_spinner = tex;
+    this.textoSub_spinner = texsub;
+    this.mostrar_spinner = status;
+  }
+  private hide_spinner() {
+    this.mostrar_spinner = false;
+    this.tipo_spinner = 0;
+    this.texto_spinner = 'Cargando...';
+    this.textoSub_spinner = 'Espere un momento';
   }
 }

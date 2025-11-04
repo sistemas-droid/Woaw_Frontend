@@ -1,52 +1,56 @@
-<!-- <app-navbar>
-  <ion-button navbar-actions fill="clear" [ngClass]="{ 'activo': isActive('renta-coches') }"
-    (click)="redirecion('renta-coches')">
-    Renta de coches
-  </ion-button>
-</app-navbar>
-
-<ion-content [fullscreen]="true">
-  <section class="city-section">
-    <div class="intro">
-      <h2>Ciudades disponibles</h2>
-      <p>Elige una ciudad para ver opciones de renta.</p>
-      <span class="intro__accent"></span>
-    </div>
-    <ion-grid class="city-grid">
-      <ion-row class="city-row">
-        <ion-col size="12" sizeSm="6" sizeMd="4" sizeLg="3" *ngFor="let c of estados;">
-          <ion-card class="city-card" (click)="c.disponible && seleccionarCiudad(c)" button>
-            <div class="city-img-wrap">
-              <img class="city-img" [src]="c.imagen" [alt]="c.nombre" loading="lazy" />
-              <div class="city-overlay">
-                <h3>{{ c.nombre }}</h3>
-              </div>
-              <div class="city-disabled-overlay" *ngIf="!c.disponible">
-                <span class="disabled-text">Próximamente</span>
-              </div>
-            </div>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </section>
-
-  <div class="spacer"></div>
-  <app-footer></app-footer>
-</ion-content> -->
-
 <app-navbar></app-navbar>
 
 <ion-content [fullscreen]="true">
+  <!-- <app-spinner *ngIf="mostrar_spinnet" [tipo]="5" [text]="'Cargando...'"></app-spinner> -->
 
-  <img  [src]="imgenPrincipal" alt="Próximamente WOAW" class="img-responsiva" />
+  <div class="hero">
+    <img src="/assets/renta/renta_principal.png" class="cabecera" alt="Seguro de autos" />
+
+    <div class="hero__overlay">
+      <div class="hero__content">
+        <h1 class="hero__title">
+          Renta el auto
+          <br>
+          que necesitas
+        </h1>
+      </div>
+    </div>
+
+    <div class="beneficios">
+      <div class="beneficio">
+        <div class="beneficio-icono">
+          <img src="/assets/renta/beneficios_car.png" alt="">
+        </div>
+        <div class="beneficio-texto">
+          <span class="beneficio-titulo">Seguro incluido</span>
+        </div>
+      </div>
+
+      <div class="beneficio">
+        <div class="beneficio-icono">
+          <img src="/assets/renta/beneficios_cash.png" alt="">
+        </div>
+        <div class="beneficio-texto">
+          <span class="beneficio-titulo">Sin depósitos</span>
+        </div>
+      </div>
+
+      <div class="beneficio">
+        <div class="beneficio-icono">
+          <img src="/assets/renta/beneficios_location.png" alt="">
+        </div>
+        <div class="beneficio-texto">
+          <span class="beneficio-titulo">Entrega gratis</span>
+        </div>
+      </div>
+    </div>
 
 
-  <div class="hero-overlay">
-    <h1>Renta de autos <span class="brand">WOAW</span></h1>
   </div>
+
+  <!-- ------ -----  -->
+
+  <!-- ----- ----- -->
 
   <app-footer></app-footer>
 </ion-content>
-
-
