@@ -51,6 +51,7 @@ export class RegistroComponent implements OnInit {
   mostrarAlertaPoliticas: boolean = false;
   MostrarCOntenido_Pop_Up: boolean = true;
 
+
   constructor(
     private http: HttpClient,
     private fb: FormBuilder,
@@ -59,8 +60,9 @@ export class RegistroComponent implements OnInit {
     private generalService: GeneralService,
     private loadingController: LoadingController,
     private router: Router,
-    private modalCtrl: ModalController
-  ) {}
+    private modalCtrl: ModalController,
+
+  ) { }
 
   async ngOnInit() {
     // localStorage.removeItem('popUp');
@@ -300,61 +302,53 @@ export class RegistroComponent implements OnInit {
 
   // VALIDAR SECCIÓN DE CÓDIGO
   async validarSeccion2() {
-    const campos = ['numeroConfirm'];
-    let valido = true;
+    const control = this.registroForm.get('numeroConfirm');
+    control?.markAsTouched();
 
-    campos.forEach((campo) => {
-      const control = this.registroForm.get(campo);
-      control?.markAsTouched();
-
-      if (control?.invalid) {
-        valido = false;
-      }
-    });
-
-    if (valido) {
-      // mostrar spinner
-      await this.generalService.loading('Verificando...');
-      const datos = {
-        email: this.registroForm.value.email,
-        code: String(this.registroForm.value.numeroConfirm),
-      };
-
-      this.registroService.validacioncodigo(datos).subscribe({
-        next: async (respuesta) => {
-          this.Seccionamostrar = 3;
-          // ocultar spinner
-          await this.generalService.loadingDismiss();
-          await this.generalService.alert(
-            '¡Código verificado exitosamente!',
-            'Por favor crea una contrseña por seguridad',
-            'success'
-          );
-          // this.registroForm.reset();
-        },
-        error: async (error) => {
-          // Ocultar spinner
-          await this.generalService.loadingDismiss();
-          console.error('Error en el registro:', error);
-          // Obtener mensaje del backend
-          const mensaje =
-            error.error?.message || 'Ocurrió un error. Intenta más tarde.';
-          await this.generalService.alert(
-            'Error al registrar',
-            mensaje,
-            'danger'
-          );
-        },
-      });
-    } else {
-      this.registroForm.markAllAsTouched();
+    // Asegurar que el código sean 6 dígitos
+    const code = String(control?.value ?? '').replace(/\D/g, '').slice(0, 6);
+    if (!code || code.length !== 6) {
       await this.generalService.alert(
-        'Datos incompletos',
-        'Ingresa tus datos en los campos correspondientes.',
+        'Código inválido',
+        'El código debe tener 6 dígitos.',
         'warning'
       );
+      return;
     }
+
+    const datos = {
+      email: this.registroForm.value.email,
+      code
+    };
+
+    // mostramos loader
+    await this.generalService.loading('Verificando código...');
+
+    this.registroService.validacioncodigo(datos).subscribe({
+      next: async () => {
+        await this.generalService.loadingDismiss();
+
+        this.Seccionamostrar = 3; // ⬅️ pasa a contraseña
+        await this.generalService.alert(
+          '¡Código verificado exitosamente!',
+          'Por favor crea una contraseña por seguridad',
+          'success'
+        );
+      },
+      error: async (error) => {
+        await this.generalService.loadingDismiss();
+
+        const mensaje =
+          error?.error?.message || 'Código incorrecto. Intenta nuevamente.';
+        await this.generalService.alert(
+          'Error al validar',
+          mensaje,
+          'danger'
+        );
+      }
+    });
   }
+
 
   // REGISTRO DESPUES DE VALIDAR PASSWORD, EMAIL,  TELEFONO Y NOMBRE
   async EnvioRegistro() {
@@ -371,8 +365,6 @@ export class RegistroComponent implements OnInit {
     });
 
     if (valido) {
-      // mostrar spinner
-      await this.generalService.loading('Verificando...');
       const datos = {
         nombre: this.registroForm.value.usuario,
         apellidos: this.registroForm.value.apellidos,

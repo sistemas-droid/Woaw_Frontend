@@ -2,7 +2,7 @@
   <img src="assets/icon/logo2.png" loading="lazy" alt="WOAW" class="logo-registro" />
   <h1 class="titulo">Registro</h1>
 
-  <form [formGroup]="registroForm" class="login-form" (ngSubmit)="EnvioRegistro()" *ngIf="MostrarCOntenido_Pop_Up">
+  <form [formGroup]="registroForm" class="login-form" *ngIf="MostrarCOntenido_Pop_Up">
 
     <!-- <ion-span *ngIf="Seccionamostrar === 1"> -->
     <!-- Usuario -->
@@ -128,7 +128,7 @@
       <span class="correo-preview">
         {{ registroForm.get('email')?.value }}
       </span>
-      <button class="btn-revisar-codigo" (click)="revisarCodigo()">
+      <button type="button" class="btn-revisar-codigo" (click)="revisarCodigo()">
         Renviar código
       </button>
     </div>
@@ -230,7 +230,7 @@
           Privacidad</span></ion-label>
     </ion-item>
 
-    <button *ngIf="Seccionamostrar === 3" type="submit" class="btn-login" [disabled]="registroForm.invalid">
+    <button *ngIf="Seccionamostrar === 3" type="button" (click)="EnvioRegistro()" class="btn-login" [disabled]="registroForm.invalid">
       Registrarme
     </button>
     <br *ngIf="Seccionamostrar === 3">
