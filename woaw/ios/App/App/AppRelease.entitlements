@@ -14,6 +14,7 @@
 		<string>applinks:www.wo-aw.com</string>
 		<string>applinks:peppy-aileron-468716-e5.web.app</string>
 		<string>applinks:peppy-aileron-468716-e5.firebaseapp.com</string>
+		<string>applinks:woaw.mx</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>

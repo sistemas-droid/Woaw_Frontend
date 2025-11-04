@@ -21,8 +21,10 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>woaw</string>
+			<string>com.woaw.woaw</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>woaw</string>

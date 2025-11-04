@@ -19,6 +19,13 @@ import { PushService } from './services/push.service';
 
 declare let gtag: Function;
 
+// Helper: reemplazo de Object.fromEntries para TS < ES2019
+function paramsToObject(sp: URLSearchParams): Record<string, string> {
+  const out: Record<string, string> = {};
+  sp.forEach((v, k) => { out[k] = v; });
+  return out;
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -59,9 +66,7 @@ export class AppComponent {
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        gtag('config', 'G-9FQLZKFT9Q', {
-          page_path: event.urlAfterRedirects,
-        });
+        gtag('config', 'G-9FQLZKFT9Q', { page_path: event.urlAfterRedirects });
       }
     });
 
@@ -96,13 +101,11 @@ export class AppComponent {
 
     App.addListener('appStateChange', async ({ isActive }) => {
       if (!isActive) return;
-      if (this.isLoggedIn) {
-        try { await this.push.init(); } catch {}
-      }
+      if (this.isLoggedIn) { try { await this.push.init(); } catch {} }
     });
 
-    // 👇 Registrar Universal Links (Siri / notificaciones con URL)
-    this.platform.ready().then(() => this.registerUniversalLinks());
+    // Deep links (Siri/custom scheme + universal links)
+    this.platform.ready().then(() => this.registerDeepLinks());
   }
 
   get mostrarTabs(): boolean {
@@ -112,10 +115,7 @@ export class AppComponent {
       '/seguros/autos', '/seguros/cotiza/', '/seguros/cotizar-manual',
       '/renta-coches', '/seguros/persona', '/search/vehiculos/'
     ];
-    return (
-      this.esDispositivoMovil &&
-      !rutasSinTabs.some((r) => this.currentUrl.startsWith(r))
-    );
+    return this.esDispositivoMovil && !rutasSinTabs.some((r) => this.currentUrl.startsWith(r));
   }
 
   get mostrarBtnAll(): boolean {
@@ -152,7 +152,6 @@ export class AppComponent {
       await StatusBar.setBackgroundColor({ color: '#D62828' });
       await StatusBar.setStyle({ style: Style.Dark });
     }
-
     if (this.platform.is('ios')) {
       await StatusBar.setOverlaysWebView({ overlay: false });
       await StatusBar.setStyle({ style: Style.Dark });
@@ -163,26 +162,19 @@ export class AppComponent {
     this.platform.backButton.subscribeWithPriority(9999, async () => {
       const topModal = await this.modalCtrl.getTop();
       if (topModal) { await topModal.dismiss(); return; }
-
       const topAction = await this.actionSheetCtrl.getTop();
       if (topAction) { await topAction.dismiss(); return; }
-
       const topAlert = await this.alertCtrl.getTop();
       if (topAlert) { await topAlert.dismiss(); return; }
-
       const menuOpen = await this.menuCtrl.isOpen();
       if (menuOpen) { await this.menuCtrl.close(); return; }
 
       if (this.routerOutlet && this.routerOutlet.canGoBack()) {
-        await this.routerOutlet.pop();
-        return;
+        await this.routerOutlet.pop(); return;
       }
 
       const current = this.router.url.split('?')[0];
-      if (this.ROOT_PATHS.includes(current)) {
-        await this.handleExitGesture();
-        return;
-      }
+      if (this.ROOT_PATHS.includes(current)) { await this.handleExitGesture(); return; }
 
       window.history.length > 1
         ? history.back()
@@ -192,12 +184,8 @@ export class AppComponent {
 
   private async handleExitGesture() {
     if (!this.platform.is('android')) return;
-
     const now = Date.now();
-    if (now - this.lastBackTime < 1500) {
-      App.exitApp();
-      return;
-    }
+    if (now - this.lastBackTime < 1500) { App.exitApp(); return; }
     this.lastBackTime = now;
     const toast = await this.toastCtrl.create({
       message: 'Presiona atrás de nuevo para salir',
@@ -207,45 +195,70 @@ export class AppComponent {
     await toast.present();
   }
 
-  // ===== Universal Links =====
+  // ===== Deep Links (custom scheme + universal links) =====
 
-  private async registerUniversalLinks() {
-    // Cold start: si la app se abrió por un link
+  private async registerDeepLinks() {
+    // Cold start
     try {
       const launch = await App.getLaunchUrl();
       if (launch?.url) this.handleOpenUrl(launch.url);
     } catch {}
 
-    // App en foreground/background: llega un link
-    App.addListener('appUrlOpen', (event: { url: string }) => {
-      this.handleOpenUrl(event.url);
-    });
+    // Warm / foreground
+    App.addListener('appUrlOpen', ({ url }) => this.handleOpenUrl(url));
   }
 
   private handleOpenUrl(urlString: string) {
-    let url: URL | null = null;
+    let url: URL;
     try { url = new URL(urlString); } catch { return; }
 
-    // Debe coincidir con los dominios declarados en Associated Domains (Xcode)
+    // 1) Custom scheme: woaw://search?...  |  woaw://ficha/<id>
+    if (url.protocol === 'woaw:') {
+      if (url.host === 'search/vehiculos') {
+        const qp = paramsToObject(url.searchParams as any);
+        this.zone.run(() => {
+          this.router.navigate(['/search/vehiculos'], { queryParams: qp });
+        });
+        return;
+      }
+      if (url.host === 'ficha') {
+        const id = url.pathname.replace('/', '');
+        if (id) {
+          this.zone.run(() => this.router.navigate(['/ficha', id]));
+        }
+        return;
+      }
+      return; // otros hosts -> ignora
+    }
+
+    // 2) Universal links (https): wo-aw.com / woaw.mx (ajusta hosts si aplica)
     const allowedHosts = new Set([
       'wo-aw.com',
       'www.wo-aw.com',
-      // añade los de Firebase si también los pusiste en Associated Domains
+      'woaw.mx',
+      'www.woaw.mx',
+      // si añadiste dominios de Firebase a Associated Domains, agrégalos aquí también:
       'peppy-aileron-468716-e5.web.app',
       'peppy-aileron-468716-e5.firebaseapp.com',
     ]);
     if (!allowedHosts.has(url.host)) return;
 
-    // Normaliza URL externa a ruta interna de Angular
-    let internal = url.pathname; // ej: /ficha/autos/123, /search/term
-    // Mapear /search?q=term -> /search/term
-    if (internal === '/search' && url.searchParams.get('q')) {
-      internal = `/search/${encodeURIComponent(url.searchParams.get('q')!)}`;
+    // Mapear rutas externas a rutas internas
+    // /search?keywords=...&tipoVenta=...&transmision=...&sort=...
+    if (url.pathname === '/search/vehiculos') {
+      const qp = paramsToObject(url.searchParams as any);
+      this.zone.run(() => {
+        this.router.navigate(['/search/vehiculos'], { queryParams: qp });
+      });
+      return;
     }
 
-    // Ejecuta dentro de la zona de Angular
-    this.zone.run(() => {
-      this.router.navigateByUrl(internal, { replaceUrl: false });
-    });
+    // /ficha/:id  → abre detalle
+    const fichaMatch = url.pathname.match(/^\/ficha\/([^/]+)$/);
+    if (fichaMatch) {
+      const id = decodeURIComponent(fichaMatch[1]);
+      this.zone.run(() => this.router.navigate(['/ficha', id]));
+      return;
+    }
   }
 }

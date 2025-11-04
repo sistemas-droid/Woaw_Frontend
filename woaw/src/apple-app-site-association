@@ -4,7 +4,7 @@
     "details": [
       {
         "appID": "ZBYC88GAFD.com.woaw.woaw",
-        "paths": [ "/search/*", "/ficha/*", "/*" ]
+        "paths": [ "/search/vehiculos/*", "/ficha/*", "/*" ]
       }
     ]
   }
