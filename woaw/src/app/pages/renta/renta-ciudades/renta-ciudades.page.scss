@@ -1,6 +1,6 @@
 .hero {
   width: 100%;
-  height: 480px;
+  height: 400px;
   overflow: hidden;
   z-index: 0;
 
@@ -79,7 +79,7 @@
     .beneficio {
       display: flex;
       gap: 15px;
-      padding: 12px 0;
+      padding: 6px 0;
       width: 100%;
       justify-content: flex-start;
 
@@ -129,4 +129,70 @@
   font-size: 18px;
   font-weight: 600;
   color: #333;
+}
+
+
+
+
+
+
+
+.fila-destinos {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  padding: 0px;
+  flex-wrap: wrap;
+
+
+  .destino-simple {
+    width: 450px;
+    position: relative;
+  }
+
+  .contenedor-imagen {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+
+  .imagen-destino {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .texto {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    color: #fff;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+    pointer-events: auto;
+  }
+
+  .texto h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .ver-autos {
+    display: inline-block;
+    margin-top: 4px;
+    color: #fff;
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 14px;
+  }
 }

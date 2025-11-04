@@ -255,6 +255,20 @@ export class RentaCiudadesPage implements OnInit {
   imgenPrincipal: string = '';
   public mostrar_spinnet: boolean = true;
 
+  destinos = [
+    {
+      nombre: 'Guadalajara',
+      foto: '/assets/renta/MAPA-GUADALAJARA.png',
+      link: '/autos/puerto-vallarta'
+    },
+    {
+      nombre: 'Quintana Roo',
+      foto: '/assets/renta/MAPA-CANCUN.png',
+      link: '/autos/jalisco'
+    }
+  ];
+
+
   constructor(
     private popoverCtrl: PopoverController,
     private alertCtrl: AlertController,
