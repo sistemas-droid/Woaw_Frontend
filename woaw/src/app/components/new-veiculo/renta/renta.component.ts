@@ -13,10 +13,8 @@ import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { GeneralService } from '../../../services/general.service';
 import { RentaService } from '../../../services/renta.service';
-
 import { MapaComponent } from '../../modal/mapa/mapa.component';
 import { FotosVeiculoComponent } from '../../modal/fotos-veiculo/fotos-veiculo.component';
 
@@ -41,54 +39,40 @@ export class RentaComponent implements OnInit, OnChanges {
   @Input() anio!: number;
   @Input() marca!: string;
   @Input() modelo!: string;
-  /** Tipo general del flujo (por si el padre lo usa). No lo enviamos al backend. */
   @Input() tipo!: 'renta' | 'auto' | 'moto' | 'camion' | 'lote';
   @Output() rentaSubmit = new EventEmitter<RentaSubmitPayload>();
-
   private readonly BASE_DISPO = '/disponibilidad-car';
-
-  // --- estado UI ---
   direccionCompleta: string = 'Selecciona la ubicación...';
   ubicacionSeleccionada: [string, string, number, number] | null = null;
-
   imagenPrincipal: File | null = null;
   imagenesSecundarias: File[] = [];
   tarjetaCirculacion: File | null = null;
-
   imagenesIntentadas = false;
   imagenesValidas = false;
-
-  // Campos compatibles con el backend
   tipoVehiculoLocal: string = '';
   transmision: string = '';
   combustible: string = '';
   pasajeros: number | null = null;
-
-  // === Extras ===
   extrasPredefinidos: string[] = [
     'Silla de bebé',
     'Elevador infantil',
     'GPS',
     'Wi-Fi portátil',
     'Portaequipaje',
-    'Cadenas para nieve'
+    'Cadenas para nieve',
   ];
   extras: string[] = [];
   extraSeleccionado: string = '';
   extraOtroTexto: string = '';
-
   precioPorDia: number | null = null;
-
   politicaCombustible: 'lleno-lleno' | 'como-esta' = 'lleno-lleno';
   politicaLimpieza: 'normal' | 'estricta' = 'normal';
-
   requisitosConductor = {
     edadMinima: 21,
     antiguedadLicenciaMeses: 12,
     permiteConductorAdicional: false as boolean,
     costoConductorAdicional: null as number | null,
   };
-
   entrega = {
     gratuitoHastaKm: 0,
     tarifasPorDistancia: [] as Array<{
@@ -98,7 +82,6 @@ export class RentaComponent implements OnInit, OnChanges {
       nota?: string | null;
     }>,
   };
-
   enviando = false;
 
   constructor(
@@ -106,17 +89,21 @@ export class RentaComponent implements OnInit, OnChanges {
     private generalService: GeneralService,
     private rentaService: RentaService,
     private cdr: ChangeDetectorRef,
-    private router: Router,
+    private router: Router
   ) { }
 
   ngOnInit() { }
   ngOnChanges(_changes: SimpleChanges): void { }
 
-  // ---------- helpers ----------
-  private hasText(v: any): boolean { return ('' + (v ?? '')).trim().length > 0; }
-  private numOrUndef = (v: any) => { const n = Number(v); return Number.isFinite(n) ? n : undefined; };
+  private hasText(v: any): boolean {
+    return ('' + (v ?? '')).trim().length > 0;
+  }
 
-  // ===== Extras handlers =====
+  private numOrUndef = (v: any) => {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : undefined;
+  };
+
   onExtraChange(val: string) {
     if (val !== '__OTRO__') this.extraOtroTexto = '';
   }
@@ -130,11 +117,9 @@ export class RentaComponent implements OnInit, OnChanges {
     }
     if (!valor) return;
 
-    // evita duplicados (case-insensitive)
-    const ya = this.extras.some(e => e.toLowerCase() === valor.toLowerCase());
+    const ya = this.extras.some((e) => e.toLowerCase() === valor.toLowerCase());
     if (!ya) this.extras.push(valor);
 
-    // reset UI
     this.extraSeleccionado = '';
     this.extraOtroTexto = '';
     this.cdr.markForCheck();
@@ -174,11 +159,9 @@ export class RentaComponent implements OnInit, OnChanges {
       return;
     }
     const url = `${this.BASE_DISPO}/${id}`;
-    // 👉 Solo Router, sin reload ni window.location.*
     await this.router.navigateByUrl(url, { replaceUrl: true });
   }
 
-  // ---------- tarifas ----------
   private reencadenarDesde() {
     const arr = this.entrega.tarifasPorDistancia;
     if (!arr?.length) return;
@@ -193,9 +176,10 @@ export class RentaComponent implements OnInit, OnChanges {
 
   addTarifa() {
     const arr = this.entrega.tarifasPorDistancia;
-    const desde = arr.length === 0
-      ? (Number(this.entrega.gratuitoHastaKm) || 0)
-      : (Number(arr[arr.length - 1].hastaKm) || 0);
+    const desde =
+      arr.length === 0
+        ? Number(this.entrega.gratuitoHastaKm) || 0
+        : Number(arr[arr.length - 1].hastaKm) || 0;
     arr.push({ desdeKm: Math.max(0, desde), hastaKm: Math.max(0, desde + 10), costoFijo: null, nota: null });
     this.cdr.markForCheck();
   }
@@ -205,7 +189,9 @@ export class RentaComponent implements OnInit, OnChanges {
     this.reencadenarDesde();
   }
 
-  onGratisHastaChange() { this.reencadenarDesde(); }
+  onGratisHastaChange() {
+    this.reencadenarDesde();
+  }
 
   onTarifaHastaChange(i: number) {
     const arr = this.entrega.tarifasPorDistancia;
@@ -215,7 +201,6 @@ export class RentaComponent implements OnInit, OnChanges {
     this.cdr.markForCheck();
   }
 
-  // ---------- ubicación / imágenes ----------
   async seleccionarUbicacion() {
     const modal = await this.modalController.create({ component: MapaComponent });
     await modal.present();
@@ -225,10 +210,13 @@ export class RentaComponent implements OnInit, OnChanges {
       if (this.ubicacionSeleccionada) {
         try {
           const dir = await this.generalService.obtenerDireccionDesdeCoordenadas(
-            this.ubicacionSeleccionada[2], this.ubicacionSeleccionada[3]
+            this.ubicacionSeleccionada[2],
+            this.ubicacionSeleccionada[3]
           );
           this.direccionCompleta = dir;
-        } catch { this.direccionCompleta = 'No se pudo obtener la dirección.'; }
+        } catch {
+          this.direccionCompleta = 'No se pudo obtener la dirección.';
+        }
       }
       this.cdr.markForCheck();
     }
@@ -242,7 +230,12 @@ export class RentaComponent implements OnInit, OnChanges {
     });
     await modal.present();
     const { data } = await modal.onDidDismiss();
-    if (!data) { this.imagenesValidas = false; this.imagenesIntentadas = false; this.cdr.markForCheck(); return; }
+    if (!data) {
+      this.imagenesValidas = false;
+      this.imagenesIntentadas = false;
+      this.cdr.markForCheck();
+      return;
+    }
 
     this.imagenesIntentadas = true;
     this.imagenPrincipal = (data.imagenPrincipal as File) || null;
@@ -250,7 +243,9 @@ export class RentaComponent implements OnInit, OnChanges {
 
     if (!this.imagenPrincipal) {
       await this.generalService.alert('Falta imagen principal', 'Selecciona una imagen principal para continuar.', 'warning');
-      this.imagenesValidas = false; this.cdr.markForCheck(); return;
+      this.imagenesValidas = false;
+      this.cdr.markForCheck();
+      return;
     }
     this.imagenesValidas = this.validarImagenes();
     this.cdr.markForCheck();
@@ -259,86 +254,107 @@ export class RentaComponent implements OnInit, OnChanges {
   onFileTC(ev: Event) {
     const input = ev.target as HTMLInputElement;
     if (!input.files?.length) return;
-    this.tarjetaCirculacion = input.files[0]; this.cdr.markForCheck();
+    this.tarjetaCirculacion = input.files[0];
+    this.cdr.markForCheck();
   }
 
   limpiarImagenes() {
-    this.generalService.confirmarAccion(
-      '¿Deseas eliminar las imágenes seleccionadas?',
-      'Eliminar imágenes',
-      () => {
-        this.imagenPrincipal = null;
-        this.imagenesSecundarias = [];
-        this.imagenesIntentadas = false;
-        this.imagenesValidas = false;
-        this.cdr.markForCheck();
-      }
-    );
+    this.generalService.confirmarAccion('¿Deseas eliminar las imágenes seleccionadas?', 'Eliminar imágenes', () => {
+      this.imagenPrincipal = null;
+      this.imagenesSecundarias = [];
+      this.imagenesIntentadas = false;
+      this.imagenesValidas = false;
+      this.cdr.markForCheck();
+    });
   }
 
-  // ---------- validaciones ----------
-  validarBasico(): boolean {
-    if (!this.hasText(this.marca) || !this.hasText(this.modelo)) {
-      this.generalService.alert('Datos incompletos', 'Faltan marca o modelo.', 'warning');
-      return false;
-    }
-    if (!this.ubicacionSeleccionada) {
-      this.generalService.alert('Ubicación', 'Selecciona la ubicación del vehículo.', 'warning');
-      return false;
-    }
-    const okPrecioDia = this.precioPorDia !== null && Number(this.precioPorDia) >= 500;
-    if (!okPrecioDia) {
-      this.generalService.alert('Precio por día', 'El precio por día debe ser de al menos $500.', 'warning');
-      return false;
-    }
-    if (this.pasajeros !== null && Number(this.pasajeros) < 1) {
-      this.generalService.alert('Pasajeros', 'El número de pasajeros debe ser 1 o mayor.', 'warning');
-      return false;
-    }
-    if (Number(this.requisitosConductor.edadMinima) < 18) {
-      this.generalService.alert('Edad mínima', 'La edad mínima permitida es 18 años.', 'warning');
-      return false;
-    }
-
-    const hayTarifas = (this.entrega.tarifasPorDistancia || []).length > 0;
-    const hayGratisHasta = Number(this.entrega.gratuitoHastaKm) > 0;
-    if (!hayTarifas && !hayGratisHasta) {
-      this.generalService.alert('Tarifas por distancia', 'Agrega al menos una tarifa o “Entrega gratis hasta (km)”.', 'warning');
-      return false;
-    }
-
-    for (let i = 0; i < (this.entrega.tarifasPorDistancia || []).length; i++) {
-      const t = this.entrega.tarifasPorDistancia[i];
-      const desde = Number(t.desdeKm), hasta = Number(t.hastaKm);
-      const costoFijo = t.costoFijo != null ? Number(t.costoFijo) : null;
-
-      if (!Number.isFinite(desde) || desde < 0 || !Number.isFinite(hasta) || hasta <= 0) {
-        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: “Desde” ≥ 0 y “Hasta” > 0.`, 'warning');
-        return false;
-      }
-      if (desde >= hasta) {
-        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: “Desde” debe ser menor que “Hasta”.`, 'warning');
-        return false;
-      }
-      if (costoFijo == null || !Number.isFinite(costoFijo) || costoFijo < 0) {
-        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: define “Costo fijo”.`, 'warning');
-        return false;
-      }
-      if (i > 0) {
-        const prevHasta = Number(this.entrega.tarifasPorDistancia[i - 1].hastaKm) || 0;
-        if (desde !== prevHasta) {
-          this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1} debe iniciar en ${prevHasta} km.`, 'warning');
-          return false;
-        }
-      }
-    }
-
-    if (!this.imagenPrincipal || !this.validarImagenes()) {
-      this.generalService.alert('Imágenes', 'Falta imagen principal o formato/tamaño inválido.', 'warning');
-      return false;
-    }
-    return true;
+validarBasico(): boolean {
+  if (!this.hasText(this.marca) || !this.hasText(this.modelo)) {
+    this.generalService.alert('Datos incompletos', 'Faltan marca o modelo.', 'warning');
+    return false;
   }
+
+  // 🚗 Transmisión obligatoria
+  if (!this.transmision) {
+    this.generalService.alert('Transmisión', 'Selecciona la transmisión del vehículo.', 'warning');
+    return false;
+  }
+
+  // ⛽ Combustible obligatorio
+  if (!this.combustible) {
+    this.generalService.alert('Combustible', 'Selecciona el tipo de combustible.', 'warning');
+    return false;
+  }
+
+  // 📍 Ubicación
+  if (!this.ubicacionSeleccionada) {
+    this.generalService.alert('Ubicación', 'Selecciona la ubicación del vehículo.', 'warning');
+    return false;
+  }
+
+  // 💰 Precio por día
+  const okPrecioDia = this.precioPorDia !== null && Number(this.precioPorDia) >= 500;
+  if (!okPrecioDia) {
+    this.generalService.alert('Precio por día', 'El precio por día debe ser de al menos $500.', 'warning');
+    return false;
+  }
+
+  // 👥 Pasajeros
+  if (this.pasajeros === null || Number(this.pasajeros) < 1) {
+    this.generalService.alert('Pasajeros', 'Debes indicar al menos 1 pasajero.', 'warning');
+    return false;
+  }
+
+  // 🧍‍♂️ Edad mínima
+  if (Number(this.requisitosConductor.edadMinima) < 18) {
+    this.generalService.alert('Edad mínima', 'La edad mínima permitida es 18 años.', 'warning');
+    return false;
+  }
+
+  // 🚚 Tarifas o entrega gratuita
+  const hayTarifas = (this.entrega.tarifasPorDistancia || []).length > 0;
+  const hayGratisHasta = Number(this.entrega.gratuitoHastaKm) > 0;
+  if (!hayTarifas && !hayGratisHasta) {
+    this.generalService.alert('Tarifas por distancia', 'Agrega al menos una tarifa o “Entrega gratis hasta (km)”.', 'warning');
+    return false;
+  }
+
+  // 🔢 Validar cada tarifa
+  for (let i = 0; i < (this.entrega.tarifasPorDistancia || []).length; i++) {
+    const t = this.entrega.tarifasPorDistancia[i];
+    const desde = Number(t.desdeKm),
+      hasta = Number(t.hastaKm);
+    const costoFijo = t.costoFijo != null ? Number(t.costoFijo) : null;
+
+    if (!Number.isFinite(desde) || desde < 0 || !Number.isFinite(hasta) || hasta <= 0) {
+      this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: “Desde” ≥ 0 y “Hasta” > 0.`, 'warning');
+      return false;
+    }
+    if (desde >= hasta) {
+      this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: “Desde” debe ser menor que “Hasta”.`, 'warning');
+      return false;
+    }
+    if (costoFijo == null || !Number.isFinite(costoFijo) || costoFijo < 0) {
+      this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: define “Costo fijo”.`, 'warning');
+      return false;
+    }
+    if (i > 0) {
+      const prevHasta = Number(this.entrega.tarifasPorDistancia[i - 1].hastaKm) || 0;
+      if (desde !== prevHasta) {
+        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1} debe iniciar en ${prevHasta} km.`, 'warning');
+        return false;
+      }
+    }
+  }
+
+  // 🖼️ Validación de imágenes
+  if (!this.imagenPrincipal || !this.validarImagenes()) {
+    this.generalService.alert('Imágenes', 'Falta imagen principal o formato/tamaño inválido.', 'warning');
+    return false;
+  }
+
+  return true;
+}
 
   get canPublicar(): boolean {
     const okBasicos = this.hasText(this.marca) && this.hasText(this.modelo);
@@ -351,11 +367,18 @@ export class RentaComponent implements OnInit, OnChanges {
     const hayGratisHasta = Number(this.entrega.gratuitoHastaKm) > 0;
     const okTarifas = hayTarifas || hayGratisHasta;
 
-    return okBasicos && okUbi && okPrecio && okPasajeros && okEdad
-      && okTarifas && okImagen && !this.enviando;
+    return (
+      okBasicos &&
+      okUbi &&
+      okPrecio &&
+      okPasajeros &&
+      okEdad &&
+      okTarifas &&
+      okImagen &&
+      !this.enviando
+    );
   }
 
-  // ---------- payload SOLO con campos soportados ----------
   private construirPayloadParaBackend() {
     const ubicacion = this.ubicacionSeleccionada
       ? {
@@ -389,29 +412,20 @@ export class RentaComponent implements OnInit, OnChanges {
     return {
       marca: (this.marca || '').trim(),
       modelo: (this.modelo || '').trim(),
-
       tipoVehiculo: this.tipoVehiculoLocal || undefined,
       pasajeros: this.numOrUndef(this.pasajeros),
-
       transmision: this.transmision || undefined,
       combustible: this.combustible || undefined,
-
       precio: Number(this.precioPorDia ?? 0),
-
       politicaCombustible: this.politicaCombustible,
       politicaLimpieza: this.politicaLimpieza,
-
       requisitosConductor: reqCond,
-
       ubicacion,
       entrega,
-
-      // 👇 NUEVO: extras opcionales (si hay). Si tu backend aún no los soporta, los ignorará sin romper.
       extras: this.extras?.length ? [...this.extras] : undefined,
     };
   }
 
-  // ---------- enviar ----------
   async publicar() {
     if (!this.validarBasico()) return;
 
@@ -425,7 +439,6 @@ export class RentaComponent implements OnInit, OnChanges {
     this.enviando = true;
     this.cdr.markForCheck();
     await this.generalService.loading('Publicando vehículo de renta…');
-
     this.rentaService.addRentalCar({ ...payload, ...files } as any).subscribe({
       next: async (res) => {
         await this.generalService.loadingDismiss();
@@ -474,17 +487,12 @@ export class RentaComponent implements OnInit, OnChanges {
     this.transmision = '';
     this.combustible = '';
     this.pasajeros = null;
-
     this.precioPorDia = null;
-
-    // extras
     this.extras = [];
     this.extraSeleccionado = '';
     this.extraOtroTexto = '';
-
     this.politicaCombustible = 'lleno-lleno';
     this.politicaLimpieza = 'normal';
-
     this.requisitosConductor = {
       edadMinima: 21,
       antiguedadLicenciaMeses: 12,
@@ -493,16 +501,13 @@ export class RentaComponent implements OnInit, OnChanges {
     };
 
     this.entrega = { gratuitoHastaKm: 0, tarifasPorDistancia: [] };
-
     this.imagenPrincipal = null;
     this.imagenesSecundarias = [];
     this.tarjetaCirculacion = null;
     this.imagenesIntentadas = false;
     this.imagenesValidas = false;
-
     this.ubicacionSeleccionada = null;
     this.direccionCompleta = 'Selecciona la ubicación...';
-
     this.cdr.markForCheck();
   }
 }

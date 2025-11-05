@@ -2,7 +2,6 @@
   margin-top: 12px;
 }
 
-/* ===== Resumen (igual a car) ===== */
 .resumen-estado {
   display: flex;
   flex-direction: column;
@@ -65,7 +64,6 @@
   }
 }
 
-/* ===== Bloques superiores ===== */
 .contenedor-botones {
   display: flex;
   flex-wrap: wrap;
@@ -115,7 +113,6 @@
     }
   }
 
-  /* Botones principales iguales a car */
   .btn-imagenes,
   .btn-subir {
     background: #fff !important;
@@ -153,7 +150,6 @@
   }
 }
 
-/* ===== Ubicación mostrada ===== */
 .ubicacion-mostrada {
   padding: 0.5rem 1rem;
   background: #f9f9f9;
@@ -177,7 +173,6 @@
   }
 }
 
-/* ===== Formulario ===== */
 .formulario {
   display: flex;
   flex-direction: column;
@@ -187,7 +182,6 @@
   background-color: #f7f7f7;
   border-radius: 10px;
   border: 1px solid #ddd;
-
   .grid-form {
     display: grid;
     gap: 1rem;
@@ -247,7 +241,6 @@
     }
   }
 
-  /* Extras */
   .extras-row {
     display: flex;
     flex-wrap: wrap;
@@ -307,7 +300,6 @@
   }
 }
 
-/* ===== Tarifa cards ===== */
 .tarifas {
   margin-top: 12px;
   background: #f7f7f7;

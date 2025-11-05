@@ -1,5 +1,4 @@
 <section class="renta">
-  <!-- Resumen / encabezado (mismo patrón que car: resumen-estado) -->
   <div class="resumen-estado">
     <button type="button" class="btn-guardar" (click)="publicar()">
       <ion-icon name="save-outline" class="icono-guardar"></ion-icon>
@@ -12,13 +11,11 @@
     </div>
   </div>
 
-  <!-- Bloques superiores (ubicación + imágenes) replicando .contenedor-botones/.bloque-imagenes -->
   <div class="contenedor-botones">
-    <!-- Ubicación -->
     <div class="bloque-imagenes">
       <button type="button" (click)="seleccionarUbicacion()">
         <ion-icon name="location-outline" class="icono"></ion-icon>
-        Seleccionar ubicación
+        Seleccionar ubicación<span class="requerido">*</span>
       </button>
 
       <div class="ubicacion-mostrada" *ngIf="direccionCompleta">
@@ -27,12 +24,11 @@
       </div>
     </div>
 
-    <!-- Imágenes + TC -->
     <div class="bloque-imagenes">
       <div class="grupo-botones">
         <button class="btn-imagenes" type="button" (click)="seleccionarImagenes()">
           <ion-icon name="image-outline"></ion-icon>
-          Seleccionar imágenes
+          Seleccionar imágenes<span class="requerido">*</span>
         </button>
 
         <button *ngIf="imagenesIntentadas" class="btn-limpiar" type="button" (click)="limpiarImagenes()">
@@ -53,12 +49,10 @@
     </div>
   </div>
 
-  <!-- Formulario (mismo patrón .formulario > .grid-form > .campo) -->
   <div class="formulario">
-    <!-- Ficha rápida -->
     <div class="grid-form cols-4">
       <div class="campo">
-        <label>Tipo de vehículo</label>
+        <label>Tipo de vehículo<span class="requerido">*</span></label>
         <select [(ngModel)]="tipoVehiculoLocal">
           <option value="">Seleccione…</option>
           <option>sedan</option>
@@ -71,7 +65,7 @@
       </div>
 
       <div class="campo">
-        <label>Transmisión</label>
+        <label>Transmisión <span class="requerido">*</span></label>
         <select [(ngModel)]="transmision">
           <option value="">Seleccione…</option>
           <option>manual</option>
@@ -81,7 +75,7 @@
       </div>
 
       <div class="campo">
-        <label>Combustible</label>
+        <label>Combustible <span class="requerido">*</span></label>
         <select [(ngModel)]="combustible">
           <option value="">Seleccione…</option>
           <option>gasolina</option>
@@ -92,12 +86,11 @@
       </div>
 
       <div class="campo">
-        <label>Pasajeros</label>
+        <label>Pasajeros<span class="requerido">*</span></label>
         <input type="number" min="1" [(ngModel)]="pasajeros" placeholder="Ej. 5" />
       </div>
     </div>
 
-    <!-- Precio -->
     <div class="grid-form cols-4">
       <div class="campo">
         <label>Precio por día <span class="requerido">*</span></label>
@@ -105,7 +98,6 @@
       </div>
     </div>
 
-    <!-- Extras con chips -->
     <div class="grid-form cols-2">
       <div class="campo full">
         <label>Extras opcionales</label>
@@ -134,7 +126,6 @@
       </div>
     </div>
 
-    <!-- Políticas / requisitos -->
     <div class="grid-form cols-4">
       <div class="campo">
         <label>Política combustible</label>
@@ -176,7 +167,6 @@
       </div>
     </div>
 
-    <!-- Entrega -->
     <div class="grid-form cols-4">
       <div class="campo">
         <label>Entrega gratis hasta (km)</label>
@@ -185,11 +175,10 @@
     </div>
   </div>
 
-  <!-- Tarifas por distancia (cards como en car: estilo tarjeta) -->
   <div class="tarifas">
     <div class="tarifas__header">
       <label class="tarifas__title">Tarifas por distancia</label>
-      <button type="button"  (click)="addTarifa()">+ Agregar tarifa</button>
+      <button type="button" (click)="addTarifa()">+ Agregar tarifa</button>
     </div>
     <p class="hint">Agrega al menos una tarifa o especifica “Entrega gratis hasta (km)”.</p>
 
