@@ -15,6 +15,7 @@ import {
   FormGroup,
 } from '@angular/forms';
 
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { HttpClient } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
 
@@ -28,7 +29,7 @@ import { AvisoPrivasidadComponent } from '../../components/modal/aviso-privasida
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.scss'],
   standalone: true, // Si usando componentes independientes (standalone)
-  imports: [IonicModule, CommonModule, ReactiveFormsModule],
+  imports: [IonicModule, CommonModule, ReactiveFormsModule, SpinnerComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA], //esquema personalizado
 })
 export class RegistroComponent implements OnInit {
@@ -51,6 +52,10 @@ export class RegistroComponent implements OnInit {
   mostrarAlertaPoliticas: boolean = false;
   MostrarCOntenido_Pop_Up: boolean = true;
 
+  public mostrar_spinner: boolean = false;
+  public tipo_spinner: number = 0;
+  public texto_spinner: string = 'Cargando...';
+  public textoSub_spinner: string = 'Espere un momento';
 
   constructor(
     private http: HttpClient,
@@ -187,10 +192,12 @@ export class RegistroComponent implements OnInit {
 
   // VALIDACION DE EMAIL, NUMERO DE TELEFONO Y NOMBRE
   async validarSeccion1() {
+    this.show_spinner(true, 4, "enviando datos", "espera un momento");
     const avisoAceptado = localStorage.getItem('aviso') === 'true';
     const terminosAceptados = localStorage.getItem('terminos') === 'true';
 
     if (!avisoAceptado) {
+      this.hide_spinner();
       this.registroForm.get('aviso')?.setValue(false);
 
       this.generalService.alert(
@@ -202,6 +209,7 @@ export class RegistroComponent implements OnInit {
     }
 
     if (!terminosAceptados) {
+      this.hide_spinner();
       this.registroForm.get('terminos')?.setValue(false);
 
       this.generalService.alert(
@@ -225,8 +233,6 @@ export class RegistroComponent implements OnInit {
     });
 
     if (valido) {
-      // mostrar spinner
-      await this.generalService.loading('Verificando...');
       const datos = {
         nombre: this.registroForm.value.usuario,
         apellidos: this.registroForm.value.apellidos,
@@ -237,6 +243,7 @@ export class RegistroComponent implements OnInit {
 
       this.registroService.preregistro(datos).subscribe({
         next: async (respuesta) => {
+          this.hide_spinner();
           this.Seccionamostrar = 2;
           // ocultar spinner
           await this.generalService.loadingDismiss();
@@ -248,6 +255,7 @@ export class RegistroComponent implements OnInit {
           // this.registroForm.reset();
         },
         error: async (error) => {
+          this.hide_spinner();
           // Ocultar spinner
           await this.generalService.loadingDismiss();
 
@@ -264,10 +272,12 @@ export class RegistroComponent implements OnInit {
           );
         },
         complete: () => {
+            this.hide_spinner();
           this.generalService.loadingDismiss();
         },
       });
     } else {
+      this.hide_spinner();
       this.registroForm.markAllAsTouched();
       await this.generalService.alert(
         'Datos incompletos',
@@ -279,6 +289,7 @@ export class RegistroComponent implements OnInit {
 
   // BOTON DE REGRESAR A SECCION 1 ←
   async regresarASeccion1() {
+    
     const alert = await this.alertController.create({
       header: '¿Deseas regresar?',
       message: 'Perderás los datos ingresados en esta sección.',
@@ -308,6 +319,7 @@ export class RegistroComponent implements OnInit {
     // Asegurar que el código sean 6 dígitos
     const code = String(control?.value ?? '').replace(/\D/g, '').slice(0, 6);
     if (!code || code.length !== 6) {
+      
       await this.generalService.alert(
         'Código inválido',
         'El código debe tener 6 dígitos.',
@@ -352,6 +364,7 @@ export class RegistroComponent implements OnInit {
 
   // REGISTRO DESPUES DE VALIDAR PASSWORD, EMAIL,  TELEFONO Y NOMBRE
   async EnvioRegistro() {
+    
     const campos = ['usuario', 'apellidos', 'email', 'telefono'];
     let valido = true;
 
@@ -587,6 +600,21 @@ export class RegistroComponent implements OnInit {
       });
     }
   }
+
+
+  // ----- SPINNER -----
+  private show_spinner(status: boolean, tipo: number, tex: string, texsub: string) {
+    this.tipo_spinner = tipo;
+    this.texto_spinner = tex;
+    this.textoSub_spinner = texsub;
+    this.mostrar_spinner = status;
+  }
+  private hide_spinner() {
+    this.mostrar_spinner = false;
+    this.tipo_spinner = 0;
+    this.texto_spinner = 'Cargando...';
+    this.textoSub_spinner = 'Espere un momento';
+  }
 }
 
 function validarPasswordFuerte(): ValidatorFn {
@@ -639,4 +667,6 @@ function validarCoincidenciaPasswords(
 
     return null;
   };
+
+
 }

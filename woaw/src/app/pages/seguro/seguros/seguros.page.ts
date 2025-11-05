@@ -1345,6 +1345,7 @@ export class SegurosPage implements OnInit {
       }, 1000);
     }
   }
+  
   // ----- SPINNER -----
   private show_spinner(status: boolean, tipo: number, tex: string, texsub: string) {
     this.tipo_spinner = tipo;

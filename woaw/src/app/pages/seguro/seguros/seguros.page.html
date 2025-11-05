@@ -3,6 +3,7 @@
 <ion-content [fullscreen]="true">
 
   <app-spinner *ngIf="mostrar_spinner" [tipo]="tipo_spinner" [text]="texto_spinner" [sub_text]="textoSub_spinner"></app-spinner>
+  
   <app-otros-seguros [refreshKey]="islandKey" *ngIf="tipoDispocitivo === 'telefono'"></app-otros-seguros>
 
   <div class="fondo-seguros">
