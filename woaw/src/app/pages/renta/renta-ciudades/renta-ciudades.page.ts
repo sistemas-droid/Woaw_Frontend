@@ -258,12 +258,12 @@ export class RentaCiudadesPage implements OnInit {
   destinos = [
     {
       nombre: 'Guadalajara',
-      foto: '/assets/renta/MAPA-GUADALAJARA.png',
+      foto: '/assets/renta/MAPA-GUADALAJARA1.png',
       link: '/autos/puerto-vallarta'
     },
     {
       nombre: 'Quintana Roo',
-      foto: '/assets/renta/MAPA-CANCUN.png',
+      foto: '/assets/renta/MAPA-CANCUN1.png',
       link: '/autos/jalisco'
     }
   ];

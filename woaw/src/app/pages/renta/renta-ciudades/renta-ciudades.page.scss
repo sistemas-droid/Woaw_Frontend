@@ -76,12 +76,23 @@
     align-items: flex-end;
     width: auto;
 
+    @media (max-width: 820px) {
+      margin-top: 150px;
+      right: 1rem;
+    }
+
     .beneficio {
       display: flex;
       gap: 15px;
       padding: 6px 0;
       width: 100%;
       justify-content: flex-start;
+
+      @media (max-width: 820px) {
+        gap: 5px;
+        padding: 2px 0;
+        width: 100%;
+      }
 
       .beneficio-icono {
         width: 34px;
@@ -92,10 +103,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 14px;
         font-weight: bold;
         flex-shrink: 0;
         margin-top: 2px;
+
+        @media (max-width: 820px) {
+          width: 17px;
+          height: 17px;
+        }
 
         img {
           width: 50%;
@@ -110,10 +125,20 @@
         gap: 2px;
         margin-top: 8px;
 
+        @media (max-width: 820px) {
+          gap: 0px;
+          margin-top: 8px;
+        }
+
         .beneficio-titulo {
           font-size: 18px;
           font-weight: 600;
           color: #ffffff;
+
+          @media (max-width: 820px) {
+            font-size: 9px;
+            font-weight: 400;
+          }
         }
       }
     }
@@ -132,67 +157,23 @@
 }
 
 
-
-
-
-
-
-.fila-destinos {
+.contenido-pagina {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  height: 200px;
   display: flex;
   justify-content: center;
-  gap: 100px;
-  padding: 0px;
-  flex-wrap: wrap;
+  align-items: center;
 
-
-  .destino-simple {
-    width: 450px;
-    position: relative;
-  }
-
-  .contenedor-imagen {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    border-radius: 10px;
-  }
-
-  .imagen-destino {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-
-  .texto {
-    position: absolute;
-    bottom: 12px;
-    left: 12px;
-    color: #fff;
-    text-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
-    pointer-events: auto;
-  }
-
-  .texto h3 {
-    margin: 0;
-    font-size: 16px;
+  h1 {
+    font-size: 36px;
     font-weight: bold;
+    color: #555;
+
+    @media (max-width: 820px) {
+      font-size: 25px;
+    }
   }
 
-  .ver-autos {
-    display: inline-block;
-    margin-top: 4px;
-    color: #fff;
-    font-weight: bold;
-    text-decoration: underline;
-    font-size: 14px;
-  }
 }
