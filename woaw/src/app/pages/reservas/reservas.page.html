@@ -26,19 +26,36 @@
   <section class="grid-cal-img" *ngIf="coche">
     <div class="col-media">
       <div class="media-head">
-        <h1 class="titulo truncate">{{ coche?.marca }} <span class="car-name">{{ coche?.modelo }}</span></h1>
+        <h1 class="titulo truncate">
+          {{ coche?.marca }}
+          <span class="car-name">{{ coche?.modelo }}</span>
+        </h1>
+
         <div class="chips">
-          <ion-badge color="danger">
-            {{ (coche?.precio?.porDia ?? coche?.precioPorDia) | currency:(coche?.precio?.moneda || 'MXN'):'symbol'
-            }}/día
+          <span class="precio-dia">
+            {{
+            (coche?.precio?.porDia ?? coche?.precioPorDia ?? coche?.precio)
+            | currency:(coche?.precio?.moneda || 'MXN'):'symbol'
+            }}
+            <span class="por-dia">/día</span>
+          </span>
+
+          <ion-badge color="dark">
+            {{ coche?.ubicacion?.ciudad || '—' }}
           </ion-badge>
-          <ion-badge color="dark">{{ coche?.ubicacion?.ciudad || '—' }}</ion-badge>
-          <ion-badge color="danger" *ngIf="coche?.minDias">mín. {{ coche?.minDias }} día(s)</ion-badge>
+
+          <ion-badge color="danger" *ngIf="coche?.minDias">
+            mín. {{ coche?.minDias }} día(s)
+          </ion-badge>
         </div>
       </div>
 
       <ion-card class="card-media">
-        <img [src]="coche?.imagenPrincipalUrl || coche?.imagenPrincipal || '/assets/placeholder-car.jpg'" alt="Auto" />
+        <img [src]="
+            coche?.imagenPrincipalUrl ||
+            coche?.imagenPrincipal ||
+            '/assets/placeholder-car.jpg'
+          " alt="Auto" />
       </ion-card>
     </div>
 
@@ -58,69 +75,66 @@
               </ion-datetime>
             </ion-item>
 
-            <ion-note color="danger"
-              *ngIf="form.get('fechaInicio')?.hasError('minHoy') && form.get('fechaInicio')?.touched">
+            <ion-note color="danger" *ngIf="
+                form.get('fechaInicio')?.hasError('minHoy') &&
+                form.get('fechaInicio')?.touched
+              ">
               La fecha de inicio no puede ser anterior a hoy.
             </ion-note>
+
             <ion-note color="danger" *ngIf="form.hasError('rangoInvalido') && form.touched">
               La fecha de fin debe ser posterior a la de inicio.
             </ion-note>
+
             <ion-note color="danger" *ngIf="form.hasError('minDias') && form.touched">
               Debes reservar al menos {{ coche?.minDias }} día(s).
             </ion-note>
+
             <ion-note color="danger" *ngIf="form.hasError('rangoOcupado') && form.touched">
               Tu rango incluye días no disponibles. Elige otras fechas.
             </ion-note>
           </div>
 
-          <ion-item>
+          <!-- <ion-item>
             <ion-textarea label="Notas para el propietario" formControlName="notasCliente"
               placeholder="Indica preferencias de entrega, horarios, etc.">
             </ion-textarea>
-          </ion-item>
+          </ion-item> -->
         </form>
       </ion-card-content>
     </ion-card>
 
+    <!-- 🔹 Nuevo diseño del Resumen -->
     <ion-card class="card-resumen">
-      <ion-card-header>
-        <ion-card-title>Resumen</ion-card-title>
-      </ion-card-header>
       <ion-card-content>
-        <div class="resumen">
-          <div>Días</div>
-          <div class="val">{{ dias }}</div>
-
-          <div>Precio por día</div>
-          <div class="val">
-            {{ (coche?.precio?.porDia ?? coche?.precioPorDia ?? coche?.precio)
-            | currency:(coche?.precio?.moneda || 'MXN'):'symbol' }}
+        <div class="resumen-grid">
+          <div class="col">
+            <span class="label">Días</span>
+            <span class="value">{{ dias }}</span>
           </div>
 
-          <div>Total</div>
-          <div class="val total">
-            {{ total | currency:(coche?.precio?.moneda || 'MXN'):'symbol' }}
+          <div class="col">
+            <span class="label">Total</span>
+            <span class="value total">
+              {{ total | currency:(coche?.precio?.moneda || 'MXN'):'symbol' }}
+            </span>
           </div>
         </div>
-      </ion-card-content>
-    </ion-card>
-  </section>
 
-  <div class="action-bar">
-    <ion-toolbar>
-      <div class="bar">
-        <div class="precio">
-          <div class="monto">{{ total | currency:(coche?.precio?.moneda || 'MXN'):'symbol' }}</div>
-          <div class="nota">Total estimado</div>
-        </div>
-        <ion-button color="danger" fill="solid" [disabled]="!canSubmit || enviando" (click)="reservar()">
+        <ion-button expand="block" color="danger" fill="solid" [disabled]="!canSubmit || enviando" (click)="reservar()"
+          class="btn-reservar">
           <ion-spinner slot="start" *ngIf="enviando"></ion-spinner>
           <ion-icon *ngIf="!enviando" name="checkmark-circle-outline" slot="start"></ion-icon>
-          Reservar
+          Reservar ahora
         </ion-button>
-      </div>
-    </ion-toolbar>
-  </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-item>
+      <ion-textarea label="Notas para el propietario" formControlName="notasCliente"
+        placeholder="Indica preferencias de entrega, horarios, etc.">
+      </ion-textarea>
+    </ion-item>
+  </section>
 
   <app-footer></app-footer>
 </ion-content>

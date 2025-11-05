@@ -296,79 +296,6 @@ ion-item.center-item.danger-datetime ion-datetime::part(calendar-day-disabled) {
     filter: grayscale(.2);
 }
 
-.resumen {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 8px 12px;
-    align-items: center;
-
-    .val {
-        font-weight: 700;
-        color: var(--negro);
-    }
-
-    .total {
-        color: var(--rojo);
-        font-size: 18px;
-        font-weight: 800;
-    }
-}
-
-.action-bar ion-toolbar {
-    --background: transparent;
-    --border-color: var(--borde);
-    --border-style: solid;
-    --border-width: 1px 0 0 0;
-    box-shadow: none;
-    --color: var(--negro);
-}
-
-.action-bar .bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 12px;
-}
-
-.precio .monto {
-    font-weight: 800;
-    font-size: 18px;
-    color: var(--negro);
-}
-
-.precio .nota {
-    font-size: 12px;
-    opacity: .75;
-    margin-top: -2px;
-    color: var(--negro);
-}
-
-.action-bar ion-button {
-    min-width: 150px;
-    --background: var(--rojo) !important;
-    --background-hover: var(--rojo-600) !important;
-    --background-activated: var(--rojo-700) !important;
-    --color: #fff !important;
-    --border-radius: 10px;
-    --box-shadow: 0 6px 14px rgba(225, 29, 47, .25);
-}
-
-ion-item.center-item ion-label {
-    margin-bottom: 6px;
-    font-weight: 600;
-    color: var(--ion-color-medium);
-}
-
-ion-item:focus-within {
-    outline: 2px solid rgba(225, 29, 47, .35);
-    border-radius: 10px;
-}
-
-ion-button:focus-visible {
-    box-shadow: 0 0 0 3px rgba(225, 29, 47, .35);
-}
-
 :host .grid-cal-img .media-head .titulo {
     font-weight: 800;
 }
@@ -376,4 +303,269 @@ ion-button:focus-visible {
 .car-name {
     color: var(--ion-color-danger);
     font-weight: 900;
+}
+
+.media-head .chips {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.chips .precio-dia {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 900;
+    font-size: clamp(16px, 2.2vw, 18px);
+    line-height: 1;
+    background: rgba(225, 29, 47, .10);
+    border: 1px solid rgba(225, 29, 47, .22);
+    color: var(--rojo);
+    white-space: nowrap;
+    flex: 0 0 auto;
+    margin-left: auto;
+    order: 2;
+}
+
+.media-head .chips ion-badge {
+    order: 1;
+}
+
+.chips .precio-dia .por-dia {
+    font-weight: 700;
+    opacity: .95;
+    margin-left: 2px;
+}
+
+@media (max-width: 420px) {
+    .media-head .chips {
+        flex-wrap: wrap;
+        row-gap: 6px;
+    }
+
+    .media-head .chips .precio-dia {
+        margin-left: auto;
+    }
+}
+
+.card-resumen {
+    background: #fff;
+    border: 1px solid var(--borde-suave);
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .05);
+    overflow: hidden;
+}
+
+.card-resumen ion-card-header {
+    padding: 14px 18px 10px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.card-resumen ion-card-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--negro);
+}
+
+.card-resumen ion-card-content {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.resumen {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 15px;
+        color: var(--negro);
+    }
+
+    .label {
+        font-weight: 600;
+        opacity: 0.85;
+    }
+
+    .value {
+        font-weight: 700;
+    }
+
+    .divider {
+        height: 1px;
+        background: var(--borde-suave);
+        margin: 8px 0;
+    }
+
+    .total-row {
+        font-size: 1.1rem;
+        font-weight: 800;
+    }
+
+    .total {
+        color: var(--rojo);
+        font-size: 1.3rem;
+    }
+}
+
+.card-resumen .btn-reservar {
+    --border-radius: 12px;
+    --box-shadow: 0 8px 18px rgba(225, 29, 47, .25);
+    letter-spacing: .4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 6px;
+}
+
+.card-resumen .btn-reservar[disabled] {
+    opacity: 1;
+    cursor: not-allowed;
+    --background: #f3b6bd;
+    --color: #fff;
+    --box-shadow: none;
+}
+
+@media (min-width: 768px) {
+    .grid-cal-img .card-resumen {
+        grid-column: 1 / -1;
+        max-width: none;
+        width: 100%;
+        margin: 0;
+    }
+}
+
+@media (min-width: 992px) {
+    .card-fechas {
+        max-width: 92%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.resumen-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    align-items: center;
+    padding-bottom: 4px;
+}
+
+.resumen-grid .col {
+    display: flex;
+    flex-direction: column;
+    background: #fafafa;
+    border: 1px solid var(--borde-suave);
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.resumen-grid .col:hover {
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.resumen-grid .label {
+    font-weight: 700;
+    color: #555;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.resumen-grid .value {
+    font-weight: 800;
+    color: var(--negro);
+    font-size: 1.1rem;
+}
+
+.resumen-grid .value.total {
+    color: var(--rojo);
+    font-size: 1.25rem;
+}
+
+@media (max-width: 480px) {
+    .resumen-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}
+
+.card-resumen .btn-reservar {
+    width: clamp(240px, 50%, 420px);
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 520px) {
+    .card-resumen .btn-reservar {
+        width: 100%;
+    }
+}
+
+.grid-cal-img {
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 12px;
+    box-sizing: border-box;
+}
+
+.grid-cal-img ion-card,
+.col-media,
+.card-fechas,
+.card-resumen {
+    max-width: 100%;
+}
+
+@media (min-width: 992px) {
+    .grid-cal-img>.card-fechas {
+        max-height: clamp(440px, 64vh, 640px) !important;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .grid-cal-img>.card-fechas ion-card-header {
+        padding-top: 10px;
+        padding-bottom: 6px;
+    }
+
+    .grid-cal-img>.card-fechas ion-card-content {
+        padding-top: 8px;
+        overflow: auto;
+    }
+
+    .grid-cal-img>.card-fechas ion-datetime {
+        max-height: 360px;
+        margin: 0 auto;
+        transform-origin: top center;
+        transform: scale(.95);
+    }
+
+    .grid-cal-img>.card-fechas ion-datetime::part(calendar-day) {
+        padding: 0.15rem .25rem;
+    }
+
+    .grid-cal-img>.card-fechas ion-datetime::part(calendar-month-year) {
+        padding: 6px 8px;
+    }
+}
+
+@media (min-width: 992px) {
+    .grid-cal-img .card-media img {
+        max-height: clamp(270px, 47vh, 470px) !important;
+    }
+
+    .grid-cal-img .card-media {
+        padding: 8px !important;
+    }
 }
