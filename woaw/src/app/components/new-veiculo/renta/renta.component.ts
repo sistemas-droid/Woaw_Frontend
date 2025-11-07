@@ -96,6 +96,14 @@ export class RentaComponent implements OnInit, OnChanges {
   direccionSeleccionada: any = null;
   ubicacionesLoteLegibles: string[] = [];
 
+  ubicacionesSeleccionadas: Array<{
+    ciudad: string;
+    estado: string;
+    lat: number;
+    lng: number;
+    direccionCompleta: string;
+  }> = [];
+  todasLasUbicacionesSeleccionadas: boolean = false;
 
   constructor(
     private modalController: ModalController,
@@ -247,21 +255,82 @@ export class RentaComponent implements OnInit, OnChanges {
     await modal.present();
     const { data } = await modal.onDidDismiss();
     if (data) {
-      this.ubicacionSeleccionada = data as [string, string, number, number];
-      if (this.ubicacionSeleccionada) {
-        try {
-          const dir = await this.generalService.obtenerDireccionDesdeCoordenadas(
-            this.ubicacionSeleccionada[2],
-            this.ubicacionSeleccionada[3]
-          );
-          this.direccionCompleta = dir;
-        } catch {
-          this.direccionCompleta = 'No se pudo obtener la dirección.';
-        }
+      const ubicacion = data as [string, string, number, number];
+
+      try {
+        const direccionCompleta = await this.generalService.obtenerDireccionDesdeCoordenadas(
+          ubicacion[2],
+          ubicacion[3]
+        );
+
+        // Agregar la nueva ubicación al array
+        this.ubicacionesSeleccionadas.push({
+          ciudad: ubicacion[0],
+          estado: ubicacion[1],
+          lat: ubicacion[2],
+          lng: ubicacion[3],
+          direccionCompleta: direccionCompleta
+        });
+
+      } catch {
+        // Si falla la obtención de dirección, usar datos básicos
+        this.ubicacionesSeleccionadas.push({
+          ciudad: ubicacion[0],
+          estado: ubicacion[1],
+          lat: ubicacion[2],
+          lng: ubicacion[3],
+          direccionCompleta: `${ubicacion[0]}, ${ubicacion[1]}`
+        });
       }
+
       this.cdr.markForCheck();
     }
   }
+
+
+  eliminarUbicacion(index: number) {
+    this.ubicacionesSeleccionadas.splice(index, 1);
+    this.cdr.markForCheck();
+  }
+
+
+
+  isUbicacionSeleccionada(dir: any): boolean {
+    return this.ubicacionesSeleccionadas.some(ubicacion =>
+      ubicacion.lat === dir.lat && ubicacion.lng === dir.lng
+    );
+  }
+
+  toggleUbicacionLote(dir: any, event: any) {
+    const checked = event.target.checked;
+    const index = this.ubicacionesLoteSeleccionado.findIndex(d =>
+      d.lat === dir.lat && d.lng === dir.lng
+    );
+
+    if (checked) {
+      // Agregar ubicación
+      if (index !== -1) {
+        this.ubicacionesSeleccionadas.push({
+          ciudad: dir.ciudad || '',
+          estado: dir.estado || '',
+          lat: dir.lat,
+          lng: dir.lng,
+          direccionCompleta: this.ubicacionesLoteLegibles[index] || 'Dirección no disponible'
+        });
+      }
+    } else {
+      // Remover ubicación
+      const ubicacionIndex = this.ubicacionesSeleccionadas.findIndex(ubicacion =>
+        ubicacion.lat === dir.lat && ubicacion.lng === dir.lng
+      );
+      if (ubicacionIndex !== -1) {
+        this.ubicacionesSeleccionadas.splice(ubicacionIndex, 1);
+      }
+      this.todasLasUbicacionesSeleccionadas = false;
+    }
+    this.cdr.markForCheck();
+  } 
+
 
   async seleccionarImagenes() {
     const modal = await this.modalController.create({
@@ -467,6 +536,7 @@ export class RentaComponent implements OnInit, OnChanges {
     };
   }
 
+
   async publicar() {
     if (!this.validarBasico()) return;
 
@@ -585,20 +655,6 @@ export class RentaComponent implements OnInit, OnChanges {
   }
 
   leerLatLng() {
-    if (this.ubicacionesLoteSeleccionado.length === 1) {
-      this.direccionSeleccionada = this.ubicacionesLoteSeleccionado[0];
-      this.generalService.obtenerDireccionDesdeCoordenadas(
-        this.direccionSeleccionada.lat,
-        this.direccionSeleccionada.lng
-      )
-        .then((direccion) => {
-          this.direccionCompleta = direccion;
-        })
-        .catch((error) => {
-          this.direccionCompleta = 'No se pudo obtener la dirección.';
-          console.warn(error);
-        });
-    } else {
       this.direccionSeleccionada = null; // Esperamos a que el usuario elija
 
       // ✅ Paso 2: Obtener direcciones legibles para todas las ubicaciones
@@ -616,7 +672,7 @@ export class RentaComponent implements OnInit, OnChanges {
           console.warn('❌ Error obteniendo direcciones:', error);
           this.ubicacionesLoteLegibles = this.ubicacionesLoteSeleccionado.map(() => 'No disponible');
         });
-    }
+    
   }
   onLoteSeleccionado() {
     const lote = this.lotes.find(l => l._id === this.loteSeleccionado);

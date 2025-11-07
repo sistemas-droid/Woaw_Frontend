@@ -28,7 +28,7 @@
       <!-- Lote -->
       <div class="casilla" [class.activa]="tipoSeleccionado === 'lote'" (click)="seleccionarTipo('lote')">
         <img src="assets/img/lote.png" alt="Lote" />
-        <p>Lote</p>
+        <p>Agencia/Lote</p>
         <ion-icon *ngIf="tipoSeleccionado === 'lote'" name="checkmark-circle-outline" class="icono-check"></ion-icon>
       </div>
     </div>
@@ -46,47 +46,56 @@
   <section *ngIf="Pregunta == 'no' && seccionFormulario == 2">
 
     <div class="contenedor-botones">
-      
-      <div class="bloque-contenido" *ngIf="tipoSeleccionado == 'particular'">
-        <button type="button" (click)="seleccionarUbicacion()">
-          <ion-icon name="location-outline" class="icono"></ion-icon>
-          Seleccionar ubicación
-        </button>
 
-        <div *ngIf="ubicacionSeleccionada" class="ubicacion-mostrada">
-          <ion-icon name="location-outline"></ion-icon>
-          {{ direccionCompleta }}
+      <div class="bloque-contenido" *ngIf="tipoSeleccionado == 'particular'">
+        <ion-button expand="block" color="danger" (click)="seleccionarUbicacion()">
+          <ion-icon name="location-outline" slot="start"></ion-icon>
+          Seleccionar ubicación
+        </ion-button>
+
+        <!-- Mostrar múltiples ubicaciones seleccionadas -->
+        <div *ngIf="ubicacionesSeleccionadas && ubicacionesSeleccionadas.length > 0" class="ubicaciones-list">
+          <ion-list>
+            <ion-item *ngFor="let ubicacion of ubicacionesSeleccionadas; let i = index" class="ubicacion-item">
+              <ion-icon name="location-outline" slot="start"></ion-icon>
+              <ion-label>
+                <p>{{ ubicacion.direccionCompleta }}</p>
+              </ion-label>
+              <ion-button fill="clear" color="danger" slot="end" (click)="eliminarUbicacion(i)">
+                <ion-icon name="close-circle"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-list>
         </div>
       </div>
 
       <div class="bloque-contenido" *ngIf="tipoSeleccionado === 'lote'">
-        <!-- Select de lote -->
-        <label for="loteSelect">Selecciona tu lote:</label>
-        <select id="loteSelect" [(ngModel)]="loteSeleccionado" class="select-lote" (change)="onLoteSeleccionado()">
-          <option [ngValue]="null" disabled selected>Selecciona un lote</option>
-          <option *ngFor="let lote of lotes" [ngValue]="lote._id">
-            {{ lote.nombre }}
-          </option>
-        </select>
+        <!-- Select de lote con IonSelect -->
+        <ion-item>
+          <ion-select [(ngModel)]="loteSeleccionado" interface="action-sheet" (ionChange)="onLoteSeleccionado()"
+            placeholder="Selecciona un lote">
+            <ion-select-option *ngFor="let lote of lotes" [value]="lote._id">
+              {{ lote.nombre }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
 
-        <!-- Select de ubicación si hay más de una -->
-        <div *ngIf="ubicacionesLoteSeleccionado!.length > 1" class="bloque-direcciones">
-          <label for="direccionSelect">Selecciona una ubicación:</label>
-          <select id="direccionSelect" [(ngModel)]="direccionSeleccionada" class="select-lote">
-            <option style="font-size: 12px;" [ngValue]="null" disabled selected>Selecciona una ubicación</option>
-            <option style="font-size: 12px;" *ngFor="let dir of ubicacionesLoteSeleccionado; let i = index"
-              [ngValue]="dir">
-              {{ ubicacionesLoteLegibles[i] || 'Obteniendo dirección...' }}
-            </option>
-          </select>
-        </div>
+        <!-- Selección múltiple de ubicaciones -->
+        <div *ngIf="ubicacionesLoteSeleccionado!.length > 0" class="bloque-direcciones">
+          <ion-item lines="none">
+            <ion-label>Selecciona las ubicaciones:</ion-label>
+          </ion-item>
 
-        <!-- Mostrar ubicación seleccionada -->
-        <div *ngIf="direccionSeleccionada && ubicacionesLoteSeleccionado.length === 1" class="ubicacion-mostrada">
-          <ion-icon name="location-outline"></ion-icon>
-          <span style="font-size: 12px;">
-            {{ direccionCompleta }}
-          </span>
+          <!-- Lista de checkboxes para ubicaciones -->
+          <ion-list class="ubicaciones-checkbox-list">
+            <ion-item *ngFor="let dir of ubicacionesLoteSeleccionado; let i = index" class="checkbox-item">
+              <ion-checkbox slot="start" [checked]="isUbicacionSeleccionada(dir)"
+                (ionChange)="toggleUbicacionLote(dir, $event)"></ion-checkbox>
+              <ion-label>
+                <p>{{ ubicacionesLoteLegibles[i] || 'Obteniendo dirección...' }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
         </div>
       </div>
 
