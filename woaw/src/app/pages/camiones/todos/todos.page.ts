@@ -24,15 +24,15 @@ export class TodosPage implements OnInit {
   // Filtros
   filtros = [
     { label: '$', tipo: 'precio' },
-    { label: 'Marca', tipo: 'marca' },
-    { label: 'Tipo', tipo: 'tipoCamion' }
+   /*  { label: 'Marca', tipo: 'marca' },
+    { label: 'Tipo', tipo: 'tipoCamion' } */
   ];
   filtrosAplicados: any = {
     precio: null,
-    anio: null,
+    /* anio: null,
     color: null,
     marca: null,
-    tipoCamion: null
+    tipoCamion: null */
   };
   
   // Búsqueda
@@ -164,10 +164,10 @@ getCamionesFavoritos() {
     this.getCamionesAll();
     this.filtrosAplicados = {
       precio: null,
-      anio: null,
+      /* anio: null,
       color: null,
       marca: null,
-      tipoCamion: null
+      tipoCamion: null */
     };
     
     setTimeout(() => event.target.complete(), 1500);
