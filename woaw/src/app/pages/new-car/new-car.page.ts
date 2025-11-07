@@ -424,7 +424,6 @@ export class NewCarPage implements OnInit {
       );
     }
     this.mostrarCarComponent = false;
-    this.seleccion = null;
   }
 
   scrollAlFormulario() {

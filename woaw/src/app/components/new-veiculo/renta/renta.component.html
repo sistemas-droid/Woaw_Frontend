@@ -47,7 +47,7 @@
 
     <div class="contenedor-botones">
       
-      <div class="bloque-imagenes" *ngIf="tipoSeleccionado == 'particular'">
+      <div class="bloque-contenido" *ngIf="tipoSeleccionado == 'particular'">
         <button type="button" (click)="seleccionarUbicacion()">
           <ion-icon name="location-outline" class="icono"></ion-icon>
           Seleccionar ubicación
@@ -59,7 +59,7 @@
         </div>
       </div>
 
-      <div class="bloque-imagenes" *ngIf="tipoSeleccionado === 'lote'">
+      <div class="bloque-contenido" *ngIf="tipoSeleccionado === 'lote'">
         <!-- Select de lote -->
         <label for="loteSelect">Selecciona tu lote:</label>
         <select id="loteSelect" [(ngModel)]="loteSeleccionado" class="select-lote" (change)="onLoteSeleccionado()">
@@ -92,13 +92,7 @@
 
 
 
-
-
-
-
-
-
-      <div class="bloque-imagenes">
+      <div class="bloque-contenido">
         <div class="grupo-botones">
           <button class="btn-imagenes" type="button" (click)="seleccionarImagenes()">
             <ion-icon name="image-outline"></ion-icon>
@@ -191,7 +185,7 @@
             </button>
           </div>
 
-          <div class="chips" *ngIf="extras?.length">
+          <div class="chips" *ngIf="extras.length">
             <span class="chip" *ngFor="let x of extras; let i = index">
               {{ x }}
               <button type="button" class="chip__close" (click)="quitarExtra(i)">×</button>

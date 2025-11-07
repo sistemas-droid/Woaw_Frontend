@@ -14,6 +14,9 @@ GoAutos/www/
 **/.env
 **/.env.*
 
+/environments/
+**/environments/
+
 # Ignorar archivos de sistema y del editor
 .vscode/
 *.log
