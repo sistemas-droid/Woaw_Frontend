@@ -25,7 +25,6 @@
     justify-content: flex-end;
     padding: 50px;
 
-
     @media (max-width: 820px) {
       padding: 20px;
     }
@@ -57,7 +56,6 @@
         }
       }
     }
-
   }
 
   .logo_woaw {
@@ -156,120 +154,179 @@
   color: #333;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* ==================== ESTILO PREMIUM PARA LAS CARTAS ==================== */
 .lugares-renta {
   padding: 3rem 1rem;
-  background-color: #f8f9fa;
+  background: #f6f7f9;
 
   .lugares-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 1rem;
+    gap: 1.25rem;
     max-width: 1200px;
     margin: 0 auto;
 
-    @media (min-width: 768px) {
+    @media (min-width: 992px) {
       grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: 1fr;
-      gap: 1.5rem;
     }
   }
 
   .lugar-card--sesgada {
-    cursor: pointer;
     position: relative;
-    height: 250px;
+    height: 300px;
+    border-radius: 18px;
     overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
-    // Sesgado solo al contenedor principal
-    transform: skewY(-3deg);
-
-    &:hover {
-      transform: skewY(-3deg) translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    }
+    background: #0f0f10;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+      0 10px 25px rgba(0, 0, 0, 0.25),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 
     .lugar-imagen {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      // Contrarrestar el sesgado en la imagen
-      transform: skewY(3deg) scale(1.1);
-      transition: transform 0.5s ease;
+      inset: 0;
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(120% 120% at 80% 10%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .25) 55%, rgba(0, 0, 0, .55) 100%),
+          linear-gradient(to top, rgba(0, 0, 0, .65) 0%, rgba(0, 0, 0, .05) 60%, transparent 100%);
+        pointer-events: none;
+      }
 
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transform: scale(1.06);
+        transition: transform 0.6s ease;
+        filter: saturate(1.05) contrast(1.05);
       }
     }
 
-    // Contrarrestar el sesgado en el hover
-    &:hover .lugar-imagen {
-      transform: skewY(3deg) scale(1.05);
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: linear-gradient(120deg, transparent 35%, rgba(255, 255, 255, 0.1) 50%, transparent 65%);
+      transform: rotate(8deg);
+      opacity: 0;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      box-shadow: 0 0 0 0 rgba(255, 33, 33, 0.45);
+      transition: box-shadow 0.35s ease;
+      pointer-events: none;
     }
 
     .lugar-contenido {
       position: absolute;
-      bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-      color: white;
-      padding: 1.5rem;
-      // Contrarrestar el sesgado para que el texto quede recto
-      transform: skewY(3deg);
+      bottom: 0;
+      padding: 1.25rem 1.25rem 1.5rem;
+      color: #fff;
+      background: linear-gradient(to top, rgba(0, 0, 0, .75), rgba(0, 0, 0, 0));
 
       .lugar-nombre {
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin: 0 0 0.5rem 0;
-
-        @media (min-width: 768px) {
-          font-size: 1.5rem;
-        }
+        margin: 0 0 .35rem 0;
+        font-weight: 800;
+        font-size: clamp(1.1rem, 1.1rem + .3vw, 1.5rem);
+        text-shadow: 0 0 18px rgba(255, 33, 33, .18);
       }
 
       .lugar-descripcion {
-        font-size: 0.8rem;
-        opacity: 0.9;
         margin: 0;
-
-        @media (min-width: 768px) {
-          font-size: 0.9rem;
-        }
+        font-size: .95rem;
+        opacity: .92;
       }
     }
 
-    @media (min-width: 768px) {
-      height: 300px;
+    &:hover,
+    &:focus-within {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+      border-color: rgba(255, 255, 255, 0.12);
+
+      .lugar-imagen img {
+        transform: scale(1.02);
+      }
+
+      &::before {
+        opacity: 0.8;
+        transform: rotate(8deg) translateX(6px);
+      }
+
+      &::after {
+        box-shadow: 0 0 0 2px rgba(255, 33, 33, 0.55),
+          0 16px 38px rgba(255, 33, 33, 0.15);
+      }
     }
+
+    @media (max-width: 820px) {
+      height: 220px;
+    }
+  }
+
+  /* === Fondo premium si no hay imagen === */
+  .lugar-card--sesgada .lugar-imagen img[src=""],
+  .lugar-card--sesgada .lugar-imagen img:not([src]),
+  .lugar-card--sesgada .lugar-imagen img[src*="broken"],
+  .lugar-card--sesgada .lugar-imagen img.is-hidden {
+    display: none;
+  }
+
+  .lugar-card--sesgada .lugar-imagen {
+    background:
+      radial-gradient(80% 70% at 70% 20%, rgba(255, 33, 33, .12), transparent 60%),
+      linear-gradient(145deg, #17181a 0%, #0f0f10 60%);
+  }
+
+  /* === Placeholder dinámico (HTML con Angular) === */
+  .lugar-imagen .ph {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: 2;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .lugar-imagen .ph-pre {
+    display: block;
+    margin-bottom: .3rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    font-size: clamp(0.7rem, 0.9vw, 0.95rem);
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+  }
+
+  .lugar-imagen .ph-brand {
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: 2px;
+    font-size: clamp(2.2rem, 3.1vw, 3.6rem);
+  }
+
+  .lugar-imagen .ph-brand .wo {
+    color: #fff;
+  }
+
+  .lugar-imagen .ph-brand .aw {
+    color: #ff2121;
   }
 }

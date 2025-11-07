@@ -267,6 +267,7 @@ export class RentaCiudadesPage implements OnInit {
       link: '/autos/jalisco'
     }
   ];
+sinImg: any;
 
 
   constructor(
