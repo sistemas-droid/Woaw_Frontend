@@ -17,6 +17,7 @@ import { GeneralService } from '../../../services/general.service';
 import { RentaService } from '../../../services/renta.service';
 import { MapaComponent } from '../../modal/mapa/mapa.component';
 import { FotosVeiculoComponent } from '../../modal/fotos-veiculo/fotos-veiculo.component';
+import { RegistroService } from '../../../services/registro.service';
 
 export interface RentaSubmitPayload {
   payload: any;
@@ -84,15 +85,55 @@ export class RentaComponent implements OnInit, OnChanges {
   };
   enviando = false;
 
+  public Pregunta: 'no' | 'si' | null = null;
+  public tipoSeleccionado: 'particular' | 'lote' = 'particular';
+  seccionFormulario: 1 | 2 | 3 = 1;
+  lotes: any[] = [];
+  totalLotes = 0;
+  loteSeleccionado: string | null = null;
+  ubicacionesLoteSeleccionado: any[] = [];
+  public MyRole: 'admin' | 'lotero' | 'vendedor' | 'cliente' | null = null;
+  direccionSeleccionada: any = null;
+  ubicacionesLoteLegibles: string[] = [];
+
+
   constructor(
     private modalController: ModalController,
     private generalService: GeneralService,
     private rentaService: RentaService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private registroService: RegistroService,
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.generalService.tipoRol$.subscribe((rol) => {
+      if (rol === 'admin' || rol === 'lotero' || rol === 'vendedor' || rol === 'cliente') {
+        this.MyRole = rol;
+      } else {
+        this.generalService.eliminarToken();
+        this.generalService.alert(
+          '¡Saliste de tu sesión Error - 707!',
+          '¡Hasta pronto!',
+          'info'
+        );
+      }
+    });
+    if (this.MyRole === 'admin') {
+      this.Pregunta = 'si';
+      this.seccionFormulario = 2;
+      this.getLotes('all');
+    } else if (this.MyRole === 'lotero') {
+      this.Pregunta = 'si';
+      this.seccionFormulario = 2;
+      this.tipoSeleccionado = 'lote';
+      this.getLotes('mios');
+    } else {
+      this.Pregunta = 'no';
+      this.seccionFormulario = 2;
+      this.tipoSeleccionado = 'particular';
+    }
+  }
   ngOnChanges(_changes: SimpleChanges): void { }
 
   private hasText(v: any): boolean {
@@ -268,93 +309,93 @@ export class RentaComponent implements OnInit, OnChanges {
     });
   }
 
-validarBasico(): boolean {
-  if (!this.hasText(this.marca) || !this.hasText(this.modelo)) {
-    this.generalService.alert('Datos incompletos', 'Faltan marca o modelo.', 'warning');
-    return false;
-  }
-
-  // 🚗 Transmisión obligatoria
-  if (!this.transmision) {
-    this.generalService.alert('Transmisión', 'Selecciona la transmisión del vehículo.', 'warning');
-    return false;
-  }
-
-  // ⛽ Combustible obligatorio
-  if (!this.combustible) {
-    this.generalService.alert('Combustible', 'Selecciona el tipo de combustible.', 'warning');
-    return false;
-  }
-
-  // 📍 Ubicación
-  if (!this.ubicacionSeleccionada) {
-    this.generalService.alert('Ubicación', 'Selecciona la ubicación del vehículo.', 'warning');
-    return false;
-  }
-
-  // 💰 Precio por día
-  const okPrecioDia = this.precioPorDia !== null && Number(this.precioPorDia) >= 500;
-  if (!okPrecioDia) {
-    this.generalService.alert('Precio por día', 'El precio por día debe ser de al menos $500.', 'warning');
-    return false;
-  }
-
-  // 👥 Pasajeros
-  if (this.pasajeros === null || Number(this.pasajeros) < 1) {
-    this.generalService.alert('Pasajeros', 'Debes indicar al menos 1 pasajero.', 'warning');
-    return false;
-  }
-
-  // 🧍‍♂️ Edad mínima
-  if (Number(this.requisitosConductor.edadMinima) < 18) {
-    this.generalService.alert('Edad mínima', 'La edad mínima permitida es 18 años.', 'warning');
-    return false;
-  }
-
-  // 🚚 Tarifas o entrega gratuita
-  const hayTarifas = (this.entrega.tarifasPorDistancia || []).length > 0;
-  const hayGratisHasta = Number(this.entrega.gratuitoHastaKm) > 0;
-  if (!hayTarifas && !hayGratisHasta) {
-    this.generalService.alert('Tarifas por distancia', 'Agrega al menos una tarifa o “Entrega gratis hasta (km)”.', 'warning');
-    return false;
-  }
-
-  // 🔢 Validar cada tarifa
-  for (let i = 0; i < (this.entrega.tarifasPorDistancia || []).length; i++) {
-    const t = this.entrega.tarifasPorDistancia[i];
-    const desde = Number(t.desdeKm),
-      hasta = Number(t.hastaKm);
-    const costoFijo = t.costoFijo != null ? Number(t.costoFijo) : null;
-
-    if (!Number.isFinite(desde) || desde < 0 || !Number.isFinite(hasta) || hasta <= 0) {
-      this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: “Desde” ≥ 0 y “Hasta” > 0.`, 'warning');
+  validarBasico(): boolean {
+    if (!this.hasText(this.marca) || !this.hasText(this.modelo)) {
+      this.generalService.alert('Datos incompletos', 'Faltan marca o modelo.', 'warning');
       return false;
     }
-    if (desde >= hasta) {
-      this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: “Desde” debe ser menor que “Hasta”.`, 'warning');
+
+    // 🚗 Transmisión obligatoria
+    if (!this.transmision) {
+      this.generalService.alert('Transmisión', 'Selecciona la transmisión del vehículo.', 'warning');
       return false;
     }
-    if (costoFijo == null || !Number.isFinite(costoFijo) || costoFijo < 0) {
-      this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: define “Costo fijo”.`, 'warning');
+
+    // ⛽ Combustible obligatorio
+    if (!this.combustible) {
+      this.generalService.alert('Combustible', 'Selecciona el tipo de combustible.', 'warning');
       return false;
     }
-    if (i > 0) {
-      const prevHasta = Number(this.entrega.tarifasPorDistancia[i - 1].hastaKm) || 0;
-      if (desde !== prevHasta) {
-        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1} debe iniciar en ${prevHasta} km.`, 'warning');
+
+    // 📍 Ubicación
+    if (!this.ubicacionSeleccionada) {
+      this.generalService.alert('Ubicación', 'Selecciona la ubicación del vehículo.', 'warning');
+      return false;
+    }
+
+    // 💰 Precio por día
+    const okPrecioDia = this.precioPorDia !== null && Number(this.precioPorDia) >= 500;
+    if (!okPrecioDia) {
+      this.generalService.alert('Precio por día', 'El precio por día debe ser de al menos $500.', 'warning');
+      return false;
+    }
+
+    // 👥 Pasajeros
+    if (this.pasajeros === null || Number(this.pasajeros) < 1) {
+      this.generalService.alert('Pasajeros', 'Debes indicar al menos 1 pasajero.', 'warning');
+      return false;
+    }
+
+    // 🧍‍♂️ Edad mínima
+    if (Number(this.requisitosConductor.edadMinima) < 18) {
+      this.generalService.alert('Edad mínima', 'La edad mínima permitida es 18 años.', 'warning');
+      return false;
+    }
+
+    // 🚚 Tarifas o entrega gratuita
+    const hayTarifas = (this.entrega.tarifasPorDistancia || []).length > 0;
+    const hayGratisHasta = Number(this.entrega.gratuitoHastaKm) > 0;
+    if (!hayTarifas && !hayGratisHasta) {
+      this.generalService.alert('Tarifas por distancia', 'Agrega al menos una tarifa o “Entrega gratis hasta (km)”.', 'warning');
+      return false;
+    }
+
+    // 🔢 Validar cada tarifa
+    for (let i = 0; i < (this.entrega.tarifasPorDistancia || []).length; i++) {
+      const t = this.entrega.tarifasPorDistancia[i];
+      const desde = Number(t.desdeKm),
+        hasta = Number(t.hastaKm);
+      const costoFijo = t.costoFijo != null ? Number(t.costoFijo) : null;
+
+      if (!Number.isFinite(desde) || desde < 0 || !Number.isFinite(hasta) || hasta <= 0) {
+        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: “Desde” ≥ 0 y “Hasta” > 0.`, 'warning');
         return false;
       }
+      if (desde >= hasta) {
+        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: “Desde” debe ser menor que “Hasta”.`, 'warning');
+        return false;
+      }
+      if (costoFijo == null || !Number.isFinite(costoFijo) || costoFijo < 0) {
+        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: define “Costo fijo”.`, 'warning');
+        return false;
+      }
+      if (i > 0) {
+        const prevHasta = Number(this.entrega.tarifasPorDistancia[i - 1].hastaKm) || 0;
+        if (desde !== prevHasta) {
+          this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1} debe iniciar en ${prevHasta} km.`, 'warning');
+          return false;
+        }
+      }
     }
-  }
 
-  // 🖼️ Validación de imágenes
-  if (!this.imagenPrincipal || !this.validarImagenes()) {
-    this.generalService.alert('Imágenes', 'Falta imagen principal o formato/tamaño inválido.', 'warning');
-    return false;
-  }
+    // 🖼️ Validación de imágenes
+    if (!this.imagenPrincipal || !this.validarImagenes()) {
+      this.generalService.alert('Imágenes', 'Falta imagen principal o formato/tamaño inválido.', 'warning');
+      return false;
+    }
 
-  return true;
-}
+    return true;
+  }
 
   get canPublicar(): boolean {
     const okBasicos = this.hasText(this.marca) && this.hasText(this.modelo);
@@ -509,5 +550,77 @@ validarBasico(): boolean {
     this.ubicacionSeleccionada = null;
     this.direccionCompleta = 'Selecciona la ubicación...';
     this.cdr.markForCheck();
+  }
+
+
+
+
+
+
+
+  seleccionarTipo(tipo: 'particular' | 'lote') { this.tipoSeleccionado = tipo; }
+  continuar() {
+    if (!this.tipoSeleccionado) return;
+    if (this.tipoSeleccionado == 'lote') this.getLotes('mios');
+    this.Pregunta = 'no';
+  }
+  getLotes(tipo: 'all' | 'mios') {
+    this.registroService.allLotes(tipo).subscribe({
+      next: async (res) => {
+        this.lotes = res.lotes;
+        this.totalLotes = this.lotes.length;
+
+        if (this.lotes.length === 1) {
+          const loteUnico = this.lotes[0];
+          this.loteSeleccionado = loteUnico._id;
+          this.ubicacionesLoteSeleccionado = loteUnico.direccion;
+          this.leerLatLng();
+        }
+      },
+      error: async () => {
+        await this.generalService.loadingDismiss();
+        await this.generalService.alert('Verifica tu red', 'Error de red. Intenta más tarde.', 'danger');
+      },
+    });
+  }
+
+  leerLatLng() {
+    if (this.ubicacionesLoteSeleccionado.length === 1) {
+      this.direccionSeleccionada = this.ubicacionesLoteSeleccionado[0];
+      this.generalService.obtenerDireccionDesdeCoordenadas(
+        this.direccionSeleccionada.lat,
+        this.direccionSeleccionada.lng
+      )
+        .then((direccion) => {
+          this.direccionCompleta = direccion;
+        })
+        .catch((error) => {
+          this.direccionCompleta = 'No se pudo obtener la dirección.';
+          console.warn(error);
+        });
+    } else {
+      this.direccionSeleccionada = null; // Esperamos a que el usuario elija
+
+      // ✅ Paso 2: Obtener direcciones legibles para todas las ubicaciones
+      this.ubicacionesLoteLegibles = [];
+
+      const promesas = this.ubicacionesLoteSeleccionado.map((dir) =>
+        this.generalService.obtenerDireccionDesdeCoordenadas(dir.lat, dir.lng)
+      );
+
+      Promise.all(promesas)
+        .then((direcciones) => {
+          this.ubicacionesLoteLegibles = direcciones;
+        })
+        .catch((error) => {
+          console.warn('❌ Error obteniendo direcciones:', error);
+          this.ubicacionesLoteLegibles = this.ubicacionesLoteSeleccionado.map(() => 'No disponible');
+        });
+    }
+  }
+  onLoteSeleccionado() {
+    const lote = this.lotes.find(l => l._id === this.loteSeleccionado);
+    this.ubicacionesLoteSeleccionado = lote?.direccion || [];
+    this.leerLatLng();
   }
 }

@@ -60,6 +60,9 @@
     </div>
   </div>
 
+  
+
+
   <!-- # ------ PREGUNTA SI QUIERE VENDERLO EL MISMO  -----  -->
   <div *ngIf="tipoSeleccionado == 'particular' && MyRole !== 'admin' && seccionFormulario == 1"
     class="pregunta-vendedor">
@@ -75,7 +78,6 @@
       </button>
     </div>
   </div>
-
 
   <div
     *ngIf="tipoSeleccionado === 'particular' && seccionFormulario === 3 && (MyRole === 'cliente' || MyRole === 'vendedor')"
@@ -121,6 +123,8 @@
       </button>
     </div>
   </div>
+
+
 
 
   <!-- # ------ FORMULARIO -----  -->

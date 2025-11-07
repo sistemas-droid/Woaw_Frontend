@@ -66,7 +66,7 @@
 
 .contenedor-botones {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; // Por si en móviles no caben
   gap: 16px;
   align-items: flex-start;
 
@@ -77,19 +77,25 @@
     background: #f8f8f800;
     padding: 5px;
     border-radius: 12px;
-    flex: 1 1 360px;
-    min-width: 320px;
+    flex: 1 1 300px;
   }
 
-  .grupo-botones {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
+  .select-lote {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    font-size: 16px;
+    background-color: #fff;
+    margin-top: 8px;
+    appearance: none;
 
-    @media (min-width: 560px) {
-      grid-template-columns: 1fr 1fr;
+    &:focus {
+      border-color: #ff3c00;
+      outline: none;
     }
   }
+
 
   button {
     display: flex;
@@ -113,14 +119,6 @@
     }
   }
 
-  .btn-imagenes,
-  .btn-subir {
-    background: #fff !important;
-    border: 1px solid #ddd !important;
-    color: #000 !important;
-    box-shadow: none !important;
-  }
-
   .btn-limpiar {
     background-color: #ffecec;
     border: 1px solid #ff6666;
@@ -132,20 +130,18 @@
     }
   }
 
-  .tc {
+  .radio-validacion {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-size: 13px;
-    margin-top: 6px;
+    align-items: center;
+    gap: 6px;
 
-    .tc__label {
-      color: #6b7280;
-      font-weight: 600;
+    &.activo ion-icon {
+      color: green;
     }
 
-    .tc__filename {
-      color: #6b7280;
+    &.inactivo ion-icon {
+      color: gray;
+      display: none;
     }
   }
 }
@@ -409,6 +405,241 @@
         font-size: 12px;
         line-height: 1.2;
       }
+    }
+  }
+}
+
+
+
+/* ====== Tipo de vehículo (particular / lote) ====== */
+.tipo-vehiculo-container {
+  text-align: center;
+  margin-top: 24px;
+
+  .titulo-tipo {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #222;
+  }
+
+  .opciones-vehiculo {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .casilla {
+    width: 130px;
+    height: 130px;
+    border-radius: 16px;
+    background-color: #f7f7f7;
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+
+    img {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin: 0;
+      font-weight: 600;
+      color: #444;
+    }
+
+    .icono-check {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      color: #ff3c00;
+      font-size: 18px;
+    }
+
+    &.activa {
+      border: 2px solid #ff3c00;
+      background-color: #fff0e8;
+    }
+
+    &:hover {
+      background-color: #fff7f3;
+    }
+  }
+
+  .contenedor-boton {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+
+    .btn-continuar {
+      background-color: #ff3c00;
+      color: #fff;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+
+      ion-icon {
+        font-size: 18px;
+      }
+
+      &:hover:not(:disabled) {
+        background-color: #e63300;
+      }
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+
+
+.pregunta-vendedor {
+  margin: 24px auto;
+  padding: 24px;
+  max-width: 600px;
+  background-color: #d8d8d8;
+  border-radius: 16px;
+  text-align: center;
+  color: #222;
+
+
+  .texto-pregunta {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .logo-inline {
+    height: 22px;
+    vertical-align: middle;
+  }
+
+  .botones-vendedor {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .btn-vender-yo,
+  .btn-vende-go {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn-vender-yo {
+    background: linear-gradient(135deg, #0072ff, #00c6ff);
+    color: white;
+  }
+
+  .btn-vende-go {
+    background: linear-gradient(135deg, #ff4e00, #ff9068);
+    color: white;
+  }
+
+  .btn-vender-yo:hover,
+  .btn-vende-go:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+  }
+
+  .logo-boton {
+    height: 20px;
+    vertical-align: middle;
+  }
+}
+
+.formulario-publicacion {
+  padding: 16px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+
+  ion-item {
+    --background: transparent;
+    --inner-border-width: 0px;
+    --highlight-color-focused: #e53935;
+    --border-color: #c0c0c09f;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #c0c0c09f;
+    border-radius: 0;
+
+    &.item-has-focus {
+      border-bottom: 1px solid #e53935;
+    }
+  }
+
+  ion-input,
+  ion-select {
+    --padding-start: 0px;
+    --padding-end: 0px;
+    --background: transparent;
+  }
+
+  .info-texto {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 12px;
+  }
+
+  ion-item {
+    margin-bottom: 12px;
+  }
+
+  .btn-wsp-container {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .btn-wsp {
+    background: #25d366;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: #1ebe5d;
+    }
+
+    ion-icon {
+      font-size: 20px;
     }
   }
 }

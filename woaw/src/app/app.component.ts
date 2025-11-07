@@ -5,6 +5,7 @@ import { ContactosService } from './services/contactos.service';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { SeoService } from './services/seo.service';
 import { filter, map, mergeMap } from 'rxjs/operators';
+
 import {
   IonRouterOutlet,
   Platform,
@@ -106,6 +107,16 @@ export class AppComponent {
 
     // Deep links (Siri/custom scheme + universal links)
     this.platform.ready().then(() => this.registerDeepLinks());
+
+
+    this.platform.ready().then(() => {
+      if (this.platform.is('hybrid') || this.platform.is('android') || this.platform.is('ios')) {
+        document.body.classList.add('is-app');
+      } else {
+        document.body.classList.add('is-web');
+      }
+    });
+  
   }
 
   get mostrarTabs(): boolean {
