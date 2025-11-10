@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { IonicModule, ToastController } from '@ionic/angular';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RegistroService } from '../../services/registro.service';
-import { LoteService } from '../../services/lote.service';
+import { RegistroService } from '../../../services/registro.service';
+import { LoteService } from '../../../services/lote.service';
 import { ModalController } from '@ionic/angular';
 import imageCompression from 'browser-image-compression';
-import { GeneralService } from '../../services/general.service';
+import { GeneralService } from '../../../services/general.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

@@ -195,7 +195,7 @@ export class RentaService {
         politicaCombustible?: 'lleno-lleno' | 'como-esta';
         politicaLimpieza?: 'normal' | 'estricta';
         requisitosConductor?: any;
-        ubicacion?: any;
+        ubicaciones?: any;
         entrega?: any;
         excepcionesNoDisponibles?: any[];
         gps?: boolean; inmovilizador?: boolean; bluetooth?: boolean; aireAcondicionado?: boolean;
@@ -222,7 +222,7 @@ export class RentaService {
         });
 
         if (payload.requisitosConductor) fd.append('requisitosConductor', JSON.stringify(payload.requisitosConductor));
-        if (payload.ubicacion) fd.append('ubicacion', JSON.stringify(payload.ubicacion));
+        if (payload.ubicaciones) fd.append('ubicacion', JSON.stringify(payload.ubicaciones));
         if (payload.entrega) fd.append('entrega', JSON.stringify(payload.entrega));
         if (payload.excepcionesNoDisponibles) {
             fd.append('excepcionesNoDisponibles', JSON.stringify(payload.excepcionesNoDisponibles));

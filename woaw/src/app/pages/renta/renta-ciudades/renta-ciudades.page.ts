@@ -267,8 +267,6 @@ export class RentaCiudadesPage implements OnInit {
       link: '/autos/jalisco'
     }
   ];
-sinImg: any;
-
 
   constructor(
     private popoverCtrl: PopoverController,

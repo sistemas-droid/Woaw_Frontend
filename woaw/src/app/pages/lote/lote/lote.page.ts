@@ -3,10 +3,10 @@ import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { ToastController, PopoverController } from '@ionic/angular';
 import { Subscription, filter } from 'rxjs';
 
-import { LoteService } from '../../services/lote.service';
-import { GeneralService } from '../../services/general.service';
-import { ListComponent } from '../../components/filtos/list/list.component';
-import { RegistroService } from '../../services/registro.service';
+import { LoteService } from '../../../services/lote.service';
+import { GeneralService } from '../../../services/general.service';
+import { ListComponent } from '../../../components/filtos/list/list.component';
+import { RegistroService } from '../../../services/registro.service';
 
 interface Direccion {
   ciudad: string;

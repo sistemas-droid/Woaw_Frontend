@@ -8,7 +8,7 @@ import { LotePageRoutingModule } from './lote-routing.module';
 import { LotePage } from './lote.page';
 
 // CartasComponent es standalone → se importa directamente
-import { CartasComponent } from '../../components/cartas/cartas.component';
+import { CartasComponent } from '../../../components/cartas/cartas.component';
 import { NavbarComponent } from "src/app/components/navbar/navbar.component";
 import { AcomodoComponent } from "src/app/components/filtos/acomodo/acomodo.component";
 import { FooterComponent } from "src/app/components/footer/footer.component";

@@ -122,7 +122,7 @@ export class NewCarPage implements OnInit {
     icono: string
   ) {
     if (label === "Lote") {
-      this.mostrarCarComponent = true;
+      this.router.navigateByUrl("/add-lote");
     } else {
       this.limpiarDependencias("all");
     }

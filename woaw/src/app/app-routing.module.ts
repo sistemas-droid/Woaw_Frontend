@@ -158,33 +158,12 @@ const routes: Routes = [
           ),
       },
       {
-        path: "lotes",
-        loadChildren: () =>
-          import("./pages/lotes/lotes.module").then((m) => m.LotesPageModule),
-        data: { title: "lotes | woaw" },
-      },
-      {
         path: "renta-coches",
         loadChildren: () =>
           import("./pages/renta-coches/renta-coches.module").then(
             (m) => m.RentaCochesPageModule
           ),
         data: { title: "renta | woaw" },
-      },
-      {
-        path: "lote-edit/:id",
-        loadChildren: () =>
-          import("./pages/lote-edit/lote-edit.module").then(
-            (m) => m.LoteEditPageModule
-          ),
-        canActivate: [AuthGuard],
-        data: { title: "lote | woaw" },
-      },
-      {
-        path: "lote/:nombre/:id",
-        loadChildren: () =>
-          import("./pages/lote/lote.module").then((m) => m.LotePageModule),
-        data: { title: "lotes | woaw" },
       },
       {
         path: "politicas",
@@ -342,7 +321,36 @@ const routes: Routes = [
         path: 'seguros/cotizar-manual',
         loadChildren: () => import('./pages/seguro/cotizar-manual/cotizar-manual.module').then(m => m.CotizarManualPageModule)
       },
-      // -----
+      // ----- LOTES
+      {
+        path: 'add-lote',
+        loadChildren: () => import('./pages/lote/add-lote/add-lote.module').then(m => m.AddLotePageModule)
+      },
+      {
+        path: 'lote',
+        loadChildren: () => import('./pages/lote/lote/lote.module').then(m => m.LotePageModule)
+      },
+      {
+        path: "lotes",
+        loadChildren: () =>
+          import("./pages/lote/lotes/lotes.module").then((m) => m.LotesPageModule),
+        data: { title: "lotes | woaw" },
+      },
+      {
+        path: "lote-edit/:id",
+        loadChildren: () =>
+          import("./pages/lote/lote-edit/lote-edit.module").then(
+            (m) => m.LoteEditPageModule
+          ),
+        canActivate: [AuthGuard],
+        data: { title: "lote | woaw" },
+      },
+      {
+        path: "lote/:nombre/:id",
+        loadChildren: () =>
+          import("./pages/lote/lote/lote.module").then((m) => m.LotePageModule),
+        data: { title: "lotes | woaw" },
+      },
     ],
   },
   {
@@ -350,7 +358,7 @@ const routes: Routes = [
     loadChildren: () =>
       import("./pages/error/error.module").then((m) => m.ErrorPageModule),
     data: { title: "Página no encontrada | woaw" },
-  },
+  }
 ];
 
 @NgModule({

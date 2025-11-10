@@ -103,6 +103,7 @@ export class RentaComponent implements OnInit, OnChanges {
     lng: number;
     direccionCompleta: string;
   }> = [];
+
   todasLasUbicacionesSeleccionadas: boolean = false;
 
   constructor(
@@ -329,7 +330,7 @@ export class RentaComponent implements OnInit, OnChanges {
       this.todasLasUbicacionesSeleccionadas = false;
     }
     this.cdr.markForCheck();
-  } 
+  }
 
 
   async seleccionarImagenes() {
@@ -378,6 +379,7 @@ export class RentaComponent implements OnInit, OnChanges {
     });
   }
 
+
   validarBasico(): boolean {
     if (!this.hasText(this.marca) || !this.hasText(this.modelo)) {
       this.generalService.alert('Datos incompletos', 'Faltan marca o modelo.', 'warning');
@@ -396,9 +398,9 @@ export class RentaComponent implements OnInit, OnChanges {
       return false;
     }
 
-    // 📍 Ubicación
-    if (!this.ubicacionSeleccionada) {
-      this.generalService.alert('Ubicación', 'Selecciona la ubicación del vehículo.', 'warning');
+    // 📍 Ubicación - ahora validamos que haya al menos una ubicación seleccionada
+    if (!this.ubicacionesSeleccionadas || this.ubicacionesSeleccionadas.length === 0) {
+      this.generalService.alert('Ubicación', 'Selecciona al menos una ubicación para el vehículo.', 'warning');
       return false;
     }
 
@@ -425,7 +427,7 @@ export class RentaComponent implements OnInit, OnChanges {
     const hayTarifas = (this.entrega.tarifasPorDistancia || []).length > 0;
     const hayGratisHasta = Number(this.entrega.gratuitoHastaKm) > 0;
     if (!hayTarifas && !hayGratisHasta) {
-      this.generalService.alert('Tarifas por distancia', 'Agrega al menos una tarifa o “Entrega gratis hasta (km)”.', 'warning');
+      this.generalService.alert('Tarifas por distancia', 'Agrega al menos una tarifa o "Entrega gratis hasta (km)".', 'warning');
       return false;
     }
 
@@ -437,15 +439,15 @@ export class RentaComponent implements OnInit, OnChanges {
       const costoFijo = t.costoFijo != null ? Number(t.costoFijo) : null;
 
       if (!Number.isFinite(desde) || desde < 0 || !Number.isFinite(hasta) || hasta <= 0) {
-        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: “Desde” ≥ 0 y “Hasta” > 0.`, 'warning');
+        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: "Desde" ≥ 0 y "Hasta" > 0.`, 'warning');
         return false;
       }
       if (desde >= hasta) {
-        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: “Desde” debe ser menor que “Hasta”.`, 'warning');
+        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: "Desde" debe ser menor que "Hasta".`, 'warning');
         return false;
       }
       if (costoFijo == null || !Number.isFinite(costoFijo) || costoFijo < 0) {
-        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: define “Costo fijo”.`, 'warning');
+        this.generalService.alert('Tarifas por distancia', `Tarifa #${i + 1}: define "Costo fijo".`, 'warning');
         return false;
       }
       if (i > 0) {
@@ -468,7 +470,7 @@ export class RentaComponent implements OnInit, OnChanges {
 
   get canPublicar(): boolean {
     const okBasicos = this.hasText(this.marca) && this.hasText(this.modelo);
-    const okUbi = this.ubicacionSeleccionada != null;
+    const okUbi = this.ubicacionesSeleccionadas && this.ubicacionesSeleccionadas.length > 0;
     const okPrecio = this.precioPorDia !== null && Number(this.precioPorDia) >= 500;
     const okPasajeros = this.pasajeros == null || Number(this.pasajeros) >= 1;
     const okEdad = Number(this.requisitosConductor.edadMinima) >= 18;
@@ -490,14 +492,14 @@ export class RentaComponent implements OnInit, OnChanges {
   }
 
   private construirPayloadParaBackend() {
-    const ubicacion = this.ubicacionSeleccionada
-      ? {
-        ciudad: this.ubicacionSeleccionada[0],
-        estado: this.ubicacionSeleccionada[1],
-        lat: Number(this.ubicacionSeleccionada[2]),
-        lng: Number(this.ubicacionSeleccionada[3]),
-      }
-      : undefined;
+    
+    // Obtener las ubicaciones seleccionadas (ya sea de modo particular o lote)
+    const ubicaciones = this.ubicacionesSeleccionadas.map(ubicacion => ({
+      ciudad: ubicacion.ciudad,
+      estado: ubicacion.estado,
+      lat: Number(ubicacion.lat),
+      lng: Number(ubicacion.lng),
+    }));
 
     const reqCond = {
       edadMinima: Number(this.requisitosConductor.edadMinima) || 21,
@@ -530,7 +532,7 @@ export class RentaComponent implements OnInit, OnChanges {
       politicaCombustible: this.politicaCombustible,
       politicaLimpieza: this.politicaLimpieza,
       requisitosConductor: reqCond,
-      ubicacion,
+      ubicaciones: ubicaciones.length > 0 ? ubicaciones : undefined, 
       entrega,
       extras: this.extras?.length ? [...this.extras] : undefined,
     };
@@ -655,24 +657,24 @@ export class RentaComponent implements OnInit, OnChanges {
   }
 
   leerLatLng() {
-      this.direccionSeleccionada = null; // Esperamos a que el usuario elija
+    this.direccionSeleccionada = null; // Esperamos a que el usuario elija
 
-      // ✅ Paso 2: Obtener direcciones legibles para todas las ubicaciones
-      this.ubicacionesLoteLegibles = [];
+    // ✅ Paso 2: Obtener direcciones legibles para todas las ubicaciones
+    this.ubicacionesLoteLegibles = [];
 
-      const promesas = this.ubicacionesLoteSeleccionado.map((dir) =>
-        this.generalService.obtenerDireccionDesdeCoordenadas(dir.lat, dir.lng)
-      );
+    const promesas = this.ubicacionesLoteSeleccionado.map((dir) =>
+      this.generalService.obtenerDireccionDesdeCoordenadas(dir.lat, dir.lng)
+    );
 
-      Promise.all(promesas)
-        .then((direcciones) => {
-          this.ubicacionesLoteLegibles = direcciones;
-        })
-        .catch((error) => {
-          console.warn('❌ Error obteniendo direcciones:', error);
-          this.ubicacionesLoteLegibles = this.ubicacionesLoteSeleccionado.map(() => 'No disponible');
-        });
-    
+    Promise.all(promesas)
+      .then((direcciones) => {
+        this.ubicacionesLoteLegibles = direcciones;
+      })
+      .catch((error) => {
+        console.warn('❌ Error obteniendo direcciones:', error);
+        this.ubicacionesLoteLegibles = this.ubicacionesLoteSeleccionado.map(() => 'No disponible');
+      });
+
   }
   onLoteSeleccionado() {
     const lote = this.lotes.find(l => l._id === this.loteSeleccionado);

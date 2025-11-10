@@ -6,9 +6,9 @@ import { ModalController, ToastController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import imageCompression from 'browser-image-compression';
 
-import { GeneralService } from '../../services/general.service';
-import { LoteService } from '../../services/lote.service';
-import { MapaComponent } from '../../components/modal/mapa/mapa.component';
+import { GeneralService } from '../../../services/general.service';
+import { LoteService } from '../../../services/lote.service';
+import { MapaComponent } from '../../../components/modal/mapa/mapa.component';
 
 interface Direccion {
   ciudad: string;

@@ -79,7 +79,7 @@
 
         <div class="campo">
           <label for="marca">Marca <span class="requerido">*</span></label>
-          
+
           <select id="marca" *ngIf="!marcaEsPersonalizada" [(ngModel)]="marcaSeleccionada"
             (change)="obtenerModelosSiCorresponde()" [disabled]="seleccion !== 'renta' && !anioValido">
             <option disabled selected value="">Selecciona una marca</option>
@@ -131,6 +131,7 @@
             (blur)="validarInputModelo()" placeholder="Escribe el modelo manualmente" class="input-personalizado"
             maxlength="25" />
         </div>
+        
       </div>
       <!-- botón continuar incluye renta -->
       <button [disabled]="!formularioValido()"
@@ -150,6 +151,7 @@
           <p>{{ mostrarSelecion }}</p>
         </div>
       </div>
+
       <app-car *ngIf="mostrarCarComponent && seleccion === 'auto'" [anio]="obtenerAnioActual()"
         [marca]="marcaSeleccionada" [modelo]="modeloSeleccionado" [tipo]="seleccion">
       </app-car>
