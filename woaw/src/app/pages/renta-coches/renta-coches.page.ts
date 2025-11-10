@@ -29,6 +29,7 @@ export class RentaCochesPage implements OnInit, OnDestroy {
   private myCarIds = new Set<string>();
   private currentUserId: string | null = null;
   private estadoQP: string | null = null;
+  private ciudadQP: string | null = null; // 👈 agregado
   private estadoSub?: Subscription;
   private routerSub?: any;
   userRol: string | null = null;
@@ -98,17 +99,22 @@ export class RentaCochesPage implements OnInit, OnDestroy {
     console.log("[RentaCoches] rentaService.baseUrl =", this.rentaService.baseUrl);
 
     this.refreshCurrentUserId();
+
+    // 🔹 Leer estado y ciudad desde query params
     this.route.queryParamMap
       .pipe(
-        map((q) => (q.get("estado") || "").trim() || null),
-        distinctUntilChanged()
+        map((q) => ({
+          estado: (q.get("estado") || "").trim() || null,
+          ciudad: (q.get("ciudad") || "").trim() || null,
+        })),
+        distinctUntilChanged((a, b) => a.estado === b.estado && a.ciudad === b.ciudad)
       )
-      .subscribe((estado) => {
+      .subscribe(({ estado, ciudad }) => {
         this.estadoQP = estado;
+        this.ciudadQP = ciudad;
         this.cargarTodos();
       });
 
-    // Solo cargar coches propios si no es cliente
     if (this.isLoggedIn && this.userRol !== "cliente") {
       this.cargarMios();
     }
@@ -152,9 +158,10 @@ export class RentaCochesPage implements OnInit, OnDestroy {
     this.loading = true;
     this.error = null;
 
-    const filtro: RentaFiltro | undefined = this.estadoQP
-      ? { estado: this.estadoQP.trim() }
-      : undefined;
+    const filtro: RentaFiltro = {};
+
+    if (this.estadoQP) filtro.estado = this.estadoQP.trim();
+    if (this.ciudadQP) filtro.ciudad = this.ciudadQP.trim();
 
     this.rentaService
       .listarCoches(filtro)
@@ -177,6 +184,10 @@ export class RentaCochesPage implements OnInit, OnDestroy {
           this.totalTodos = this.todosStorage.length;
           this.aplicarFiltros();
           this.ordenarAutos("recientes");
+
+          if (this.ciudadQP) {
+            console.log(`🔍 Autos filtrados por ciudad: ${this.ciudadQP}`, this.todosStorage);
+          }
         },
         error: (err) => {
           console.error("[RentaCoches] listarCoches error:", err);
@@ -611,7 +622,7 @@ export class RentaCochesPage implements OnInit, OnDestroy {
   ionViewWillEnter() {
     this.refreshCurrentUserId();
 
-    if (!this.estadoQP) {
+    if (!this.estadoQP && !this.ciudadQP) {
       this.cargarTodos();
     }
 
@@ -793,5 +804,4 @@ export class RentaCochesPage implements OnInit, OnDestroy {
     paginas.push(total);
     return paginas;
   }
-
 }

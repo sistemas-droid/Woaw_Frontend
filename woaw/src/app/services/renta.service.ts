@@ -170,6 +170,19 @@ export class RentaService {
         return this.http.get<ListarCochesResp>(`${this.api}`, { params });
     }
 
+    getEstados(): Observable<any> {
+        return this.http.get(`${this.api}/estados`);
+    }
+
+    getCiudades(): Observable<any> {
+        return this.http.get(`${this.api}/ciudades`);
+    }
+
+    getCiudadesPorEstado(estado: string): Observable<any> {
+        const params = new HttpParams().set('estado', estado);
+        return this.http.get(`${this.api}/estados/ciudades`, { params });
+    }
+
     misCoches(): Observable<any[]> {
         const url = `${this._baseUrl}/rentalcars/vehiculos/user`;
         return this.authJsonHeaders$().pipe(

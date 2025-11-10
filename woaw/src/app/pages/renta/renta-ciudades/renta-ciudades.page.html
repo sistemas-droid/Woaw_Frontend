@@ -50,10 +50,9 @@
     <div class="lugares-renta">
       <div class="lugares-grid">
         <!-- === TULUM === -->
-        <div class="lugar-card lugar-card--sesgada">
+        <div class="lugar-card lugar-card--sesgada" (click)="irACiudad('Tulum')">
           <div class="lugar-imagen">
-            <img src="/assets/renta/TULUM.png" alt="Tulum" >
-           
+            <img src="/assets/renta/TULUM.png" alt="Tulum">
           </div>
           <div class="lugar-contenido">
             <h3 class="lugar-nombre">Tulum</h3>
@@ -62,10 +61,9 @@
         </div>
 
         <!-- === CANCÚN === -->
-        <div class="lugar-card lugar-card--sesgada">
+        <div class="lugar-card lugar-card--sesgada" (click)="irACiudad('Cancún')">
           <div class="lugar-imagen">
             <img src="/assets/renta/CANCUN.png" alt="Cancún">
-           
           </div>
           <div class="lugar-contenido">
             <h3 class="lugar-nombre">Cancún</h3>
@@ -74,10 +72,9 @@
         </div>
 
         <!-- === PUERTO VALLARTA === -->
-        <div class="lugar-card lugar-card--sesgada">
+        <div class="lugar-card lugar-card--sesgada" (click)="irACiudad('Puerto Vallarta')">
           <div class="lugar-imagen">
             <img src="/assets/renta/puertovallarta.png" alt="Puerto Vallarta">
-            
           </div>
           <div class="lugar-contenido">
             <h3 class="lugar-nombre">Puerto Vallarta</h3>
@@ -86,16 +83,16 @@
         </div>
 
         <!-- === GUADALAJARA === -->
-        <div class="lugar-card lugar-card--sesgada">
+        <div class="lugar-card lugar-card--sesgada" (click)="irACiudad('Guadalajara')">
           <div class="lugar-imagen">
-            <img src="/assets/renta/guadalajara.png" alt="Guadalajara" >
-           
+            <img src="/assets/renta/guadalajara.png" alt="Guadalajara">
           </div>
           <div class="lugar-contenido">
             <h3 class="lugar-nombre">Guadalajara</h3>
             <p class="lugar-descripcion">Descubre la Perla Tapatía con total libertad</p>
           </div>
         </div>
+
       </div>
     </div>
   </section>
