@@ -245,20 +245,60 @@ export class GeneralService {
     }
   }
 
-  eliminarToken(): void {
-    this.tryUnregisterPushNow().finally(() => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      this.tokenSubject.next(false);
-      this.rolSubject.next(null);
-      this.router.navigate(['/home']);
-      location.reload();
-    });
-  }
+  // eliminarToken(): void {
+  //   this.tryUnregisterPushNow().finally(() => {
+  //     localStorage.removeItem('token');
+  //     localStorage.removeItem('user');
+  //     this.tokenSubject.next(false);
+  //     this.rolSubject.next(null);
+  //     this.router.navigate(['/home']);
+  //     location.reload();
+  //   });
+  // }
 
   // Obtener token si lo necesitas
   obtenerToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+
+  async eliminarToken(): Promise<void> {
+    try {
+      await this.tryUnregisterPushNow();
+    } catch (error) {
+      console.log('Error en unregister push, continuando...');
+    } finally {
+      this.limpiarStorageYEstado();
+      await this.recargarAplicacionSegura();
+    }
+  }
+
+  private limpiarStorageYEstado(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.tokenSubject.next(false);
+    this.rolSubject.next(null);
+  }
+
+  private async recargarAplicacionSegura(): Promise<void> {
+    try {
+      await this.router.navigate(['/home'], { replaceUrl: true });
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('app:reset'));
+      }
+        this.alert(
+          "¡Saliste de tu sesión!",
+          "¡Hasta pronto!",
+          "info"
+        );
+    } catch (error) {
+      console.error('Error recargando app:', error);
+      if (this.router.url !== '/home') {
+        this.router.navigate(['/home']);
+      }
+    }
   }
 
   // ----------------- DISPOSITIVO -----------------

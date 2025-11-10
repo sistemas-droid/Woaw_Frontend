@@ -138,15 +138,15 @@ export class MenulateralComponent implements OnInit, OnDestroy {
       async () => {
         this.generalService.eliminarToken();
         await this.menuCtrl.close("menuLateral");
-        await this.sleep(300);
-        this.zone.run(() => {
-          this.router.navigate(["/home"]);
-          this.generalService.alert(
-            "¡Saliste de tu sesión!",
-            "¡Hasta pronto!",
-            "info"
-          );
-        });
+        // await this.sleep(300);
+        // this.zone.run(() => {
+        //   this.router.navigate(["/home"]);
+        //   this.generalService.alert(
+        //     "¡Saliste de tu sesión!",
+        //     "¡Hasta pronto!",
+        //     "info"
+        //   );
+        // });
       }
     );
   }
