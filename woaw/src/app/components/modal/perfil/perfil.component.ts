@@ -43,19 +43,25 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    const storage = localStorage.getItem("user");
-    if (storage) {
-      try {
-        this.usuario = JSON.parse(storage);
-        this.fotoPerfil = this.getFotoFromUser(this.usuario);
-      } catch {
-        this.usuario = null;
-        this.fotoPerfil = null;
-      }
-    }
-  }
+ngOnInit() {
+  const storage = localStorage.getItem("user");
+  if (storage) {
+    try {
+      this.usuario = JSON.parse(storage);
+      this.fotoPerfil = this.getFotoFromUser(this.usuario);
 
+      // Si no hay imagen, usar una por defecto
+      if (!this.fotoPerfil || this.fotoPerfil.trim() === "") {
+        this.fotoPerfil = "assets/imgs/default-avatar.png"; // ruta a tu ícono
+      }
+    } catch {
+      this.usuario = null;
+      this.fotoPerfil = "assets/imgs/default-avatar.png";
+    }
+  } else {
+    this.fotoPerfil = "assets/imgs/default-avatar.png";
+  }
+}
   // ⟵ NUEVO: usar en (click) del ion-card de "Eliminar cuenta"
  async goEliminarCuenta() {
     try {
