@@ -31,7 +31,7 @@ import { Capacitor } from '@capacitor/core';
   imports: [IonicModule, CommonModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class FooterComponent implements OnInit {  
+export class FooterComponent implements OnInit {
   blog: any[] = [];
   mostrarMapa: boolean = false;
   mostrarVerMas: boolean = false;
@@ -45,9 +45,11 @@ export class FooterComponent implements OnInit {
   private readonly destinoLat = 20.6079;
   private readonly destinoLng = -100.3793;
   private readonly destinoLabel = 'WOAW Automotive - Oficinas Operativas';
-  private readonly destinoDir = 'Blvd. Bernardo Quintana Arrioja 14, Alamos 2da Secc, 76160 Santiago de Querétaro, Qro.';
+  private readonly destinoDir =
+    'Blvd. Bernardo Quintana Arrioja 14, Alamos 2da Secc, 76160 Santiago de Querétaro, Qro.';
 
-  @ViewChild('footerRoot', { static: true }) footerRoot!: ElementRef<HTMLElement>;
+  @ViewChild('footerRoot', { static: true })
+  footerRoot!: ElementRef<HTMLElement>;
 
   constructor(
     private menu: MenuController,
@@ -59,7 +61,7 @@ export class FooterComponent implements OnInit {
     private modalCtrl: ModalController,
     private activatedRoute: ActivatedRoute,
     private carsService: CarsService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     // localStorage.removeItem('popUp');
@@ -80,50 +82,54 @@ export class FooterComponent implements OnInit {
   ngAfterViewInit() {
     const nodes = this.footerRoot.nativeElement.querySelectorAll('.is-reveal');
 
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.15 });
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
 
-    nodes.forEach(n => io.observe(n));
+    nodes.forEach((n) => io.observe(n));
   }
   async abrirUbicacion() {
-  let destinoLabel = 'Blvd. Bernardo Quintana Arrioja 17, Álamos 2da Secc, Santiago de Querétaro';
-  let destinoLat = 20.607572064205126;
-  let destinoLng = -100.37906506352265;
+    let destinoLabel =
+      'Blvd. Bernardo Quintana Arrioja 17, Álamos 2da Secc, Santiago de Querétaro';
+    let destinoLat = 20.607572064205126;
+    let destinoLng = -100.37906506352265;
 
-  const label = encodeURIComponent(destinoLabel);
-  const webUrl = `https://www.google.com/maps/search/?api=1&query=${destinoLat},${destinoLng}`;
+    const label = encodeURIComponent(destinoLabel);
+    const webUrl = `https://www.google.com/maps/search/?api=1&query=${destinoLat},${destinoLng}`;
 
-  const platform = Capacitor.getPlatform();
+    const platform = Capacitor.getPlatform();
 
-  if (platform === 'android') {
-    const url = `geo:${destinoLat},${destinoLng}?q=${destinoLat},${destinoLng}(${label})`;
-    try {
-      await Browser.open({ url });
-    } catch {
-      window.open(webUrl, '_blank');
+    if (platform === 'android') {
+      const url = `geo:${destinoLat},${destinoLng}?q=${destinoLat},${destinoLng}(${label})`;
+      try {
+        await Browser.open({ url });
+      } catch {
+        window.open(webUrl, '_blank');
+      }
+      return;
     }
-    return;
-  }
 
-  if (platform === 'ios') {
-    const url = `http://maps.apple.com/?ll=${destinoLat},${destinoLng}&q=${label}`;
-    try {
-      await Browser.open({ url });
-    } catch {
-      window.open(webUrl, '_blank');
+    if (platform === 'ios') {
+      const url = `http://maps.apple.com/?ll=${destinoLat},${destinoLng}&q=${label}`;
+      try {
+        await Browser.open({ url });
+      } catch {
+        window.open(webUrl, '_blank');
+      }
+      return;
     }
-    return;
-  }
 
-  // Web / Desktop
-  window.open(webUrl, '_blank');
-}
+    // Web / Desktop
+    window.open(webUrl, '_blank');
+  }
 
   async mostrarTerminos() {
     let modal;
@@ -179,10 +185,9 @@ export class FooterComponent implements OnInit {
     }
   }
 
-abrirCorreo() {
-  window.location.href = 'mailto:comercial@wo-aw.com';
-}
-
+  abrirCorreo() {
+    window.location.href = 'mailto:comercial@wo-aw.com';
+  }
 
   async mostrarAviso() {
     let modal;
@@ -272,6 +277,7 @@ abrirCorreo() {
 
   handleTelefonoClick(event: Event) {
     event.preventDefault();
+    event.stopPropagation();
     const popUpAceptado = localStorage.getItem('popUp') === 'true';
 
     if (popUpAceptado) {

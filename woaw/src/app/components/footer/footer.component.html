@@ -32,8 +32,20 @@
         quieras.
       </p>
 
-      <a href="tel:+524427706776" class="dato">+52 442 770 6776</a>
+      <!-- antes -->
+      <!-- <a href="tel:+524427706776" class="dato">+52 442 770 6776</a> -->
 
+      <!-- después -->
+      <a
+        class="dato"
+        href=""
+        (click)="handleTelefonoClick($event)"
+        (keydown.enter)="handleTelefonoClick($event)"
+        (keydown.space)="handleTelefonoClick($event); $event.preventDefault()"
+        role="link"
+      >
+        +52 442 770 6776
+      </a>
       <p class="horario">Lunes a Viernes: 9:00–18:00</p>
 
       <button type="button" class="btn-primary" (click)="abrirUbicacion()">
@@ -89,8 +101,8 @@
         <a
           class="chip"
           href="https://mail.google.com/mail/?view=cm&fs=1&to=comercial@wo-aw.com
-&su=Contacto%20desde%20la%20web%20Woaw
-&body=Hola%20equipo%20Woaw,"
+          &su=Contacto%20desde%20la%20web%20Woaw
+          &body=Hola%20equipo%20Woaw,"
           target="_blank"
           aria-label="Correo Gmail"
         >
@@ -122,7 +134,5 @@
     </section> -->
   </div>
 
-  <div class="copy">
-    © 2025 Woaw Automotive. Todos los derechos reservados.
-  </div>
+  <div class="copy">© 2025 Woaw Automotive. Todos los derechos reservados.</div>
 </footer>

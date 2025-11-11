@@ -19,15 +19,14 @@
   <ion-card *ngIf="!mostrarCambio">
     <ion-list class="perfil-grid" lines="none">
       <ion-item>
-        <ion-avatar *ngIf="fotoPerfil" slot="start">
+        <ion-avatar slot="start">
           <img
             [src]="fotoPerfil"
             alt="Foto de perfil"
             referrerpolicy="no-referrer"
-            (error)="fotoPerfil = null"
+            (error)="fotoPerfil = 'assets/icon/perfil.png'"
           />
         </ion-avatar>
-
         <ion-label>
           <h2>{{ usuario?.nombre }} {{ usuario?.apellidos }}</h2>
           <p>Nombre completo</p>
@@ -116,7 +115,10 @@
 
         <ion-text
           color="danger"
-          *ngIf="formCambio.get('newPassword')?.hasError('passwordInvalida') && formCambio.get('newPassword')?.touched"
+          *ngIf="
+            formCambio.get('newPassword')?.hasError('passwordInvalida') &&
+            formCambio.get('newPassword')?.touched
+          "
         >
           <small>
             La contraseña debe tener mínimo 8 caracteres, una mayúscula, un
@@ -147,16 +149,16 @@
 
   <!-- CARD: Eliminar cuenta (idéntico diseño, actúa como botón/link) -->
   <ion-card class="card-cambio" (click)="goEliminarCuenta()">
-  <ion-card-header class="cabecera-acordeon">
-    
-    <ion-card-title class="ion-align-items-center ion-justify-content-between">
-      <div class="titulo-acordeon">
-        Eliminar cuenta
-        <ion-icon name="trash-outline"></ion-icon>
-      </div>
-      <ion-icon name="chevron-forward-outline"></ion-icon>
-    </ion-card-title>
-  </ion-card-header>
-</ion-card>
-
+    <ion-card-header class="cabecera-acordeon">
+      <ion-card-title
+        class="ion-align-items-center ion-justify-content-between"
+      >
+        <div class="titulo-acordeon">
+          Eliminar cuenta
+          <ion-icon name="trash-outline"></ion-icon>
+        </div>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
 </ion-content>
