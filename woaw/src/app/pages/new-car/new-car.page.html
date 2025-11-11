@@ -31,19 +31,22 @@
 
     <div class="contenedor-categorias" #contenedorCategorias *ngIf="!mostrarCarComponent"
       [class.seleccion-activa]="esDispositivoMovil && !!seleccion">
-      <div *ngFor="let opcion of opciones" class="categoria-card" [class.activa]="opcion.tipo === seleccion"
-        [class.desactivada]="opcion.proximamente"
-        (click)="!opcion.proximamente && seleccionar(opcion.tipo, opcion.label, opcion.icono)">
+
+      <div *ngFor="let opcion of opciones" class="categoria-card"
+        [class.activa]="opcion.tipo === seleccion && puedeActivar(opcion.tipo)"
+        [class.desactivada]="opcion.proximamente || opcion.tipo === 'lote'" (click)="manejarClick(opcion)">
+
         <div class="etiqueta-proximamente" *ngIf="opcion.proximamente">
           Próximamente
         </div>
 
         <div class="icono">
           <img [src]="opcion.icono" [alt]="opcion.label" />
-          <div *ngIf="opcion.tipo === seleccion" class="check-icono">✔</div>
+          <div *ngIf="opcion.tipo === seleccion && puedeActivar(opcion.tipo)" class="check-icono">✔</div>
         </div>
         <div class="label">{{ opcion.label }}</div>
       </div>
+
     </div>
 
     <!------- # -------->
@@ -131,7 +134,7 @@
             (blur)="validarInputModelo()" placeholder="Escribe el modelo manualmente" class="input-personalizado"
             maxlength="25" />
         </div>
-        
+
       </div>
       <!-- botón continuar incluye renta -->
       <button [disabled]="!formularioValido()"

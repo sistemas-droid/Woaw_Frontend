@@ -29,8 +29,9 @@ export class AddLotePage implements OnInit {
   previewImagenPrincipal: string | null = null;
   tipoDispocitivo: string = '';
 
-  pocicion: boolean = true;
+  public posicion: boolean = true;
   public isLoggedIn: boolean = false;
+
 
   constructor(
     private fb: FormBuilder,
@@ -73,82 +74,94 @@ export class AddLotePage implements OnInit {
     input.click();
   }
 
+  regresar() {
+    this.router.navigateByUrl('/new-car');
+  }
+
   async registrarLote(): Promise<void> {
-    const faltantes = this.obtenerCamposInvalidos(1);
 
-    if (faltantes.length > 0) {
-      const mensaje = 'Faltan por llenar: ' + faltantes.join(', ');
-      await this.generalService.alert('Formulario incorrecto', mensaje, 'warning');
-      return;
-    }
+    this.generalService.confirmarAccion(
+      "¿Crear lote/agencia?",
+      "¿Estás seguro de que deseas continuar?",
+      async () => {
+        const faltantes = this.obtenerCamposInvalidos(1);
 
-    // Punto 4: Normalizar nombre antes de enviar (MAYÚSCULAS y máx. 25)
-    const nombreNormalizado = (this.formLote?.value?.nombre ?? '')
-      .toString()
-      .toLocaleUpperCase('es-MX')
-      .slice(0, 25)
-      .trim();
+        if (faltantes.length > 0) {
+          const mensaje = 'Faltan por llenar: ' + faltantes.join(', ');
+          await this.generalService.alert('Formulario incorrecto', mensaje, 'warning');
+          return;
+        }
 
-    const formData = new FormData();
+        // Punto 4: Normalizar nombre antes de enviar (MAYÚSCULAS y máx. 25)
+        const nombreNormalizado = (this.formLote?.value?.nombre ?? '')
+          .toString()
+          .toLocaleUpperCase('es-MX')
+          .slice(0, 25)
+          .trim();
 
-    // Campos básicos
-    formData.append('nombre', nombreNormalizado);
-    formData.append('telefonoContacto', this.formLote.value.telefono);
-    formData.append('correoContacto', this.formLote.value.email);
+        const formData = new FormData();
 
-    if (this.ubicacionesSeleccionadas.length > 0) {
-      const ubicacionesFormateadas = this.ubicacionesSeleccionadas.map((u) => ({
-        ciudad: u[0],
-        estado: u[1],
-        lat: u[2],
-        lng: u[3],
-      }));
-      formData.append('direcciones', JSON.stringify(ubicacionesFormateadas));
-    }
+        // Campos básicos
+        formData.append('nombre', nombreNormalizado);
+        formData.append('telefonoContacto', this.formLote.value.telefono);
+        formData.append('correoContacto', this.formLote.value.email);
 
-    // Imagen principal
-    if (this.imagenPrincipal) {
-      formData.append('imagenPrincipal', this.imagenPrincipal);
-    }
+        if (this.ubicacionesSeleccionadas.length > 0) {
+          const ubicacionesFormateadas = this.ubicacionesSeleccionadas.map((u) => ({
+            ciudad: u[0],
+            estado: u[1],
+            lat: u[2],
+            lng: u[3],
+          }));
+          formData.append('direcciones', JSON.stringify(ubicacionesFormateadas));
+        }
 
-    // PDF opcional
-    if (this.constanciaPDF) {
-      formData.append('constancia', this.constanciaPDF);
-    }
+        // Imagen principal
+        if (this.imagenPrincipal) {
+          formData.append('imagenPrincipal', this.imagenPrincipal);
+        }
 
-    this.generalService.loading('Creando Lote...');
-    try {
-      this.registroService.registroLote(formData).subscribe({
-        next: async (res) => {
+        // PDF opcional
+        if (this.constanciaPDF) {
+          formData.append('constancia', this.constanciaPDF);
+        }
+
+        this.generalService.loading('Creando Lote...');
+        try {
+          this.registroService.registroLote(formData).subscribe({
+            next: async (res) => {
+              this.generalService.loadingDismiss();
+              this.cambioRol(res);
+
+              this.formLote.reset();
+              this.posicion = true;
+              this.previewImagenPrincipal = null;
+              this.imagenPrincipal = null;
+              this.constanciaPDF = null;
+              this.ubicacionesSeleccionadas = [];
+              this.router.navigateByUrl('/lotes');
+              await this.generalService.alert(
+                'Lote creado',
+                '¡Listo! Su lote fue creado correctamente',
+                'success'
+              );
+            },
+            error: async () => {
+              this.generalService.loadingDismiss();
+              await this.generalService.alert(
+                'Error al registrar Lote',
+                'Error de red. Intenta más tarde.',
+                'danger'
+              );
+            },
+          });
+        } catch (error) {
           this.generalService.loadingDismiss();
-          this.cambioRol(res);
-
-          this.formLote.reset();
-          this.previewImagenPrincipal = null;
-          this.imagenPrincipal = null;
-          this.constanciaPDF = null;
-          this.ubicacionesSeleccionadas = [];
-          this.router.navigateByUrl('/lotes');
-          await this.generalService.alert(
-            'Lote creado',
-            '¡Listo! Su lote fue creado correctamente',
-            'success'
-          );
-        },
-        error: async () => {
-          this.generalService.loadingDismiss();
-          await this.generalService.alert(
-            'Error al registrar Lote',
-            'Error de red. Intenta más tarde.',
-            'danger'
-          );
-        },
-      });
-    } catch (error) {
-      this.generalService.loadingDismiss();
-      console.error('❌ Error al registrar lote:', error);
-      this.mostrarToast('Error al registrar el lote', 'danger');
-    }
+          console.error('❌ Error al registrar lote:', error);
+          this.mostrarToast('Error al registrar el lote', 'danger');
+        }
+      }
+    );
   }
 
 
@@ -292,10 +305,11 @@ export class AddLotePage implements OnInit {
       );
       return;
     }
-    this.pocicion = !this.pocicion;
+    this.posicion = !this.posicion;
   }
 
   irAInicio(): void {
     this.router.navigateByUrl('/inicio');
+    this.posicion = true;
   }
 }

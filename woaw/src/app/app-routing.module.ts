@@ -108,9 +108,7 @@ const routes: Routes = [
           import("./pages/new-car/new-car.module").then(
             (m) => m.NewCarPageModule
           ),
-        data: { title: "Publicar nuevo vehículo | woaw" },
-        canActivate: [AuthGuard],
-        canMatch: [AuthPhoneGuard],
+        data: { title: "Publicar nuevo vehículo | woaw" }
       },
       {
         path: "mis-motos",

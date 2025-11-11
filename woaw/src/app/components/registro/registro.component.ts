@@ -245,8 +245,6 @@ export class RegistroComponent implements OnInit {
         next: async (respuesta) => {
           this.hide_spinner();
           this.Seccionamostrar = 2;
-          // ocultar spinner
-          await this.generalService.loadingDismiss();
           await this.generalService.alert(
             '¡Estas a un paso de tu registro!',
             'Revisa tu correo para confirmar tu registro.',
@@ -256,8 +254,6 @@ export class RegistroComponent implements OnInit {
         },
         error: async (error) => {
           this.hide_spinner();
-          // Ocultar spinner
-          await this.generalService.loadingDismiss();
 
           console.error('Error en el registro:', error);
 
@@ -270,11 +266,7 @@ export class RegistroComponent implements OnInit {
             mensaje,
             'danger'
           );
-        },
-        complete: () => {
-            this.hide_spinner();
-          this.generalService.loadingDismiss();
-        },
+        }
       });
     } else {
       this.hide_spinner();
@@ -505,6 +497,7 @@ export class RegistroComponent implements OnInit {
   async onCheckboxClick(event: Event, tipo: 'aviso' | 'terminos') {
     event.preventDefault();
 
+    localStorage.setItem(tipo, 'true');
     const yaAceptado = localStorage.getItem(tipo) === 'true';
 
     if (yaAceptado) {
@@ -515,9 +508,8 @@ export class RegistroComponent implements OnInit {
         'Has aceptado este documento.',
         'success'
       );
-
-      return;
     }
+
     const modal = await this.modalCtrl.create({
       component:
         tipo === 'aviso' ? AvisoPrivasidadComponent : PoliticasComponent,

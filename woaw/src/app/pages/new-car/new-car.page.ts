@@ -116,16 +116,14 @@ export class NewCarPage implements OnInit {
     this.generarListaAnios();
     this.cargarOpcionesPorRol();
   }
+
   seleccionar(
     tipo: "auto" | "moto" | "renta" | "lote" | "camion" | null,
     label: string,
     icono: string
   ) {
-    if (label === "Lote") {
-      this.router.navigateByUrl("/add-lote");
-    } else {
-      this.limpiarDependencias("all");
-    }
+    this.limpiarDependencias("all");
+
     this.seleccion = tipo;
     this.mostrarSelecion = label;
     this.mostrarIcono = icono;
@@ -247,7 +245,7 @@ export class NewCarPage implements OnInit {
     this.anioValido =
       tipo === "select" ? this.validarAnio(anio) : this.validarAniOtro(anio);
 
-      console.log(this.anioValido)
+    console.log(this.anioValido)
 
     if (this.anioValido) {
       this.mansaje_error = "";
@@ -751,4 +749,21 @@ export class NewCarPage implements OnInit {
     console.log("Submit Renta:", evt);
     // Si decides postear desde aquí en lugar del componente, aquí puedes usar RentaService.addRentalCar(...)
   }
+
+
+
+
+  manejarClick(opcion: any) {
+    if (opcion.proximamente || opcion.tipo === 'lote') {
+      this.router.navigateByUrl("/add-lote");
+      return;
+    }
+    this.seleccionar(opcion.tipo, opcion.label, opcion.icono);
+  }
+
+  puedeActivar(tipo: string): boolean {
+    return tipo !== 'lote';
+  }
+
+
 }
