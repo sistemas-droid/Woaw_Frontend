@@ -30,7 +30,7 @@ tipoVehiculo: string;
   combustible?: string;
   pasajeros?: number;
   kilometrajeActual?: number;
-  ubicacion?: Ubicacion;
+  ubicacion?: Ubicacion[];
   gps?: boolean;
   inmovilizador?: boolean;
   ventanasDisponibles?: Ventana[];

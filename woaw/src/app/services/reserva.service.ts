@@ -79,6 +79,9 @@ export interface RentalBooking {
   notasOperador?: string | null;
   createdAt?: string;
   updatedAt?: string;
+  _car?: string;
+  _imgUrl?: string;
+
 }
 
 export interface CreateBookingInput {
