@@ -72,21 +72,27 @@
         <!-- Logos -->
         <div class="contenedor-marcas">
           <ng-container *ngIf="tipoSeleccionado === 'coches'">
-            <ng-container *ngFor="let marca of filteredOpciones">
-              <div class="marca-card" *ngIf="marca.imagenValida"
-                [class.seleccionado]="marca.key === marcaSeleccionada?.key" (click)="seleccionarMarca(marca)">
-                <img [src]="marca.imageUrl" [alt]="marca.nombre" (error)="marca.imagenValida = false" />
-              </div>
-            </ng-container>
-          </ng-container>
+  <ng-container *ngFor="let marca of filteredOpciones">
+    <div class="marca-card" *ngIf="marca.imagenValida"
+         [class.seleccionado]="marca.key === marcaSeleccionada?.key"
+         (click)="seleccionarMarca(marca)">
+      <img [src]="marca.imageUrl" [alt]="marca.nombre" (error)="marca.imagenValida = false" />
+      <span class="marca-nombre-grid" [title]="marca.nombre">{{ marca.nombre }}</span>
+    </div>
+  </ng-container>
+</ng-container>
 
           <ng-container *ngIf="tipoSeleccionado === 'camiones'">
-            <ng-container *ngFor="let marca of filteredOpcionesCamiones">
-              <div class="marca-card" *ngIf="marca.imagenValida"
-                [class.seleccionado]="marca._id === marcaSeleccionada?._id" (click)="seleccionarMarca(marca)">
-                <img [src]="marca.imageUrl" [alt]="marca.nombre" (error)="marca.imagenValida = false" />
-              </div>
-            </ng-container>
+          <ng-container *ngIf="tipoSeleccionado === 'camiones'">
+  <ng-container *ngFor="let marca of filteredOpcionesCamiones">
+    <div class="marca-card" *ngIf="marca.imagenValida"
+         [class.seleccionado]="marca._id === marcaSeleccionada?._id"
+         (click)="seleccionarMarca(marca)">
+      <img [src]="marca.imageUrl" [alt]="marca.nombre" (error)="marca.imagenValida = false" />
+      <span class="marca-nombre-grid" [title]="marca.nombre">{{ marca.nombre }}</span>
+    </div>
+  </ng-container>
+</ng-container>
           </ng-container>
         </div>
 
@@ -101,7 +107,7 @@
             <ion-icon name="arrow-forward-circle-outline" class="icono-flecha"></ion-icon>
           </div>
           <div class="cta-arrendar" *ngIf="!marcaSeleccionada" (click)="selecionaMarca()">
-            <span class="texto-arrendar">Secciona una <strong>Marca</strong></span>
+            <span class="texto-arrendar">Selecciona <strong>Marca</strong></span>
             <ion-icon name="arrow-up-circle-outline" class="icono-flecha-arriba"></ion-icon>
           </div>
         </div>
