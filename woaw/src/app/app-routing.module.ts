@@ -156,14 +156,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: "renta-coches",
-        loadChildren: () =>
-          import("./pages/renta-coches/renta-coches.module").then(
-            (m) => m.RentaCochesPageModule
-          ),
-        data: { title: "renta | woaw" },
-      },
-      {
         path: "politicas",
         loadChildren: () =>
           import("./pages/politicas/politicas.module").then(
@@ -199,13 +191,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: "renta-ficha/:id",
-        loadChildren: () =>
-          import("./pages/renta-ficha/renta-ficha.module").then(
-            (m) => m.RentaFichaPageModule
-          ),
-      },
-      {
         path: "conocenos",
         loadChildren: () =>
           import("./pages/nosotros/nosotros.module").then(
@@ -217,49 +202,6 @@ const routes: Routes = [
         loadChildren: () =>
           import("./pages/disponibilidad-car/disponibilidad-car.module").then(
             (m) => m.DisponibilidadCarPageModule
-          ),
-      },
-      {
-        path: "edit-renta/:id",
-        loadChildren: () =>
-          import("./pages/edit-renta/edit-renta.module").then(
-            (m) => m.EditRentaPageModule
-          ),
-      },
-      {
-        path: "reservas/:id",
-        loadChildren: () =>
-          import("./pages/reservas/reservas.module").then(
-            (m) => m.ReservasPageModule
-          ),
-      },
-      {
-        path: "renta",
-        loadChildren: () =>
-          import("./pages/renta/renta-ciudades/renta-ciudades.module").then(
-            (m) => m.RentaCiudadesPageModule
-          ),
-      },
-
-      {
-        path: "checkin/:id",
-        loadChildren: () =>
-          import("./pages/renta/checkin/checkin.module").then(
-            (m) => m.CheckInPageModule
-          ),
-      },
-      {
-        path: "checkout/:id",
-        loadChildren: () =>
-          import("./pages/renta/checkout/checkout.module").then(
-            (m) => m.CheckoutPageModule
-          ),
-      },
-      {
-        path: "mis-reservas",
-        loadChildren: () =>
-          import("./pages/renta/mis-reservas/mis-reservas.module").then(
-            (m) => m.MisReservasPageModule
           ),
       },
 
@@ -319,7 +261,12 @@ const routes: Routes = [
         path: 'seguros/cotizar-manual',
         loadChildren: () => import('./pages/seguro/cotizar-manual/cotizar-manual.module').then(m => m.CotizarManualPageModule)
       },
+
+
+
+      // ---------------------
       // ----- LOTES
+      // ---------------------
       {
         path: 'add-lote',
         loadChildren: () => import('./pages/lote/add-lote/add-lote.module').then(m => m.AddLotePageModule)
@@ -349,6 +296,80 @@ const routes: Routes = [
           import("./pages/lote/lote/lote.module").then((m) => m.LotePageModule),
         data: { title: "lotes | woaw" },
       },
+      // ---------------------
+      // ---------------------
+
+
+
+
+      // ---------------------
+      // ----- RENTA 
+      // ---------------------
+      {
+        path: 'renta/add-coche',
+        loadChildren: () => import('./pages/renta/add-coche/add-coche.module').then(m => m.AddCochePageModule)
+      },
+      {
+        path: "edit-renta/:id",
+        loadChildren: () =>
+          import("./pages/edit-renta/edit-renta.module").then(
+            (m) => m.EditRentaPageModule
+          ),
+      },
+      {
+        path: "reservas/:id",
+        loadChildren: () =>
+          import("./pages/reservas/reservas.module").then(
+            (m) => m.ReservasPageModule
+          ),
+      },
+      {
+        path: "renta",
+        loadChildren: () =>
+          import("./pages/renta/renta-ciudades/renta-ciudades.module").then(
+            (m) => m.RentaCiudadesPageModule
+          ),
+      },
+      {
+        path: "checkin/:id",
+        loadChildren: () =>
+          import("./pages/renta/checkin/checkin.module").then(
+            (m) => m.CheckInPageModule
+          ),
+      },
+      {
+        path: "checkout/:id",
+        loadChildren: () =>
+          import("./pages/renta/checkout/checkout.module").then(
+            (m) => m.CheckoutPageModule
+          ),
+      },
+      {
+        path: "mis-reservas",
+        loadChildren: () =>
+          import("./pages/renta/mis-reservas/mis-reservas.module").then(
+            (m) => m.MisReservasPageModule
+          ),
+      },
+      {
+        path: "renta-ficha/:id",
+        loadChildren: () =>
+          import("./pages/renta-ficha/renta-ficha.module").then(
+            (m) => m.RentaFichaPageModule
+          ),
+      },
+      {
+        path: "renta-coches",
+        loadChildren: () =>
+          import("./pages/renta-coches/renta-coches.module").then(
+            (m) => m.RentaCochesPageModule
+          ),
+        data: { title: "renta | woaw" },
+      },
+      // ---------------------
+      // ---------------------
+
+
     ],
   },
   {
@@ -356,7 +377,7 @@ const routes: Routes = [
     loadChildren: () =>
       import("./pages/error/error.module").then((m) => m.ErrorPageModule),
     data: { title: "Página no encontrada | woaw" },
-  }
+  },
 ];
 
 @NgModule({

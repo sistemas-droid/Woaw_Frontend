@@ -751,11 +751,12 @@ export class NewCarPage implements OnInit {
   }
 
 
-
-
   manejarClick(opcion: any) {
-    if (opcion.proximamente || opcion.tipo === 'lote') {
+    if (opcion.tipo === 'lote') {
       this.router.navigateByUrl("/add-lote");
+      return;
+    }else if(opcion.tipo === 'renta'){
+      this.router.navigateByUrl("/renta/add-coche");
       return;
     }
     this.seleccionar(opcion.tipo, opcion.label, opcion.icono);
