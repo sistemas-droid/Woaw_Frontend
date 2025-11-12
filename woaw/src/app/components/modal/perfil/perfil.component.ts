@@ -50,16 +50,31 @@ ngOnInit() {
       this.usuario = JSON.parse(storage);
       this.fotoPerfil = this.getFotoFromUser(this.usuario);
 
-      // Si no hay imagen, usar una por defecto
+      // Si no hay imagen personalizada
       if (!this.fotoPerfil || this.fotoPerfil.trim() === "") {
-        this.fotoPerfil = "assets/imgs/default-avatar.png"; // ruta a tu ícono
+        const nombre = this.usuario?.nombre?.trim().toLowerCase() || "";
+
+        // Detecta automáticamente si es nombre femenino
+        const esMujer =
+          nombre.endsWith("a") ||
+          nombre.endsWith("ia") ||
+          nombre.endsWith("na") ||
+          nombre.endsWith("ra") ||
+          nombre.endsWith("ta") ||
+          nombre.endsWith("sa") ||
+          nombre.endsWith("la") ||
+          nombre.endsWith("za");
+
+        this.fotoPerfil = esMujer
+          ? "assets/icon/woalf2.png"
+          : "assets/icon/woalf1.png";
       }
     } catch {
       this.usuario = null;
-      this.fotoPerfil = "assets/imgs/default-avatar.png";
+      this.fotoPerfil = "assets/icon/woalf.png";
     }
   } else {
-    this.fotoPerfil = "assets/imgs/default-avatar.png";
+    this.fotoPerfil = "assets/icon/woalf1.png";
   }
 }
   // ⟵ NUEVO: usar en (click) del ion-card de "Eliminar cuenta"
