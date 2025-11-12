@@ -86,10 +86,6 @@
                     <ion-icon name="settings-outline"></ion-icon>
                     <span>{{ c.transmision }}</span>
                   </div>
-                  <div class="meta-item" *ngIf="c.ubicacion">
-                    <ion-icon name="location-outline"></ion-icon>
-                    <span>{{ c.ubicacion.ciudad || '' }}</span>
-                  </div>
                 </div>
 
                 <div class="accent-bar"></div>
@@ -132,7 +128,7 @@
           <div *ngIf="(miosPaginados?.length || 0) > 0" class="cards-grid">
             <ion-card *ngFor="let c of miosPaginados; trackBy: trackCar" class="veh-card" (click)="onCardClick(c)"
               tabindex="0" (keyup.enter)="onCardClick(c)"
-              [attr.aria-label]="(c.marca || '') + ' ' + (c.modelo || '') + (c.anio ? (' ' + c.anio) : '')">
+              [attr.aria-label]="(c.marca || '') + ' ' + (c.modelo || '')">
               <div class="badge" *ngIf="getEsMio(c)">Mi coche</div>
 
               <div class="img-wrap">
@@ -142,7 +138,7 @@
 
               <ion-card-content>
                 <div class="title">
-                  <strong>{{ c.marca }}</strong> • {{ c.modelo }} {{ c.anio }}
+                  <strong>{{ c.marca }}</strong> • {{ c.modelo }}
                 </div>
 
                 <div class="price">
@@ -157,10 +153,6 @@
                   <div class="meta-item" *ngIf="c.transmision">
                     <ion-icon name="settings-outline"></ion-icon>
                     <span>{{ c.transmision }}</span>
-                  </div>
-                  <div class="meta-item" *ngIf="c.ubicacion">
-                    <ion-icon name="location-outline"></ion-icon>
-                    <span>{{ c.ubicacion.ciudad || '' }}</span>
                   </div>
                 </div>
 

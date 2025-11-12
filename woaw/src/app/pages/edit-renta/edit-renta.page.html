@@ -22,8 +22,7 @@
 
 <ion-content [fullscreen]="true">
   <div class="contenedor">
-
-    <!-- Datos del vehículo (alineados a registrar) -->
+    <!-- Datos del vehículo -->
     <ion-grid>
       <ion-row>
         <ion-col size="12" size-md="3">
@@ -69,14 +68,14 @@
         <ion-col size="12" size-md="3">
           <ion-item>
             <ion-label position="stacked">Pasajeros</ion-label>
-            <ion-input type="number" min="1" [(ngModel)]="renta.pasajeros" (ionInput)="markDirty()" placeholder="Ej. 5">
-            </ion-input>
+            <ion-input type="number" min="1" [(ngModel)]="renta.pasajeros" (ionInput)="markDirty()"
+              placeholder="Ej. 5"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
     </ion-grid>
 
-    <!-- Precio y moneda (moneda es UI, no se envía) -->
+    <!-- Precio -->
     <ion-grid>
       <ion-row>
         <ion-col size="12" size-md="6">
@@ -98,10 +97,9 @@
       </ion-row>
     </ion-grid>
 
-    <!-- Políticas y requisitos -->
+    <!-- Políticas -->
     <ion-grid>
       <ion-row>
-
         <ion-col size="12" size-md="6">
           <ion-item>
             <ion-label position="stacked">Política combustible</ion-label>
@@ -155,11 +153,10 @@
               (ionInput)="markDirty()"></ion-input>
           </ion-item>
         </ion-col>
-
       </ion-row>
     </ion-grid>
 
-    <!-- Entrega y tarifas -->
+    <!-- Entrega -->
     <ion-grid>
       <ion-row>
         <ion-col size="12" size-md="6">
@@ -191,12 +188,6 @@
                   <label>Desde (km)</label>
                   <input type="number" min="0" [(ngModel)]="t.desdeKm"
                     [readonly]="i === 0 ? (+renta.entrega.gratuitoHastaKm) > 0 : true" placeholder="0" />
-                  <small class="hint" *ngIf="i === 0 && (+renta.entrega.gratuitoHastaKm) > 0">
-                    Fijado a {{ renta.entrega.gratuitoHastaKm }} km (igual a “Entrega gratis hasta”).
-                  </small>
-                  <small class="hint" *ngIf="i > 0">
-                    Fijado a {{ renta.entrega.tarifasPorDistancia[i-1].hastaKm || 0 }} km (fin del rango anterior).
-                  </small>
                 </div>
 
                 <div class="campo">
@@ -220,18 +211,75 @@
       </ion-row>
     </ion-grid>
 
-    <!-- Ubicación -->
+    <!-- 🔹 Tipo de publicación -->
     <ion-grid>
       <ion-row>
         <ion-col size="12" size-md="6">
-          <button class="btn_ubicacion" type="button" (click)="seleccionarUbicacion()">
-            <ion-icon name="location-outline" class="icono"></ion-icon>
-            Seleccionar ubicación
-          </button>
+          <ion-item lines="none">
+            <ion-label position="stacked">Tipo de publicación</ion-label>
+            <ion-segment [(ngModel)]="tipoSeleccionado" (ionChange)="toggleTipoPublicacion()">
+              <ion-segment-button value="particular">
+                <ion-label>Particular</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="lote">
+                <ion-label>Lote</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-item>
+        </ion-col>
+      </ion-row>
 
-          <div *ngIf="direccionCompleta" class="ubicacion-mostrada">
+      <!-- 🔸 Bloque de selección de lote -->
+      <ion-row *ngIf="tipoSeleccionado === 'lote'">
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label position="stacked">Selecciona un lote</ion-label>
+            <ion-select [(ngModel)]="loteSeleccionado" interface="action-sheet" (ionChange)="onLoteSeleccionado()">
+              <ion-select-option *ngFor="let lote of lotes" [value]="lote._id">
+                {{ lote.nombre }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <div *ngIf="(ubicacionesSeleccionadas?.length || 0) > 0" class="bloque-direcciones">
+            <ion-list class="ubicaciones-checkbox-list">
+              <ion-item *ngFor="let dir of ubicacionesSeleccionadas; let i = index">
+                <ion-checkbox slot="start" [checked]="isUbicacionSeleccionada(dir)"
+                  (ionChange)="toggleUbicacionLote(dir, $event)"></ion-checkbox>
+                <ion-label>
+                  <p>{{ dir.direccionCompleta || (dir.ciudad + ', ' + dir.estado) }}</p>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <!-- 🔸 Ubicaciones múltiples -->
+      <ion-row *ngIf="tipoSeleccionado === 'particular'">
+        <ion-col size="12" size-md="6">
+          <ion-button expand="block" color="danger" (click)="seleccionarUbicacion()">
+            <ion-icon name="location-outline" slot="start"></ion-icon>
+            Agregar ubicación
+          </ion-button>
+
+          <div *ngIf="ubicacionesSeleccionadas.length > 0" class="ubicaciones-list">
+            <ion-list>
+              <ion-item *ngFor="let ubic of ubicacionesSeleccionadas; let i = index" class="ubicacion-item">
+                <ion-icon name="location-outline" slot="start"></ion-icon>
+                <ion-label>
+                  <p>{{ ubic.direccionCompleta }}</p>
+                </ion-label>
+                <ion-button fill="clear" color="danger" slot="end" (click)="eliminarUbicacion(i)">
+                  <ion-icon name="close-circle"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-list>
+          </div>
+
+          <div *ngIf="ubicacionesSeleccionadas.length === 0" class="ubicacion-mostrada">
             <ion-icon name="location-outline"></ion-icon>
-            {{ direccionCompleta }}
+            <span>Selecciona al menos una ubicación</span>
           </div>
         </ion-col>
       </ion-row>
@@ -270,7 +318,7 @@
         <ion-col size="12" size-md="6">
           <ion-card>
             <ion-card-header>
-              <ion-card-title>Imágenes de mi auto</ion-card-title>
+              <ion-card-title>Imágenes adicionales</ion-card-title>
               <ion-card-subtitle>Agrega máximo 10 imágenes</ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
@@ -291,14 +339,13 @@
                   </div>
                 </div>
               </div>
-
             </ion-card-content>
           </ion-card>
         </ion-col>
       </ion-row>
     </ion-grid>
 
-    <!-- Barra de acciones -->
+    <!-- Botones -->
     <div class="action-bar">
       <div class="action-buttons">
         <ion-button fill="clear" color="medium" (click)="regresar()">

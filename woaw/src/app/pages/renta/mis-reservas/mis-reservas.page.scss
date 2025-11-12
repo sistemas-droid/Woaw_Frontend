@@ -1,26 +1,17 @@
 .mis-reservas {
   --text-dark: #111;
   --text-muted: #6b7280;
-
-  /* medidas para centrar SOLO el bloque del título */
   --page-head-max: 1100px;
-  /* ancho máximo del título */
   --page-head-gutter: 16px;
-  /* separación lateral */
 }
 
-/* Page head */
+/* === ENCABEZADO DE PÁGINA === */
 .page-head {
   padding: 12px;
   padding-top: 4px;
-
-  /* CENTRADO REAL del bloque del título
-     (le damos ancho menor al contenedor y lo centramos) */
   width: min(var(--page-head-max), calc(100% - (var(--page-head-gutter) * 2)));
   margin-inline: auto;
   padding-inline: var(--page-head-gutter);
-
-  /* ⬇️ NUEVO: centrado visual del contenido */
   text-align: center;
 
   h1 {
@@ -39,8 +30,6 @@
     background: var(--ion-color-danger);
     border-radius: 3px;
     margin-top: 6px;
-
-    /* ⬇️ NUEVO: centra la rayita */
     margin-inline: auto;
   }
 
@@ -53,35 +42,33 @@
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
-
-    /* ⬇️ NUEVO: centra los chips */
     justify-content: center;
   }
 }
 
-/* Section title */
+/* === SECCIÓN TÍTULO === */
 .section-title {
   margin: 14px 12px 8px;
   font-size: 14px;
   font-weight: 800;
-  letter-spacing: .02em;
+  letter-spacing: 0.02em;
   color: var(--text-dark);
   position: relative;
   text-transform: uppercase;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 90px;
+    height: 2px;
+    background: var(--ion-color-danger);
+    border-radius: 2px;
+  }
 }
 
-.section-title::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 90px;
-  height: 2px;
-  background: var(--ion-color-danger);
-  border-radius: 2px;
-}
-
-/* Estado vacío */
+/* === ESTADO VACÍO === */
 .vacio {
   text-align: center;
   margin-top: 60px;
@@ -100,21 +87,17 @@
   }
 }
 
-/* Tarjetas generales */
-.section-card,
+/* === CARD BASE === */
 ion-card.booking-card {
-  margin: 12px;
+  margin: 14px;
   border-radius: 14px;
   background: #fff;
   color: var(--text-dark);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, .12);
-  border: 1px solid rgba(0, 0, 0, .06);
-}
-
-/* Card de reserva con acento lateral por estatus */
-ion-card.booking-card {
-  position: relative;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   overflow: hidden;
+  position: relative;
+  padding: 0;
 }
 
 ion-card.booking-card::before {
@@ -140,31 +123,72 @@ ion-card.booking-card[data-status="rechazada"]::before {
   background: var(--ion-color-medium);
 }
 
-ion-card-header {
-  padding-bottom: 6px;
-  border-bottom: 1px solid rgba(0, 0, 0, .06);
+/* === NUEVO LAYOUT EN DOS NIVELES === */
+.booking-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 0;
+  align-items: stretch;
+  min-height: 200px;
+}
 
-  .header-line {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
+.booking-img {
+  background: #f5f5f5;
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
+}
+
+.booking-info-block {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.booking-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 
   ion-card-title {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 800;
-    flex: 1;
-    margin-right: 8px;
     color: var(--text-dark);
+    text-transform: capitalize;
   }
 
   ion-badge {
-    text-transform: capitalize;
-    font-size: 12px;
-    padding: 4px 8px;
+    font-size: 13px;
+    padding: 5px 12px;
     border-radius: 8px;
+    text-transform: capitalize;
   }
+}
+
+.booking-details-row {
+  display: grid;
+  grid-template-columns: 1.2fr 0.7fr 0.9fr;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+}
+
+.booking-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
 
   ion-card-subtitle {
     font-size: 13px;
@@ -172,69 +196,304 @@ ion-card-header {
     display: flex;
     align-items: center;
     gap: 6px;
+
+    ion-icon {
+      color: var(--ion-color-danger);
+    }
+
+    &.reserva-code {
+      font-weight: 500;
+      color: #4b5563;
+    }
   }
-
-  ion-card-subtitle ion-icon {
-    color: var(--ion-color-danger);
-  }
 }
 
-/* Meta info dentro de la card */
-.meta-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px 12px;
-  margin: 12px 0 6px;
-}
-
-.meta-grid .cell small {
-  display: block;
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.meta-grid .row {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.meta-grid .row ion-icon {
-  color: var(--ion-color-danger);
-}
-
-.meta-grid .row.strong span {
-  font-weight: 800;
-}
-
-/* Botonera */
-.acciones {
+.booking-price {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  text-align: center;
+
+  small {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .amount {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 17px;
+    font-weight: 700;
+
+    ion-icon {
+      color: var(--ion-color-danger);
+    }
+
+    .currency {
+      font-weight: 800;
+    }
+  }
 }
 
-.acciones ion-button {
-  --border-radius: 10px;
-  font-size: 14px;
-  font-weight: 700;
+.booking-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: 6px;
+
+  ion-button {
+    width: 100%;
+    --border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  ion-button[color="danger"][fill="solid"] {
+    --background: var(--ion-color-danger);
+    --color: #fff;
+  }
+
+  ion-button[color="medium"][fill="outline"] {
+    --border-color: #cbd5e1;
+    --color: #334155;
+  }
 }
 
-.acciones ion-button[color="danger"][fill="solid"] {
-  --background: var(--ion-color-danger);
-  --color: #fff;
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-img {
+    height: 160px;
+    border-radius: 0;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+  }
+
+  .booking-info-block {
+    border-left: none;
+    grid-template-rows: auto auto;
+  }
+
+  .booking-header-row {
+    padding: 14px 16px;
+
+    ion-card-title {
+      font-size: 18px;
+    }
+  }
+
+  .booking-details-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+
+  .booking-price {
+    align-items: flex-start;
+  }
+
+  .booking-actions {
+    align-items: stretch;
+  }
 }
 
-.acciones ion-button[color="medium"][fill="outline"] {
-  --border-color: #cbd5e1;
-  --color: #334155;
+/* === NUEVA SECCIÓN: SOLICITUDES DE RESERVA === */
+.solicitud-card {
+  margin: 20px 14px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+
+  ion-card-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 16px 20px;
+  }
+
+  ion-card-title {
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+
+  ion-card-subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+  }
 }
 
-/* Loader */
+.solicitud-item {
+  position: relative;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, .04);
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .06);
+  margin: 14px 0;
+  padding: 18px 22px;
+  transition: .25s ease;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  /* info | acciones (derecha) */
+  column-gap: 24px;
+  align-items: center;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 5px;
+    background: var(--ion-color-danger);
+    border-radius: 4px 0 0 4px;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, .1);
+  }
+}
+
+.solicitud-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+
+  .nombre-usuario {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+
+  .monto {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+  }
+
+  .rango-fechas {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+
+    ion-icon {
+      color: var(--ion-color-danger);
+      font-size: 16px;
+    }
+
+    ion-note {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  }
+
+  .nota-cliente {
+    font-style: italic;
+    color: #444;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    ion-icon {
+      color: var(--ion-color-danger);
+    }
+  }
+}
+
+.solicitud-acciones {
+  justify-self: end;
+  /* 🔥 pegado a la derecha */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  margin-left: 12px;
+
+  ion-button {
+    --border-radius: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    padding-inline: 18px;
+    min-width: 120px;
+    width: auto;
+    /* no se estiran */
+  }
+
+  ion-button[color="success"] {
+    --background: #22c55e;
+    --color: #fff;
+    box-shadow: 0 4px 10px rgba(34, 197, 94, .3);
+  }
+
+  ion-button[color="danger"][fill="outline"] {
+    --border-color: var(--ion-color-danger);
+    --color: var(--ion-color-danger);
+    background: #fff;
+  }
+}
+
+/* Responsive: en móvil se apilan y se centran */
+@media (max-width: 900px) {
+  .solicitud-item {
+    grid-template-columns: 1fr;
+    row-gap: 12px;
+    text-align: center;
+  }
+
+  .solicitud-info {
+    align-items: center;
+  }
+
+  .solicitud-acciones {
+    justify-self: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+
+    ion-button {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .solicitud-item {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    padding: 16px 18px;
+  }
+
+  .solicitud-info {
+    align-items: center;
+  }
+
+  .solicitud-acciones {
+    flex-direction: row;
+    justify-content: center;
+    margin: 10px 0 0;
+    width: 100%;
+
+    ion-button {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
+
 ion-skeleton-text {
   border-radius: 12px;
 }

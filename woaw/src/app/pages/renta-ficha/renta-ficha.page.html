@@ -52,9 +52,13 @@
         <aside class="bloque-principal">
           <div class="card-detalle">
             <h2>{{ r.marca }} <span class="car-name">{{ r.modelo }}</span></h2>
-            <div class="ubicacion" *ngIf="r.ubicacion">
+            <div class="ubicacion" *ngIf="r.ubicacion?.length">
               <ion-icon name="location-outline"></ion-icon>
-              <span>{{ r.ubicacion.ciudad }}, {{ r.ubicacion.estado }}</span>
+              <span>
+                <ng-container *ngFor="let u of r.ubicacion; let i = index">
+                  {{ u.ciudad }}, {{ u.estado }}<span *ngIf="i < (r.ubicacion?.length || 0) - 1"> • </span>
+                </ng-container>
+              </span>
             </div>
             <div class="precio-categoria">
               <div class="categoria" *ngIf="r.tipoVehiculo">
