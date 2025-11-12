@@ -64,10 +64,10 @@
           Arrendamiento
         </ion-button>
 
-        <!-- <ion-button fill="clear" [ngClass]="{ 'activo': isActive('renta') }"
+        <ion-button fill="clear" [ngClass]="{ 'activo': isActive('renta') }"
           (click)="redirecion('renta')">
           Renta de coches
-        </ion-button> -->
+        </ion-button>
 
         <ion-button fill="clear" [ngClass]="{ 'activo': isActive('seguros/disponibles') }"
           (click)="redirecion('seguros/disponibles')">
@@ -133,13 +133,13 @@
         </span>
       </ion-button>
 
-      <!-- <ion-button fill="clear" class="stack" [ngClass]="{ 'activo': isActive('renta') }"
+      <ion-button fill="clear" class="stack" [ngClass]="{ 'activo': isActive('renta') }"
         (click)="redirecion('renta')" *ngIf="!mostrarBuscador && esDispositivoMovil">
         <span class="vcol">
           <ion-icon name="key-outline"></ion-icon>
           <span class="label">Renta</span>
         </span>
-      </ion-button> -->
+      </ion-button>
 
       <ion-button fill="clear" class="stack" (click)="openMenu()">
         <span class="vcol">

@@ -6,6 +6,7 @@ import { CarsService } from '../../../services/cars.service';
 import { GeneralService } from '../../../services/general.service';
 import { SeguroService } from '../../../services/seguro.service';
 import { PdfService } from '../../../services/pdf.service';
+import { ReloadService } from '../../../services/reload.service';
 
 import { AfterViewInit, ElementRef, QueryList, ViewChildren, ViewChild } from '@angular/core';
 
@@ -126,7 +127,8 @@ export class SegurosPage implements OnInit {
     public carsService: CarsService,
     private fb: FormBuilder,
     private seguros: SeguroService,
-    private pdfService: PdfService
+    private pdfService: PdfService, 
+    private reloadService: ReloadService,
   ) {
     this.form = this.fb.group({
       marca: [null, Validators.required],
@@ -1345,7 +1347,7 @@ export class SegurosPage implements OnInit {
       }, 1000);
     }
   }
-  
+
   // ----- SPINNER -----
   private show_spinner(status: boolean, tipo: number, tex: string, texsub: string) {
     this.tipo_spinner = tipo;
