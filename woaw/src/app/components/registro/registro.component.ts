@@ -281,26 +281,13 @@ export class RegistroComponent implements OnInit {
 
   // BOTON DE REGRESAR A SECCION 1 ←
   async regresarASeccion1() {
-    
-    const alert = await this.alertController.create({
-      header: '¿Deseas regresar?',
-      message: 'Perderás los datos ingresados en esta sección.',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'alert-cancel-button',
-        },
-        {
-          text: 'Sí, regresar',
-          handler: () => {
+    this.generalService.confirmarAccion(
+      "Perderás los datos ingresados en esta sección.",
+      "¿Deseas regresar?",
+      async () => { 
             this.Seccionamostrar = 1;
-          },
-          cssClass: 'alert-confirm-button',
-        },
-      ],
-    });
-    await alert.present();
+      }
+    );  
   }
 
   // VALIDAR SECCIÓN DE CÓDIGO

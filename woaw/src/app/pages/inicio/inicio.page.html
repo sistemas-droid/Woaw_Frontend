@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<ion-content [fullscreen]="false" class="home-bg">
+<ion-content  [fullscreen]="false" class="home-bg">
   <ng-container *ngIf="splash">
     <video autoplay muted loop playsinline class="video-fondo2">
       <source [src]="videoSrc" type="video/mp4" />
@@ -7,19 +7,13 @@
     </video>
 
     <div class="texto-titulo" [ngClass]="{ 'animar-arriba': animarTexto }">
-      <h1
-        [ngStyle]="{ color: mostrarContenido.color === 'rojo' ? '#ff0000' : '#ffffff' }"
-      >
+      <h1 [ngStyle]="{ color: mostrarContenido.color === 'rojo' ? '#ff0000' : '#ffffff' }">
         {{ mostrarContenido.titulo }}
       </h1>
     </div>
 
-    <img
-      *ngIf="mostrarContenido.imagen != null"
-      [src]="mostrarContenido.imagen"
-      alt="Imagen ilustrativa"
-      [ngClass]="{ 'animar-info': animarImagen }"
-    />
+    <img *ngIf="mostrarContenido.imagen != null" [src]="mostrarContenido.imagen" alt="Imagen ilustrativa"
+      [ngClass]="{ 'animar-info': animarImagen }" />
 
     <div class="texto-contenido" [ngClass]="{ 'animar-arriba': animarTexto }">
       <p>{{ mostrarContenido.texto }}</p>
@@ -34,19 +28,13 @@
         Tu navegador no soporta el video HTML5.
       </video>
       <div class="texto-izquierdo" [ngClass]="{ 'animar-arriba': animarTexto }">
-        <h2
-          [ngStyle]="{ color: mostrarContenido.color === 'rojo' ? '#ff0000' : '#ffffff' }"
-        >
+        <h2 [ngStyle]="{ color: mostrarContenido.color === 'rojo' ? '#ff0000' : '#ffffff' }">
           {{ mostrarContenido.titulo }}
         </h2>
       </div>
       <br />
-      <img
-        *ngIf="mostrarContenido.imagen != null"
-        [src]="mostrarContenido.imagen"
-        alt="Imagen ilustrativa"
-        [ngClass]="{ 'animar-izquierda': animarImagen }"
-      />
+      <img *ngIf="mostrarContenido.imagen != null" [src]="mostrarContenido.imagen" alt="Imagen ilustrativa"
+        [ngClass]="{ 'animar-izquierda': animarImagen }" />
       <div class="texto-izquierdo" [ngClass]="{ 'animar-arriba': animarTexto }">
         <p>{{ mostrarContenido.texto }}</p>
       </div>
@@ -55,71 +43,40 @@
     <!-- LADO DERECHO -->
     <div class="lado-derecho">
       <div class="container_vidrio">
-        <app-login
-          *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro"
-        ></app-login>
-        <app-registro
-          *ngIf="!MostrarLogin && !MostrarRecuperacion && MostrarRegistro"
-        ></app-registro>
-        <app-resetpassword
-          *ngIf="!MostrarLogin && MostrarRecuperacion && !MostrarRegistro"
-        ></app-resetpassword>
+        <app-login *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro"></app-login>
+        <app-registro *ngIf="!MostrarLogin && !MostrarRecuperacion && MostrarRegistro"></app-registro>
+        <app-resetpassword *ngIf="!MostrarLogin && MostrarRecuperacion && !MostrarRegistro"></app-resetpassword>
         <p class="link-registro">
-          A
-          <span *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro"
-            >¿No tienes una cuenta?
+          <span *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro">¿No tienes una cuenta?
           </span>
           <span *ngIf="!MostrarLogin">¿Ya tienes cuenta?</span>
           <strong>
-            <span
-              (click)="cambioEstatus('registro')"
-              *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro"
-              >Registrarme</span
-            >
-            <span (click)="cambioEstatus('login')" *ngIf="!MostrarLogin"
-              >Iniciar Sesión</span
-            >
+            <span (click)="cambioEstatus('registro')"
+              *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro">Registrarme</span>
+            <span (click)="cambioEstatus('login')" *ngIf="!MostrarLogin">Iniciar Sesión</span>
           </strong>
         </p>
-        <p
-          class="link-registro"
-          *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro"
-        >
+        <p class="link-registro" *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro">
           <strong (click)="cambioEstatus('reset')">
-            <ion-icon
-              name="lock-closed-outline"
-              style="vertical-align: middle; margin-right: 6px"
-            ></ion-icon>
+            <ion-icon name="lock-closed-outline" style="vertical-align: middle; margin-right: 6px"></ion-icon>
             ¿Olvidaste tu contraseña?
           </strong>
         </p>
         <!-- Línea de separación -->
-        <div
-          *ngIf="MostrarLogin"
-          style="
+        <div *ngIf="MostrarLogin" style="
             width: 100%;
             height: 1px;
             background-color: #ccc;
             margin: 16px 0;
-          "
-        ></div>
+          "></div>
         <p class="link-registro" *ngIf="MostrarLogin">
           Acepto las
-          <a class="enlace-politica" (click)="mostrarTerminos()"
-            >Términos y condiciones</a
-          >
+          <a class="enlace-politica" (click)="mostrarTerminos()">Términos y condiciones</a>
           y el
-          <a class="enlace-politica" (click)="mostrarAviso()"
-            >Aviso de Privacidad</a
-          >.
+          <a class="enlace-politica" (click)="mostrarAviso()">Aviso de Privacidad</a>.
         </p>
 
-        <img
-          *ngIf="esDispositivoMovil"
-          [src]="imgenPrincipal"
-          alt="Fondo"
-          class="bg-img2"
-        />
+        <img *ngIf="esDispositivoMovil" [src]="imgenPrincipal" alt="Fondo" class="bg-img2" />
       </div>
     </div>
   </div>
