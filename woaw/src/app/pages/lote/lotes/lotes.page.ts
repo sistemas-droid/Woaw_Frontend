@@ -17,22 +17,18 @@ import { ActivatedRoute, Router } from '@angular/router';
   standalone: false
 })
 export class LotesPage implements OnInit {
+
   public isLoggedIn: boolean = false;
   public MyRole: 'admin' | 'lotero' | 'vendedor' | 'cliente' | null = null;
-
   addLote: boolean = false;
   terminoBusqueda: string = '';
-
-  // Datos visibles (según tab activo)
   lotes: any[] = [];
   lotesFiltrados: any[] = [];
   totalLotes: number = 0;
-
-  // Tabs: todos/mios
   activeTab: 'todos' | 'mios' = 'todos';
   lotesAll: any[] = [];
   lotesMine: any[] = [];
-
+  ranking: number[] = []; // ranking competitivo 1,2,2,3,...
   mostrarAuto: boolean = false;
   loteSelect: any[] = [];
 
@@ -55,9 +51,8 @@ export class LotesPage implements OnInit {
       if (rol === 'admin' || rol === 'lotero' || rol === 'vendedor' || rol === 'cliente') {
         this.MyRole = rol;
       } else {
-        this.MyRole = null; // usuarios no logueados o rol desconocido
+        this.MyRole = null;
       }
-      // Trae lotes cuando ya conocemos (o no) el rol
       this.getLotes();
     });
   }
@@ -66,31 +61,70 @@ export class LotesPage implements OnInit {
     this.addLote = !this.addLote;
   }
 
+  ordenarDesc(arr: any[]) {
+    return [...arr].sort((a, b) =>
+      (b?.conteoCoches?.total || 0) - (a?.conteoCoches?.total || 0)
+    );
+  }
+
+  generarRankingCompetitivo(lista: any[]) {
+
+    this.ranking = [];
+    let rank = 1;                  // Ranking real
+    let lastValue: number | null = null;
+    lista.forEach((lote, i) => {
+      const total = lote?.conteoCoches?.total || 0;
+
+      if (lastValue === null) {
+        this.ranking[i] = rank;
+      }
+      else if (total === lastValue) {
+        this.ranking[i] = rank;
+      }
+      else {
+        rank++;
+        this.ranking[i] = rank;
+      }
+      lastValue = total;
+    });
+
+    // console.table(
+    //   lista.map((lote, idx) => ({
+    //     idx,
+    //     nombre: lote?.nombre,
+    //     total: lote?.conteoCoches?.total || 0,
+    //     ranking: this.ranking[idx],
+    //   }))
+    // );
+  }
+
   getLotes() {
-    // Siempre trae TODOS
     this.loteservice.getlotes('all').subscribe({
       next: async (res) => {
-        this.lotesAll = res?.lotes || [];
 
-        // Si es admin/lotero, también trae MIS lotes
+        this.lotesAll = this.ordenarDesc(res?.lotes || []);
+
         if (this.MyRole === 'admin' || this.MyRole === 'lotero') {
+
           this.loteservice.getlotes('mios').subscribe({
             next: async (res2) => {
-              this.lotesMine = res2?.lotes || [];
-              this.applyTab(this.activeTab); // respeta el tab activo
+              this.lotesMine = this.ordenarDesc(res2?.lotes || []);
+
+              this.applyTab(this.activeTab);
             },
             error: async () => {
               this.lotesMine = [];
               this.applyTab('todos');
             }
           });
+
         } else {
-          // Otros roles o visitantes: solo "todos"
           this.lotesMine = [];
           this.applyTab('todos');
         }
       },
-      error: async (error) => {
+
+      error: async () => {
         await this.generalService.loadingDismiss();
         await this.generalService.alert(
           'Verifica tu red',
@@ -104,8 +138,9 @@ export class LotesPage implements OnInit {
   applyTab(tab: 'todos' | 'mios') {
     this.activeTab = tab;
     const base = (tab === 'mios') ? this.lotesMine : this.lotesAll;
-    this.lotes = base;
-    this.filtrarLotes(); // usa el término actual y actualiza total
+    this.lotes = this.ordenarDesc(base);
+    this.generarRankingCompetitivo(this.lotes);
+    this.filtrarLotes();
   }
 
   getFechaBonita(fecha: string): string {
@@ -130,13 +165,13 @@ export class LotesPage implements OnInit {
     const base = (this.activeTab === 'mios') ? this.lotesMine : this.lotesAll;
 
     if (!termino) {
-      this.lotesFiltrados = [...base];
+      this.lotesFiltrados = this.ordenarDesc(base);
+      this.generarRankingCompetitivo(this.lotesFiltrados);
       this.totalLotes = this.lotesFiltrados.length;
       return;
     }
 
     this.lotesFiltrados = base.filter((lote) => {
-      // direccion puede ser objeto o arreglo; tomamos el primero si es arreglo
       const dir = Array.isArray(lote?.direccion) ? lote.direccion[0] : lote?.direccion;
       const nombre = (lote?.nombre || '').toLowerCase();
       const ciudad = (dir?.ciudad || '').toLowerCase();
@@ -149,6 +184,8 @@ export class LotesPage implements OnInit {
       );
     });
 
+    this.lotesFiltrados = this.ordenarDesc(this.lotesFiltrados);
+    this.generarRankingCompetitivo(this.lotesFiltrados);
     this.totalLotes = this.lotesFiltrados.length;
   }
 

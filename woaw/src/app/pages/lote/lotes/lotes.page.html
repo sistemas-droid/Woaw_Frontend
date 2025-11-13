@@ -1,7 +1,6 @@
 <app-navbar></app-navbar>
 
 <ion-content [fullscreen]="true">
-
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-down-outline" refreshingSpinner="crescent"
       pullingText="Desliza para actualizar" refreshingText="Actualizando...">
@@ -13,36 +12,60 @@
     <div class="boton-container" *ngIf="!mostrarAuto">
       <div class="header-lotes-bar">
 
-        <ion-searchbar *ngIf="!addLote" [(ngModel)]="terminoBusqueda" (ionInput)="filtrarLotes()"
-          placeholder="Buscar lote..." debounce="300" class="buscador-lotes">
-        </ion-searchbar>
+        <!-- 🔹 Lado izquierdo: buscador + título a la derecha -->
+        <div class="header-lotes-left">
+          <ion-searchbar *ngIf="!addLote" [(ngModel)]="terminoBusqueda" (ionInput)="filtrarLotes()"
+            placeholder="Buscar lote..." debounce="300" class="buscador-lotes">
+          </ion-searchbar>
+
+          <h1 class="titulo-seccion-lotes">Lotes</h1>
+        </div>
 
         <ion-segment *ngIf="MyRole === 'admin' || MyRole === 'lotero'" [value]="activeTab"
           (ionChange)="applyTab($event.detail.value === 'mios' ? 'mios' : 'todos')">
+
           <ion-segment-button value="todos">
             Todos ({{ lotesAll.length }})
           </ion-segment-button>
+
           <ion-segment-button value="mios">
             Mis lotes ({{ lotesMine.length }})
           </ion-segment-button>
+
         </ion-segment>
 
-        <!-- Título -->
         <h2 class="titulo-lotes">{{ totalLotes }} Resultados</h2>
 
       </div>
     </div>
 
-    <!-- mostrar lotes ...  -->
+
+    <!-- GRID -->
     <ion-grid *ngIf="!addLote && !mostrarAuto" class="ocntenedor_css_lotes">
       <ion-row class="lotes-row">
-        <ion-col size="6" size-md="4" size-lg="3" size-xl="2" *ngFor="let lote of lotesFiltrados" class="lote-col">
+
+        <ion-col size="6" size-md="4" size-lg="3" size-xl="2" *ngFor="let lote of lotesFiltrados; let i = index"
+          class="lote-col">
+
           <ion-card class="lote-card" (click)="mostrarAutos(lote)" button>
+
+            <!-- 🥇🥈🥉 MEDALLAS SOLO PARA 1,2,3 -->
+            <div class="ranking-badge" *ngIf="ranking[i] === 1 || ranking[i] === 2 || ranking[i] === 3">
+              <span [ngClass]="{
+                'gold': ranking[i] === 1,
+                'silver': ranking[i] === 2,
+                'bronze': ranking[i] === 3
+              }">
+                {{ ranking[i] }}
+              </span>
+            </div>
+
             <div class="lote-img">
               <img [src]="lote.imagenPrincipal" alt="Imagen del lote" />
             </div>
 
             <ion-card-header class="lote-header">
+
               <ion-card-title class="lote-title clamp-2">
                 <ion-icon name="business-outline"></ion-icon>
                 {{ lote.nombre }}
@@ -57,9 +80,13 @@
                 <ion-icon name="car-sport-outline"></ion-icon>
                 Total: {{ lote.conteoCoches?.total }}
               </ion-card-subtitle>
+
             </ion-card-header>
+
           </ion-card>
+
         </ion-col>
+
       </ion-row>
     </ion-grid>
 
