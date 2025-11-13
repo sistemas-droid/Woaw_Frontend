@@ -776,39 +776,48 @@ ion-item {
   /* SOLO MÓVIL: tarjetas compactas */
   @media (max-width: 720px) {
 
-    /* que el bloque general no se suba tanto en cel */
-    margin: -80px auto 24px;
-
-    .tarjeta-arr {
-      min-height: auto;          /* ya no tan largas */
-      margin-top: -40px;         /* menos montadas que en desktop */
-      padding: 14px 12px;        /* más compacto */
-      border-radius: 10px;
-      box-shadow: 0 0px 8px rgba(0, 0, 0, 0.16);
-    }
-
-    .tarjeta-arr h5 {
-      font-size: 16px;
-      margin-bottom: 8px;
-    }
-
-    .tarjeta-arr p {
-      font-size: 13px;
-      line-height: 1.4;
-      margin-bottom: 8px;
-    }
-
-    .tarjeta-arr ul li {
-      font-size: 13px;
-      margin-bottom: 5px;
-      line-height: 1.35;
-    }
-
-    .tarjeta-arr ul li ion-icon {
-      font-size: 16px;
-      margin-right: 6px;
-    }
+  /* CONTENEDOR GENERAL DE LA SECCIÓN */
+  .bloque-arrendamiento {
+    margin: -40px auto 20px;  /* antes -80px: ahora se sube menos */
+    padding: 0 12px 24px;     /* un poco de respiración lateral */
   }
+
+  .tarjeta-arr {
+    min-height: auto;
+    width: 100%;
+    margin: 0 0 12px;         /* espacio entre tarjeta y tarjeta */
+    padding: 14px 12px;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.16);
+  }
+
+  /* por si las tarjetas están seguidas en el DOM, asegurar gap extra */
+  .tarjeta-arr + .tarjeta-arr {
+    margin-top: 12px;
+  }
+
+  .tarjeta-arr h5 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .tarjeta-arr p {
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+
+  .tarjeta-arr ul li {
+    font-size: 13px;
+    margin-bottom: 5px;
+    line-height: 1.35;
+  }
+
+  .tarjeta-arr ul li ion-icon {
+    font-size: 16px;
+    margin-right: 6px;
+  }
+}
 }
 .custom-btn {
   display: flex;
