@@ -476,45 +476,8 @@ ion-item {
   scrollbar-width: thin;
   scrollbar-color: #e00909 transparent;
 
-  /* 👉 Cards más chicas y sin verse gigantes */
-  .marca-card {
-    width: 80px;   /* tamaño ideal y fijo */
-    height: 80px;  /* cuadrado real */
-    padding: 8px;
-    gap: 6px;
-    border-radius: 12px;
-  }
 
-  /* 👉 Logo más bonito, sin verse exagerado */
-  .marca-card img {
-    width: 60%;        /* baja un poco, se ve perfecto */
-    height: auto;
-    object-fit: contain;
-  }
-
-  /* 👉 Nombre con espacio de aire */
-  .marca-card span.marca-nombre-grid {
-    font-size: 11px;
-    margin-top: 4px;
-    line-height: 1.1;
-    white-space: normal;  /* permite dos líneas si hace falta */
-    text-align: center;
-  }
-
-  /* 👉 Scrollbar */
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #0a0a0a;
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-}
+ }
 }
 
 .marca-card {
