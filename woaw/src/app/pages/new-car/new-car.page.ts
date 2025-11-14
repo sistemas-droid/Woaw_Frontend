@@ -155,7 +155,6 @@ export class NewCarPage implements OnInit {
         }
       }
     } else {
-      // Renta y otros no se tocan
       this.Pregunta = "no";
       this.seccionFormulario = 2;
       this.tipoSeleccionado = null;
@@ -467,7 +466,7 @@ export class NewCarPage implements OnInit {
       case "auto":
         this.PeticionesMarcasDeAutos(anio);
         break;
-      case "renta": // sin año: catálogo global
+      case "renta": 
         this.carsService.getMarcas_all().subscribe({
           next: (data: Marca[]) => {
             this.marcas = (data || []).sort((a: Marca, b: Marca) =>
@@ -493,7 +492,7 @@ export class NewCarPage implements OnInit {
         this.PeticionesMarcasDeCamion();
         break;
       case "lote":
-        console.log("Arrendamiento próximamente...");
+        console.log("lote próximamente...");
         break;
       default:
         console.warn("Tipo no reconocido:", this.seleccion);

@@ -2,60 +2,225 @@
 
 <ion-content [fullscreen]="true">
 
-  <ion-grid class="grid-container" *ngIf="isLoggedIn">
-    <ion-row class="grid-row">
 
 
-      <ion-col size="12" size-md="12">
-        <ion-card class="formulario-lote">
+  <ion-card class="formulario-lote">
+    <ion-card-header class="card-header-custom">
+      <div class="header-content">
+        <ion-button fill="clear" color="dark" class="btn-back" (click)="regresar()">
+          <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+        </ion-button>
 
-          <ion-card-header class="card-header-custom">
-            <div class="header-content">
-              <ion-button fill="clear" color="dark" class="btn-back" (click)="regresar()">
-                <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
-              </ion-button>
+        <div class="logo-title-container">
+          <div class="logo-circle">
+            <ion-icon name="car-sport-outline" class="logo-icon"></ion-icon>
+          </div>
+          <div class="title-container">
+            <ion-card-title class="titulo-principal">Registra tu coche de renta</ion-card-title>
+            <ion-card-subtitle class="subtitulo" *ngIf="posicion == 1">Completa la información</ion-card-subtitle>
+            <ion-card-subtitle class="subtitulo" *ngIf="posicion == 2">Agrega tu ubicación</ion-card-subtitle>
+          </div>
+        </div>
+      </div>
+    </ion-card-header>
+    <ion-card-content>
 
-              <div class="logo-title-container">
-                <div class="logo-circle">
-                  <ion-icon name="car-sport-outline" class="logo-icon"></ion-icon>
-                </div>
-                <div class="title-container">
-                  <ion-card-title class="titulo-principal">Registra tu <br> coche de renta</ion-card-title>
-                  <ion-card-subtitle class="subtitulo" *ngIf="posicion">Completa la información</ion-card-subtitle>
-                  <ion-card-subtitle class="subtitulo" *ngIf="!posicion">Agrega tu ubicación</ion-card-subtitle>
-                </div>
-              </div>
-            </div>
-          </ion-card-header>
-
-          <ion-card-content>
+      <ion-grid *ngIf="isLoggedIn">
+        <ion-row>
+          <ion-col size="12" size-md="7">
             <div>
               <ion-grid>
                 <ion-row class="seccion-formulario">
 
-                  <ion-col size="12" size-md="6" class="campo-formulario">
-                    <ion-label position="stacked" class="etiqueta-campo">
-                      Marca: <strong class="obligatorio">*</strong>
-                    </ion-label>
-                    <ion-input [(ngModel)]="marca" placeholder="Ej. Toyota, Honda, Ford" maxlength="25"
-                      autocapitalize="characters" inputmode="text" class="input-mayusculas">
-                    </ion-input>
-                    <ion-note *ngIf="marca.length > 25" color="danger" class="mensaje-error">
-                      Máximo 25 caracteres.
-                    </ion-note>
-                  </ion-col>
+                  <ng-container *ngIf="posicion == 1">
+                    <!-- MARCA -->
+                    <ion-col size="12" size-md="6" class="campo-formulario">
+                      <ion-label position="stacked" class="etiqueta-campo">
+                        Marca: <strong class="obligatorio">*</strong>
+                      </ion-label>
+                      <div class="dropdown-container">
+                        <ion-input [(ngModel)]="marca" placeholder="Ej. Toyota, Honda, Ford" maxlength="25"
+                          autocapitalize="characters" inputmode="text" class="input-mayusculas"
+                          (ionFocus)="toggleDropdown('marcas')" (ionInput)="onMarcaInput($event)"
+                          (ionBlur)="onBlur('marcas')">
+                        </ion-input>
+                        <div class="custom-dropdown" *ngIf="dropdowns.marcas.mostrar && marcasFiltradas.length > 0">
+                          <div class="dropdown-item" *ngFor="let marcaItem of marcasFiltradas"
+                            (click)="seleccionarMarca(marcaItem)">
+                            <img [src]="marcaItem.imageUrl" [alt]="marcaItem.nombre" class="marca-image">
+                            {{ marcaItem.nombre }}
+                          </div>
+                        </div>
+                      </div>
+                      <ion-note color="danger" class="mensaje-error">
+                        {{ validarCampo_inputs('marca', marca, 25) }}
+                      </ion-note>
+                    </ion-col>
 
-                  <ion-col size="12" size-md="6" class="campo-formulario">
-                    <ion-label position="stacked" class="etiqueta-campo">
-                      Modelo: <strong class="obligatorio">*</strong>
-                    </ion-label>
-                    <ion-input [(ngModel)]="modelo" placeholder="Ej. Corolla, Civic, F-150" maxlength="25"
-                      class="input-estandar">
-                    </ion-input>
-                    <ion-note *ngIf="modelo.length > 25" color="danger" class="mensaje-error">
-                      Máximo 25 caracteres.
-                    </ion-note>
-                  </ion-col>
+                    <!-- MODELO -->
+                    <ion-col size="12" size-md="6" class="campo-formulario">
+                      <ion-label position="stacked" class="etiqueta-campo">
+                        Modelo: <strong class="obligatorio">*</strong>
+                      </ion-label>
+                      <div class="dropdown-container">
+                        <ion-input [(ngModel)]="modelo" placeholder="Ej. Corolla, Civic, F-150" maxlength="25"
+                          class="input-estandar" [disabled]="!marca" (ionFocus)="toggleDropdown('modelos')"
+                          (ionInput)="onModeloInput($event)" (ionBlur)="onBlur('modelos')">
+                        </ion-input>
+                        <div class="custom-dropdown" *ngIf="dropdowns.modelos.mostrar && modelosFiltrados.length > 0">
+                          <div class="dropdown-item" *ngFor="let modeloItem of modelosFiltrados"
+                            (click)="seleccionarModelo(modeloItem)">
+                            {{ modeloItem.modelo || modeloItem.nombre }}
+                          </div>
+                        </div>
+                      </div>
+                      <ion-note color="danger" class="mensaje-error">
+                        {{ validarCampo_inputs('modelo', modelo, 25) }}
+                      </ion-note>
+                    </ion-col>
+                  </ng-container>
+
+                  <ng-container *ngIf="posicion == 2">
+                    <!-- TIPO -->
+                    <ion-col size="12" size-md="6" class="campo-formulario">
+                      <ion-label position="stacked" class="etiqueta-campo">
+                        Tipo: <strong class="obligatorio">*</strong>
+                      </ion-label>
+                      <div class="dropdown-container">
+                        <ion-input [(ngModel)]="tipo" placeholder="Ej. Sedán, SUV, Camioneta" maxlength="25"
+                          class="input-estandar" (ionFocus)="toggleDropdown('tipos')" (ionInput)="onTipoInput($event)"
+                          (ionBlur)="onBlur('tipos')">
+                        </ion-input>
+                        <div class="custom-dropdown" *ngIf="dropdowns.tipos.mostrar && tiposFiltrados.length > 0">
+                          <div class="dropdown-item" *ngFor="let tipoItem of tiposFiltrados"
+                            (click)="seleccionarTipo(tipoItem)">
+                            {{ tipoItem.nombre }}
+                          </div>
+                        </div>
+                      </div>
+                      <ion-note color="danger" class="mensaje-error">
+                        {{ validarCampo_inputs('tipo', tipo, 25) }}
+                      </ion-note>
+                    </ion-col>
+
+                    <!-- TRANSMISIÓN -->
+                    <ion-col size="12" size-md="6" class="campo-formulario">
+                      <ion-label position="stacked" class="etiqueta-campo">
+                        Transmisión: <strong class="obligatorio">*</strong>
+                      </ion-label>
+                      <div class="dropdown-container">
+                        <ion-input [(ngModel)]="transmision" placeholder="Ej. Automática, Manual" maxlength="25"
+                          class="input-estandar" (ionFocus)="toggleDropdown('transmisiones')"
+                          (ionInput)="onTransmisionInput($event)" (ionBlur)="onBlur('transmisiones')">
+                        </ion-input>
+                        <div class="custom-dropdown"
+                          *ngIf="dropdowns.transmisiones.mostrar && transmisionesFiltradas.length > 0">
+                          <div class="dropdown-item" *ngFor="let transmisionItem of transmisionesFiltradas"
+                            (click)="seleccionarTransmision(transmisionItem)">
+                            {{ transmisionItem.nombre }}
+                          </div>
+                        </div>
+                      </div>
+                      <ion-note color="danger" class="mensaje-error">
+                        {{ validarCampo_inputs('transmision', transmision, 25) }}
+                      </ion-note>
+                    </ion-col>
+
+                    <!-- COMBUSTIBLE -->
+                    <ion-col size="12" size-md="6" class="campo-formulario">
+                      <ion-label position="stacked" class="etiqueta-campo">
+                        Combustible: <strong class="obligatorio">*</strong>
+                      </ion-label>
+                      <div class="dropdown-container">
+                        <ion-input [(ngModel)]="combustible" placeholder="Ej. Gasolina, Diésel, Eléctrico"
+                          maxlength="25" class="input-estandar" (ionFocus)="toggleDropdown('combustibles')"
+                          (ionInput)="onCombustibleInput($event)" (ionBlur)="onBlur('combustibles')">
+                        </ion-input>
+                        <div class="custom-dropdown"
+                          *ngIf="dropdowns.combustibles.mostrar && combustiblesFiltrados.length > 0">
+                          <div class="dropdown-item" *ngFor="let combustibleItem of combustiblesFiltrados"
+                            (click)="seleccionarCombustible(combustibleItem)">
+                            {{ combustibleItem.nombre }}
+                          </div>
+                        </div>
+                      </div>
+                      <ion-note color="danger" class="mensaje-error">
+                        {{ validarCampo_inputs('combustible', combustible, 25) }}
+                      </ion-note>
+                    </ion-col>
+
+                    <!-- PASAJEROS -->
+                    <ion-col size="12" size-md="6" class="campo-formulario">
+                      <ion-label position="stacked" class="etiqueta-campo">
+                        Pasajeros: <strong class="obligatorio">*</strong>
+                      </ion-label>
+                      <div class="dropdown-container">
+                        <ion-input [(ngModel)]="pasajeros" placeholder="Ej. 4, 5, 7" maxlength="2"
+                          class="input-estandar" inputmode="numeric" (ionFocus)="toggleDropdown('pasajeros')"
+                          (ionInput)="onPasajerosInput($event)" (ionBlur)="onBlur('pasajeros')">
+                        </ion-input>
+                        <div class="custom-dropdown"
+                          *ngIf="dropdowns.pasajeros.mostrar && pasajerosFiltrados.length > 0">
+                          <div class="dropdown-item" *ngFor="let pasajeroItem of pasajerosFiltrados"
+                            (click)="seleccionarPasajeros(pasajeroItem)">
+                            {{ pasajeroItem.nombre }}
+                          </div>
+                        </div>
+                      </div>
+                      <ion-note color="danger" class="mensaje-error">
+                        {{ validarCampo_inputs('pasajeros', pasajeros, 2) }}
+                      </ion-note>
+                    </ion-col>
+
+                    <!-- PRECIO POR DÍA -->
+                    <ion-col size="12" size-md="6" class="campo-formulario">
+                      <ion-label position="stacked" class="etiqueta-campo">
+                        Precio por Día: <strong class="obligatorio">*</strong>
+                      </ion-label>
+                      <div class="dropdown-container">
+                        <ion-input [(ngModel)]="precioPorDia" placeholder="Ej. 500, 750, 1000" maxlength="6"
+                          class="input-estandar" inputmode="numeric" (ionFocus)="toggleDropdown('precios')"
+                          (ionInput)="onPrecioInput($event)" (ionBlur)="onBlur('precios')">
+                        </ion-input>
+                        <div class="custom-dropdown" *ngIf="dropdowns.precios.mostrar && preciosFiltrados.length > 0">
+                          <div class="dropdown-item" *ngFor="let precioItem of preciosFiltrados"
+                            (click)="seleccionarPrecio(precioItem)">
+                            ${{ precioItem.nombre }} MXN
+                          </div>
+                        </div>
+                      </div>
+                      <ion-note color="danger" class="mensaje-error">
+                        {{ validarCampo_inputs('precioPorDia', precioPorDia, 6) }}
+                      </ion-note>
+                    </ion-col>
+
+                    <!-- EDAD MÍNIMA -->
+                    <ion-col size="12" size-md="6" class="campo-formulario">
+                      <ion-label position="stacked" class="etiqueta-campo">
+                        Edad Mínima: <strong class="obligatorio">*</strong>
+                      </ion-label>
+                      <div class="dropdown-container">
+                        <ion-input [(ngModel)]="edadMinima" placeholder="Ej. 21, 25, 30" maxlength="2"
+                          class="input-estandar" inputmode="numeric" (ionFocus)="toggleDropdown('edades')"
+                          (ionInput)="onEdadInput($event)" (ionBlur)="onBlur('edades')">
+                        </ion-input>
+                        <div class="custom-dropdown" *ngIf="dropdowns.edades.mostrar && edadesFiltradas.length > 0">
+                          <div class="dropdown-item" *ngFor="let edadItem of edadesFiltradas"
+                            (click)="seleccionarEdad(edadItem)">
+                            {{ edadItem.nombre }} años
+                          </div>
+                        </div>
+                      </div>
+                      <ion-note color="danger" class="mensaje-error">
+                        {{ validarCampo_inputs('edadMinima', edadMinima, 2) }}
+                      </ion-note>
+                    </ion-col>
+                  </ng-container>
+
+
+                  <ng-container *ngIf="posicion == 3">
+                    Está sección esta en pruebas !!! Por el momento esta sección no está disponible.
+                  </ng-container>
 
                 </ion-row>
               </ion-grid>
@@ -63,25 +228,45 @@
               <div class="botones-accion" *ngIf="tipoDispocitivo !== 'telefono'">
                 <div class="boton-publicar-container">
                   <div class="botones-fila">
-                    <ion-button color="dark" expand="block" type="button" class="btn-crear-lote" (click)="cancelar()">
-                      <ion-icon slot="start" name="close-outline"></ion-icon>
-                      Cancelar
-                    </ion-button>
-                    <ion-button color="danger" expand="block" type="button" class="btn-crear-lote" 
-                      [disabled]="!marca || !modelo">
-                      <ion-icon name="save-outline" slot="end"></ion-icon>
-                      Guardar
-                    </ion-button>
+                    <button expand="block" *ngIf="posicion != 1 " type="button" class="btn-crear-lote btn-dark"
+                      (click)="regresarPocicion()">
+                      <ion-icon name="arrow-back"></ion-icon>
+                      Regresar
+                    </button>
+                    <button expand="block" *ngIf="marca" type="button" class="btn-crear-lote btn-dark"
+                      (click)="limpiarPorPosicion()">
+                      <ion-icon name="trash"></ion-icon>
+                      Limpiar
+                    </button>
+                    <button expand="block" type="button" class="btn-crear-lote btn-danger"
+                      [disabled]="!marca || !modelo" (click)="sigiente()">
+                      <p *ngIf="posicion != 3"> Continuar</p>
+                      <p *ngIf="posicion == 3"> Publicar coche</p>
+                      <ion-icon name="arrow-forward"></ion-icon>
+                    </button>
                   </div>
                 </div>
               </div>
-            </div>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
 
-    </ion-row>
-  </ion-grid>
+            </div>
+          </ion-col>
+
+          <ion-col size="12" size-md="5">
+            <div class="container_info">
+              <img src="/assets/renta/woalft.png" alt="Imagen descriptiva" class="imagen-centrada">
+              <div class="texto-imagen">
+                <h3>Convierte tu auto en ingresos</h3>
+                <p>Sube tu coche a nuestra plataforma y comienza a rentarlo hoy mismo</p>
+              </div>
+            </div>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+
+    </ion-card-content>
+  </ion-card>
+  <br><br><br>
 
   <div *ngIf="!isLoggedIn" class="mensaje-autenticacion">
     Para publicar un <strong>Lote</strong>, primero debes iniciar sesión o crear una cuenta.
@@ -90,3 +275,33 @@
 
   <app-footer *ngIf="tipoDispocitivo !== 'telefono'"></app-footer>
 </ion-content>
+
+
+<ion-footer *ngIf="tipoDispocitivo === 'telefono'" class="safe-footer footer_css_seguros">
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-button fill="clear" *ngIf="posicion  != 1" (click)="sigiente()">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+        Atrás
+      </ion-button>
+      <ion-button fill="clear" *ngIf="marca && posicion == 1" (click)="limpiarPorPosicion()">
+        <ion-icon name="close"></ion-icon>
+        Limpiar
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button *ngIf="posicion != 3" color="danger" fill="solid" type="button" [disabled]="!marca || !modelo"
+        (click)="sigiente()">
+        Continuar
+        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="posicion == 3" color="danger" fill="solid" type="submit" (click)="sigiente()">
+        Publicar coche
+        <ion-icon name="save-outline" slot="end"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-footer>
