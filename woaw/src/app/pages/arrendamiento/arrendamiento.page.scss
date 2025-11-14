@@ -295,109 +295,156 @@ ion-item {
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.18);
 
+  /* 🔥 ENCABEZADO PERFECTO */
+.encabezado-arrendamiento {
+  display: grid;
+  grid-template-columns: auto 1fr auto;  /* botón - centro - logo */
+  align-items: center;
+  gap: clamp(0.5rem, 2vw, 1rem);
+  margin-bottom: 20px;
+  width: 100%;
 
+  /* BOTÓN */
+  .btn-regresar {
+    background: #ff2d2d;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
 
-  .encabezado-arrendamiento {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: clamp(0.5rem, 2vw, 1rem);
-    margin-bottom: 20px;
-    flex-wrap: nowrap;
+    gap: 5px;
+    font-size: clamp(10px, 2vw, 12px);
+    white-space: nowrap;
+
+    justify-self: start; /* 🔥 LO PEGA A LA IZQUIERDA EN WEB */
+
+    ion-icon {
+      font-size: clamp(14px, 2.5vw, 18px);
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  /* TÍTULO CENTRADO (ajusta según tu etiqueta real) */
+  h2,
+  .titulo-categoria {
+    justify-self: center;
+    text-align: center;
+    margin: 0;
+  }
+
+  /* LOGOS CENTRADOS (web) */
+  .img_logo,
+  .img_coche2,
+  .img_camion2 {
+    justify-self: center;
+    width: clamp(70px, 8vw, 90px);
+    height: auto;
+    object-fit: contain;
+    transform: translateX(-50%); /* ajuste visual solo en web */
+  }
+
+  /* Ajustes especiales de tamaños */
+  .img_coche2 {
+    width: clamp(60px, 10vw, 140px);
+  }
+
+  .img_camion2 {
+    width: clamp(30px, 6vw, 40px);
+  }
+
+  /* BUSCADOR (debajo del título en web) */
+  .buscador {
+    grid-row: 2;          /* fila 2 debajo del título */
+    grid-column: 1 / 4;   /* ocupa TODA la fila */
+    justify-self: center;
+
+    width: 100%;
+    max-width: 350px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 6px 10px;
+    background: #fff;
+
+    ion-icon {
+      color: #999;
+      font-size: 18px;
+    }
+
+    input {
+      border: none;
+      outline: none;
+      flex: 1;
+      font-size: clamp(12px, 2vw, 14px);
+      color: #333;
+      min-width: 60px;
+    }
+  }
+
+  /* TABLET */
+  @media (max-width: 768px) {
+    gap: 0.5rem;
 
     .btn-regresar {
-      background: #ff2d2d;
-      color: #fff;
-      padding: 10px 15px;
-      border-radius: 6px;
-      font-weight: 500;
-
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      border: none;
-      cursor: pointer;
-      font-size: clamp(10px, 2vw, 12px);
-      white-space: nowrap;
-
-      ion-icon {
-        font-size: clamp(14px, 2.5vw, 18px);
-      }
-
-      &:hover {
-        opacity: 0.8;
-      }
-    }
-
-    .img_coche2 {
-      width: clamp(60px, 10vw, 140px);
-      height: auto;
-      object-fit: contain;
-    }
-
-    .img_camion2 {
-      width: clamp(30px, 6vw, 40px);
-      height: auto;
-      object-fit: contain;
-    }
-
-    .img_logo {
-      width: clamp(70px, 8vw, 90px);
-      height: auto;
-      object-fit: contain;
+      font-size: 13px;
     }
 
     .buscador {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 6px 10px;
-      background: #fff;
-      max-width: 300px;
-
-      ion-icon {
-        color: #999;
-        font-size: 18px;
-      }
-
-      input {
-        border: none;
-        outline: none;
-        flex: 1;
-        font-size: clamp(12px, 2vw, 14px);
-        color: #333;
-        min-width: 60px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      justify-content: space-between;
-      gap: 0.5rem;
-
-      .buscador {
-        max-width: 180px;
-        padding: 4px 8px;
-      }
-
-      .btn-regresar {
-        font-size: 13px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      flex-wrap: wrap;
-      justify-content: center;
-
-      .buscador {
-        flex: 1 1 100%;
-        max-width: none;
-        margin-top: 8px;
-      }
+      max-width: 280px;
+      padding: 4px 8px;
     }
   }
+
+  /* MOBILE */
+  @media (max-width: 480px) {
+    /* Reorganizamos todo en una columna */
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    row-gap: 0.6rem;
+
+    .btn-regresar {
+      grid-column: 1;
+      grid-row: 1;          /* 🔝 PRIMERO */
+      justify-self: flex-start;  /* a la izquierda */
+      margin-left: 0;       /* se respeta el padding del contenedor */
+    }
+
+    h2,
+    .titulo-categoria {
+      grid-column: 1;
+      grid-row: 2;          /* debajo del botón */
+      justify-self: center;
+    }
+
+    .img_logo,
+    .img_coche2,
+    .img_camion2 {
+      grid-column: 1;
+      grid-row: 3;          /* debajo de COCHES */
+      transform: translateX(0);  /* centrado perfecto en móvil */
+    }
+
+    .buscador {
+      grid-column: 1;
+      grid-row: 4;          /* debajo del logo */
+      width: 100%;
+      max-width: none;
+      margin-top: 8px;
+    }
+  }
+}
+
 /* ====== CARD GENERAL (DESKTOP + BASE) ====== */
 .marca-card {
   background: #fff;
@@ -423,7 +470,7 @@ ion-item {
   }
 
   span.marca-nombre-grid {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
     text-align: center;
     line-height: 1;
@@ -509,7 +556,7 @@ ion-item {
   }
 
   span.marca-nombre-grid {
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 600;
     text-align: center;
     line-height: 1;
