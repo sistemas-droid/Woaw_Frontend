@@ -12,106 +12,114 @@
   </ion-toolbar>
 </ion-header>
 
-<app-acomodo
-  [totalAutos]="totalAutos"
-  (ordenCambio)="ordenarAutos($event)"
-  [titulo]="'Lote'">
+<app-acomodo [totalAutos]="totalAutos" (ordenCambio)="ordenarAutos($event)" [titulo]="'Lote'">
 </app-acomodo>
 
 <ion-content [fullscreen]="true">
- 
- <ng-container class="contenedor_css">
-   <!-- Ficha del lote -->
-  <div class="ficha-lote" *ngIf="lote">
-    <div class="ficha-lote__head">
-      <!-- Columna de texto -->
-      <div class="ficha-lote__texto">
-        <h2 class="ficha-lote__titulo">
-          <ion-icon name="business-outline" color="danger"></ion-icon>
-          {{ lote.nombre }}
-        </h2>
+  <ng-container class="contenedor_css">
+    <div class="ficha-lote" *ngIf="lote">
 
-        <p class="ficha-lote__campo">
-          <ion-icon name="call-outline"></ion-icon>
-          <span (click)="copiarTelefono()"> (+52){{ lote.telefonoContacto }}</span>
-        </p>
+      <h2 class="ficha-lote__titulo titulo-mobile">
+        <ion-icon name="business-outline" color="danger"></ion-icon>
+        {{ lote.nombre }}
+      </h2>
 
-        <p class="ficha-lote__campo">
-          <ion-icon name="location-outline"></ion-icon>
-          {{ direccionCompleta }}
-        </p>
+      <div class="ficha-lote__head">
 
-        <div class="ficha-lote__actions" *ngIf="isOwner">
-          <ion-button color="primary" size="small" (click)="editarLote()">
-            <ion-icon name="create-outline" slot="start"></ion-icon>
-            Editar
-          </ion-button>
+        <div class="ficha-lote__img">
+          <img class="ficha-lote__imagen" [src]="previewImagenPrincipal || ''" alt="Imagen de {{ lote.nombre }}"
+            (click)="abrirImagen(previewImagenPrincipal || lote?.imagenPrincipal)" />
         </div>
-      </div>
 
-      <!-- Columna de imagen -->
-      <div class="ficha-lote__img">
-        <img class="ficha-lote__imagen" [src]="previewImagenPrincipal || ''" alt="Imagen de {{ lote.nombre }}" />
+        <div class="ficha-lote__texto">
+
+          <h2 class="ficha-lote__titulo titulo-desktop">
+            <ion-icon name="business-outline" color="danger"></ion-icon>
+            {{ lote.nombre }}
+          </h2>
+
+          <p class="ficha-lote__campo">
+            <ion-icon name="call-outline"></ion-icon>
+            <span (click)="copiarTelefono()"> (+52){{ lote.telefonoContacto }}</span>
+          </p>
+
+          <p class="ficha-lote__campo">
+            <ion-icon name="location-outline"></ion-icon>
+            {{ direccionCompleta }}
+          </p>
+
+          <div class="ficha-lote__actions" *ngIf="isOwner">
+            <ion-button color="danger" size="small" (click)="editarLote()">
+              <ion-icon name="create-outline" slot="start"></ion-icon>
+              Editar
+            </ion-button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <ion-grid class="contenedor-catalogo">
-    <ion-row>
-      <!-- Columna lateral de filtros -->
-      <ion-col size="12" size-md="3">
-        <app-menu
-          [filtros]="filtros"
-          [filtrosAplicados]="filtrosAplicados"
-          (mostrarOpciones)="mostrarOpciones($event.event, $event.tipo)"
-          (limpiarFiltros)="resetearFiltros()">
-        </app-menu>
-      </ion-col>
+    <ion-grid class="contenedor-catalogo">
+      <ion-row>
+        <ion-col size="12" size-md="3">
+          <app-menu [filtros]="filtros" [filtrosAplicados]="filtrosAplicados"
+            (mostrarOpciones)="mostrarOpciones($event.event, $event.tipo)" (limpiarFiltros)="resetearFiltros()">
+          </app-menu>
+        </ion-col>
 
-      <!-- Catálogo -->
-      <ion-col size="12" size-md="9">
-        <div class="catalogo-autos">
-          <!-- Mensaje vacío basado en la lista paginada -->
-          <div *ngIf="autosPaginados.length === 0" class="mensaje-vacio">
-            <ion-icon name="car-sport-outline" class="icono-mensaje"></ion-icon><br />
-            No se encontraron vehículos para esta sección.
+        <ion-col size="12" size-md="9">
+          <div class="catalogo-autos">
+            <div *ngIf="autosPaginados.length === 0" class="mensaje-vacio">
+              <ion-icon name="car-sport-outline" class="icono-mensaje"></ion-icon><br />
+              No se encontraron vehículos para esta sección.
+            </div>
+
+            <ng-container *ngFor="let auto of autosPaginados">
+              <app-cartas [auto]="auto"></app-cartas>
+            </ng-container>
           </div>
 
-          <!-- Lista (autos + motos ya combinados/filtrados/paginados) -->
-          <ng-container *ngFor="let auto of autosPaginados">
-            <app-cartas [auto]="auto"></app-cartas>
-          </ng-container>
-        </div>
-
-        <!-- Paginación reducida con “...” -->
-        <div class="contenedor-paginacion" *ngIf="totalPaginas > 1">
-          <p class="titulo-paginacion">más</p>
-          <div class="paginacion-scroll">
-            <div class="paginacion">
-              <!-- Flecha anterior -->
-              <button class="pagina" (click)="setPagina(paginaActual - 1)" [disabled]="paginaActual === 1">‹</button>
-
-              <!-- Botones dinámicos con ellipsis -->
-              <ng-container *ngFor="let i of paginasReducidas">
-                <button
-                  *ngIf="esNumero(i)"
-                  class="pagina"
-                  [class.activa]="paginaActual === i"
-                  (click)="setPagina(i)">
-                  {{ i }}
+          <div class="contenedor-paginacion" *ngIf="totalPaginas > 1">
+            <p class="titulo-paginacion">más</p>
+            <div class="paginacion-scroll">
+              <div class="paginacion">
+                <button class="pagina" (click)="setPagina(paginaActual - 1)" [disabled]="paginaActual === 1">
+                  ‹
                 </button>
-                <span *ngIf="!esNumero(i)" class="ellipsis">...</span>
-              </ng-container>
 
-              <!-- Flecha siguiente -->
-              <button class="pagina" (click)="setPagina(paginaActual + 1)" [disabled]="paginaActual === totalPaginas">›</button>
+                <ng-container *ngFor="let i of paginasReducidas">
+                  <button *ngIf="esNumero(i)" class="pagina" [class.activa]="paginaActual === i" (click)="setPagina(i)">
+                    {{ i }}
+                  </button>
+                  <span *ngIf="!esNumero(i)" class="ellipsis">...</span>
+                </ng-container>
+
+                <button class="pagina" (click)="setPagina(paginaActual + 1)" [disabled]="paginaActual === totalPaginas">
+                  ›
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ng-container>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
 
   <app-footer></app-footer>
+
+  <ion-modal [isOpen]="modalAbierto" (didDismiss)="cerrarModal()" cssClass="modal-imagen-transparente"
+    [backdropDismiss]="true">
+    <ng-template>
+      <ion-content class="modal-imagen-content">
+        <ion-button fill="clear" class="modal-imagen__close" (click)="cerrarModal()"
+          style="position: fixed; top: 12px; right: 12px; z-index: 1000;">
+          <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+
+        <div class="modal-imagen__wrapper">
+          <img *ngIf="imagenModal" [src]="imagenModal" alt="Lote imagen" />
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>

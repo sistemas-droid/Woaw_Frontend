@@ -88,14 +88,14 @@ export class LotesPage implements OnInit {
       lastValue = total;
     });
 
-    // console.table(
-    //   lista.map((lote, idx) => ({
-    //     idx,
-    //     nombre: lote?.nombre,
-    //     total: lote?.conteoCoches?.total || 0,
-    //     ranking: this.ranking[idx],
-    //   }))
-    // );
+    console.table(
+      lista.map((lote, idx) => ({
+        idx,
+        nombre: lote?.nombre,
+        total: lote?.conteoCoches?.total || 0,
+        ranking: this.ranking[idx],
+      }))
+    );
   }
 
   getLotes() {
@@ -103,6 +103,7 @@ export class LotesPage implements OnInit {
       next: async (res) => {
 
         this.lotesAll = this.ordenarDesc(res?.lotes || []);
+        console.log(this.lotesAll);
 
         if (this.MyRole === 'admin' || this.MyRole === 'lotero') {
 
