@@ -39,8 +39,6 @@
       </div>
     </div>
 
-
-    <!-- GRID -->
     <ion-grid *ngIf="!addLote && !mostrarAuto" class="ocntenedor_css_lotes">
       <ion-row class="lotes-row">
 
@@ -65,28 +63,21 @@
             </div>
 
             <ion-card-header class="lote-header">
-
               <ion-card-title class="lote-title clamp-2">
                 <ion-icon name="business-outline"></ion-icon>
                 {{ lote.nombre }}
               </ion-card-title>
-
               <ion-card-subtitle *ngIf="lote.direccion?.length" class="lote-subtitle clamp-2">
                 <ion-icon name="location-outline"></ion-icon>
                 {{ lote.direccion[0].ciudad }}, {{ lote.direccion[0].estado }}
               </ion-card-subtitle>
-
               <ion-card-subtitle class="lote-subtitle clamp-2">
                 <ion-icon name="car-sport-outline"></ion-icon>
                 Total: {{ lote.conteoCoches?.total }}
               </ion-card-subtitle>
-
             </ion-card-header>
-
           </ion-card>
-
         </ion-col>
-
       </ion-row>
     </ion-grid>
 

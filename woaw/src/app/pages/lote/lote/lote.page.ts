@@ -24,20 +24,18 @@ interface Direccion {
 export class LotePage implements OnInit, OnDestroy {
   loteId!: string;
   lote: any | null = null;
-
   isOwner = false;
   private myLotIds: Set<string> = new Set();
-
   carrosDelLote: any[] = [];
   motosDelLote: any[] = [];
-
   autosStorage: any[] = [];   // combinado + normalizado
   autosFiltrados: any[] = [];
   autosPaginados: any[] = [];
-
   previewImagenPrincipal: string | null = null;
   direccionCompleta = 'Obteniendo ubicación...';
   public totalAutos = 0;
+  modalAbierto = false;
+  imagenModal: string | null = null;
 
   filtros = [
     { label: 'Marca', tipo: 'marca' },
@@ -56,12 +54,10 @@ export class LotePage implements OnInit, OnDestroy {
   };
 
   ordenActivo: string | null = null;
-
   paginaActual = 1;
   itemsPorPagina!: number;   // se toma de valorGlobal$
   totalPaginas = 1;
   paginas: number[] = [];
-
   private navSub?: Subscription;
 
   constructor(
@@ -76,8 +72,6 @@ export class LotePage implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loteId = this.route.snapshot.paramMap.get('id')!;
-
-    // itemsPorPagina desde global; default 12 si aún no llega
     this.generalService.valorGlobal$.subscribe((valor) => {
       this.itemsPorPagina = valor || 12;
       this.calcularPaginacion();
@@ -87,7 +81,6 @@ export class LotePage implements OnInit, OnDestroy {
     this.cargarCarros();
     this.cargarMotos();
     this.verificarPropiedadDelLote();
-
     this.navSub = this.router.events
       .pipe(filter((e): e is NavigationStart => e instanceof NavigationStart))
       .subscribe(() => localStorage.removeItem('origenLote'));
@@ -97,7 +90,6 @@ export class LotePage implements OnInit, OnDestroy {
     this.navSub?.unsubscribe();
   }
 
-  // ===================== CARGAS =====================
   private cargarLote(): void {
     this.loteService.getLoteById(this.loteId).subscribe({
       next: (lote) => {
@@ -144,24 +136,17 @@ export class LotePage implements OnInit, OnDestroy {
     });
   }
 
-  // ===================== NORMALIZACIÓN =====================
-  // 1) Combina y deja autosFiltrados como fuente base SIEMPRE
   private mergeVehicles(): void {
     const normAutos = (this.carrosDelLote || []).map((a) => this.normalizeVehicle(a, 'auto'));
     const normMotos = (this.motosDelLote || []).map((m) => this.normalizeVehicle(m, 'moto'));
-
     this.autosStorage = [...normAutos, ...normMotos];
     this.autosFiltrados = [...this.autosStorage]; // ← base inicial SIEMPRE es autosFiltrados
-
     this.totalAutos = this.autosFiltrados.length;
-
-    // Orden y paginación iniciales
     this.ordenarAutos(this.ordenActivo || 'anioDesc', true);
     this.calcularPaginacion();
   }
 
   private normalizeVehicle(v: any, tipoVehiculo: 'auto' | 'moto') {
-    // precioDesde / precioHasta
     const preciosVersion = Array.isArray(v?.version)
       ? v.version.map((x: any) => Number(x?.Precio)).filter(Number.isFinite)
       : [];
@@ -171,20 +156,13 @@ export class LotePage implements OnInit, OnDestroy {
     const precioHasta = preciosVersion.length
       ? Math.max(...preciosVersion)
       : (Number(v?.precioHasta) || Number(v?.precio) || precioDesde || 0);
-
     const anio = Number(v?.anio) || null;
     const marca = (Array.isArray(v?.marca) ? (v.marca[0] ?? '') : (v?.marca ?? '')).toString();
-
     const colorStr = Array.isArray(v?.color)
       ? (v.color[0] ?? '').toString()
       : (v?.color ?? '').toString();
-
     const id = (v?._id ?? v?.id ?? '').toString();
-
-    // Tipo de venta (si existe)
     const tipoVenta = (v?.tipoVenta ?? '').toString().trim().toLowerCase(); // 'nuevo'|'seminuevo'|'usado'
-
-    // Un "tipo" genérico por si usas SUV / Sedán / Pickup / etc. en distintos campos
     const tipoGenerico = this.firstNonEmptyLower([
       v?.tipo,
       v?.carroceria,
@@ -217,8 +195,6 @@ export class LotePage implements OnInit, OnDestroy {
 
   private canonTipoLabel(label: any): string {
     const raw = (label ?? '').toString().trim().toLowerCase();
-
-    // sinónimos comunes
     const map: Record<string, string> = {
       'carro': 'auto',
       'coche': 'auto',
@@ -238,16 +214,12 @@ export class LotePage implements OnInit, OnDestroy {
 
   private matchesTipo(x: any, t: string): boolean {
     if (!t) return true;
-
-    // Coincidir contra los 3 ejes
     const tv = (x.tipoVehiculo ?? '').toString().toLowerCase(); // auto | moto
     const venta = (x.tipoVenta ?? '').toString().toLowerCase(); // nuevo | seminuevo | usado
     const gen = (x.tipoGenerico ?? '').toString().toLowerCase(); // suv | sedán | pickup ...
-
     return tv === t || venta === t || gen === t;
   }
 
-  // ===================== PROPIEDAD DEL LOTE =====================
   private verificarPropiedadDelLote(): void {
     this.registroService.allLotes('mios').subscribe({
       next: (res) => {
@@ -290,7 +262,6 @@ export class LotePage implements OnInit, OnDestroy {
 
   volver(): void { this.router.navigate(['/lotes']); }
 
-  // ===================== FILTROS / ORDEN / PAGINACIÓN =====================
   async mostrarOpciones(ev: Event, tipo: string) {
     const popover = await this.popoverCtrl.create({
       component: ListComponent,
@@ -311,13 +282,9 @@ export class LotePage implements OnInit, OnDestroy {
     this.aplicarFiltros(true);
   }
 
-  // 2) Aplicar filtros SIN fallback a autosStorage cuando no hay resultados
   aplicarFiltros(resetPagina = false) {
-    // Siempre filtramos partiendo de autosStorage
     let arr = [...this.autosStorage];
-
     const { precio, anio, color, marca, tipo } = this.filtrosAplicados;
-
     if (precio?.rango?.length === 2) {
       const [min, max] = precio.rango;
       arr = arr.filter((x) => (x.precioDesde ?? 0) >= min && (x.precioDesde ?? 0) <= max);
@@ -342,21 +309,16 @@ export class LotePage implements OnInit, OnDestroy {
       arr = arr.filter((x) => this.matchesTipo(x, t));
     }
 
-    // Actualizamos SIEMPRE la fuente base visible
     this.autosFiltrados = arr;              // ← si no hay nada, queda []
     this.totalAutos = this.autosFiltrados.length;
-
-    // Mantén el orden actual y recalcula paginación
     this.ordenarAutos(this.ordenActivo || 'anioDesc', true);
 
     if (resetPagina) this.paginaActual = 1;
     this.calcularPaginacion();
   }
 
-  // 3) Ordenar SIEMPRE sobre autosFiltrados (nunca regresar a autosStorage)
   ordenarAutos(criterio: string, silencioso = false) {
     this.ordenActivo = criterio;
-
     const base = this.autosFiltrados; // ← siempre sobre el filtrado (aunque esté vacío)
 
     switch (criterio) {
@@ -371,37 +333,26 @@ export class LotePage implements OnInit, OnDestroy {
         base.sort((a, b) => (b.anio ?? 0) - (a.anio ?? 0));
         break;
     }
-
-    // Re-slice de la página actual
     this.mostrarPagina(this.paginaActual);
   }
 
-  // 4) Paginación SIEMPRE sobre autosFiltrados
   calcularPaginacion() {
     const porPagina = this.itemsPorPagina || 12;
     const total = this.autosFiltrados.length;
-
     this.totalPaginas = Math.max(1, Math.ceil(total / porPagina));
     this.paginas = Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
-
-    // Si estoy en una página fuera de rango (por ejemplo, pasé de resultados a 0)
     if (this.paginaActual > this.totalPaginas) this.paginaActual = this.totalPaginas;
-
     this.mostrarPagina(this.paginaActual);
   }
 
   mostrarPagina(pagina: number) {
     const porPagina = this.itemsPorPagina || 12;
-
     if (pagina < 1) pagina = 1;
     if (pagina > this.totalPaginas) pagina = this.totalPaginas;
 
     this.paginaActual = pagina;
-
     const inicio = (pagina - 1) * porPagina;
     const fin = inicio + porPagina;
-
-    // Base SIEMPRE es autosFiltrados (puede estar vacío)
     this.autosPaginados = this.autosFiltrados.slice(inicio, fin);
   }
 
@@ -409,7 +360,6 @@ export class LotePage implements OnInit, OnDestroy {
     this.mostrarPagina(n);
   }
 
-  // —— NUEVO: helpers para paginación reducida ——
   esNumero(valor: any): valor is number {
     return typeof valor === 'number';
   }
@@ -418,7 +368,6 @@ export class LotePage implements OnInit, OnDestroy {
     const total = this.totalPaginas;
     const actual = this.paginaActual;
     const rango = 1; // cuántos vecinos mostrar
-
     if (total <= 2) {
       return Array.from({ length: total }, (_, i) => i + 1);
     }
@@ -435,9 +384,7 @@ export class LotePage implements OnInit, OnDestroy {
 
     return pags;
   }
-  // ————————————————————————————————
 
-  // 5) Al resetear, vuelve a mostrar TODO pero sin fallback raro
   resetearFiltros() {
     this.filtrosAplicados = {
       precio: null,
@@ -447,17 +394,26 @@ export class LotePage implements OnInit, OnDestroy {
       tipo: null
     };
 
-    // Mostrar todo (copia)
     this.autosFiltrados = [...this.autosStorage];
     this.totalAutos = this.autosFiltrados.length;
-
     this.ordenarAutos(this.ordenActivo || 'anioDesc', true);
     this.paginaActual = 1;
     this.calcularPaginacion();
   }
 
-  // ===================== HELPERS =====================
   private normId(id: any): string {
     return String(id ?? '').trim().toLowerCase();
   }
+
+  abrirImagen(src: string | null) {
+    if (!src) return;
+    this.imagenModal = src;
+    this.modalAbierto = true;
+  }
+
+  cerrarModal() {
+    this.modalAbierto = false;
+    this.imagenModal = null;
+  }
+
 }
