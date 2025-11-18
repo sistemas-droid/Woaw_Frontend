@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ToastController } from '@ionic/angular';
@@ -10,6 +10,7 @@ import { GeneralService } from '../../../services/general.service';
 import { Router } from '@angular/router';
 import { CarsService } from "../../../services/cars.service";
 import { MotosService } from "../../../services/motos.service";
+import { MapaComponent } from '../../../components/modal/mapa/mapa.component';
 
 interface Marca {
   key: string;
@@ -37,12 +38,19 @@ interface DropdownConfig {
 
 export class AddCochePage implements OnInit {
 
-  ubicacionesSeleccionadas: [string, string, number, number][] = [];
+  ubicacionesSeleccionadas: Array<{
+    ciudad: string;
+    estado: string;
+    lat: number;
+    lng: number;
+    direccionCompleta: string;
+  }> = [];
+
   formaddCarRenta!: FormGroup;
 
   public tipoDispocitivo: string = '';
   public isLoggedIn: boolean = false;
-  public posicion: 1 | 2 | 3 | 4= 1;
+  public posicion: 0 | 1 | 2 | 3 | 4 = 0;
 
   // Campos del formulario
   marca: string = '';
@@ -53,6 +61,8 @@ export class AddCochePage implements OnInit {
   pasajeros: string = '';
   precioPorDia: string = '';
   edadMinima: string = '';
+
+  select_tipo: string = '';
 
   // Datos completos para los dropdowns
   marcas: any[] = [];
@@ -97,6 +107,40 @@ export class AddCochePage implements OnInit {
     { nombre: '30' }, { nombre: '35' }
   ];
 
+
+  // Variables para posición 3
+  nivelCombustible: string = '';
+  nuevoExtra: string = '';
+  extrasSeleccionados: any[] = [];
+
+  // Datos para los dropdowns de posición 3
+  nivelesCombustible: any[] = [
+    { nombre: 'Tanque lleno' },
+    { nombre: '3/4 de tanque' },
+    { nombre: '1/2 tanque' },
+    { nombre: '1/4 de tanque' },
+    { nombre: 'Reserva' },
+    { nombre: 'Vacío' }
+  ];
+
+  extrasDisponibles: any[] = [
+    { nombre: 'GPS' },
+    { nombre: 'Silla para bebé' },
+    { nombre: 'Internet/WiFi' },
+    { nombre: 'Asientos de cuero' },
+    { nombre: 'Techo solar' },
+    { nombre: 'Sistema de sonido premium' },
+    { nombre: 'Control de crucero' },
+    { nombre: 'Cámara de reversa' },
+    { nombre: 'Sensores de estacionamiento' },
+    { nombre: 'Airbags laterales' },
+    { nombre: 'Climatizador automático' },
+    { nombre: 'Llantas de aleación' },
+    { nombre: 'Faros LED' },
+    { nombre: 'Computadora de viaje' },
+    { nombre: 'Bluetooth' }
+  ];
+
   // Configuración de dropdowns
   dropdowns = {
     marcas: { mostrar: false, datosFiltrados: [] as any[] },
@@ -106,7 +150,9 @@ export class AddCochePage implements OnInit {
     combustibles: { mostrar: false, datosFiltrados: [] as any[] },
     pasajeros: { mostrar: false, datosFiltrados: [] as any[] },
     precios: { mostrar: false, datosFiltrados: [] as any[] },
-    edades: { mostrar: false, datosFiltrados: [] as any[] }
+    edades: { mostrar: false, datosFiltrados: [] as any[] },
+    nivelCombustible: { mostrar: false, datosFiltrados: [] as any[] },
+    extras: { mostrar: false, datosFiltrados: [] as any[] }
   };
 
   modeloEsPersonalizado: boolean = false;
@@ -119,6 +165,7 @@ export class AddCochePage implements OnInit {
     private generalService: GeneralService,
     private router: Router,
     private carsService: CarsService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.formaddCarRenta = this.fb.group({
       nombre: ['', Validators.required],
@@ -140,17 +187,21 @@ export class AddCochePage implements OnInit {
     this.Renta_get_marcas();
   }
 
+  seleccionarTipoCuenta(tipo: string) {
+    this.select_tipo = tipo;
+    this.posicion = 1;
+  }
+
+
   // FUNCIONES GENÉRICAS PARA DROPDOWNS
 
   toggleDropdown(dropdownName: keyof typeof this.dropdowns) {
-    // Cerrar todos los demás dropdowns
     Object.keys(this.dropdowns).forEach(key => {
       if (key !== dropdownName) {
         this.dropdowns[key as keyof typeof this.dropdowns].mostrar = false;
       }
     });
 
-    // Alternar el dropdown actual
     this.dropdowns[dropdownName].mostrar = !this.dropdowns[dropdownName].mostrar;
   }
 
@@ -158,10 +209,9 @@ export class AddCochePage implements OnInit {
     (this as any)[campo] = valor;
     this.dropdowns[dropdownName].mostrar = false;
 
-    // Lógica especial para marca (cargar modelos)
     if (dropdownName === 'marcas') {
-      this.modelo = ''; // Resetear modelo cuando cambia la marca
-      this.modelos = []; // Limpiar modelos anteriores
+      this.modelo = '';
+      this.modelos = [];
       const marcaSeleccionada = this.marcas.find(m => m.nombre === valor);
       if (marcaSeleccionada?.key) {
         this.Renta_get_modelos(marcaSeleccionada.key);
@@ -207,6 +257,16 @@ export class AddCochePage implements OnInit {
   get tiposFiltrados() {
     return this.dropdowns.tipos.datosFiltrados.length > 0 ?
       this.dropdowns.tipos.datosFiltrados : this.tipos;
+  }
+
+  get extrasFiltrados() {
+    return this.dropdowns.extras.datosFiltrados.length > 0 ?
+      this.dropdowns.extras.datosFiltrados : this.extrasDisponibles;
+  }
+
+  get nivelesCombustibleFiltrados() {
+    return this.dropdowns.nivelCombustible.datosFiltrados.length > 0 ?
+      this.dropdowns.nivelCombustible.datosFiltrados : this.nivelesCombustible;
   }
 
   get transmisionesFiltradas() {
@@ -280,16 +340,8 @@ export class AddCochePage implements OnInit {
     this.seleccionarOpcion(edadItem.nombre, 'edades', 'edadMinima');
   }
 
-  onTipoInput(event: any) {
-    this.onInput(event, 'tipos', this.tipos);
-  }
-
   onTransmisionInput(event: any) {
     this.onInput(event, 'transmisiones', this.transmisiones);
-  }
-
-  onCombustibleInput(event: any) {
-    this.onInput(event, 'combustibles', this.combustibles);
   }
 
   onPasajerosInput(event: any) {
@@ -304,7 +356,10 @@ export class AddCochePage implements OnInit {
     this.onInput(event, 'edades', this.edadesMinimas);
   }
 
-  // MÉTODOS EXISTENTES (sin cambios)
+  seleccionarNivelCombustible(nivelItem: any) {
+    this.seleccionarOpcion(nivelItem.nombre, 'nivelCombustible', 'nivelCombustible');
+  }
+
 
   private registrarLote() {
     // Tu lógica para registrar
@@ -329,6 +384,8 @@ export class AddCochePage implements OnInit {
         this.pasajeros = '';
         this.precioPorDia = '';
         this.edadMinima = '';
+        this.nivelCombustible = '';
+        this.nuevoExtra = '';
 
         // Ocultar dropdowns de posición 2
         this.dropdowns.tipos.mostrar = false;
@@ -337,6 +394,7 @@ export class AddCochePage implements OnInit {
         this.dropdowns.pasajeros.mostrar = false;
         this.dropdowns.precios.mostrar = false;
         this.dropdowns.edades.mostrar = false;
+        this.dropdowns.nivelCombustible.mostrar = false;
 
         // Limpiar datos filtrados de posición 2
         this.dropdowns.tipos.datosFiltrados = [];
@@ -345,6 +403,8 @@ export class AddCochePage implements OnInit {
         this.dropdowns.pasajeros.datosFiltrados = [];
         this.dropdowns.precios.datosFiltrados = [];
         this.dropdowns.edades.datosFiltrados = [];
+
+        this.extrasSeleccionados = [];
         break;
       case 3:
         break;
@@ -363,48 +423,9 @@ export class AddCochePage implements OnInit {
     }
   }
 
-  public async seleccionarUbicacion() {
-    // Tu lógica existente
-  }
-
   public irAInicio(): void {
     this.router.navigateByUrl('/inicio');
     this.posicion = 1;
-  }
-
-  public async sigiente() {
-    switch (this.posicion) {
-      case 1:
-        this.posicion = 2;
-        break;
-      case 2:
-        this.posicion = 3;
-        break;
-      case 3:
-      // this.registrarLote();
-      default:
-        break;
-    }
-  }
-
-  regresar() {
-    this.router.navigateByUrl('/new-car');
-  }
-
-  public regresarPocicion() {
-    switch (this.posicion) {
-      case 2:
-        this.posicion = 1;
-        break;
-      case 3:
-        this.posicion = 2;
-        break;
-      case 4:
-        this.posicion = 3;
-        break;
-      default:
-        break;
-    }
   }
 
   // Función para validar y retornar mensaje de error
@@ -439,11 +460,262 @@ export class AddCochePage implements OnInit {
         break;
     }
 
-    return ''; 
+    return '';
   }
 
-  private validarPosicionActual(pocicion: number){
+  public regresarPocicion() {
+    switch (this.posicion) {
+      case 0:
+        this.router.navigateByUrl('/new-car');
+        break;
+      case 1:
+        this.posicion = 0;
+        break;
+      case 2:
+        this.posicion = 1;
+        break;
+      case 3:
+        this.posicion = 2;
+        break;
+      case 4:
+        this.posicion = 3;
+        break;
+      default:
+        break;
+    }
+  }
 
+  agregarExtra(extraItem: any) {
+    // Verificar si el extra ya está seleccionado
+    const yaExiste = this.extrasSeleccionados.some(extra =>
+      extra.nombre.toLowerCase() === extraItem.nombre.toLowerCase()
+    );
+
+    if (!yaExiste) {
+      this.extrasSeleccionados.push(extraItem);
+      this.nuevoExtra = '';
+      this.dropdowns.extras.mostrar = false;
+    }
+  }
+
+  onExtraInput(event: any) {
+    const value = event.detail?.value || '';
+
+    if (value.trim()) {
+      // Filtrar extras disponibles
+      this.dropdowns.extras.datosFiltrados = this.extrasDisponibles.filter(extra =>
+        extra.nombre.toLowerCase().includes(value.toLowerCase())
+      );
+
+      // Agregar la opción de crear nuevo extra si no existe
+      const existeEnDisponibles = this.extrasDisponibles.some(extra =>
+        extra.nombre.toLowerCase() === value.toLowerCase()
+      );
+
+      if (!existeEnDisponibles && value.length >= 2) {
+        this.dropdowns.extras.datosFiltrados.push({ nombre: `Agregar: "${value}"` });
+      }
+
+      this.dropdowns.extras.mostrar = this.dropdowns.extras.datosFiltrados.length > 0;
+    } else {
+      this.dropdowns.extras.mostrar = false;
+    }
+  }
+
+  eliminarExtra(index: number) {
+    this.extrasSeleccionados.splice(index, 1);
+  }
+
+  public async sigiente() {
+    switch (this.posicion) {
+      case 1:
+        const errorPosicion0 = this.validarPosicionActual(1);
+        if (errorPosicion0) {
+          this.mostrarAlertaError(errorPosicion0);
+          return;
+        }
+        this.posicion = 2;
+        break;
+      case 1:
+        const errorPosicion1 = this.validarPosicionActual(1);
+        if (errorPosicion1) {
+          this.mostrarAlertaError(errorPosicion1);
+          return;
+        }
+        this.posicion = 2;
+        break;
+      case 2:
+        const errorPosicion2 = this.validarPosicionActual(2);
+        if (errorPosicion2) {
+          this.mostrarAlertaError(errorPosicion2);
+          return;
+        }
+        this.posicion = 3;
+        break;
+      case 3:
+        const errorPosicion3 = this.validarPosicionActual(3);
+        if (errorPosicion3) {
+          await this.generalService.alert(
+            'Seleccióna una Ubicación',
+            errorPosicion3,
+            'warning'
+          );
+          return;
+        }
+        this.posicion = 4;
+        return;
+      default:
+        break;
+    }
+  }
+
+  private validarPosicionActual(posicion: number): string {
+    switch (posicion) {
+      case 1:
+        const errorMarca = this.validar_inputs('marca', this.marca, 25);
+        const errorModelo = this.validar_inputs('modelo', this.modelo, 25);
+
+        if (errorMarca) {
+          return `Marca: ${errorMarca}`;
+        }
+        if (errorModelo) {
+          return `Modelo: ${errorModelo}`;
+        }
+        if (!this.marca) {
+          return 'La marca es obligatoria';
+        }
+        if (!this.modelo) {
+          return 'El modelo es obligatorio';
+        }
+        return '';
+
+      case 2:
+        // Validar todos los campos de posición 2
+        const errorTipo = this.validar_inputs('tipo', this.tipo, 25);
+        const errorTransmision = this.validar_inputs('transmision', this.transmision, 25);
+        const errorCombustible = this.validar_inputs('combustible', this.combustible, 25);
+        const errorPasajeros = this.validar_inputs('pasajeros', this.pasajeros, 2);
+        const errorPrecio = this.validar_inputs('precioPorDia', this.precioPorDia, 6);
+        const errorEdad = this.validar_inputs('edadMinima', this.edadMinima, 2);
+        const errorNivelCombustible = this.validar_inputs('nivelCombustible', this.nivelCombustible, 20);
+
+        if (errorTipo) {
+          return `Tipo: ${errorTipo}`;
+        }
+        if (errorTransmision) {
+          return `Transmisión: ${errorTransmision}`;
+        }
+        if (errorCombustible) {
+          return `Combustible: ${errorCombustible}`;
+        }
+        if (errorPasajeros) {
+          return `Pasajeros: ${errorPasajeros}`;
+        }
+        if (errorPrecio) {
+          return `Precio por Día: ${errorPrecio}`;
+        }
+        if (errorEdad) {
+          return `Edad Mínima: ${errorEdad}`;
+        }
+        if (errorNivelCombustible) {
+          return `Error en Nivel de Combustible: ${errorNivelCombustible}`;
+        }
+
+        // Validar que todos los campos estén llenos
+        if (!this.tipo) return 'El tipo de vehículo es obligatorio';
+        if (!this.transmision) return 'La transmisión es obligatoria';
+        if (!this.combustible) return 'El tipo de combustible es obligatorio';
+        if (!this.pasajeros) return 'El número de pasajeros es obligatorio';
+        if (!this.precioPorDia) return 'El precio por día es obligatorio';
+        if (!this.edadMinima) return 'La edad mínima es obligatoria';
+
+        return '';
+      case 3:
+
+        if (!this.ubicacionesSeleccionadas || this.ubicacionesSeleccionadas.length === 0) {
+          return 'Debes seleccionar una ubicación para el vehículo';
+        }
+
+        const ubicacion = this.ubicacionesSeleccionadas[0];
+        if (!ubicacion.ciudad || !ubicacion.estado || !ubicacion.lat || !ubicacion.lng) {
+          return 'La ubicación seleccionada no es válida';
+        }
+        return '';
+
+      default:
+        return '';
+    }
+  }
+
+  // Función de validación mejorada con validaciones específicas
+  validar_inputs(campo: string, valor: string, maxLength: number): string {
+    if (!valor || !valor.trim()) {
+      return 'Este campo es obligatorio';
+    }
+
+    if (valor.length > maxLength) {
+      return `Máximo ${maxLength} caracteres`;
+    }
+
+    // Validaciones específicas por campo
+    switch (campo) {
+      case 'modelo':
+        if (!this.marca) {
+          return 'Selecciona primero una marca';
+        }
+        break;
+
+      case 'pasajeros':
+      case 'edadMinima':
+        if (!/^\d+$/.test(valor)) {
+          return 'Solo se permiten números';
+        }
+        if (campo === 'pasajeros') {
+          const numPasajeros = parseInt(valor);
+          if (numPasajeros < 1 || numPasajeros > 20) {
+            return 'Debe ser entre 1 y 20 pasajeros';
+          }
+        }
+        if (campo === 'edadMinima') {
+          const edad = parseInt(valor);
+          if (edad < 18 || edad > 100) {
+            return 'Debe ser entre 18 y 100 años';
+          }
+        }
+        break;
+
+      case 'precioPorDia':
+        if (!/^\d+$/.test(valor)) {
+          return 'Solo se permiten números';
+        }
+        const precio = parseInt(valor);
+        if (precio < 50) {
+          return 'El precio mínimo es $50';
+        }
+        if (precio > 100000) {
+          return 'El precio máximo es $100,000';
+        }
+        break;
+
+      case 'tipo':
+      case 'transmision':
+      case 'combustible':
+        // Validar que sean valores válidos de las listas predefinidas
+        if (valor.length < 2) {
+          return 'Ingresa un valor válido';
+        }
+        break;
+    }
+
+    return ''; // Sin error
+  }
+
+  private async mostrarAlertaError(mensaje: string) {
+    await this.generalService.alert(
+      'Corrige Fomulario',
+      mensaje,
+      'warning'
+    );
   }
 
   // -----
@@ -522,5 +794,57 @@ export class AddCochePage implements OnInit {
         this.generalService.loadingDismiss();
       },
     });
+  }
+
+
+
+  public async seleccionarUbicacion() {
+    const modal = await this.modalController.create({ component: MapaComponent });
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+    if (data) {
+      const ubicacion = data as [string, string, number, number];
+
+      // Inicializar el array si no existe
+      if (!this.ubicacionesSeleccionadas) {
+        this.ubicacionesSeleccionadas = [];
+      }
+
+      try {
+        const direccionCompleta = await this.generalService.obtenerDireccionDesdeCoordenadas(
+          ubicacion[2],
+          ubicacion[3]
+        );
+
+        // Agregar la nueva ubicación al array existente
+        this.ubicacionesSeleccionadas.push({
+          ciudad: ubicacion[0],
+          estado: ubicacion[1],
+          lat: ubicacion[2],
+          lng: ubicacion[3],
+          direccionCompleta: direccionCompleta
+        });
+
+      } catch {
+        // Si falla la obtención de dirección, usar datos básicos
+        this.ubicacionesSeleccionadas.push({
+          ciudad: ubicacion[0],
+          estado: ubicacion[1],
+          lat: ubicacion[2],
+          lng: ubicacion[3],
+          direccionCompleta: `${ubicacion[0]}, ${ubicacion[1]}`
+        });
+      }
+
+      this.cdr.markForCheck();
+    }
+  }
+
+  // Función para eliminar una ubicación específica
+  eliminarUbicacion(index: number) {
+    if (this.ubicacionesSeleccionadas && this.ubicacionesSeleccionadas.length > index) {
+      this.ubicacionesSeleccionadas.splice(index, 1);
+      this.cdr.markForCheck();
+    }
   }
 }

@@ -1,28 +1,58 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" [scrollY]="true">
 
 
 
   <ion-card class="formulario-lote">
+
     <ion-card-header class="card-header-custom">
       <div class="header-content">
-        <ion-button fill="clear" color="dark" class="btn-back" (click)="regresar()">
+        <!-- Botón de regresar -->
+        <ion-button fill="clear" color="dark" class="btn-back" (click)="regresarPocicion()">
           <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
         </ion-button>
 
-        <div class="logo-title-container">
-          <div class="logo-circle">
-            <ion-icon name="car-sport-outline" class="logo-icon"></ion-icon>
+        <!-- Contenedor principal -->
+        <div class="main-content">
+          <div class="logo-title-section">
+            <div class="logo-circle">
+              <ion-icon name="car-sport-outline" class="logo-icon"></ion-icon>
+            </div>
+            <div class="title-section">
+              <ion-card-title class="titulo-principal">Registra tu coche de renta</ion-card-title>
+
+              <ion-card-subtitle class="subtitulo" *ngIf="posicion == 1">
+                Ingresa la marca y el modelo
+              </ion-card-subtitle>
+              <ion-card-subtitle class="subtitulo" *ngIf="posicion == 2">
+                Agrega los datos
+              </ion-card-subtitle>
+
+              <ion-card-subtitle class="subtitulo" *ngIf="posicion == 3">
+                Selecciona la ubicación
+              </ion-card-subtitle>
+
+            </div>
           </div>
-          <div class="title-container">
-            <ion-card-title class="titulo-principal">Registra tu coche de renta</ion-card-title>
-            <ion-card-subtitle class="subtitulo" *ngIf="posicion == 1">Completa la información</ion-card-subtitle>
-            <ion-card-subtitle class="subtitulo" *ngIf="posicion == 2">Agrega tu ubicación</ion-card-subtitle>
+
+          <!-- Información del vehículo -->
+          <div class="info-vehiculo-section" *ngIf="posicion != 0">
+            <div class="info-vehiculo">
+              <span class="marca-modelo">
+                <span class="publicar-label">Publicar:</span> {{ select_tipo }}
+                <br>
+              </span>
+              <span class="marca-modelo" *ngIf="posicion != 1">
+                <span class="vehiculo-label">Vehículo:</span> {{ marca }} / {{ modelo }}
+              </span>
+            </div>
           </div>
+
         </div>
       </div>
     </ion-card-header>
+
     <ion-card-content>
 
       <ion-grid *ngIf="isLoggedIn">
@@ -32,7 +62,57 @@
               <ion-grid>
                 <ion-row class="seccion-formulario">
 
+                  <ng-container *ngIf="posicion == 0">
+                    <ion-col size="12" class="campo-opcion">
+                      <h2 class="titulo-seleccion">¿Cómo quieres publicar tu auto?</h2>
+                      <p class="subtitulo-seleccion">Selecciona la opción que mejor se adapte a tus necesidades</p>
+                    </ion-col>
+
+                    <ion-col size="12" size-md="6" class="campo-opcion">
+                      <div class="opcion-tipo-cuenta" [class.opcion-seleccionada]="select_tipo === 'Particular'"
+                        (click)="seleccionarTipoCuenta('Particular')">
+                        <div class="icono-opcion">
+                          <ion-icon name="person-outline"></ion-icon>
+                        </div>
+                        <div class="contenido-opcion">
+                          <h3 class="titulo-opcion">Particular</h3>
+                          <p class="descripcion-opcion">
+                            Ideal para usuarios individuales que quieren publicar su vehículo Particular
+                          </p>
+                        </div>
+                        <div class="check-opcion" *ngIf="select_tipo === 'Particular'">
+                          <ion-icon name="checkmark-circle" color="danger"></ion-icon>
+                        </div>
+                      </div>
+                    </ion-col>
+
+                    <ion-col size="12" size-md="6" class="campo-opcion">
+                      <div class="opcion-tipo-cuenta" [class.opcion-seleccionada]="select_tipo === 'Agencia'"
+                        (click)="seleccionarTipoCuenta('Agencia / lote')">
+                        <div class="icono-opcion">
+                          <ion-icon name="business-outline"></ion-icon>
+                        </div>
+                        <div class="contenido-opcion">
+                          <h3 class="titulo-opcion">Agencia de Seminuevos / Lotes</h3>
+                          <p class="descripcion-opcion">
+                            Perfecto para agencias seminuevos o lotes que desean publicar múltiples vehículos de renta
+                          </p>
+                        </div>
+                        <div class="check-opcion" *ngIf="select_tipo === 'Agencia'">
+                          <ion-icon name="checkmark-circle" color="danger"></ion-icon>
+                        </div>
+                      </div>
+                    </ion-col>
+
+                    <ion-col size="12" class="campo-opcion">
+                      <ion-note color="danger" class="mensaje-error" *ngIf="select_tipo === ''">
+                        * Debes seleccionar un tipo de cuenta
+                      </ion-note>
+                    </ion-col>
+                  </ng-container>
+
                   <ng-container *ngIf="posicion == 1">
+
                     <!-- MARCA -->
                     <ion-col size="12" size-md="6" class="campo-formulario">
                       <ion-label position="stacked" class="etiqueta-campo">
@@ -81,14 +161,15 @@
                   </ng-container>
 
                   <ng-container *ngIf="posicion == 2">
+
                     <!-- TIPO -->
                     <ion-col size="12" size-md="6" class="campo-formulario">
                       <ion-label position="stacked" class="etiqueta-campo">
                         Tipo: <strong class="obligatorio">*</strong>
                       </ion-label>
                       <div class="dropdown-container">
-                        <ion-input [(ngModel)]="tipo" placeholder="Ej. Sedán, SUV, Camioneta" maxlength="25"
-                          class="input-estandar" (ionFocus)="toggleDropdown('tipos')" (ionInput)="onTipoInput($event)"
+                        <ion-input [(ngModel)]="tipo" placeholder="Selecciona el tipo" maxlength="25"
+                          class="input-estandar" readonly (ionFocus)="toggleDropdown('tipos')"
                           (ionBlur)="onBlur('tipos')">
                         </ion-input>
                         <div class="custom-dropdown" *ngIf="dropdowns.tipos.mostrar && tiposFiltrados.length > 0">
@@ -110,8 +191,8 @@
                       </ion-label>
                       <div class="dropdown-container">
                         <ion-input [(ngModel)]="transmision" placeholder="Ej. Automática, Manual" maxlength="25"
-                          class="input-estandar" (ionFocus)="toggleDropdown('transmisiones')"
-                          (ionInput)="onTransmisionInput($event)" (ionBlur)="onBlur('transmisiones')">
+                          class="input-estandar" readonly (ionFocus)="toggleDropdown('transmisiones')"
+                          (ionBlur)="onBlur('transmisiones')">
                         </ion-input>
                         <div class="custom-dropdown"
                           *ngIf="dropdowns.transmisiones.mostrar && transmisionesFiltradas.length > 0">
@@ -133,8 +214,8 @@
                       </ion-label>
                       <div class="dropdown-container">
                         <ion-input [(ngModel)]="combustible" placeholder="Ej. Gasolina, Diésel, Eléctrico"
-                          maxlength="25" class="input-estandar" (ionFocus)="toggleDropdown('combustibles')"
-                          (ionInput)="onCombustibleInput($event)" (ionBlur)="onBlur('combustibles')">
+                          maxlength="25" class="input-estandar" readonly (ionFocus)="toggleDropdown('combustibles')"
+                          (ionBlur)="onBlur('combustibles')">
                         </ion-input>
                         <div class="custom-dropdown"
                           *ngIf="dropdowns.combustibles.mostrar && combustiblesFiltrados.length > 0">
@@ -215,21 +296,142 @@
                         {{ validarCampo_inputs('edadMinima', edadMinima, 2) }}
                       </ion-note>
                     </ion-col>
+
+                    <!-- NIVEL DE COMBUSTIBLE -->
+                    <ion-col size="12" size-md="4" class="campo-formulario">
+                      <ion-label position="stacked" class="etiqueta-campo">
+                        Nivel de Combustible: <strong class="obligatorio">*</strong>
+                      </ion-label>
+                      <div class="dropdown-container">
+                        <ion-input [(ngModel)]="nivelCombustible" placeholder="Selecciona el nivel" maxlength="20"
+                          class="input-estandar" readonly (ionFocus)="toggleDropdown('nivelCombustible')"
+                          (ionBlur)="onBlur('nivelCombustible')">
+                        </ion-input>
+                        <div class="custom-dropdown"
+                          *ngIf="dropdowns.nivelCombustible.mostrar && nivelesCombustibleFiltrados.length > 0">
+                          <div class="dropdown-item" *ngFor="let nivelItem of nivelesCombustibleFiltrados"
+                            (click)="seleccionarNivelCombustible(nivelItem)">
+                            {{ nivelItem.nombre }}
+                          </div>
+                        </div>
+                      </div>
+                      <ion-note color="danger" class="mensaje-error">
+                        {{ validarCampo_inputs('nivelCombustible', nivelCombustible, 20) }}
+                      </ion-note>
+                    </ion-col>
+
+                    <!-- EXTRAS DEL VEHÍCULO -->
+                    <ion-col size="12" size-md="8" class="campo-formulario">
+                      <ion-label position="stacked" class="etiqueta-campo">
+                        Extras del Vehículo: <strong class="obligatorio_no">Opcional</strong>
+                      </ion-label>
+
+                      <!-- Input para buscar/agregar extras -->
+                      <div class="dropdown-container">
+                        <ion-input [(ngModel)]="nuevoExtra" placeholder="Buscar o agregar extra (GPS, silla bebé, etc)"
+                          maxlength="50" class="input-estandar" (ionFocus)="toggleDropdown('extras')"
+                          (ionInput)="onExtraInput($event)" (ionBlur)="onBlur('extras')">
+                        </ion-input>
+                        <div class="custom-dropdown" *ngIf="dropdowns.extras.mostrar && extrasFiltrados.length > 0">
+                          <div class="dropdown-item" *ngFor="let extraItem of extrasFiltrados"
+                            (click)="agregarExtra(extraItem)">
+                            {{ extraItem.nombre }}
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Lista de extras seleccionados -->
+                      <div class="extras-seleccionados" *ngIf="extrasSeleccionados.length > 0">
+                        <div class="extra-item" *ngFor="let extra of extrasSeleccionados; let i = index">
+                          <span class="extra-texto">{{ extra.nombre }}</span>
+                          <ion-button fill="clear" color="danger" size="small" (click)="eliminarExtra(i)">
+                            <ion-icon name="close-circle-outline" slot="icon-only"></ion-icon>
+                          </ion-button>
+                        </div>
+                      </div>
+
+                      <ion-note color="medium" class="mensaje-ayuda">
+                        Puedes seleccionar múltiples extras para tu vehículo
+                      </ion-note>
+                    </ion-col>
                   </ng-container>
 
-
                   <ng-container *ngIf="posicion == 3">
-                    Está sección esta en pruebas !!! Por el momento esta sección no está disponible.
+                    <!-- TÍTULO Y DESCRIPCIÓN -->
+                    <ion-col size="12" class="campo-formulario">
+                      <h2 class="titulo-seccion">Ubicaciones del Vehículo</h2>
+                      <p class="descripcion-seccion">
+                        {{ ubicacionesSeleccionadas.length === 0 ?
+                        'Selecciona al menos una ubicación donde estará disponible el vehículo' :
+                        'Puedes agregar más ubicaciones si el vehículo está disponible en varios lugares' }}
+                      </p>
+                    </ion-col>
+
+                    <!-- BOTÓN PARA SELECCIONAR UBICACIÓN -->
+                    <ion-col size="12" class="campo-formulario">
+                      <ion-button expand="block" fill="outline" color="danger" (click)="seleccionarUbicacion()"
+                        class="boton-ubicacion">
+                        <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+                        {{ ubicacionesSeleccionadas.length === 0 ?
+                        'Seleccionar Primera Ubicación' : 'Seleccionar Una Más' }}
+                      </ion-button>
+                    </ion-col>
+
+                    <!-- MOSTRAR UBICACIONES SELECCIONADAS -->
+                    <ion-col size="12" class="campo-formulario"
+                      *ngIf="ubicacionesSeleccionadas && ubicacionesSeleccionadas.length > 0">
+                      <div class="ubicaciones-lista">
+                        <h3 class="titulo-lista">
+                          <ion-icon name="location" color="danger"></ion-icon>
+                          Ubicaciones Seleccionadas ({{ ubicacionesSeleccionadas.length }})
+                        </h3>
+
+                        <ion-card class="card-ubicacion"
+                          *ngFor="let ubicacion of ubicacionesSeleccionadas; let i = index">
+                          <ion-card-content>
+                            <div class="info-ubicacion">
+                              <div class="numero-ubicacion">
+                                {{ i + 1 }}
+                              </div>
+                              <ion-icon name="location" color="danger" class="icono-ubicacion"></ion-icon>
+                              <div class="texto-ubicacion">
+                                <h3>{{ ubicacion.direccionCompleta }}</h3>
+                                <p *ngIf="ubicacion.ciudad">
+                                  {{ ubicacion.ciudad }}, {{ ubicacion.estado }}
+                                </p>
+                              </div>
+                            </div>
+                            <ion-button fill="clear" color="danger" (click)="eliminarUbicacion(i)"
+                              class="boton-eliminar">
+                              <ion-icon name="trash-outline" slot="start"></ion-icon>
+                              Eliminar
+                            </ion-button>
+                          </ion-card-content>
+                        </ion-card>
+                      </div>
+                    </ion-col>
+
+                    <!-- MENSAJE CUANDO NO HAY UBICACIONES -->
+                    <ion-col size="12" class="campo-formulario"
+                      *ngIf="!ubicacionesSeleccionadas || ubicacionesSeleccionadas.length === 0">
+                      <div class="sin-ubicacion">
+                        <ion-icon name="location-off-outline" class="icono-sin-ubicacion"></ion-icon>
+                        <p>No has seleccionado ninguna ubicación</p>
+                      </div>
+                    </ion-col>
+                  </ng-container>
+
+                  <ng-container *ngIf="posicion == 4">
+
                   </ng-container>
 
                 </ion-row>
               </ion-grid>
 
-              <div class="botones-accion" *ngIf="tipoDispocitivo !== 'telefono'">
+              <div class="botones-accion" *ngIf="tipoDispocitivo !== 'telefono' && posicion != 0">
                 <div class="boton-publicar-container">
                   <div class="botones-fila">
-                    <button expand="block" *ngIf="posicion != 1 " type="button" class="btn-crear-lote btn-dark"
-                      (click)="regresarPocicion()">
+                    <button expand="block" type="button" class="btn-crear-lote btn-dark" (click)="regresarPocicion()">
                       <ion-icon name="arrow-back"></ion-icon>
                       Regresar
                     </button>
@@ -238,8 +440,7 @@
                       <ion-icon name="trash"></ion-icon>
                       Limpiar
                     </button>
-                    <button expand="block" type="button" class="btn-crear-lote btn-danger"
-                      [disabled]="!marca || !modelo" (click)="sigiente()">
+                    <button expand="block" type="button" class="btn-crear-lote btn-danger" (click)="sigiente()">
                       <p *ngIf="posicion != 3"> Continuar</p>
                       <p *ngIf="posicion == 3"> Publicar coche</p>
                       <ion-icon name="arrow-forward"></ion-icon>
@@ -266,11 +467,12 @@
 
     </ion-card-content>
   </ion-card>
+
   <br><br><br>
 
   <div *ngIf="!isLoggedIn" class="mensaje-autenticacion">
     Para publicar un <strong>Lote</strong>, primero debes iniciar sesión o crear una cuenta.
-    <button class="btn-acceso" (click)="irAInicio()">Acceder</button>
+    <button class="btn-acceso" (click)="regresarPocicion()">Acceder</button>
   </div>
 
   <app-footer *ngIf="tipoDispocitivo !== 'telefono'"></app-footer>
@@ -281,23 +483,25 @@
   <ion-toolbar>
 
     <ion-buttons slot="start">
-      <ion-button fill="clear" *ngIf="posicion  != 1" (click)="sigiente()">
+      <ion-button fill="clear" *ngIf="posicion  != 0" (click)="regresarPocicion()">
         <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
         Atrás
       </ion-button>
-      <ion-button fill="clear" *ngIf="marca && posicion == 1" (click)="limpiarPorPosicion()">
+      <ion-button fill="clear" *ngIf="marca " (click)="limpiarPorPosicion()">
         <ion-icon name="close"></ion-icon>
         Limpiar
       </ion-button>
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button *ngIf="posicion != 3" color="danger" fill="solid" type="button" [disabled]="!marca || !modelo"
-        (click)="sigiente()">
+
+      <ion-button *ngIf="posicion != 4 && posicion != 0" color="danger" fill="solid" type="button"
+        [disabled]="!marca || !modelo" (click)="sigiente()">
         Continuar
         <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="posicion == 3" color="danger" fill="solid" type="submit" (click)="sigiente()">
+
+      <ion-button *ngIf="posicion == 4" color="danger" fill="solid" type="submit" (click)="sigiente()">
         Publicar coche
         <ion-icon name="save-outline" slot="end"></ion-icon>
       </ion-button>

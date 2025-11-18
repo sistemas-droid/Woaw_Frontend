@@ -31,6 +31,10 @@ registerLocaleData(localeEsMX);
     MenulateralComponent,
     NavbarComponent,
     TabsComponent,
+    IonicModule.forRoot({
+      scrollAssist: true,
+      scrollPadding: true
+    })
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
