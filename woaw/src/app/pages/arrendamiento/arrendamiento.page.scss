@@ -1272,8 +1272,9 @@ ion-item {
     font-size: 15px;
   }
 }
+
 .fondo-arrendamiento {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -1282,6 +1283,7 @@ ion-item {
   object-fit: cover;
   z-index: -1;
 }
+
 .despues_de_imagen {
   margin-top: 37vh;
   position: relative;
