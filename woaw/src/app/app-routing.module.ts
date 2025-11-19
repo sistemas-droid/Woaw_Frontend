@@ -377,7 +377,11 @@ const routes: Routes = [
     loadChildren: () =>
       import("./pages/error/error.module").then((m) => m.ErrorPageModule),
     data: { title: "Página no encontrada | woaw" },
+  },  {
+    path: 'welcome-lote',
+    loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then( m => m.WelcomeLotePageModule)
   },
+
 ];
 
 @NgModule({
