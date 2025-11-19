@@ -3,6 +3,7 @@
 <ion-content [fullscreen]="true">
 
   <div class="goautos-bg">
+
     <div class="overlay" [class.loaded]="overlayLoaded" [ngStyle]="overlayLoaded ? {
       'background-image':
       'linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff00 100%), url(' + imgenPrincipal + ')',
@@ -12,7 +13,6 @@
       'background-repeat': 'no-repeat'
     } : {}">
 
-      <!-- <img src="/assets/icon/logo4.png" alt="Logo Go Autos" class="logo-goautos" loading="lazy" /> -->
 
       <div class="contenido-principal">
         <div class="bloque-contenido">
@@ -20,10 +20,6 @@
           <img src="/assets/icon/logo4.png" alt="Logo WOAW" class="logo-goautos2" loading="lazy" />
 
           <h1 class="titulo typing">{{ textoAnimado }}</h1>
- 
-          <!-- <p class="descripcion">
-            Consigue tu auto ideal, fácil y seguro, con un solo clic.
-          </p> -->
 
           <div class="buscador-container">
             <ion-searchbar [(ngModel)]="terminoBusqueda" (ionInput)="onInputChange($event)"
@@ -53,14 +49,13 @@
               (click)="irABusqueda('Kia')" alt="Kia" loading="lazy" />
             <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/hyundai-1752250721333.png"
               (click)="irABusqueda('Hyundai')" alt="Hyundai" loading="lazy" />
-            <!-- <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/mercedes_benz-1752250726653.png"
-              (click)="irABusqueda('Bercedes Benz')" alt="Hyundai" loading="lazy" /> -->
             <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/bmw-1752250746130.png"
               (click)="irABusqueda('bmw')" alt="Hyundai" loading="lazy" />
           </div>
 
         </div>
       </div>
+
     </div>
   </div>
 

@@ -106,8 +106,9 @@ const routes: Routes = [
         path: "new-car",
         loadChildren: () =>
           import("./pages/new-car/new-car.module").then(
-            (m) => m.NewCarPageModule
+            (m) => m.NewCarPageModule,
           ),
+        canActivate: [AuthPhoneGuard],
         data: { title: "Publicar nuevo vehículo | woaw" }
       },
       {

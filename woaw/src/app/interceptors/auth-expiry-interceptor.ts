@@ -48,7 +48,7 @@ export class AuthExpiryInterceptor implements HttpInterceptor {
             localStorage.removeItem('sesionActiva');
           } catch {}
 
-          this.general?.presentToast?.('Tu sesión no es válida. Inicia sesión nuevamente.', 'warning');
+          // this.general?.presentToast?.('Tu sesión no es válida. Inicia sesión nuevamente.', 'warning');
           this.router.navigate(['/inicio'], { replaceUrl: true });
           return EMPTY;
         }
