@@ -54,6 +54,7 @@ export class LotesPage implements OnInit {
         this.MyRole = null;
       }
       this.getLotes();
+      //this.probarResumenVendidos();
     });
   }
 
@@ -69,50 +70,108 @@ export class LotesPage implements OnInit {
 
   generarRankingCompetitivo(lista: any[]) {
 
-    this.ranking = [];
-    let rank = 1;                  // Ranking real
-    let lastValue: number | null = null;
-    lista.forEach((lote, i) => {
-      const total = lote?.conteoCoches?.total || 0;
+    lista = [...lista].sort((a, b) => {
+      const totalA = a?.conteo?.totalVehiculos
+        ?? a?.conteoCoches?.total
+        ?? 0;
 
-      if (lastValue === null) {
-        this.ranking[i] = rank;
+      const totalB = b?.conteo?.totalVehiculos
+        ?? b?.conteoCoches?.total
+        ?? 0;
+
+        if (totalB !== totalA) return totalB - totalA;
+
+      const fechaA = new Date(a?.creadoEn || 0).getTime();
+      const fechaB = new Date(b?.creadoEn || 0).getTime();
+
+      if (fechaA !== fechaB) return fechaA - fechaB;
+
+      const vendidosA = a?.conteo?.totalVendidos ?? 0;
+      const vendidosB = b?.conteo?.totalVendidos ?? 0;
+      return vendidosB - vendidosA;
+    });
+
+    this.ranking = [];
+
+    let rank = 1;
+    let last = {
+      total: null as number | null,
+      fecha: null as number | null,
+      vendidos: null as number | null
+    };
+
+    lista.forEach((lote, i) => {
+      const total = lote?.conteo?.totalVehiculos
+        ?? lote?.conteoCoches?.total
+        ?? 0;
+
+      const fecha = new Date(lote?.creadoEn || 0).getTime();
+      const vendidos = lote?.conteo?.totalVendidos ?? 0;
+
+      const esIgual =
+        last.total === total &&
+        last.fecha === fecha &&
+        last.vendidos === vendidos;
+
+      if (i === 0 || !esIgual) {
+        rank = i + 1;   // nuevo grupo, sube ranking
       }
-      else if (total === lastValue) {
-        this.ranking[i] = rank;
-      }
-      else {
-        rank++;
-        this.ranking[i] = rank;
-      }
-      lastValue = total;
+
+      this.ranking[i] = rank;
+
+      last = { total, fecha, vendidos };
     });
 
     console.table(
       lista.map((lote, idx) => ({
         idx,
+        id: lote?._id,
         nombre: lote?.nombre,
-        total: lote?.conteoCoches?.total || 0,
+        totalVehiculos: lote?.conteo?.totalVehiculos
+          ?? lote?.conteoCoches?.total
+          ?? 0,
+        creadoEn: lote?.creadoEn,
+        totalVendidos: lote?.conteo?.totalVendidos ?? 0,
         ranking: this.ranking[idx],
       }))
     );
   }
 
+
   getLotes() {
     this.loteservice.getlotes('all').subscribe({
       next: async (res) => {
-
         this.lotesAll = this.ordenarDesc(res?.lotes || []);
-        console.log(this.lotesAll);
-
         if (this.MyRole === 'admin' || this.MyRole === 'lotero') {
 
           this.loteservice.getlotes('mios').subscribe({
             next: async (res2) => {
               this.lotesMine = this.ordenarDesc(res2?.lotes || []);
+              this.loteservice.getResumenVendidos().subscribe({
+                next: (resVendidos) => {
 
-              this.applyTab(this.activeTab);
+                  const vendidosMap = new Map(
+                    resVendidos.lotes.map((l: any) => [
+                      l._id,
+                      l.conteo?.totalVendidos ?? 0
+                    ])
+                  );
+
+                  this.lotesAll = this.lotesAll.map(lote => ({
+                    ...lote,
+                    vendidos: vendidosMap.get(lote._id) ?? 0
+                  }));
+
+                  this.lotesMine = this.lotesMine.map(lote => ({
+                    ...lote,
+                    vendidos: vendidosMap.get(lote._id) ?? 0
+                  }));
+
+                  this.applyTab(this.activeTab);
+                }
+              });
             },
+
             error: async () => {
               this.lotesMine = [];
               this.applyTab('todos');
@@ -120,8 +179,27 @@ export class LotesPage implements OnInit {
           });
 
         } else {
+
           this.lotesMine = [];
-          this.applyTab('todos');
+
+          this.loteservice.getResumenVendidos().subscribe({
+            next: (resVendidos) => {
+
+              const vendidosMap = new Map(
+                resVendidos.lotes.map((l: any) => [
+                  l._id,
+                  l.conteo?.totalVendidos ?? 0
+                ])
+              );
+
+              this.lotesAll = this.lotesAll.map(lote => ({
+                ...lote,
+                vendidos: vendidosMap.get(lote._id) ?? 0
+              }));
+
+              this.applyTab('todos');
+            }
+          });
         }
       },
 
@@ -199,4 +277,11 @@ export class LotesPage implements OnInit {
   BackLote() {
     this.router.navigate(['/lotes']);
   }
+
+  // probarResumenVendidos() {
+  //   this.loteservice.getResumenVendidos().subscribe((res) => {
+  //     console.log('📊 Resumen vendidos:', res);
+  //   });
+  // }
+
 }

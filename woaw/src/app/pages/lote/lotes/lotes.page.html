@@ -48,12 +48,13 @@
           <ion-card class="lote-card" (click)="mostrarAutos(lote)" button>
 
             <!-- 🥇🥈🥉 MEDALLAS SOLO PARA 1,2,3 -->
-            <div class="ranking-badge" *ngIf="ranking[i] === 1 || ranking[i] === 2 || ranking[i] === 3">
+            <div class="ranking-badge"
+              *ngIf="activeTab === 'todos' && (ranking[i] === 1 || ranking[i] === 2 || ranking[i] === 3)">
               <span [ngClass]="{
-                'gold': ranking[i] === 1,
-                'silver': ranking[i] === 2,
-                'bronze': ranking[i] === 3
-              }">
+                    gold: ranking[i] === 1,
+                    silver: ranking[i] === 2,
+                    bronze: ranking[i] === 3
+                    }">
                 {{ ranking[i] }}
               </span>
             </div>
