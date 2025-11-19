@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { CarsService } from "../../../services/cars.service";
 import { MotosService } from "../../../services/motos.service";
 import { MapaComponent } from '../../../components/modal/mapa/mapa.component';
+import { FotosVeiculoComponent } from '../../../components/modal/fotos-veiculo/fotos-veiculo.component';
 
 interface Marca {
   key: string;
@@ -46,11 +47,19 @@ export class AddCochePage implements OnInit {
     direccionCompleta: string;
   }> = [];
 
+  estadoVehiculo: 'Nuevo' | 'Usado' | 'Seminuevo' | '' = '';
+  imagenesIntentadas: boolean = false;
+  imagenesValidas: boolean = false;
+  imagenPrincipal: File | null = null;
+  imagenesSecundarias: File[] = [];
+  imagenPrincipalUrl: string = '';
+  imagenesSecundariasUrls: string[] = [];
+
   formaddCarRenta!: FormGroup;
 
   public tipoDispocitivo: string = '';
   public isLoggedIn: boolean = false;
-  public posicion: 0 | 1 | 2 | 3 | 4 = 0;
+  public posicion: 0 | 1 | 2 | 3 | 4 | 5 = 0;
 
   // Campos del formulario
   marca: string = '';
@@ -62,7 +71,7 @@ export class AddCochePage implements OnInit {
   precioPorDia: string = '';
   edadMinima: string = '';
 
-  select_tipo: string = '';
+  select_tipo: 'Particular' | 'Agencia / lote' | '' = '';
 
   // Datos completos para los dropdowns
   marcas: any[] = [];
@@ -187,7 +196,7 @@ export class AddCochePage implements OnInit {
     this.Renta_get_marcas();
   }
 
-  seleccionarTipoCuenta(tipo: string) {
+  seleccionarTipoCuenta(tipo: "" | "Particular" | "Agencia / lote") {
     this.select_tipo = tipo;
     this.posicion = 1;
   }
@@ -480,6 +489,9 @@ export class AddCochePage implements OnInit {
       case 4:
         this.posicion = 3;
         break;
+      case 5:
+        this.posicion = 4;
+        break;
       default:
         break;
     }
@@ -564,6 +576,18 @@ export class AddCochePage implements OnInit {
         }
         this.posicion = 4;
         return;
+      case 4:
+        const errorPosicion4 = this.validarPosicionActual(4);
+        if (errorPosicion4) {
+          await this.generalService.alert(
+            'Error en Imágenes',
+            errorPosicion4,
+            'warning'
+          );
+          return;
+        }
+        this.posicion = 5;
+        return;
       default:
         break;
     }
@@ -641,11 +665,100 @@ export class AddCochePage implements OnInit {
           return 'La ubicación seleccionada no es válida';
         }
         return '';
+      case 4:
+
+        // Validar que se haya intentado seleccionar imágenes
+        if (!this.imagenesIntentadas) {
+          return 'Debes seleccionar las imágenes del vehículo';
+        }
+
+        // Validar imagen principal
+        if (!this.imagenPrincipal) {
+          return 'La imagen principal es obligatoria';
+        }
+
+        // Validar formato y tamaño de imagen principal
+        const errorPrincipal = this.validarImagen(this.imagenPrincipal, 'principal');
+        if (errorPrincipal) {
+          return `Imagen principal: ${errorPrincipal}`;
+        }
+
+        // Validar imágenes secundarias
+        if (!this.imagenesSecundarias || this.imagenesSecundarias.length === 0) {
+          return 'Debes seleccionar al menos 2 imágenes secundarias del vehículo';
+        }
+
+        if (this.imagenesSecundarias.length < 2) {
+          return `Se requieren al menos 2 imágenes secundarias (tienes ${this.imagenesSecundarias.length})`;
+        }
+
+        // Validar cada imagen secundaria
+        for (let i = 0; i < this.imagenesSecundarias.length; i++) {
+          const errorSecundaria = this.validarImagen(this.imagenesSecundarias[i], `secundaria ${i + 1}`);
+          if (errorSecundaria) {
+            return `Imagen secundaria ${i + 1}: ${errorSecundaria}`;
+          }
+        }
+
+        // Validar que no haya imágenes duplicadas
+        const errorDuplicados = this.validarImagenesDuplicadas();
+        if (errorDuplicados) {
+          return errorDuplicados;
+        }
+
+        // Validar que las imágenes sean válidas
+        if (!this.imagenesValidas) {
+          return 'Las imágenes seleccionadas no son válidas. Verifica que cumplan con los requisitos';
+        }
+
+        return '';
 
       default:
         return '';
     }
   }
+
+  // Función auxiliar para validar una imagen individual
+  private validarImagen(imagen: File, tipo: string): string {
+    if (!imagen) {
+      return `La imagen ${tipo} no está seleccionada`;
+    }
+
+    // Validar tipo de archivo
+    const tiposPermitidos = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!tiposPermitidos.includes(imagen.type)) {
+      return `Formato no permitido. Usa JPG, PNG o WEBP (${tipo})`;
+    }
+
+    // Validar tamaño máximo (5MB)
+    const maxSizeMB = 5;
+    const maxSizeBytes = maxSizeMB * 1024 * 1024;
+    if (imagen.size > maxSizeBytes) {
+      return `Máximo ${maxSizeMB}MB (${tipo})`;
+    }
+
+    // Validar tamaño mínimo (50KB)
+    const minSizeBytes = 50 * 1024;
+    if (imagen.size < minSizeBytes) {
+      return `Mínimo 50KB (${tipo})`;
+    }
+
+    return '';
+  }
+
+  // Función para validar imágenes duplicadas
+  private validarImagenesDuplicadas(): string {
+    const todasLasImagenes = [this.imagenPrincipal, ...this.imagenesSecundarias];
+    const nombres = todasLasImagenes.map(img => img?.name);
+    const nombresUnicos = new Set(nombres);
+
+    if (nombres.length !== nombresUnicos.size) {
+      return 'No puedes subir imágenes con el mismo nombre. Cambia el nombre de las imágenes duplicadas';
+    }
+
+    return '';
+  }
+
 
   // Función de validación mejorada con validaciones específicas
   validar_inputs(campo: string, valor: string, maxLength: number): string {
@@ -796,8 +909,6 @@ export class AddCochePage implements OnInit {
     });
   }
 
-
-
   public async seleccionarUbicacion() {
     const modal = await this.modalController.create({ component: MapaComponent });
     await modal.present();
@@ -846,5 +957,140 @@ export class AddCochePage implements OnInit {
       this.ubicacionesSeleccionadas.splice(index, 1);
       this.cdr.markForCheck();
     }
+  }
+
+
+  // Función para obtener URL de la imagen para mostrar miniaturas
+  obtenerUrlImagen(imagen: File): string {
+    return URL.createObjectURL(imagen);
+  }
+
+  // Función para manejar errores al cargar imágenes
+  manejarErrorImagen(event: any) {
+    console.error('Error al cargar imagen:', event);
+    event.target.src = '/assets/imagenes/imagen-no-disponible.jpg';
+  }
+
+  // Función para eliminar una imagen secundaria específica
+  eliminarImagenSecundaria(index: number) {
+    if (this.imagenesSecundarias && this.imagenesSecundarias.length > index) {
+      // Liberar la URL de la imagen que se va a eliminar
+      if (this.imagenesSecundariasUrls[index]) {
+        URL.revokeObjectURL(this.imagenesSecundariasUrls[index]);
+      }
+
+      this.imagenesSecundarias.splice(index, 1);
+      this.imagenesSecundariasUrls.splice(index, 1);
+
+      // Re-validar las imágenes después de eliminar
+      this.validarImagenesSeleccionadas();
+      this.cdr.markForCheck();
+    }
+  }
+
+
+  limpiarUrlsImagenes() {
+    // Liberar URL de imagen principal
+    if (this.imagenPrincipalUrl) {
+      URL.revokeObjectURL(this.imagenPrincipalUrl);
+      this.imagenPrincipalUrl = '';
+    }
+
+    // Liberar URLs de imágenes secundarias
+    this.imagenesSecundariasUrls.forEach(url => {
+      URL.revokeObjectURL(url);
+    });
+    this.imagenesSecundariasUrls = [];
+  }
+
+  // Actualizar tu función seleccionarImagenes para manejar las URLs
+  async seleccionarImagenes() {
+    const modal = await this.modalController.create({
+      component: FotosVeiculoComponent,
+      backdropDismiss: false,
+      componentProps: {
+        estadoVehiculo: 'Seminuevo',
+      },
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+
+    if (data) {
+      // Limpiar URLs anteriores
+      this.limpiarUrlsImagenes();
+
+      this.imagenesIntentadas = true;
+      this.imagenPrincipal = data.imagenPrincipal;
+      this.imagenesSecundarias = data.imagenesSecundarias;
+
+      // Generar URLs para las nuevas imágenes
+      if (this.imagenPrincipal) {
+        this.imagenPrincipalUrl = this.obtenerUrlImagen(this.imagenPrincipal);
+      }
+
+      this.imagenesSecundariasUrls = this.imagenesSecundarias.map(imagen =>
+        this.obtenerUrlImagen(imagen)
+      );
+
+      // Validar las imágenes
+      this.validarImagenesSeleccionadas();
+
+      if (!this.imagenPrincipal) {
+        this.generalService.alert(
+          'Falta imagen principal',
+          'Selecciona una imagen principal para continuar.',
+          'warning'
+        );
+        this.imagenesValidas = false;
+        return;
+      }
+
+      if (this.imagenesSecundarias.length < 2) {
+        this.generalService.alert(
+          'Imágenes insuficientes',
+          'Debes seleccionar al menos 2 imágenes secundarias.',
+          'warning'
+        );
+        this.imagenesValidas = false;
+        return;
+      }
+
+      this.imagenesValidas = true;
+    }
+  }
+
+  // Función mejorada para validar imágenes
+  private validarImagenesSeleccionadas() {
+    this.imagenesValidas = false;
+
+    if (!this.imagenPrincipal) {
+      return;
+    }
+
+    if (!this.imagenesSecundarias || this.imagenesSecundarias.length < 2) {
+      return;
+    }
+
+    // Validar cada imagen individualmente
+    const errorPrincipal = this.validarImagen(this.imagenPrincipal, 'principal');
+    if (errorPrincipal) {
+      return;
+    }
+
+    for (let i = 0; i < this.imagenesSecundarias.length; i++) {
+      const errorSecundaria = this.validarImagen(this.imagenesSecundarias[i], `secundaria ${i + 1}`);
+      if (errorSecundaria) {
+        return;
+      }
+    }
+
+    this.imagenesValidas = true;
+  }
+
+  // Limpiar recursos cuando se destruya el componente
+  ngOnDestroy() {
+    this.limpiarUrlsImagenes();
   }
 }

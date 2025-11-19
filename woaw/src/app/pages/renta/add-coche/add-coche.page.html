@@ -25,6 +25,7 @@
               <ion-card-subtitle class="subtitulo" *ngIf="posicion == 1">
                 Ingresa la marca y el modelo
               </ion-card-subtitle>
+
               <ion-card-subtitle class="subtitulo" *ngIf="posicion == 2">
                 Agrega los datos
               </ion-card-subtitle>
@@ -87,7 +88,7 @@
                     </ion-col>
 
                     <ion-col size="12" size-md="6" class="campo-opcion">
-                      <div class="opcion-tipo-cuenta" [class.opcion-seleccionada]="select_tipo === 'Agencia'"
+                      <div class="opcion-tipo-cuenta" [class.opcion-seleccionada]="select_tipo === 'Agencia / lote'"
                         (click)="seleccionarTipoCuenta('Agencia / lote')">
                         <div class="icono-opcion">
                           <ion-icon name="business-outline"></ion-icon>
@@ -98,7 +99,7 @@
                             Perfecto para agencias seminuevos o lotes que desean publicar múltiples vehículos de renta
                           </p>
                         </div>
-                        <div class="check-opcion" *ngIf="select_tipo === 'Agencia'">
+                        <div class="check-opcion" *ngIf="select_tipo === 'Agencia / lote'">
                           <ion-icon name="checkmark-circle" color="danger"></ion-icon>
                         </div>
                       </div>
@@ -356,14 +357,21 @@
                     </ion-col>
                   </ng-container>
 
-                  <ng-container *ngIf="posicion == 3">
+                  <ng-container *ngIf="posicion == 3 && select_tipo === 'Particular'">
                     <!-- TÍTULO Y DESCRIPCIÓN -->
                     <ion-col size="12" class="campo-formulario">
-                      <h2 class="titulo-seccion">Ubicaciones del Vehículo</h2>
+                      <h2 class="titulo-seccion">Ubicaciones de entrega del Vehículo</h2>
                       <p class="descripcion-seccion">
                         {{ ubicacionesSeleccionadas.length === 0 ?
-                        'Selecciona al menos una ubicación donde estará disponible el vehículo' :
+                        'Selecciona al menos una ubicación donde se entragará el vehículo al rentador' :
                         'Puedes agregar más ubicaciones si el vehículo está disponible en varios lugares' }}
+                      </p>
+                      <p class="ejemplo-ubicaciones">
+                        Ejemplo:
+                        <span class="lista-ejemplos">
+                          Aeropuerto Internacional, Centro Histórico, Terminal de Autobuses, Zona Hotelera,
+                          Plaza Comercial Principal
+                        </span>
                       </p>
                     </ion-col>
 
@@ -373,7 +381,7 @@
                         class="boton-ubicacion">
                         <ion-icon name="add-circle-outline" slot="start"></ion-icon>
                         {{ ubicacionesSeleccionadas.length === 0 ?
-                        'Seleccionar Primera Ubicación' : 'Seleccionar Una Más' }}
+                        'Seleccionar Primera Ubicación' : 'Seleccionar una Más' }}
                       </ion-button>
                     </ion-col>
 
@@ -422,28 +430,174 @@
                   </ng-container>
 
                   <ng-container *ngIf="posicion == 4">
+                    <!-- TÍTULO Y DESCRIPCIÓN -->
+                    <ion-col size="12" class="campo-formulario">
+                      <h2 class="titulo-seccion">Imágenes del Vehículo</h2>
+                      <p class="descripcion-seccion">
+                        Sube imágenes de calidad para mostrar tu vehículo. Una imagen principal y al menos 2 imágenes
+                        secundarias son requeridas.
+                      </p>
+                    </ion-col>
 
+                    <!-- BOTÓN PARA SELECCIONAR IMÁGENES -->
+                    <ion-col size="12" class="campo-formulario">
+                      <ion-button expand="block" fill="outline" color="danger" (click)="seleccionarImagenes()"
+                        class="boton-imagenes">
+                        <ion-icon name="camera-outline" slot="start"></ion-icon>
+                        {{ imagenesIntentadas ? 'Cambiar Imágenes' : 'Seleccionar Imágenes' }}
+                      </ion-button>
+                    </ion-col>
+
+                    <!-- RESUMEN DE IMÁGENES SELECCIONADAS -->
+                    <ion-col size="12" class="campo-formulario" *ngIf="imagenesIntentadas">
+                      <div class="resumen-imagenes">
+                        <h3 class="titulo-lista">
+                          <ion-icon name="images" color="danger"></ion-icon>
+                          Resumen de Imágenes
+                        </h3>
+
+                        <!-- IMAGEN PRINCIPAL -->
+                        <div class="seccion-imagenes">
+                          <h4 class="subtitulo-imagenes">
+                            <ion-icon name="star" color="warning"></ion-icon>
+                            Imagen Principal
+                          </h4>
+
+                          <div class="contenedor-miniaturas">
+                            <div class="miniatura-contenedor" *ngIf="imagenPrincipal">
+                              <div class="miniatura-principal">
+                                <img [src]="obtenerUrlImagen(imagenPrincipal)" [alt]="imagenPrincipal.name"
+                                  class="miniatura-imagen" (error)="manejarErrorImagen($event)">
+                                <div class="badge-principal">
+                                  <ion-badge color="warning">Principal</ion-badge>
+                                </div>
+                                <div class="info-miniatura">
+                                  <p class="nombre-imagen">{{ imagenPrincipal.name }}</p>
+                                  <p class="tamano-imagen">{{ (imagenPrincipal.size / 1024 / 1024).toFixed(2) }} MB</p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="sin-imagen" *ngIf="!imagenPrincipal">
+                              <ion-icon name="image-outline" class="icono-sin-imagen"></ion-icon>
+                              <p>No hay imagen principal seleccionada</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- IMÁGENES SECUNDARIAS -->
+                        <div class="seccion-imagenes">
+                          <h4 class="subtitulo-imagenes">
+                            <ion-icon name="images" color="primary"></ion-icon>
+                            Imágenes Secundarias
+                            <ion-badge [color]="imagenesSecundarias.length >= 2 ? 'success' : 'warning'"
+                              class="badge-contador">
+                              {{ imagenesSecundarias.length }}/2 mínimas
+                            </ion-badge>
+                          </h4>
+
+                          <div class="contenedor-miniaturas">
+                            <!-- Miniaturas de imágenes secundarias -->
+                            <div class="miniatura-contenedor" *ngFor="let imagen of imagenesSecundarias; let i = index">
+                              <div class="miniatura-secundaria">
+                                <img [src]="obtenerUrlImagen(imagen)" [alt]="imagen.name" class="miniatura-imagen"
+                                  (error)="manejarErrorImagen($event)">
+                                <div class="numero-miniatura">
+                                  <ion-badge color="medium">{{ i + 1 }}</ion-badge>
+                                </div>
+                                <div class="info-miniatura">
+                                  <p class="nombre-imagen">{{ imagen.name }}</p>
+                                  <p class="tamano-imagen">{{ (imagen.size / 1024 / 1024).toFixed(2) }} MB</p>
+                                </div>
+                                <ion-button fill="clear" color="danger" size="small" class="boton-eliminar-miniatura"
+                                  (click)="eliminarImagenSecundaria(i)">
+                                  <ion-icon name="close-circle" slot="icon-only"></ion-icon>
+                                </ion-button>
+                              </div>
+                            </div>
+
+                            <!-- Mensaje cuando no hay suficientes imágenes -->
+                            <div class="sin-imagen" *ngIf="imagenesSecundarias.length === 0">
+                              <ion-icon name="images-outline" class="icono-sin-imagen"></ion-icon>
+                              <p>No hay imágenes secundarias seleccionadas</p>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </ion-col>
                   </ng-container>
+
+                  <ng-container *ngIf="posicion == 5">
+
+                    <!-- RESUMEN FINAL DEL VEHÍCULO -->
+                    <ion-col size="12" class="campo-formulario" *ngIf="imagenesValidas">
+                      <div class="resumen-final">
+                        <h3 class="titulo-lista">
+                          <ion-icon name="checkmark-done-circle" color="success"></ion-icon>
+                          Resumen Final - Listo para Publicar
+                        </h3>
+
+                        <ion-card class="card-resumen">
+                          <ion-card-content>
+                            <div class="info-resumen">
+                              <div class="seccion-resumen">
+                                <h4>Información del Vehículo</h4>
+                                <p><strong>Publicar como:</strong> {{ select_tipo }}</p>
+                                <p><strong>Vehículo:</strong> {{ marca }} {{ modelo }}</p>
+                                <p><strong>Tipo:</strong> {{ tipo }}</p>
+                                <p><strong>Estado:</strong> {{ estadoVehiculo }}</p>
+                              </div>
+
+                              <div class="seccion-resumen">
+                                <h4>Especificaciones</h4>
+                                <p><strong>Transmisión:</strong> {{ transmision }}</p>
+                                <p><strong>Combustible:</strong> {{ combustible }}</p>
+                                <p><strong>Pasajeros:</strong> {{ pasajeros }}</p>
+                                <p><strong>Nivel Combustible:</strong> {{ nivelCombustible }}</p>
+                              </div>
+
+                              <div class="seccion-resumen">
+                                <h4>Condiciones de Renta</h4>
+                                <p><strong>Precio por día:</strong> ${{ precioPorDia }} MXN</p>
+                                <p><strong>Edad mínima:</strong> {{ edadMinima }} años</p>
+                                <p><strong>Ubicaciones:</strong> {{ ubicacionesSeleccionadas.length || 0 }}</p>
+                                <p><strong>Extras:</strong> {{ extrasSeleccionados.length || 0 }}</p>
+                              </div>
+
+                              <div class="seccion-resumen">
+                                <h4>Imágenes</h4>
+                                <p><strong>Principal:</strong> {{ imagenPrincipal?.name || 'No seleccionada' }}</p>
+                                <p><strong>Secundarias:</strong> {{ imagenesSecundarias.length || 0 }} imágenes</p>
+                              </div>
+                            </div>
+                          </ion-card-content>
+                        </ion-card>
+                      </div>
+                    </ion-col>
+                  </ng-container>
+
 
                 </ion-row>
               </ion-grid>
 
-              <div class="botones-accion" *ngIf="tipoDispocitivo !== 'telefono' && posicion != 0">
+              <div class="botones-accion" *ngIf="tipoDispocitivo !== 'telefono'">
                 <div class="boton-publicar-container">
                   <div class="botones-fila">
                     <button expand="block" type="button" class="btn-crear-lote btn-dark" (click)="regresarPocicion()">
                       <ion-icon name="arrow-back"></ion-icon>
                       Regresar
                     </button>
-                    <button expand="block" *ngIf="marca" type="button" class="btn-crear-lote btn-dark"
-                      (click)="limpiarPorPosicion()">
+                    <button expand="block" *ngIf="posicion != 0 && posicion != 5" type="button"
+                      class="btn-crear-lote btn-dark" (click)="limpiarPorPosicion()">
                       <ion-icon name="trash"></ion-icon>
                       Limpiar
                     </button>
                     <button expand="block" type="button" class="btn-crear-lote btn-danger" (click)="sigiente()">
-                      <p *ngIf="posicion != 3"> Continuar</p>
-                      <p *ngIf="posicion == 3"> Publicar coche</p>
-                      <ion-icon name="arrow-forward"></ion-icon>
+                      <p *ngIf="posicion != 5"> Continuar</p>
+                      <p *ngIf="posicion == 5"> Publicar coche</p>
+                      <ion-icon *ngIf="posicion == 5" name="save-outline" slot="end"></ion-icon>
+                      <ion-icon *ngIf="posicion != 5" name="arrow-forward"></ion-icon>
                     </button>
                   </div>
                 </div>
@@ -487,7 +641,7 @@
         <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
         Atrás
       </ion-button>
-      <ion-button fill="clear" *ngIf="marca " (click)="limpiarPorPosicion()">
+      <ion-button fill="clear" *ngIf="posicion != 0 && posicion != 5" (click)="limpiarPorPosicion()">
         <ion-icon name="close"></ion-icon>
         Limpiar
       </ion-button>
@@ -495,13 +649,13 @@
 
     <ion-buttons slot="end">
 
-      <ion-button *ngIf="posicion != 4 && posicion != 0" color="danger" fill="solid" type="button"
+      <ion-button *ngIf="posicion != 5 && posicion != 0" color="danger" fill="solid" type="button"
         [disabled]="!marca || !modelo" (click)="sigiente()">
         Continuar
         <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
       </ion-button>
 
-      <ion-button *ngIf="posicion == 4" color="danger" fill="solid" type="submit" (click)="sigiente()">
+      <ion-button *ngIf="posicion == 5" color="danger" fill="solid" type="submit" (click)="sigiente()">
         Publicar coche
         <ion-icon name="save-outline" slot="end"></ion-icon>
       </ion-button>
