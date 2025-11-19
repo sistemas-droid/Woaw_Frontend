@@ -1,3 +1,4 @@
+
 import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "./guards/auth.guard";
@@ -371,6 +372,10 @@ const routes: Routes = [
       // ---------------------
 
 
+  {
+    path: 'welcome-lote',
+    loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then( m => m.WelcomeLotePageModule)
+  },
     ],
   },
   {
@@ -379,6 +384,7 @@ const routes: Routes = [
       import("./pages/error/error.module").then((m) => m.ErrorPageModule),
     data: { title: "Página no encontrada | woaw" },
   },
+
 ];
 
 @NgModule({
