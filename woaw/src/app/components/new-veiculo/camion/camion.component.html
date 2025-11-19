@@ -1,21 +1,29 @@
 <section>
   <!-- ===== Resumen arriba (botón publicar + preview estado) ===== -->
-  <div class="resumen-estado" *ngIf="seccionFormulario == 2 && Pregunta == 'no'">
+<div class="resumen-estado" *ngIf="seccionFormulario == 2 && Pregunta == 'no'">
 
+  <button type="button" class="btn-guardar" (click)="EnviarCamion()">
+    <ion-icon name="save-outline" class="icono-guardar"></ion-icon>
+    Publicar
+  </button>
 
-    <button type="button" class="btn-guardar" (click)="EnviarCamion()">
-      <ion-icon name="save-outline" class="icono-guardar"></ion-icon>
-      Publicar
-    </button>
+  <p>Año: <strong>{{ anio }}</strong></p>
+  <p>Marca: <strong>{{ marca }}</strong></p>
+  <p>Modelo: <strong>{{ modelo }}</strong></p>
+  <p *ngIf="MyRole !== 'admin'" class="estilo_unico">{{ estadoCamion }}</p>
 
-
-    <div class="fila-info">
-      <p>Año: <strong>{{ anio }}</strong></p>
-      <p>Marca: <strong>{{ marca }}</strong></p>
-      <p>Modelo: <strong>{{ modelo }}</strong></p>
-      <p class="estilo_unico">{{ estadoCamion }}</p>
+  <div *ngIf="MyRole === 'admin'" class="field field-tipo-inline">
+    <div class="tipo-inline-wrapper">
+      <ion-select class="select-tipo-inline" interface="popover"
+        (ionChange)="onTipoChange($event)" [value]="estadoCamion">
+        <ion-select-option value="Nuevo">Nuevo</ion-select-option>
+        <ion-select-option value="Seminuevo">Seminuevo</ion-select-option>
+        <ion-select-option value="Usado">Usado</ion-select-option>
+      </ion-select>
     </div>
   </div>
+
+</div>
 
   <!-- ===== PREGUNTA tipo de camión (particular/lote/empresa) ===== -->
 
@@ -103,7 +111,7 @@
         Contáctanos por WhatsApp
       </button>
     </div>
-    
+
   </div>
 
   <!-- ===== FORMULARIO PRINCIPAL ===== -->
