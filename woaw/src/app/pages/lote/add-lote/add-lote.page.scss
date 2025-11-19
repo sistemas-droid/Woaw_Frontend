@@ -202,7 +202,7 @@
   max-width: 300px;
 }
 
-/* Estilos para el mensaje de autenticación */
+
 .mensaje-autenticacion {
   max-width: 800px;
   margin: 2rem auto;
@@ -213,24 +213,29 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   color: #495057;
   font-size: 1.1rem;
+
+
+
+  .btn-acceso {
+    display: block;
+    margin: 1rem auto 0;
+    padding: 0.75rem 1.5rem;
+    background-color: #ff3838;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .btn-acceso:hover {
+    background-color: #2e6fd9;
+  }
+
 }
 
-.btn-acceso {
-  display: block;
-  margin: 1rem auto 0;
-  padding: 0.75rem 1.5rem;
-  background-color: #ff3838;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
 
-.btn-acceso:hover {
-  background-color: #2e6fd9;
-}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -250,7 +255,6 @@
     margin-bottom: 1rem;
   }
 }
-
 
 
 

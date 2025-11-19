@@ -72,27 +72,25 @@
         <!-- Logos -->
         <div class="contenedor-marcas">
           <ng-container *ngIf="tipoSeleccionado === 'coches'">
-  <ng-container *ngFor="let marca of filteredOpciones">
-    <div class="marca-card" *ngIf="marca.imagenValida"
-         [class.seleccionado]="marca.key === marcaSeleccionada?.key"
-         (click)="seleccionarMarca(marca)">
-      <img [src]="marca.imageUrl" [alt]="marca.nombre" (error)="marca.imagenValida = false" />
-      <span class="marca-nombre-grid" [title]="marca.nombre">{{ marca.nombre }}</span>
-    </div>
-  </ng-container>
-</ng-container>
+            <ng-container *ngFor="let marca of filteredOpciones">
+              <div class="marca-card" *ngIf="marca.imagenValida"
+                [class.seleccionado]="marca.key === marcaSeleccionada?.key" (click)="seleccionarMarca(marca)">
+                <img [src]="marca.imageUrl" [alt]="marca.nombre" (error)="marca.imagenValida = false" />
+                <span class="marca-nombre-grid" [title]="marca.nombre">{{ marca.nombre }}</span>
+              </div>
+            </ng-container>
+          </ng-container>
 
           <ng-container *ngIf="tipoSeleccionado === 'camiones'">
-          <ng-container *ngIf="tipoSeleccionado === 'camiones'">
-  <ng-container *ngFor="let marca of filteredOpcionesCamiones">
-    <div class="marca-card" *ngIf="marca.imagenValida"
-         [class.seleccionado]="marca._id === marcaSeleccionada?._id"
-         (click)="seleccionarMarca(marca)">
-      <img [src]="marca.imageUrl" [alt]="marca.nombre" (error)="marca.imagenValida = false" />
-      <span class="marca-nombre-grid" [title]="marca.nombre">{{ marca.nombre }}</span>
-    </div>
-  </ng-container>
-</ng-container>
+            <ng-container *ngIf="tipoSeleccionado === 'camiones'">
+              <ng-container *ngFor="let marca of filteredOpcionesCamiones">
+                <div class="marca-card" *ngIf="marca.imagenValida"
+                  [class.seleccionado]="marca._id === marcaSeleccionada?._id" (click)="seleccionarMarca(marca)">
+                  <img [src]="marca.imageUrl" [alt]="marca.nombre" (error)="marca.imagenValida = false" />
+                  <span class="marca-nombre-grid" [title]="marca.nombre">{{ marca.nombre }}</span>
+                </div>
+              </ng-container>
+            </ng-container>
           </ng-container>
         </div>
 
@@ -242,8 +240,12 @@
                   WhatsApp
                 </button>
               </ion-row>
+              
             </ion-grid>
           </form>
+         <!-- JUSTO DEBAJO DEL </form> -->
+ 
+ 
         </div>
       </ng-container>
     </div>
@@ -269,7 +271,7 @@
         <!-- Beneficios -->
         <ion-col size="12" size-md="4">
           <div class="tarjeta-arr">
-            <h5>  <ion-icon name="thumbs-up-outline"></ion-icon>BENEFICIOS </h5>
+            <h5> <ion-icon name="thumbs-up-outline"></ion-icon>BENEFICIOS </h5>
             <ul>
               <li>
                 <ion-icon name="checkmark-circle-outline"></ion-icon> 100%

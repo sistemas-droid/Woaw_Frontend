@@ -56,6 +56,9 @@ export class CamionComponent implements OnInit {
   preciosVersiones: { [version: string]: number } = {};
 
   ubicacionSeleccionada: [string, string, number, number] | null = null; // [ciudad, estado, lat, lng]
+    mostrar_spinnet: boolean = false;
+  
+
   direccionCompleta: string = "Obteniendo ubicación...";
 
   public Pregunta: "no" | "si" | null = null;
@@ -205,33 +208,42 @@ export class CamionComponent implements OnInit {
     const anioActual = new Date().getFullYear();
     for (let i = anioActual; i >= 1980; i--) this.listaAnios.push(i);
   }
+definirEstadoCamion() {
+  const anioActual = new Date().getFullYear();
 
-  definirEstadoCamion() {
-    const anioActual = new Date().getFullYear();
-
-    if (this.anio === anioActual && this.MyRole === "admin") {
-      this.estadoCamion = "Nuevo";
-      this.estadoCamion_logico = "nuevo";
-      this.kilometraje = 0;
-    } else if (this.anio === anioActual && this.MyRole !== "admin") {
-      this.estadoCamion = "Seminuevo";
-      this.estadoCamion_logico = "seminuevo";
-    } else if (this.anio >= anioActual - 5) {
-      this.estadoCamion = "Seminuevo";
-      this.estadoCamion_logico = "seminuevo";
-    } else if (this.anio < 2005 && this.anio >= 1980) {
-      this.estadoCamion = "Usado";
-      this.estadoCamion_logico = "viejito";
-    } else {
-      this.estadoCamion = "Usado";
-      this.estadoCamion_logico = "usado";
-    }
-
-    console.log(
-      `Estado definido: ${this.estadoCamion}, KM: ${this.kilometraje}`
-    );
+  if (this.anio === anioActual && this.MyRole === "admin") {
+    this.estadoCamion = "Nuevo";
+    this.estadoCamion_logico = "nuevo";
+    this.kilometraje = 0;
+  } else if (this.anio === anioActual && this.MyRole !== "admin") {
+    this.estadoCamion = "Seminuevo";
+    this.estadoCamion_logico = "seminuevo";
+  } else if (this.anio >= anioActual - 5) {
+    this.estadoCamion = "Seminuevo";
+    this.estadoCamion_logico = "seminuevo";
+  } else if (this.anio < 2005 && this.anio >= 1980) {
+    this.estadoCamion = "Usado";
+    this.estadoCamion_logico = "viejito";
+  } else {
+    this.estadoCamion = "Usado";
+    this.estadoCamion_logico = "usado";
   }
+}
 
+onTipoChange(event: any) {
+  this.mostrar_spinnet = true;
+  setTimeout(() => {
+    this.mostrar_spinnet = false;
+
+    this.estadoCamion = event.detail.value;              // 👈 usamos estadoCamion
+    this.estadoCamion_logico = this.estadoCamion.toLowerCase();
+
+    // si el admin lo marca como nuevo, km en 0
+    if (this.estadoCamion_logico === "nuevo") {
+      this.kilometraje = 0;
+    }
+  }, 1000);
+}
 
   // Agregar método para selección de versión desde Car Component
   onSeleccionVersion(version: string) {

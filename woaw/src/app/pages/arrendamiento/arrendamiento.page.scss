@@ -295,156 +295,144 @@ ion-item {
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.18);
 
-  /* 🔥 ENCABEZADO PERFECTO */
-.encabezado-arrendamiento {
-  display: grid;
-  grid-template-columns: auto 1fr auto;  /* botón - centro - logo */
-  align-items: center;
-  gap: clamp(0.5rem, 2vw, 1rem);
-  margin-bottom: 20px;
-  width: 100%;
-
-  /* BOTÓN */
-  .btn-regresar {
-    background: #ff2d2d;
-    color: #fff;
-    padding: 10px 15px;
-    border-radius: 6px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-
-    display: flex;
+  .encabezado-arrendamiento {
+    display: grid;
+    grid-template-columns: auto 1fr auto;  /* botón - centro - logo */
     align-items: center;
-    gap: 5px;
-    font-size: clamp(10px, 2vw, 12px);
-    white-space: nowrap;
-
-    justify-self: start; /* 🔥 LO PEGA A LA IZQUIERDA EN WEB */
-
-    ion-icon {
-      font-size: clamp(14px, 2.5vw, 18px);
-    }
-
-    &:hover {
-      opacity: 0.8;
-    }
-  }
-
-  /* TÍTULO CENTRADO (ajusta según tu etiqueta real) */
-  h2,
-  .titulo-categoria {
-    justify-self: center;
-    text-align: center;
-    margin: 0;
-  }
-
-  /* LOGOS CENTRADOS (web) */
-  .img_logo,
-  .img_coche2,
-  .img_camion2 {
-    justify-self: center;
-    width: clamp(70px, 8vw, 90px);
-    height: auto;
-    object-fit: contain;
-    transform: translateX(-50%); /* ajuste visual solo en web */
-  }
-
-  /* Ajustes especiales de tamaños */
-  .img_coche2 {
-    width: clamp(60px, 10vw, 140px);
-  }
-
-  .img_camion2 {
-    width: clamp(30px, 6vw, 40px);
-  }
-
-  /* BUSCADOR (debajo del título en web) */
-  .buscador {
-    grid-row: 2;          /* fila 2 debajo del título */
-    grid-column: 1 / 4;   /* ocupa TODA la fila */
-    justify-self: center;
-
+    gap: clamp(0.5rem, 2vw, 1rem);
+    margin-bottom: 20px;
     width: 100%;
-    max-width: 350px;
 
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 6px 10px;
-    background: #fff;
-
-    ion-icon {
-      color: #999;
-      font-size: 18px;
-    }
-
-    input {
+    /* BOTÓN */
+    .btn-regresar {
+      background: #ff2d2d;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-weight: 500;
       border: none;
-      outline: none;
-      flex: 1;
-      font-size: clamp(12px, 2vw, 14px);
-      color: #333;
-      min-width: 60px;
-    }
-  }
+      cursor: pointer;
 
-  /* TABLET */
-  @media (max-width: 768px) {
-    gap: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: clamp(10px, 2vw, 12px);
+      white-space: nowrap;
 
-    .btn-regresar {
-      font-size: 13px;
-    }
+      justify-self: start; /* 🔥 LO PEGA A LA IZQUIERDA */
 
-    .buscador {
-      max-width: 280px;
-      padding: 4px 8px;
-    }
-  }
+      ion-icon {
+        font-size: clamp(14px, 2.5vw, 18px);
+      }
 
-  /* MOBILE */
-  @media (max-width: 480px) {
-    /* Reorganizamos todo en una columna */
-    grid-template-columns: 1fr;
-    justify-items: center;
-    text-align: center;
-    row-gap: 0.6rem;
-
-    .btn-regresar {
-      grid-column: 1;
-      grid-row: 1;          /* 🔝 PRIMERO */
-      justify-self: flex-start;  /* a la izquierda */
-      margin-left: 0;       /* se respeta el padding del contenedor */
+      &:hover {
+        opacity: 0.8;
+      }
     }
 
+    /* TÍTULO CENTRADO (ajusta según tu etiqueta real) */
     h2,
     .titulo-categoria {
-      grid-column: 1;
-      grid-row: 2;          /* debajo del botón */
       justify-self: center;
+      text-align: center;
+      margin: 0;
     }
 
+    /* LOGOS CENTRADOS */
     .img_logo,
     .img_coche2,
     .img_camion2 {
-      grid-column: 1;
-      grid-row: 3;          /* debajo de COCHES */
-      transform: translateX(0);  /* centrado perfecto en móvil */
+      justify-self: center;
+      width: clamp(70px, 8vw, 90px);
+      height: auto;
+      object-fit: contain;
+
+        transform: translateX(-50%);
+
     }
 
+    /* Ajustes especiales de tamaños */
+    .img_coche2 {
+      width: clamp(60px, 10vw, 140px);
+    }
+
+    .img_camion2 {
+      width: clamp(30px, 6vw, 40px);
+    }
+
+    /* BUSCADOR (si lo usas en este header) */
     .buscador {
-      grid-column: 1;
-      grid-row: 4;          /* debajo del logo */
-      width: 100%;
-      max-width: none;
-      margin-top: 8px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 6px 10px;
+      background: #fff;
+      max-width: 300px;
+
+      ion-icon {
+        color: #999;
+        font-size: 18px;
+      }
+
+      input {
+        border: none;
+        outline: none;
+        flex: 1;
+        font-size: clamp(12px, 2vw, 14px);
+        color: #333;
+        min-width: 60px;
+      }
+    }
+
+    /* TABLET */
+    @media (max-width: 768px) {
+      gap: 0.5rem;
+
+      .btn-regresar {
+        font-size: 13px;
+      }
+
+      .buscador {
+        max-width: 180px;
+        padding: 4px 8px;
+      }
+    }
+
+    /* MOBILE */
+    @media (max-width: 480px) {
+
+      /* En móvil hacemos que la grid se reorganice vertical */
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+
+      .btn-regresar {
+        justify-self: center;
+        order: 1;
+      }
+
+      h2,
+      .titulo-categoria {
+        order: 2;
+      }
+
+      .img_logo,
+      .img_coche2,
+      .img_camion2 {
+        order: 3;
+      }
+
+      .buscador {
+        order: 4;
+        width: 100%;
+        margin-top: 10px;
+        max-width: none;
+      }
     }
   }
-}
-
 /* ====== CARD GENERAL (DESKTOP + BASE) ====== */
 .marca-card {
   background: #fff;
@@ -849,7 +837,8 @@ ion-item {
       }
     }
   }
-}.grid-arrendamiento {
+}
+.grid-arrendamiento {
 
   max-width: 1000px;
   margin: -200px auto 40px;  /* desktop, no se toca */
@@ -920,7 +909,7 @@ ion-item {
 
   /* CONTENEDOR GENERAL DE LA SECCIÓN */
   .bloque-arrendamiento {
-    margin: -40px auto 20px;  /* antes -80px: ahora se sube menos */
+    margin: -150px auto 20px;  /* antes -80px: ahora se sube menos */
     padding: 0 12px 24px;     /* un poco de respiración lateral */
   }
 
@@ -1283,8 +1272,9 @@ ion-item {
     font-size: 15px;
   }
 }
+
 .fondo-arrendamiento {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -1293,6 +1283,7 @@ ion-item {
   object-fit: cover;
   z-index: -1;
 }
+
 .despues_de_imagen {
   margin-top: 37vh;
   position: relative;

@@ -1,3 +1,4 @@
+
 import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "./guards/auth.guard";
@@ -106,8 +107,9 @@ const routes: Routes = [
         path: "new-car",
         loadChildren: () =>
           import("./pages/new-car/new-car.module").then(
-            (m) => m.NewCarPageModule
+            (m) => m.NewCarPageModule,
           ),
+        canActivate: [AuthPhoneGuard],
         data: { title: "Publicar nuevo vehículo | woaw" }
       },
       {
@@ -370,6 +372,10 @@ const routes: Routes = [
       // ---------------------
 
 
+  {
+    path: 'welcome-lote',
+    loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then( m => m.WelcomeLotePageModule)
+  },
     ],
   },
   {
@@ -377,9 +383,6 @@ const routes: Routes = [
     loadChildren: () =>
       import("./pages/error/error.module").then((m) => m.ErrorPageModule),
     data: { title: "Página no encontrada | woaw" },
-  },  {
-    path: 'welcome-lote',
-    loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then( m => m.WelcomeLotePageModule)
   },
 
 ];
