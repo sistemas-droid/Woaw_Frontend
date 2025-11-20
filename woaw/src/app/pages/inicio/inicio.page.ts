@@ -229,7 +229,7 @@ export class InicioPage implements OnInit {
     }
   }
   async cargaimagen() {
-    this.imgenPrincipal = 'assets/autos/fondo11.png';
+    this.imgenPrincipal = 'assets/autos/fondo15.png';
     this.generalService.addPreload(this.imgenPrincipal, 'image');
     try {
       await Promise.all([
