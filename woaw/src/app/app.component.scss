@@ -83,3 +83,25 @@
 .fx-b {
   background: radial-gradient(60% 60% at 80% 20%, rgba(72, 136, 255, .35), transparent 60%);
 }
+
+
+
+
+
+// Estilos para el botón flotante rectangular
+.rectangular-fab {
+  --border-radius: 7px;
+  width: 140px;
+  height: 56px;
+  
+  ion-icon {
+    margin-left: 5px;
+    margin-top: 2px;
+    font-size: 15px;
+  }
+}
+
+// Asegurar que el FAB esté por encima de otros elementos
+ion-fab {
+  z-index: 1000;
+}

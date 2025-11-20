@@ -39,18 +39,23 @@ export class CotizadorComponent implements OnInit {
     // console.log(this.coche);
     const tipoVehiculo = this.coche?.vehiculo?.toLowerCase() || '';
     // console.log(tipoVehiculo);
-    const año = this.coche?.anio;
+    const año = this.coche.anio;
     const añoActual = new Date().getFullYear();
 
-    if (!año || año < 2016 || año > añoActual) {
+    if (!año || año < 2016) {
       this.edadValida = false;
       return;
     }
+    
+    // if (!año || año < 2016 || año > añoActual) {
+    //   this.edadValida = false;
+    //   return;
+    // }
+
     const tipo = this.coche?.tipoVenta?.toLowerCase() ?? '';
 
     if (tipoVehiculo === 'moto') {
       this.precio = this.coche.precio ?? 0;
-      // console.log(this.precio);
       if (this.precio > 200000) {
         this.engancheMinimoPercent = 10;
         this.tasaAnual = tipo === 'nuevo' ? 0.1349 : 0.1499;
@@ -70,6 +75,7 @@ export class CotizadorComponent implements OnInit {
     this.enganchePercent = this.engancheMinimoPercent;
 
     const tablaPlazos: { [año: number]: number } = {
+      2026: 120, // Añadido soporte para 2026 
       2025: 120,
       2024: 108,
       2023: 96,
