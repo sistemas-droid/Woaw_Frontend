@@ -21,4 +21,4 @@ import { AsesoresPage } from './asesores.page';
   ],
   declarations: [AsesoresPage]
 })
-export class AsesoresPageModule {}
+export class AsesoresPageModule { }
