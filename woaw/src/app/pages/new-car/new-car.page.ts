@@ -47,12 +47,12 @@ export class NewCarPage implements OnInit {
       icono: "assets/img/icon-camion.png",
       proximamente: false,
     },
-    {
-      tipo: "renta",
-      label: "Renta",
-      icono: "assets/img/icon-renta.png",
-      proximamente: false,
-    },
+    // {
+    //   tipo: "renta",
+    //   label: "Renta",
+    //   icono: "assets/img/icon-renta.png",
+    //   proximamente: false,
+    // },
     {
       tipo: "lote",
       label: "Lote",

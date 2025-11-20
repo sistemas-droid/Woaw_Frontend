@@ -59,8 +59,6 @@ export class LoteService {
   }
 
   getLoteById(id: string): Observable<any> {
-    // Si eres admin, usa 'all'; si solo quieres los tuyos, usa 'mios'
-    // aquí asumimos 'all' para simplificar
     return this.getlotes('all').pipe(
       map(res => {
         const found = res.lotes.find((l: any) => l._id === id);
@@ -83,5 +81,18 @@ export class LoteService {
       catchError(error => this.headersService.handleError(error))
     );
   }
+  
+  getResumenVendidos(): Observable<any> {
+    return from(this.headersService.obtenerToken()).pipe(
+      switchMap(token => {
+        const headers = this.headersService.getFormDataHeaders(token);
+        return this.http.get(
+          `${environment.api_key}/lotes/resumen-vendidos`,
+          { headers }
+        );
+      })
+    );
+  }
+
 }
 
