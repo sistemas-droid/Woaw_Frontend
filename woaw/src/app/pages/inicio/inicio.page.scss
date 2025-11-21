@@ -284,13 +284,13 @@ img[alt="Imagen ilustrativa"] {
 .bg-img2 {
   display: block;
   width: 100vw;
+  opacity: 0.9;
   max-width: none;
   height: auto;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   border-radius: 0;
   object-fit: cover;
-  opacity: 1;
   
 }
 /* 💊 TABLET – corregido para NO pegarle al texto */
@@ -299,7 +299,6 @@ img[alt="Imagen ilustrativa"] {
     height: 300px;
     object-fit: contain;
     transform: scale(0.9);
-    opacity: 0.95;
 
     margin-top: 60px;   /* 🔥 la bajamos más */
   }

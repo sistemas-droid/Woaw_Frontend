@@ -6,6 +6,8 @@ import { PoliticasComponent } from '../../components/modal/politicas/politicas.c
 import { AvisoPrivasidadComponent } from '../../components/modal/aviso-privasidad/aviso-privasidad.component';
 import { ActivatedRoute } from '@angular/router';
 import { MenuController } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
+
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
@@ -15,11 +17,13 @@ import { MenuController } from '@ionic/angular';
 export class InicioPage implements OnInit {
 
   esDispositivoMovil: boolean = false;
-  showSplash: boolean = true;
+  showSplashScreen: boolean = true;
   splash: boolean = false;
   MostrarLogin: boolean = true;
   MostrarRegistro: boolean = false;
   MostrarRecuperacion: boolean = false;
+
+  public isNative = Capacitor.isNativePlatform();
 
   contenidos = [
     {
@@ -215,11 +219,9 @@ export class InicioPage implements OnInit {
   }
   mostrarSplash() {
     if (this.esDispositivoMovil == true) {
-      this.mostrarContenido = this.contenidos[0];
-      this.splash = true;
-      setInterval(() => {
-        this.splash = false;
-      }, 0);
+      setTimeout(() => {
+        this.showSplashScreen = false;
+      }, 3000);
     } else {
       setInterval(() => {
         this.indexContenido = (this.indexContenido + 1) % this.contenidos.length;

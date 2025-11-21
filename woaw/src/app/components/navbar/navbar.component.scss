@@ -358,7 +358,7 @@ ion-toolbar.custom-toolbar {
   gap: 6px;
 
   .logo {
-    width: clamp(56px, 7vw, 90px);
+    width: clamp(76px, 7vw, 90px);
     height: auto;
     object-fit: contain;
     cursor: pointer;
@@ -408,11 +408,11 @@ ion-toolbar ion-button.stack .vcol {
 }
 
 ion-toolbar ion-button.stack ion-icon {
-  font-size: 13px;
+  font-size: 20px;
 }
 
 ion-toolbar ion-button.stack .label {
-  font-size: 6px;
+  font-size: 12px;
 }
 
 
@@ -424,9 +424,6 @@ ion-toolbar ion-button.stack .label {
     gap: 6px;
   }
 
-  .logo_content .logo {
-    width: clamp(40px, 18vw, 56px);
-  }
 
   .buscador-container {
     width: clamp(100px, 46vw, 180px);

@@ -301,7 +301,7 @@ const routes: Routes = [
         loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then( m => m.WelcomeLotePageModule)
       },
       {
-        path: 'lote/subir-documents',
+        path: '',
         loadChildren: () => import('./pages/lote/subir-documents/subir-documents.module').then(m => m.SubirDocumentsPageModule)
       },
       // ---------------------

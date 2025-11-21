@@ -46,7 +46,6 @@
 
         <ion-button fill="clear" (click)="abrirPopover('Autos')"
           [ngClass]="{ 'activo': isActive('menu-vehiculos/autos') }">
-
           Vehiculos
         </ion-button>
 
@@ -118,9 +117,7 @@
       <ion-button fill="clear" class="stack" [ngClass]="{ 'activo': isActive('m-nuevos') }"
         (click)="redirecion('m-nuevos')" *ngIf="!mostrarBuscador && esDispositivoMovil">
         <span class="vcol">
-          <span class="iconbox">
-            <ion-icon name="bicycle-outline"></ion-icon>
-          </span>
+          <ion-icon name="bicycle-outline"></ion-icon>
           <span class="label">Motos</span>
         </span>
       </ion-button>
