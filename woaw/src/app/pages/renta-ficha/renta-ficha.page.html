@@ -1,26 +1,31 @@
-<ion-header>
-  <ion-toolbar color="dark">
+<ion-header translucent>
+  <ion-toolbar class="toolbar-ios">
+
     <ion-buttons slot="start">
-      <div class="perfil-header">
-        <button class="btn-regresar" (click)="volver()" aria-label="Regresar">
-          <ion-icon name="arrow-back-outline"></ion-icon>
-        </button>
-        <img src="/assets/icon/logo4.png" alt="WOAW" class="logo" />
-        <span *ngIf="rental" class="titulo-perfil">
-          {{ rental.marca }} {{ rental.modelo }}
-        </span>
+      <ion-button
+        fill="clear"
+        class="btn-back-ios"
+        (click)="volver()"
+        aria-label="Regresar">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+
+      <div class="titulo-ios" *ngIf="rental">
+        <img src="/assets/icon/logo4.png" alt="WOAW" class="logo-ios" />
+        <span>{{ rental.marca }} {{ rental.modelo }}</span>
       </div>
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button (click)="cerrar()" aria-label="Cerrar">
+      <ion-button fill="clear" (click)="cerrar()" aria-label="Cerrar">
         <ion-icon name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ficha-auto" [fullscreen]="true">
+<ion-content class="contenido-ios ficha-auto" [fullscreen]="true">
   <div class="spinner-ficha-wrapper" *ngIf="loading">
     <div class="spinner-ficha"></div>
     <div class="spinner-texto">Cargando vehículo...</div>
@@ -35,61 +40,99 @@
           <div class="contenedor-imagenes">
             <div class="contenedor_imagen_principal">
               <div class="imagen-principal">
-                <img [src]="imagenSeleccionada || galeria[0]" alt="Imagen principal del vehículo"
+                <img
+                  [src]="imagenSeleccionada || galeria[0]"
+                  alt="Imagen principal del vehículo"
                   (error)="onImgError($event, imagenSeleccionada || galeria[0])" />
-                <button class="flecha izquierda" *ngIf="tieneVarias" (click)="cambiarImagen('anterior')">‹</button>
-                <button class="flecha derecha" *ngIf="tieneVarias" (click)="cambiarImagen('siguiente')">›</button>
+                <button
+                  class="flecha izquierda"
+                  *ngIf="tieneVarias"
+                  (click)="cambiarImagen('anterior')">‹</button>
+                <button
+                  class="flecha derecha"
+                  *ngIf="tieneVarias"
+                  (click)="cambiarImagen('siguiente')">›</button>
               </div>
             </div>
 
             <div class="miniaturas-vertical" *ngIf="galeria.length > 1">
-              <img *ngFor="let img of galeria; trackBy: trackByUrl" [src]="img"
-                [class.activa]="img === imagenSeleccionada" (click)="imagenSeleccionada = img" tabindex="0" />
+              <img
+                *ngFor="let img of galeria; trackBy: trackByUrl"
+                [src]="img"
+                [class.activa]="img === imagenSeleccionada"
+                (click)="imagenSeleccionada = img"
+                tabindex="0" />
             </div>
           </div>
         </section>
 
         <aside class="bloque-principal">
           <div class="card-detalle">
-            <h2>{{ r.marca }} <span class="car-name">{{ r.modelo }}</span></h2>
+            <h2>
+              {{ r.marca }}
+              <span class="car-name">{{ r.modelo }}</span>
+            </h2>
+
             <div class="ubicacion" *ngIf="r.ubicacion?.length">
               <ion-icon name="location-outline"></ion-icon>
               <span>
                 <ng-container *ngFor="let u of r.ubicacion; let i = index">
-                  {{ u.ciudad }}, {{ u.estado }}<span *ngIf="i < (r.ubicacion?.length || 0) - 1"> • </span>
+                  {{ u.ciudad }}, {{ u.estado }}
+                  <span *ngIf="i < (r.ubicacion?.length || 0) - 1"> • </span>
                 </ng-container>
               </span>
             </div>
+
             <div class="precio-categoria">
               <div class="categoria" *ngIf="r.tipoVehiculo">
                 <span class="label">Categoría:</span>
                 <span class="valor">{{ r.tipoVehiculo | titlecase }}</span>
               </div>
+
               <div class="precio-dia" *ngIf="r.precio != null">
-                <strong class="monto">{{ r.precio | currency:'MXN':'symbol-narrow' }}</strong>
+                <strong class="monto">
+                  {{ r.precio | currency:'MXN':'symbol-narrow' }}
+                </strong>
                 <span class="por-dia">/ día</span>
               </div>
             </div>
 
             <div class="rating" *ngIf="r.ratingPromedio || r.totalRentas">
-              <ion-icon name="star" *ngFor="let i of [1,2,3,4,5]" [class.activa]="i <= ratingEntero"></ion-icon>
-              <span *ngIf="r.ratingPromedio">{{ r.ratingPromedio | number:'1.1-1' }}</span>
-              <span *ngIf="r.totalRentas"> • {{ r.totalRentas }} rentas</span>
+              <ion-icon
+                name="star"
+                *ngFor="let i of [1,2,3,4,5]"
+                [class.activa]="i <= ratingEntero"></ion-icon>
+              <span *ngIf="r.ratingPromedio">
+                {{ r.ratingPromedio | number:'1.1-1' }}
+              </span>
+              <span *ngIf="r.totalRentas">
+                • {{ r.totalRentas }} rentas
+              </span>
             </div>
 
             <div class="botones-ficha">
-              <button class="btn-reservar" type="button" [disabled]="r.estadoRenta !== 'disponible' || esDueno"
+              <button
+                class="btn-reservar"
+                type="button"
+                [disabled]="r.estadoRenta !== 'disponible' || esDueno"
                 (click)="reservar()">
                 <ion-icon name="calendar-outline"></ion-icon>
                 <span>RESERVAR</span>
               </button>
 
               <div class="fila-secundaria">
-                <button class="btn-accion btn-whatsapp" type="button" (click)="contactarWhatsApp()">
+                <button
+                  class="btn-accion btn-whatsapp"
+                  type="button"
+                  (click)="contactarWhatsApp()">
                   <ion-icon name="logo-whatsapp"></ion-icon>
                   <span>Whats App</span>
                 </button>
-                <button class="btn-accion btn-compartir" type="button" (click)="compartir()">
+
+                <button
+                  class="btn-accion btn-compartir"
+                  type="button"
+                  (click)="compartir()">
                   <ion-icon name="share-social-outline"></ion-icon>
                   <span>Compartir</span>
                 </button>
@@ -97,18 +140,20 @@
             </div>
 
             <p class="nota-legal" *ngIf="!isLoggedIn">
-              Al reservar aceptas el <a (click)="abrirAviso()">Aviso de Privacidad</a> y los
+              Al reservar aceptas el
+              <a (click)="abrirAviso()">Aviso de Privacidad</a>
+              y los
               <a (click)="abrirTerminos()">Términos y condiciones</a>.
             </p>
           </div>
         </aside>
       </div>
 
-      <!-- 🧩 Fila 2: Información general (4 columnas equilibradas) -->
+      <!-- 🧩 Fila 2: Información general -->
       <h2><span class="car-name">Características clave</span></h2>
       <div class="fila fila-informacion">
 
-        <!-- 🧩 DETALLES DEL VEHÍCULO -->
+        <!-- DETALLES DEL VEHÍCULO -->
         <ion-card class="info-card">
           <ion-card-header>
             <ion-card-title>Detalles del vehículo</ion-card-title>
@@ -118,18 +163,23 @@
               <ion-item *ngIf="r.tipoVehiculo">
                 <ion-icon name="car-outline" slot="start"></ion-icon>
                 <ion-label>Tipo</ion-label>
-                <ion-note slot="end">{{ r.tipoVehiculo | titlecase }}</ion-note>
+                <ion-note slot="end">
+                  {{ r.tipoVehiculo | titlecase }}
+                </ion-note>
               </ion-item>
+
               <ion-item *ngIf="r.transmision">
                 <ion-icon name="settings-outline" slot="start"></ion-icon>
                 <ion-label>Transmisión</ion-label>
                 <ion-note slot="end">{{ r.transmision }}</ion-note>
               </ion-item>
+
               <ion-item *ngIf="r.combustible">
                 <ion-icon name="flash-outline" slot="start"></ion-icon>
                 <ion-label>Combustible</ion-label>
                 <ion-note slot="end">{{ r.combustible }}</ion-note>
               </ion-item>
+
               <ion-item *ngIf="r.pasajeros">
                 <ion-icon name="people-outline" slot="start"></ion-icon>
                 <ion-label>Pasajeros</ion-label>
@@ -139,7 +189,7 @@
           </ion-card-content>
         </ion-card>
 
-        <!-- 🧩 REQUISITOS DEL CONDUCTOR -->
+        <!-- REQUISITOS DEL CONDUCTOR -->
         <ion-card *ngIf="r.requisitosConductor" class="info-card">
           <ion-card-header>
             <ion-card-title>Requisitos del conductor</ion-card-title>
@@ -149,18 +199,27 @@
               <ion-item>
                 <ion-icon name="id-card-outline" slot="start"></ion-icon>
                 <ion-label>Edad mínima</ion-label>
-                <ion-note slot="end">{{ r.requisitosConductor.edadMinima }} años</ion-note>
+                <ion-note slot="end">
+                  {{ r.requisitosConductor.edadMinima }} años
+                </ion-note>
               </ion-item>
+
               <ion-item>
                 <ion-icon name="card-outline" slot="start"></ion-icon>
                 <ion-label>Antigüedad licencia</ion-label>
-                <ion-note slot="end">{{ r.requisitosConductor.antiguedadLicenciaMeses }} meses</ion-note>
+                <ion-note slot="end">
+                  {{ r.requisitosConductor.antiguedadLicenciaMeses }} meses
+                </ion-note>
               </ion-item>
+
               <ion-item>
                 <ion-icon name="person-add-outline" slot="start"></ion-icon>
                 <ion-label>Conductor adicional</ion-label>
-                <ion-note slot="end">{{ r.requisitosConductor.permiteConductorAdicional ? 'Sí' : 'No' }}</ion-note>
+                <ion-note slot="end">
+                  {{ r.requisitosConductor.permiteConductorAdicional ? 'Sí' : 'No' }}
+                </ion-note>
               </ion-item>
+
               <ion-item *ngIf="r.deposito != null">
                 <ion-icon name="wallet-outline" slot="start"></ion-icon>
                 <ion-label>Depósito</ion-label>
@@ -172,7 +231,7 @@
           </ion-card-content>
         </ion-card>
 
-        <!-- 🧩 POLÍTICAS -->
+        <!-- POLÍTICAS -->
         <ion-card class="info-card">
           <ion-card-header>
             <ion-card-title>Políticas</ion-card-title>
@@ -182,29 +241,38 @@
               <ion-item *ngIf="r.politicaCombustible">
                 <ion-icon name="trail-sign-outline" slot="start"></ion-icon>
                 <ion-label>Combustible</ion-label>
-                <ion-note slot="end">{{ r.politicaCombustible | titlecase }}</ion-note>
+                <ion-note slot="end">
+                  {{ r.politicaCombustible | titlecase }}
+                </ion-note>
               </ion-item>
+
               <ion-item *ngIf="r.politicaLimpieza">
                 <ion-icon name="sparkles-outline" slot="start"></ion-icon>
                 <ion-label>Limpieza</ion-label>
-                <ion-note slot="end">{{ r.politicaLimpieza | titlecase }}</ion-note>
+                <ion-note slot="end">
+                  {{ r.politicaLimpieza | titlecase }}
+                </ion-note>
               </ion-item>
+
               <ion-item *ngIf="r.minDias">
                 <ion-icon name="calendar-outline" slot="start"></ion-icon>
                 <ion-label>Mínimo de días</ion-label>
                 <ion-note slot="end">{{ r.minDias }}</ion-note>
               </ion-item>
+
               <ion-item *ngIf="r.estadoRenta">
                 <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
                 <ion-label>Estado</ion-label>
-                <ion-note slot="end">{{ r.estadoRenta | titlecase }}</ion-note>
+                <ion-note slot="end">
+                  {{ r.estadoRenta | titlecase }}
+                </ion-note>
               </ion-item>
             </ion-list>
           </ion-card-content>
         </ion-card>
       </div>
 
-      <!-- 📅 Fila 3: Entrega + Calendario -->
+      <!-- 📦 Fila 3: Entrega -->
       <div class="fila fila-calendario">
         <ion-card *ngIf="r.entrega" class="info-card entrega-card">
           <ion-card-header>
@@ -234,17 +302,6 @@
             </ion-list>
           </ion-card-content>
         </ion-card>
-
-
-        <!-- <ion-card class="info-card">
-          <ion-card-header><ion-card-title>Selecciona fechas</ion-card-title></ion-card-header>
-          <ion-card-content>
-            <ion-item class="center-item danger-datetime" lines="none">
-              <ion-datetime [(ngModel)]="fechasSeleccionadas" multiple="true" presentation="date" [min]="minFecha"
-                (ionChange)="onRangoChange()" locale="es-ES"></ion-datetime>
-            </ion-item>
-          </ion-card-content>
-        </ion-card> -->
       </div>
 
     </div>

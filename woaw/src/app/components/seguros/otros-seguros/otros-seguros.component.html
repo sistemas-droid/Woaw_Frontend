@@ -1,23 +1,29 @@
-<div class="contenedor_otros">
+<div class="otros-ios">
 
-  <div class="logos-wrapper">
-    <button class="btn_back" (click)="atras()">
-          <ion-icon name="arrow-back-outline"></ion-icon>
-        </button>
-    <a >
-      <img src="/assets/icon/crabi2.png" alt="Logo Crabi" class="logo" />
-    </a>
-    <span class="slash"></span>
-    <a >
-      <img src="/assets/icon/logo4.png" alt="Logo Woaw" class="logo" />
-    </a>
-    <h2 *ngIf="tipoDispocitivo === 'telefono'" (click)="abrirModalPasos()">
+  <div class="otros-ios__header">
+    <button class="ios-back-btn" (click)="atras()">
+      <ion-icon name="chevron-back-outline"></ion-icon>
+      Regresar
+    </button>
+
+    <div class="ios-logos">
+      <img src="/assets/icon/crabi1.png" class="logo" alt="Crabi" />
+      <span class="divider"></span>
+      <img src="/assets/icon/logo2.png" class="logo" alt="Woaw" />
+    </div>
+
+    <button 
+      *ngIf="tipoDispocitivo === 'telefono'" 
+      class="ios-action" 
+      (click)="abrirModalPasos()">
       Pasos
       <ion-icon name="chevron-down-outline"></ion-icon>
-    </h2>
+    </button>
   </div>
 
-  <app-pasos *ngIf="tipoDispocitivo === 'computadora'  || tipoDispocitivo === 'tablet'"
-    [refreshKey]="refreshKey"></app-pasos>
+  <app-pasos 
+    *ngIf="tipoDispocitivo === 'computadora' || tipoDispocitivo === 'tablet'"
+    [refreshKey]="refreshKey">
+  </app-pasos>
 
 </div>

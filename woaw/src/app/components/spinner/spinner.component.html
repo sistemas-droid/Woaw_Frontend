@@ -1,52 +1,19 @@
-<div class="spinner-overlay" role="alert" aria-busy="true" aria-live="polite">
+<div
+  class="spinner-overlay"
+  role="alert"
+  aria-busy="true"
+  aria-live="polite"
+>
+  <div class="spinner-card">
+    <!-- Spinner tipo iOS -->
+    <div class="ios-spinner"></div>
 
-  <!-- ----- GENERICO  -->
-  <div class="page_0" *ngIf="tipo === 0">
-    <span class="loader"></span>
-    <h1 class="texto">{{text}}</h1>
-    <h3 class="texto_sub">{{sub_text}}</h3>
+    <h1 class="texto">
+      {{ text }}
+    </h1>
+
+    <h3 class="texto_sub" *ngIf="sub_text">
+      {{ sub_text }}
+    </h3>
   </div>
-
-  <!-- ----- ENVIO COCHE  -->
-  <div class="page_1" *ngIf="tipo === 1">
-    <span class="loader"></span>
-    <h1 class="texto">{{text}}</h1>
-    <h3 class="texto_sub">{{sub_text}}</h3>
-  </div>
-
-  <!-- ----- DOWNLOAD  -->
-  <div class="page_2" *ngIf="tipo === 2">
-    <span class="loader"></span>
-    <h1 class="texto">{{text}}</h1>
-    <h3 class="texto_sub">{{sub_text}}</h3>
-  </div>
-
-  <!-- ----- UP DOWNLOAD  -->
-  <div class="page_3" *ngIf="tipo === 3">
-    <span class="loader"></span>
-    <h1 class="texto">{{text}}</h1>
-    <h3 class="texto_sub">{{sub_text}}</h3>
-  </div>
-
-  <!-- ----- SEGURITY  -->
-  <div class="page_4" *ngIf="tipo === 4">
-    <span class="loader"></span>
-    <h1 class="texto">{{text}}</h1>
-    <h3 class="texto_sub">{{sub_text}}</h3>
-  </div>
-
-  <!-- ----- PAGO  -->
-  <div class="page_5" *ngIf="tipo === 5">
-    <span class="loader"></span>
-    <h1 class="texto">{{text}}</h1>
-    <h3 class="texto_sub">{{sub_text}}</h3>
-  </div>
-
-  <!-- ----- CARGANDO EN LA NUBE  -->
-  <div class="page_6" *ngIf="tipo === 6">
-    <span class="loader"></span>
-    <h1 class="texto">{{text}}</h1>
-    <h3 class="texto_sub">{{sub_text}}</h3>
-  </div>
-
 </div>

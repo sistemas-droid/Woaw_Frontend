@@ -1,0 +1,150 @@
+/* ============================= */
+/*   FONDO / BASE iOS            */
+/* ============================= */
+.contenido-ios {
+  --background: #f2f2f7;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+/* ============================= */
+/*   CONTENEDOR GRID iOS         */
+/* ============================= */
+.contenedor-catalogo-ios {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 12px 20px;
+}
+
+/* ============================= */
+/*   CATÁLOGO – TARJETAS iOS     */
+/* ============================= */
+.catalogo-autos-ios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 10px;
+  }
+
+  @media (max-width: 540px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  app-cartas {
+    display: block;
+  }
+}
+
+/* ============================= */
+/*   PAGINACIÓN – iOS ROJA       */
+/* ============================= */
+.contenedor-paginacion-ios {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+  padding-bottom: 10px;
+}
+
+.titulo-paginacion-ios {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #6b7280;
+}
+
+.paginacion-scroll-ios {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  padding-bottom: 4px;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148,163,184,0.9) transparent;
+
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(148,163,184,0.9);
+    border-radius: 999px;
+  }
+}
+
+.paginacion-ios {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 6px;
+  border-radius: 999px;
+
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 10px 22px rgba(15,23,42,0.16),
+    0 0 0 0.5px rgba(255,255,255,0.9);
+}
+
+/* Botones rojos igual que en “Mis autos” */
+.pagina-ios {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  background: transparent;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.16s ease,
+    box-shadow 0.16s ease;
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  &:not(.activa):not(:disabled):hover {
+    background: rgba(148,163,184,0.18);
+    transform: translateY(-1px);
+  }
+
+  &.activa {
+    background: #ff3b30; /* rojo iOS */
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(255,59,48,0.55);
+    transform: translateY(-1px);
+  }
+}
+
+.ellipsis-ios {
+  padding: 0 6px;
+  font-size: 14px;
+  color: #9ca3af;
+  font-weight: 500;
+}

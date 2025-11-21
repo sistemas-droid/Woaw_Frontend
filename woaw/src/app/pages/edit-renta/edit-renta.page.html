@@ -1,26 +1,30 @@
-<ion-header>
-  <ion-toolbar color="dark">
+<ion-header class="ios-header">
+  <ion-toolbar class="ios-toolbar" mode="ios">
     <ion-buttons slot="start">
-      <div class="perfil-header">
-        <button class="btn-regresar" (click)="regresar()">
-          <ion-icon name="arrow-back-outline"></ion-icon>
-        </button>
-        <img src="/assets/icon/logo4.png" alt="Go Autos" class="logo" />
-        <span *ngIf="renta" class="titulo-perfil">
-          {{ renta?.marca }} {{ renta?.modelo }}
-        </span>
-      </div>
+      <ion-button fill="clear" class="ios-back" (click)="regresar()" aria-label="Regresar">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
 
+    <div class="ios-title-wrap" *ngIf="renta">
+      <img src="/assets/icon/logo4.png" alt="Go Autos" class="logo-mini" />
+      <div class="ios-title-stack">
+        <h1 class="ios-title">
+          {{ renta?.marca }} {{ renta?.modelo }}
+        </h1>
+        <p class="ios-subtitle">Condiciones de renta</p>
+      </div>
+    </div>
+
     <ion-buttons slot="end">
-      <ion-button (click)="regresar()">
-        <ion-icon name="close-outline"></ion-icon>
+      <ion-button fill="clear" class="ios-close" (click)="regresar()" aria-label="Cerrar">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content mode="ios" [fullscreen]="true" class="rent-content">
   <div class="contenedor">
     <!-- Datos del vehículo -->
     <ion-grid>
@@ -68,8 +72,13 @@
         <ion-col size="12" size-md="3">
           <ion-item>
             <ion-label position="stacked">Pasajeros</ion-label>
-            <ion-input type="number" min="1" [(ngModel)]="renta.pasajeros" (ionInput)="markDirty()"
-              placeholder="Ej. 5"></ion-input>
+            <ion-input
+              type="number"
+              min="1"
+              [(ngModel)]="renta.pasajeros"
+              (ionInput)="markDirty()"
+              placeholder="Ej. 5">
+            </ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -80,8 +89,15 @@
       <ion-row>
         <ion-col size="12" size-md="6">
           <ion-item>
-            <ion-label position="stacked">Precio por día <span class="req">*</span></ion-label>
-            <ion-input type="number" min="500" [(ngModel)]="renta.precioPorDia" (ionInput)="markDirty()"></ion-input>
+            <ion-label position="stacked">
+              Precio por día <span class="req">*</span>
+            </ion-label>
+            <ion-input
+              type="number"
+              min="500"
+              [(ngModel)]="renta.precioPorDia"
+              (ionInput)="markDirty()">
+            </ion-input>
           </ion-item>
         </ion-col>
 
@@ -123,34 +139,51 @@
         <ion-col size="12" size-md="6">
           <ion-item>
             <ion-label position="stacked">Edad mínima</ion-label>
-            <ion-input type="number" min="18" [(ngModel)]="renta.requisitosConductor.edadMinima"
-              (ionInput)="markDirty()"></ion-input>
+            <ion-input
+              type="number"
+              min="18"
+              [(ngModel)]="renta.requisitosConductor.edadMinima"
+              (ionInput)="markDirty()">
+            </ion-input>
           </ion-item>
         </ion-col>
 
         <ion-col size="12" size-md="6">
           <ion-item>
             <ion-label position="stacked">Antigüedad licencia (meses)</ion-label>
-            <ion-input type="number" min="0" [(ngModel)]="renta.requisitosConductor.antiguedadLicenciaMeses"
-              (ionInput)="markDirty()"></ion-input>
+            <ion-input
+              type="number"
+              min="0"
+              [(ngModel)]="renta.requisitosConductor.antiguedadLicenciaMeses"
+              (ionInput)="markDirty()">
+            </ion-input>
           </ion-item>
         </ion-col>
 
         <ion-col size="12" size-md="6">
           <ion-item>
             <ion-label position="stacked">Conductor adicional</ion-label>
-            <ion-select [(ngModel)]="renta.requisitosConductor.permiteConductorAdicional" (ionChange)="markDirty()">
+            <ion-select
+              [(ngModel)]="renta.requisitosConductor.permiteConductorAdicional"
+              (ionChange)="markDirty()">
               <ion-select-option [value]="false">No</ion-select-option>
               <ion-select-option [value]="true">Sí</ion-select-option>
             </ion-select>
           </ion-item>
         </ion-col>
 
-        <ion-col size="12" size-md="6" *ngIf="renta.requisitosConductor.permiteConductorAdicional">
+        <ion-col
+          size="12"
+          size-md="6"
+          *ngIf="renta.requisitosConductor.permiteConductorAdicional">
           <ion-item>
             <ion-label position="stacked">Costo conductor adicional</ion-label>
-            <ion-input type="number" min="0" [(ngModel)]="renta.requisitosConductor.costoConductorAdicional"
-              (ionInput)="markDirty()"></ion-input>
+            <ion-input
+              type="number"
+              min="0"
+              [(ngModel)]="renta.requisitosConductor.costoConductorAdicional"
+              (ionInput)="markDirty()">
+            </ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -162,8 +195,12 @@
         <ion-col size="12" size-md="6">
           <ion-item>
             <ion-label position="stacked">Entrega gratis hasta (km)</ion-label>
-            <ion-input type="number" min="0" [(ngModel)]="renta.entrega.gratuitoHastaKm"
-              (ionInput)="onGratisHastaChange()"></ion-input>
+            <ion-input
+              type="number"
+              min="0"
+              [(ngModel)]="renta.entrega.gratuitoHastaKm"
+              (ionInput)="onGratisHastaChange()">
+            </ion-input>
           </ion-item>
         </ion-col>
 
@@ -171,38 +208,64 @@
           <div class="tarifas">
             <div class="tarifas__header">
               <label class="tarifas__title">Tarifas por distancia</label>
-              <button type="button" class="btn btn-soft btn-sm" (click)="addTarifa()">+ Agregar tarifa</button>
+              <button
+                type="button"
+                class="btn btn-soft btn-sm"
+                (click)="addTarifa()">
+                + Agregar tarifa
+              </button>
             </div>
             <p class="hint">Agrega al menos una tarifa o especifica “Entrega gratis hasta (km)”.</p>
 
-            <div class="tarifa-card" *ngFor="let t of renta.entrega.tarifasPorDistancia; let i = index">
+            <div
+              class="tarifa-card"
+              *ngFor="let t of renta.entrega.tarifasPorDistancia; let i = index">
               <div class="tarifa-card__top">
                 <h5 class="tarifa-card__title">Tarifa {{ i + 1 }}</h5>
-                <button type="button" class="btn btn-danger btn-sm" (click)="removeTarifa(i)">
-                  <ion-icon name="trash-outline"></ion-icon> Quitar
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                  (click)="removeTarifa(i)">
+                  <ion-icon name="trash-outline"></ion-icon>
+                  Quitar
                 </button>
               </div>
 
               <div class="tarifa-card__grid">
                 <div class="campo">
                   <label>Desde (km)</label>
-                  <input type="number" min="0" [(ngModel)]="t.desdeKm"
-                    [readonly]="i === 0 ? (+renta.entrega.gratuitoHastaKm) > 0 : true" placeholder="0" />
+                  <input
+                    type="number"
+                    min="0"
+                    [(ngModel)]="t.desdeKm"
+                    [readonly]="i === 0 ? (+renta.entrega.gratuitoHastaKm) > 0 : true"
+                    placeholder="0" />
                 </div>
 
                 <div class="campo">
                   <label>Hasta (km)</label>
-                  <input type="number" min="0" [(ngModel)]="t.hastaKm" (ngModelChange)="onTarifaHastaChange(i)" />
+                  <input
+                    type="number"
+                    min="0"
+                    [(ngModel)]="t.hastaKm"
+                    (ngModelChange)="onTarifaHastaChange(i)" />
                 </div>
 
                 <div class="campo">
                   <label>Costo fijo</label>
-                  <input type="number" min="0" step="0.01" [(ngModel)]="t.costoFijo" />
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    [(ngModel)]="t.costoFijo" />
                 </div>
 
                 <div class="campo full">
                   <label>Nota (opcional)</label>
-                  <input type="text" [(ngModel)]="t.nota" placeholder="Ej. Zona centro" />
+                  <input
+                    type="text"
+                    [(ngModel)]="t.nota"
+                    placeholder="Ej. Zona centro" />
                 </div>
               </div>
             </div>
@@ -215,9 +278,12 @@
     <ion-grid>
       <ion-row>
         <ion-col size="12" size-md="6">
-          <ion-item lines="none">
+          <ion-item lines="none" class="item-segment">
             <ion-label position="stacked">Tipo de publicación</ion-label>
-            <ion-segment [(ngModel)]="tipoSeleccionado" (ionChange)="toggleTipoPublicacion()">
+            <ion-segment
+              mode="ios"
+              [(ngModel)]="tipoSeleccionado"
+              (ionChange)="toggleTipoPublicacion()">
               <ion-segment-button value="particular">
                 <ion-label>Particular</ion-label>
               </ion-segment-button>
@@ -234,20 +300,33 @@
         <ion-col size="12" size-md="6">
           <ion-item>
             <ion-label position="stacked">Selecciona un lote</ion-label>
-            <ion-select [(ngModel)]="loteSeleccionado" interface="action-sheet" (ionChange)="onLoteSeleccionado()">
-              <ion-select-option *ngFor="let lote of lotes" [value]="lote._id">
+            <ion-select
+              [(ngModel)]="loteSeleccionado"
+              interface="action-sheet"
+              (ionChange)="onLoteSeleccionado()">
+              <ion-select-option
+                *ngFor="let lote of lotes"
+                [value]="lote._id">
                 {{ lote.nombre }}
               </ion-select-option>
             </ion-select>
           </ion-item>
 
-          <div *ngIf="(ubicacionesSeleccionadas?.length || 0) > 0" class="bloque-direcciones">
+          <div
+            *ngIf="(ubicacionesSeleccionadas?.length || 0) > 0"
+            class="bloque-direcciones">
             <ion-list class="ubicaciones-checkbox-list">
-              <ion-item *ngFor="let dir of ubicacionesSeleccionadas; let i = index">
-                <ion-checkbox slot="start" [checked]="isUbicacionSeleccionada(dir)"
-                  (ionChange)="toggleUbicacionLote(dir, $event)"></ion-checkbox>
+              <ion-item
+                *ngFor="let dir of ubicacionesSeleccionadas; let i = index">
+                <ion-checkbox
+                  slot="start"
+                  [checked]="isUbicacionSeleccionada(dir)"
+                  (ionChange)="toggleUbicacionLote(dir, $event)">
+                </ion-checkbox>
                 <ion-label>
-                  <p>{{ dir.direccionCompleta || (dir.ciudad + ', ' + dir.estado) }}</p>
+                  <p>
+                    {{ dir.direccionCompleta || (dir.ciudad + ', ' + dir.estado) }}
+                  </p>
                 </ion-label>
               </ion-item>
             </ion-list>
@@ -258,26 +337,39 @@
       <!-- 🔸 Ubicaciones múltiples -->
       <ion-row *ngIf="tipoSeleccionado === 'particular'">
         <ion-col size="12" size-md="6">
-          <ion-button expand="block" color="danger" (click)="seleccionarUbicacion()">
+          <ion-button
+            expand="block"
+            color="danger"
+            (click)="seleccionarUbicacion()">
             <ion-icon name="location-outline" slot="start"></ion-icon>
             Agregar ubicación
           </ion-button>
 
-          <div *ngIf="ubicacionesSeleccionadas.length > 0" class="ubicaciones-list">
+          <div
+            *ngIf="ubicacionesSeleccionadas.length > 0"
+            class="ubicaciones-list">
             <ion-list>
-              <ion-item *ngFor="let ubic of ubicacionesSeleccionadas; let i = index" class="ubicacion-item">
+              <ion-item
+                *ngFor="let ubic of ubicacionesSeleccionadas; let i = index"
+                class="ubicacion-item">
                 <ion-icon name="location-outline" slot="start"></ion-icon>
                 <ion-label>
                   <p>{{ ubic.direccionCompleta }}</p>
                 </ion-label>
-                <ion-button fill="clear" color="danger" slot="end" (click)="eliminarUbicacion(i)">
+                <ion-button
+                  fill="clear"
+                  color="danger"
+                  slot="end"
+                  (click)="eliminarUbicacion(i)">
                   <ion-icon name="close-circle"></ion-icon>
                 </ion-button>
               </ion-item>
             </ion-list>
           </div>
 
-          <div *ngIf="ubicacionesSeleccionadas.length === 0" class="ubicacion-mostrada">
+          <div
+            *ngIf="ubicacionesSeleccionadas.length === 0"
+            class="ubicacion-mostrada">
             <ion-icon name="location-outline"></ion-icon>
             <span>Selecciona al menos una ubicación</span>
           </div>
@@ -300,15 +392,25 @@
                   <ion-icon name="add-outline"></ion-icon>
                   Nueva imagen
                 </button>
-                <input type="file" accept="image/*" hidden #inputArchivo (change)="cargarNuevaImagen($event)" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  #inputArchivo
+                  (change)="cargarNuevaImagen($event)" />
               </div>
 
               <div class="contenedor-imagen">
-                <img [src]="imagenPrincipalMostrada || '/assets/default-car.webp'" alt="Imagen principal" />
+                <img
+                  [src]="imagenPrincipalMostrada || '/assets/default-car.webp'"
+                  alt="Imagen principal" />
               </div>
 
               <div class="galeria-scroll" *ngIf="urlsImagenes?.length">
-                <img *ngFor="let img of urlsImagenes" [src]="img" alt="Imagen"
+                <img
+                  *ngFor="let img of urlsImagenes"
+                  [src]="img"
+                  alt="Imagen"
                   (click)="actualizarImagenPrincipal(img)" />
               </div>
             </ion-card-content>
@@ -325,14 +427,20 @@
               <label class="btn-agregar">
                 <ion-icon name="add-outline"></ion-icon>
                 Agregar imagen
-                <input type="file" accept="image/*" (change)="agregarImagen($event)" hidden />
+                <input
+                  type="file"
+                  accept="image/*"
+                  (change)="agregarImagen($event)"
+                  hidden />
               </label>
 
               <div class="galeria-scroll-big" *ngIf="urlsImagenes?.length">
                 <div class="img-wrapper" *ngFor="let img of urlsImagenes">
                   <img [src]="img" alt="Imagen" />
                   <div class="overlay-botones">
-                    <button class="btn-accion eliminar" (click)="eliminarImagen_visual(img)">
+                    <button
+                      class="btn-accion eliminar"
+                      (click)="eliminarImagen_visual(img)">
                       <ion-icon name="trash-outline"></ion-icon>
                       Eliminar
                     </button>
@@ -353,12 +461,19 @@
           <span>Cancelar</span>
         </ion-button>
 
-        <ion-button fill="outline" color="warning" (click)="onRestablecerClick()" [disabled]="!dirty">
+        <ion-button
+          fill="outline"
+          color="warning"
+          (click)="onRestablecerClick()"
+          [disabled]="!dirty">
           <ion-icon name="refresh-outline"></ion-icon>
           <span>Restablecer</span>
         </ion-button>
 
-        <ion-button color="success" (click)="onGuardarClick()" [disabled]="!dirty">
+        <ion-button
+          color="success"
+          (click)="onGuardarClick()"
+          [disabled]="!dirty">
           <ion-icon name="save-outline"></ion-icon>
           <span>Guardar</span>
         </ion-button>

@@ -1,28 +1,25 @@
-<ion-header>
-  <ion-toolbar color="dark">
+<ion-header [translucent]="true" class="ios-header">
+  <ion-toolbar mode="ios">
     <ion-buttons slot="start">
-      <div class="perfil-header">
-        <button class="btn-regresar" (click)="volver()" aria-label="Regresar">
-          <ion-icon name="arrow-back-outline"></ion-icon>
-        </button>
-
-        <img src="/assets/icon/logo4.png" alt="WOAW" class="logo" />
-
-        <span *ngIf="coche" class="titulo-perfil">
-          Reservar — {{ coche.marca }} {{ coche.modelo }}
-        </span>
-      </div>
+      <ion-button class="btn-back" fill="clear" (click)="volver()" aria-label="Regresar">
+        <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
+        <span>Regresar</span>
+      </ion-button>
     </ion-buttons>
 
+    <ion-title *ngIf="coche" class="titulo-perfil">
+      Reservar — {{ coche.marca }} {{ coche.modelo }}
+    </ion-title>
+
     <ion-buttons slot="end">
-      <ion-button (click)="cerrar()" aria-label="Cerrar" fill="clear">
+      <ion-button (click)="cerrar()" aria-label="Cerrar" fill="clear" class="btn-close">
         <ion-icon name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ios-content">
   <section class="grid-cal-img" *ngIf="coche">
     <div class="col-media">
       <div class="media-head">
@@ -50,16 +47,19 @@
         </div>
       </div>
 
-      <ion-card class="card-media">
-        <img [src]="
+      <ion-card class="card-media ios-card">
+        <img
+          [src]="
             coche?.imagenPrincipalUrl ||
             coche?.imagenPrincipal ||
             '/assets/placeholder-car.jpg'
-          " alt="Auto" />
+          "
+          alt="Auto"
+        />
       </ion-card>
     </div>
 
-    <ion-card class="card-fechas">
+    <ion-card class="card-fechas ios-card">
       <ion-card-header>
         <ion-card-title>Datos de la reserva</ion-card-title>
         <ion-card-subtitle>Selecciona fechas</ion-card-subtitle>
@@ -68,10 +68,17 @@
       <ion-card-content>
         <form [formGroup]="form">
           <div class="fechas-grid">
-            <ion-item class="danger-datetime" lines="none">
-              <ion-datetime *ngIf="showCalendar" presentation="date" [multiple]="true" [min]="minStart"
-                [isDateEnabled]="isDateEnabled" [value]="rangeValue" [highlightedDates]="mergedHighlights"
-                locale="es-ES" (ionChange)="onRangeChange($event)">
+            <ion-item class="danger-datetime ios-item" lines="none">
+              <ion-datetime
+                *ngIf="showCalendar"
+                presentation="date"
+                [multiple]="true"
+                [min]="minStart"
+                [isDateEnabled]="isDateEnabled"
+                [value]="rangeValue"
+                [highlightedDates]="mergedHighlights"
+                locale="es-ES"
+                (ionChange)="onRangeChange($event)">
               </ion-datetime>
             </ion-item>
 
@@ -94,18 +101,12 @@
               Tu rango incluye días no disponibles. Elige otras fechas.
             </ion-note>
           </div>
-
-          <!-- <ion-item>
-            <ion-textarea label="Notas para el propietario" formControlName="notasCliente"
-              placeholder="Indica preferencias de entrega, horarios, etc.">
-            </ion-textarea>
-          </ion-item> -->
         </form>
       </ion-card-content>
     </ion-card>
 
-    <!-- 🔹 Nuevo diseño del Resumen -->
-    <ion-card class="card-resumen">
+    <!-- Resumen iOS style -->
+    <ion-card class="card-resumen ios-card">
       <ion-card-content>
         <div class="resumen-grid">
           <div class="col">
@@ -121,7 +122,12 @@
           </div>
         </div>
 
-        <ion-button expand="block" color="danger" fill="solid" [disabled]="!canSubmit || enviando" (click)="reservar()"
+        <ion-button
+          expand="block"
+          color="danger"
+          fill="solid"
+          [disabled]="!canSubmit || enviando"
+          (click)="reservar()"
           class="btn-reservar">
           <ion-spinner slot="start" *ngIf="enviando"></ion-spinner>
           <ion-icon *ngIf="!enviando" name="checkmark-circle-outline" slot="start"></ion-icon>
@@ -129,11 +135,23 @@
         </ion-button>
       </ion-card-content>
     </ion-card>
-    <ion-item>
-      <ion-textarea label="Notas para el propietario" formControlName="notasCliente"
-        placeholder="Indica preferencias de entrega, horarios, etc.">
-      </ion-textarea>
-    </ion-item>
+
+    <!-- Notas con look de grupo iOS -->
+    <ion-card class="card-notas ios-card">
+      <ion-card-header>
+        <ion-card-title>Notas para el propietario</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none" class="ios-item">
+          <ion-textarea
+            label="Notas para el propietario"
+            labelPlacement="floating"
+            formControlName="notasCliente"
+            placeholder="Indica preferencias de entrega, horarios, etc.">
+          </ion-textarea>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
   </section>
 
   <app-footer></app-footer>

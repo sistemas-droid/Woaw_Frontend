@@ -1,57 +1,59 @@
-<ion-header>
-  <ion-toolbar class="header-toolbar">
-
+<ion-header translucent="true">
+  <ion-toolbar class="header-toolbar ios-header" color="light">
     <ion-buttons slot="start">
-      <div class="logo-titulo">
+      <div class="logo-titulo-ios">
         <img src="assets/icon/logo2.png" alt="WOAW" />
       </div>
-      <ion-title>Aviso de Privacidad</ion-title>
     </ion-buttons>
 
+    <ion-title class="titulo-sheet-ios">
+      Aviso de Privacidad
+    </ion-title>
+
     <ion-buttons slot="end">
-      <ion-button (click)="cancelar()">
+      <ion-button class="btn-close-ios" (click)="cancelar()" fill="clear">
         <ion-icon slot="icon-only" name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 
-
-<ion-content class="ion-padding" class="ion-padding" scrollEvents="true" (ionScroll)="verificarScroll()"
-  #contenidoPrivacidad>
-
+<ion-content
+  class="ion-padding aviso-content-ios"
+  scrollEvents="true"
+  (ionScroll)="verificarScroll()"
+  #contenidoPrivacidad
+>
   <div class="pdf-wrap">
     <iframe
       *ngIf="iframeVisible"
       class="pdf-frame"
       [src]="pdfUrlSafe"
       title="Aviso de Privacidad"
-      allowfullscreen>
-    </iframe>
+      allowfullscreen
+    ></iframe>
   </div>
-
-
 </ion-content>
-<!-- ☢️☢️ -->
+
+<!-- FOOTER / SHEET ACTIONS -->
 <ion-footer *ngIf="!mostrarFooter">
-  <ion-toolbar class="footer-toolbar">
-    <span class="footer-leyenda">
-      Desliza hacia abajo para habilitar el botón "Aceptar".
-    </span>
-    <br>
-    <div class="footer-actions">
+  <ion-toolbar class="footer-toolbar ios-footer">
+    <div class="footer-inner-ios">
+      <p class="footer-leyenda">
+        Desliza hasta el final para habilitar el botón “Aceptar”.
+      </p>
+
       <div class="footer-botones">
-        <button class="btn-cancelar" (click)="cancelar()">
+        <button class="btn-ios btn-ios-secondary" type="button" (click)="cancelar()">
           <ion-icon name="close-outline"></ion-icon>
-          Cancelar
+          <span>Cancelar</span>
         </button>
-        <button class="btn-aceptar"  (click)="aceptar()">
+
+        <button class="btn-ios btn-ios-primary" type="button" (click)="aceptar()">
           <ion-icon name="checkmark-outline"></ion-icon>
-          Aceptar
+          <span>Aceptar</span>
         </button>
       </div>
     </div>
-    <br>
   </ion-toolbar>
 </ion-footer>

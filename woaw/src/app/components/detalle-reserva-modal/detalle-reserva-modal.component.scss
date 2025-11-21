@@ -1,309 +1,192 @@
-/* ====== Paleta / tokens locales del componente ====== */
 :host {
-    --brand-red: #e11d48;
-    /* rojo principal */
-    --brand-red-700: #be123c;
-    --ink: #0f172a;
-    /* casi negro */
-    --ink-2: #111827;
-    --muted: #6b7280;
-    --muted-2: #9ca3af;
-    --surface: #ffffff;
-    --surface-2: #f8fafc;
-    --border: rgba(17, 24, 39, .10);
-    --shadow: 0 10px 28px rgba(0, 0, 0, .12);
-
-    /* Badges por estatus */
-    --status-pendiente-bg: #111827;
-    --status-pendiente-fg: #ffffff;
-
-    --status-aceptada-bg: #059669;
-    --status-aceptada-fg: #ffffff;
-
-    --status-en-curso-bg: #f59e0b;
-    --status-en-curso-fg: #111827;
-
-    --status-finalizada-bg: #16a34a;
-    --status-finalizada-fg: #ffffff;
-
-    --status-cancelada-bg: #334155;
-    --status-cancelada-fg: #e5e7eb;
+  --ink: #111827;
+  --muted: #6b7280;
+  --border: rgba(0, 0, 0, 0.08);
+  --surface: #fff;
+  --surface-2: #f5f7fa;
+  --brand-red: #ff3b30;
 }
 
-/* ====== Toolbar / header ====== */
-ion-toolbar[color="light"] {
-    --background: var(--surface);
-    --color: var(--ink);
-    border-bottom: 1px solid var(--border);
+/* ===== TOOLBAR iOS REAL ===== */
+.ios-toolbar {
+  --background: #ffffffcc;
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  --color: var(--ink);
+  padding-left: 12px;
+}
+
+.close-btn ion-icon {
+  font-size: 26px;
+  color: var(--ink);
 }
 
 .title-line {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 800;
-    color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--ink);
 }
 
-/* Badge de estatus con estética propia */
 .title-line ion-badge {
-    --padding-start: 8px;
-    --padding-end: 8px;
-    --padding-top: 2px;
-    --padding-bottom: 2px;
-    --border-radius: 999px;
-    text-transform: capitalize;
-    font-weight: 700;
-    letter-spacing: .2px;
-    border: 1px solid rgba(0, 0, 0, .08);
+  --border-radius: 999px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  font-weight: 600;
 }
 
-/* Mapear colores por estatus (usando [color] del badge) */
-.title-line ion-badge[color="medium"] {
-    --background: var(--status-pendiente-bg);
-    --color: var(--status-pendiente-fg);
+/* ===== CONTENT AREA ===== */
+.ios-content {
+  --background: #f6f7f9;
+  padding-bottom: 24px;
 }
 
-.title-line ion-badge[color="primary"] {
-    --background: var(--status-aceptada-bg);
-    --color: var(--status-aceptada-fg);
-}
+/* ===== EYEBROW iOS ===== */
+.eyebrow-ios {
+  margin: 16px 14px 10px;
+  padding: 14px 14px;
+  border-radius: 18px;
 
-.title-line ion-badge[color="warning"] {
-    --background: var(--status-en-curso-bg);
-    --color: var(--status-en-curso-fg);
-}
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
-.title-line ion-badge[color="success"] {
-    --background: var(--status-finalizada-bg);
-    --color: var(--status-finalizada-fg);
-}
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
 
-.title-line ion-badge[color="danger"] {
-    --background: var(--status-cancelada-bg);
-    --color: var(--status-cancelada-fg);
-}
+  ion-icon {
+    color: var(--brand-red);
+    font-size: 20px;
+  }
 
-/* ====== Eyebrow (fechas) ====== */
-.eyebrow {
+  .dates {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    margin: 10px 12px 6px;
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--brand-red);
-    border-radius: 12px;
-    background: var(--surface-2);
-    color: var(--ink);
+    gap: 6px;
+    font-weight: 600;
+  }
 
-    ion-icon {
-        color: var(--brand-red);
-        font-size: 18px;
-    }
-
-    .dates {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-weight: 700;
-    }
-
-    ion-chip {
-        margin-left: auto;
-        --color: var(--ink);
-        --border-color: rgba(0, 0, 0, .18);
-        --border-width: 1px;
-        --background: #fff;
-        font-weight: 700;
-    }
+  .arrow {
+    opacity: .5;
+  }
 }
 
-/* ====== Card de resumen ====== */
-.ck-card {
-    margin: 12px;
-    border-radius: 14px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    background: var(--surface);
-
-    ion-card-title {
-        font-weight: 800;
-        color: var(--ink);
-    }
-
-    ion-card-subtitle {
-        color: var(--muted);
-        font-weight: 600;
-    }
+/* CHIP NATIVO */
+.chip-ios {
+  margin-left: auto;
+  --background: #fff;
+  --color: var(--ink);
+  --border-radius: 999px;
+  --border-color: rgba(0,0,0,0.12);
+  font-weight: 600;
 }
 
-/* ====== Grid de datos (resumen) ====== */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px 12px;
+/* ===== CARD iOS ===== */
+.ios-card {
+  background: var(--surface);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.07);
+  margin: 14px;
+}
+
+.ios-card ion-card-header {
+  padding-bottom: 4px;
+}
+
+.ios-card ion-card-title {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.ios-card ion-card-subtitle {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* GRID INTERNO */
+.grid-ios {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
 }
 
 .cell small {
-    display: block;
-    font-size: 12px;
-    color: var(--muted);
+  font-size: 12px;
+  color: var(--muted);
 }
 
 .row {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 700;
-    color: var(--ink);
-
-    ion-icon {
-        color: var(--brand-red);
-    }
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
 }
 
-.row.strong {
-    font-weight: 800;
+/* ===== ACORDEONES iOS ===== */
+.ios-accordion-group {
+  margin: 16px 14px;
 }
 
-/* ====== Acordiones ====== */
-ion-accordion-group {
-    margin: 10px 12px;
+.ios-accordion-header {
+  --background: #fff;
+  --color: var(--ink);
+  --border-radius: 16px;
+
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+
+  ion-label {
+    font-weight: 700 !important;
+  }
 }
 
-ion-accordion {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    background: var(--surface);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-    margin-bottom: 10px;
-
-    &:last-child {
-        margin-bottom: 0;
-    }
+.pad-ios {
+  padding: 14px 14px;
+  background: #fff;
 }
 
-ion-accordion>ion-item[slot="header"] {
-    --background: linear-gradient(0deg, rgba(225, 29, 72, 0.06), rgba(225, 29, 72, 0.06));
-    --color: var(--ink);
-    --border-color: transparent;
-    --padding-start: 12px;
-    --padding-end: 12px;
-    --inner-padding-end: 8px;
-
-    ion-label {
-        font-weight: 800;
-        letter-spacing: .2px;
-    }
+.two-ios {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-.pad {
-    padding: 10px 12px 12px;
-    background: var(--surface);
+/* Mini cards dentro */
+.mini-card {
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+
+  ion-card-header {
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+
+  ion-card-content div + div {
+    margin-top: 6px;
+  }
 }
 
-/* ====== “Two-up” cards (Cliente/Propietario/Check blocks) ====== */
-.two {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.two ion-card {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-shadow: 0 8px 22px rgba(0, 0, 0, .08);
-
-    ion-card-header {
-        border-bottom: 1px dashed rgba(0, 0, 0, .08);
-
-        ion-card-title {
-            font-weight: 800;
-            color: var(--ink-2);
-        }
-    }
-
-    ion-card-content {
-        color: var(--ink);
-
-        div+div {
-            margin-top: 6px;
-        }
-
-        b {
-            color: var(--ink-2);
-        }
-    }
-}
-
-/* Etiqueta “Propietario” en rojo si quieres remarcarla */
-ion-card-title::after {
-    content: "";
-    display: inline-block;
-    width: 22px;
-    height: 3px;
-    background: var(--brand-red);
-    border-radius: 3px;
-    margin-left: 8px;
-    margin-bottom: 2px;
-}
-
-/* ====== Lista de items ====== */
-ion-list {
-    background: transparent;
-}
-
+/* LISTAS */
 ion-item {
-    --background: var(--surface);
-    --color: var(--ink);
-    --padding-start: 10px;
-    --inner-padding-end: 10px;
-    --min-height: 48px;
-    border-bottom: 1px solid rgba(0, 0, 0, .04);
-
-    ion-label b {
-        color: var(--ink-2);
-        font-weight: 800;
-    }
-
-    ion-label p {
-        color: var(--muted);
-        font-weight: 600;
-    }
-
-    ion-note {
-        font-weight: 800;
-        color: var(--ink);
-    }
+  --background: var(--surface);
+  --color: var(--ink);
 }
 
-/* Skeletons */
-ion-skeleton-text {
-    border-radius: 12px;
+/* SKELETON */
+.skeleton-list ion-skeleton-text {
+  border-radius: 14px;
 }
 
-/* Viewer only */
-ion-item[lines="none"] ion-icon[name="eye-outline"] {
-    color: var(--brand-red);
-}
-
-/* ====== Responsive ====== */
+/* RESPONSIVE */
 @media (max-width: 520px) {
-    .two {
-        grid-template-columns: 1fr;
-    }
-
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
-    .eyebrow {
-        flex-wrap: wrap;
-    }
-
-    .eyebrow ion-chip {
-        margin-left: 0;
-    }
+  .two-ios {
+    grid-template-columns: 1fr;
+  }
+  .grid-ios {
+    grid-template-columns: 1fr;
+  }
 }

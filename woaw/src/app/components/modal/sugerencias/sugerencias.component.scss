@@ -1,29 +1,43 @@
-.bloque-carrusel {
+/* Shell del bloque tipo sección iOS */
+.bloque-carrusel-ios {
   max-width: 1150px;
-  margin: 0 auto 1rem;
+  margin: 10px auto 18px;
+  padding: 8px 6px 10px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #f4f4f7 0, #ffffff 18%, #ffffff 100%);
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.14),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    margin: 8px 8px 14px;
+    padding: 8px 6px 8px;
+    border-radius: 18px;
+  }
 }
 
+/* Título "Otros" */
 .contenedor_texto {
-  margin-left: 5px;
-  position: relative;
+  margin: 0 6px 6px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 
   h2 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 900;
-    color: red;
-    font-size: 18px;
     margin: 0;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    color: #111827;
   }
 
   .subrayado-rojo {
-    width: 100%;
-    height: 1px;
-    background-color: red;
-    border-radius: 2px;
-    margin-top: 3px;
+    width: 42px;
+    height: 3px;
+    border-radius: 999px;
+    margin-top: 5px;
+    background: linear-gradient(90deg, #ff3b30, #ff453a);
   }
 
   @media (max-width: 768px) {
@@ -31,164 +45,159 @@
 
     h2 {
       font-size: 14px;
-      margin-left: 0;
-    }
-
-    .subrayado-rojo {
-      width: 80%;
     }
   }
 }
 
+/* Wrapper con scroll horizontal al estilo App Store */
 .carrusel-scroll-wrapper {
-  overflow-x: auto;
   width: 100%;
-  padding: 5px;
+  margin-top: 4px;
+  padding: 4px 2px 4px 4px;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; // Firefox
+
+  &::-webkit-scrollbar {
+    display: none; // iOS / WebKit
+  }
 }
 
+/* Fila de cards tipo carrusel */
 .carrusel-autos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  display: inline-flex;
   gap: 10px;
-  width: 100%;
-  box-sizing: border-box;
+  min-width: max-content;
+}
+
+/* Card individual estilo tarjeta de contenido iOS */
+.card-auto {
+  position: relative;
+  width: 220px;
+  max-width: 220px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow:
+    0 14px 26px rgba(15, 23, 42, 0.10),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
 
   @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+    width: 190px;
+    max-width: 190px;
   }
 
-  .card-auto {
-    position: relative;
-    text-align: center;
-    cursor: pointer;
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.16);
+    background: #f9fafb;
+  }
+
+  /* contenedor de imagen */
+  .img-shell {
     width: 100%;
-    max-width: 100%;
-    height: 290px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.213);
-    overflow: hidden;
+    height: 130px;
+    background: radial-gradient(circle at top, #f9fafb 0, #e5e7eb 70%);
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    transition: transform 0.2s ease;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    box-sizing: border-box;
 
     @media (max-width: 768px) {
-      height: 220px;
-    }
-
-    &:hover {
-      transform: scale(1.03);
+      height: 115px;
     }
 
     img {
       width: 100%;
-      height: 165px;
-      object-fit: cover;
-      object-fit: contain;   /* conserva proporción */
-  object-position: center; /* centra */
-  padding: 6px;
-    }
-
-    .info {
-      padding: 1rem;
-      text-align: center;
-      font-family: 'Poppins', sans-serif;
-
-      h3 {
-        font-size: 15px;
-        // font-weight: 700;
-        margin: 0;
-        line-height: 1.2;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-        @media (max-width: 768px) {
-          font-size: 12px;
-        }
-      }
-
-      p {
-        margin: 0.5rem 0 0;
-        color: #878787;
-        font-size: 13px;
-
-        @media (max-width: 768px) {
-          font-size: 10px;
-        }
-
-        span {
-          color: #ff0000;
-        }
-      }
-    }
-
-    &:hover {
-      transform: scale(1.03);
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      filter: drop-shadow(0 6px 14px rgba(15, 23, 42, 0.25));
     }
   }
 
-  .card-vermas {
-    @extend .card-auto;
-    background-color: #f2f2f283;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+  .info {
+    padding: 8px 10px 8px;
+    text-align: left;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui;
 
-    .info.center {
-      text-align: center;
+    h3 {
+      margin: 0 0 3px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #111827;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
-      h3 {
-        margin-bottom: 0.5rem;
-        // font-weight: 600;
-        color: #333;
-      }
-
-      .flecha-icon {
-        font-size: 36px;
-        color: #ff0000;
+      @media (max-width: 768px) {
+        font-size: 12px;
       }
     }
 
-    &:hover {
-      background-color: #e0e0e0;
+    p {
+      margin: 0;
+      font-size: 12px;
+      color: #6b7280;
+
+      @media (max-width: 768px) {
+        font-size: 11px;
+      }
+
+      span {
+        color: #ef4444;
+        font-weight: 600;
+      }
     }
   }
 }
 
+/* Detalles (km, trans, motor) estilo chips ligeros */
 .detalles-auto {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 8px 0;
-  gap: 0px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  margin-top: 7px;
+  padding-right: 2px;
+  flex-wrap: wrap;
 
   .item-detalle {
-    display: flex;
-    flex-direction: column;
+    display: inline-flex;
     align-items: center;
-    width: 73.33%;
-    text-align: center;
+    gap: 4px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: #f3f4f6;
 
     ion-icon {
       font-size: 12px;
-      color: #444;
-      margin-bottom: 4px;
+      color: #6b7280;
     }
 
     span {
       font-size: 10px;
       font-weight: 500;
-      color: #333;
-      max-width: 100%;
-      overflow: hidden;
+      color: #374151;
+      max-width: 92px;
       white-space: nowrap;
+      overflow: hidden;
       text-overflow: ellipsis;
-      display: block;
 
       @media (max-width: 768px) {
-        font-size: 8px;
+        max-width: 80px;
+        font-size: 9px;
       }
     }
   }

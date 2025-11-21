@@ -1,76 +1,134 @@
-.consentimiento-contenido {
-  background: #f9f9f9;
-  font-family: 'Poppins', sans-serif;
-  font-size: 12px;
-  color: #222;
+/* Fondo iOS */
+.consent-ios {
+  --background: linear-gradient(180deg, #f4f4f7 0, #ffffff 18%, #ffffff 100%);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui;
+  color: #111827;
+  padding-top: 10px;
 }
 
-.encabezado-consentimiento {
+
+/* ==========================
+   HEADER iOS
+========================== */
+.header-ios {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding: 0 10px;
+  padding: 4px 6px 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
 
   img {
-    height: 28px;
+    height: 22px;
     object-fit: contain;
-
-    @media (max-width: 768px) {
-    height: 18px;
-    }
-  }
-
-  ion-button {
-    --padding-start: 0;
-    --padding-end: 0;
-    margin: 0;
   }
 }
 
-p {
+.btn-close-ios {
+  border: none;
+  background: rgba(0,0,0,0.06);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all .15s ease;
+
+  ion-icon {
+    font-size: 18px;
+    color: #374151;
+  }
+
+  &:active {
+    background: rgba(0,0,0,0.12);
+    transform: scale(.94);
+  }
+}
+
+
+/* ==========================
+   TEXTO
+========================== */
+.texto-ios {
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 12px 0;
   text-align: justify;
-  margin: 16px 0;
-  line-height: 1.5;
+
+  strong {
+    color: #e11d48;
+    font-weight: 600;
+  }
 }
 
-.opciones-container {
-  margin-bottom: 5px;
-  padding: 10px 15px;
+.enlace-modal {
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:active {
+    opacity: .7;
+  }
+}
+
+
+/* ==========================
+   TARJETAS iOS
+========================== */
+.card-ios {
   background: #ffffff;
+  padding: 14px 16px;
+  border-radius: 18px;
+  margin-bottom: 12px;
+  box-shadow:
+    0 16px 30px rgba(15,23,42,0.08),
+    0 0 0 1px rgba(255,255,255,0.6);
 }
 
 
-
-
-
-
-.radio-row {
+/* ==========================
+   RADIO iOS
+========================== */
+.radio-row-ios {
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  gap: 20px;
+  justify-content: space-between;
+  gap: 10px;
 
   ion-item {
     --background: transparent;
     --inner-padding-end: 0;
-    --min-height: 30px;
-    margin: 0;
-    padding: 0 4px;
-    display: flex;
-    align-items: center;
+    --min-height: 28px;
+    padding: 0;
   }
 
   ion-radio {
-    --size: 14px;
-    --color-checked: #d90000;
-    margin-right: 6px;
-    transform: scale(0.85);
+    --size: 16px;
+    --color-checked: #ef4444; /* rojo iOS */
+    margin-right: 8px;
   }
 
   ion-label {
     font-size: 13px;
     font-weight: 500;
-    white-space: nowrap;
+  }
+}
+
+
+/* ==========================
+   BOTÓN iOS PRINCIPAL
+========================== */
+.btn-ios {
+  --background: linear-gradient(135deg, #ff3b30, #ff453a);
+  --border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  height: 44px;
+  margin-top: 18px;
+  box-shadow: 0 8px 18px rgba(248,113,113,0.35);
+
+  &:active {
+    transform: scale(.97);
   }
 }

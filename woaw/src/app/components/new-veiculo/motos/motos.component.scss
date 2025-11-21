@@ -1,430 +1,142 @@
-/* ====== Base ====== */
 section {
-  margin-top: 12px;
+  margin-top: 14px;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro Text",
+    "Helvetica Neue", Arial, sans-serif;
 }
 
-/* ====== Resumen + botón publicar ====== */
+/* ================== RESUMEN + BOTÓN PUBLICAR ================== */
 .resumen-estado {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  padding: 10px 0;
-  margin-left: 5px;
 
-  .fila-info {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 15px;
-  }
+  padding: 10px 14px;
+  margin: 0 4px 8px;
 
-  p {
-    margin: 0;
-    font-size: 13px;
-    white-space: nowrap;
-
-    @media (max-width: 768px) {
-      font-size: 10px;
-    }
-
-    strong {
-      font-weight: 600;
-      margin-left: 5px;
-    }
-  }
-
-  .estilo_unico {
-    font-size: 15px;
-    padding: 8px;
-    border: 1px solid #e41212;
-
-    @media (max-width: 768px) {
-      font-size: 12px;
-      padding: 5px;
-    }
-
-    &::first-letter {
-      font-size: 15px;
-      font-weight: bold;
-    }
-  }
-
-  .btn-guardar {
-    align-self: flex-end;
-    background: linear-gradient(90deg, #ff0000, #ff6600);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: background 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-
-    &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    &:active {
-      transform: translateY(0);
-      box-shadow: none;
-    }
-
-    ion-icon.icono-guardar {
-      font-size: 18px;
-      color: white;
-    }
-  }
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(60, 60, 67, 0.15);
+  box-shadow:
+    0 10px 24px rgba(15, 23, 42, 0.16),
+    0 0 0 0.5px rgba(255, 255, 255, 0.8);
 }
 
-/* ====== Formulario ====== */
-.formulario {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background-color: #f7f7f7;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-
-  label {
-    font-weight: 600;
-    margin-bottom: 4px;
-    display: block;
-  }
-
-  select,
-  input[type="number"],
-  input[type="text"],
-  textarea {
-    width: 100%;
-    padding: 8px 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background-color: #fff;
-    color: #000;
-  }
-
-  .version-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
-
-    span {
-      flex: 1;
-      font-weight: 500;
-    }
-
-    input[type="number"] {
-      width: 150px;
-    }
-  }
-
-  button {
-    align-self: flex-start;
-    padding: 10px 20px;
-    background-color: #ff3d00;
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-  }
-
-  .grid-form {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .campo {
-      display: flex;
-      flex-direction: column;
-
-      label {
-        font-weight: 600;
-        margin-bottom: 4px;
-      }
-
-      .requerido {
-        color: #ff3d00;
-      }
-
-      .opcional_css {
-        font-size: 10px;
-        color: #1f1f1fe0;
-      }
-    }
-  }
-}
-
-/* ====== Info lateral (ficha técnica / ubicación) ====== */
-.grid-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 5px;
-  align-items: start;
-  margin-top: 10px;
-
-  .columna-ficha {
-    .card-especificaciones {
-      max-width: 500px;
-      width: 100%;
-      background: #ffffff;
-      border-left: 4px solid #fa2929;
-      border-radius: 10px;
-      padding: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-      font-family: 'Poppins', sans-serif;
-
-      h4 {
-        margin-bottom: 10px;
-        font-size: 16px;
-        font-weight: 600;
-        color: #2e2e2e;
-      }
-
-      ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-
-        li {
-          position: relative;
-          padding-left: 1.5em;
-          margin-bottom: 6px;
-          font-size: 13.5px;
-          color: #444;
-
-          &::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 7px;
-            width: 8px;
-            height: 8px;
-            background-color: #fa2929c1;
-            border-radius: 50%;
-          }
-
-          strong {
-            font-weight: 600;
-            color: #222;
-          }
-        }
-      }
-    }
-  }
-}
-
-/* ====== Controles de ubicación / imágenes (par con car.scss) ====== */
-.contenedor-botones {
+.fila-info-inline {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 16px;
-  align-items: flex-start;
-
-  .bloque-imagenes {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background: #f8f8f800;
-    padding: 5px;
-    border-radius: 12px;
-    flex: 1 1 300px;
-  }
-
-  .select-lote {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 2px solid #ddd;
-    font-size: 16px;
-    background-color: #fff;
-    margin-top: 8px;
-    appearance: none;
-
-    &:focus {
-      border-color: #ff3c00;
-      outline: none;
-    }
-  }
-
-  button {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 600;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 8px 14px;
-    color: #000;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.2s ease-in-out;
-
-    ion-icon {
-      font-size: 18px;
-    }
-
-    &:hover {
-      background-color: #eee;
-    }
-  }
-
-  .btn-limpiar {
-    background-color: #ffecec;
-    border: 1px solid #ff6666;
-    color: #b20000;
-    font-size: 10px;
-
-    &:hover {
-      background-color: #ffcccc;
-    }
-  }
-
-  .radio-validacion {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-
-    &.activo ion-icon {
-      color: green;
-    }
-
-    &.inactivo ion-icon {
-      color: gray;
-      display: none;
-    }
-  }
 }
 
-/* ====== Ubicación mostrada (cuando es particular) ====== */
-.ubicacion-mostrada {
-  padding: 0.5rem 1rem;
-  background: #f9f9f9;
-  border-left: 4px solid #e41212;
-  border-radius: 8px;
+.fila-info-inline p {
+  margin: 0;
   font-size: 13px;
-  color: #444;
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
+  color: #3c3c43;
+  white-space: nowrap;
 
   @media (max-width: 768px) {
-    font-size: 9px;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 12px;
   }
 
-  ion-icon {
-    color: #eb0404;
-    font-size: 18px;
-    margin-top: 2px;
-    margin-bottom: 2px;
+  strong {
+    font-weight: 600;
+    margin-left: 4px;
+    color: #111827;
   }
 }
 
-/* ====== (Extra) bloque-imagenes suelto usado dentro de campos ====== */
-.bloque-imagenes {
-  display: flex;
+.estilo_unico {
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #ff3b30;
+  background: rgba(255, 59, 48, 0.06);
+  color: #ff3b30;
+}
+
+.btn-guardar {
+  border: none;
+  outline: none;
+  background: linear-gradient(135deg, #ff3b30, #ff453a);
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 10px;
+  gap: 6px;
+  cursor: pointer;
 
-  .btn-limpiar {
-    background: #1f1f1f;
-    font-size: 9px;
-    color: white;
-    border: none;
-    padding: 8px 10px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
+  box-shadow: 0 10px 20px rgba(255, 69, 58, 0.4);
+  transition:
+    transform 0.14s ease,
+    box-shadow 0.16s ease,
+    filter 0.14s ease;
 
-    ion-icon {
-      font-size: 9px;
-    }
+  ion-icon.icono-guardar {
+    font-size: 18px;
   }
 
-  .radio-validacion {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    cursor: default;
+  &:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.02);
+    box-shadow: 0 12px 26px rgba(255, 69, 58, 0.5);
+  }
 
-    .radio-custom {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 3px solid rgb(126, 126, 126);
-      display: inline-block;
-    }
-
-    &.activo .radio-custom {
-      border-color: #00ff15;
-      background-color: #40ff00;
-    }
-
-    &.inactivo .radio-custom {
-      border-color: #909090;
-      background-color: transparent;
-    }
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 7px 18px rgba(255, 69, 58, 0.3);
   }
 }
 
-/* ====== Tipo de vehículo (particular / lote) ====== */
+/* ================== TIPO DE VEHÍCULO ================== */
 .tipo-vehiculo-container {
   text-align: center;
-  margin-top: 24px;
+  margin: 20px auto 10px;
+  padding: 16px 12px 18px;
+  max-width: 540px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid rgba(60, 60, 67, 0.12);
+  box-shadow:
+    0 12px 24px rgba(15, 23, 42, 0.18),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
 
   .titulo-tipo {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: #222;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    color: #111827;
   }
 
   .opciones-vehiculo {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 14px;
     flex-wrap: wrap;
   }
 
   .casilla {
-    width: 130px;
-    height: 130px;
-    border-radius: 16px;
-    background-color: #f7f7f7;
-    border: 2px solid transparent;
+    width: 132px;
+    height: 132px;
+    border-radius: 18px;
+    background-color: #f2f2f7;
+    border: 1px solid transparent;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
-    transition: all 0.2s ease-in-out;
     cursor: pointer;
+
+    transition:
+      background 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      transform 0.12s ease;
 
     img {
       width: 48px;
@@ -435,326 +147,437 @@ section {
     p {
       margin: 0;
       font-weight: 600;
-      color: #444;
+      font-size: 13px;
+      color: #111827;
+      padding: 0 8px;
     }
 
     .icono-check {
       position: absolute;
       top: 6px;
       right: 6px;
-      color: #ff3c00;
+      color: #ff3b30;
       font-size: 18px;
     }
 
     &.activa {
-      border: 2px solid #ff3c00;
-      background-color: #fff0e8;
+      background-color: #ffffff;
+      border-color: #ff3b30;
+      box-shadow: 0 10px 22px rgba(255, 69, 58, 0.28);
+      transform: translateY(-1px);
     }
 
     &:hover {
-      background-color: #fff7f3;
+      background-color: #ffffff;
     }
   }
 
   .contenedor-boton {
     display: flex;
     justify-content: center;
-    margin-top: 24px;
+    margin-top: 18px;
+  }
 
-    .btn-continuar {
-      background-color: #ff3c00;
-      color: #fff;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 30px;
-      font-size: 16px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
+  .btn-continuar {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #ff3b30, #ff453a);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    box-shadow: 0 10px 22px rgba(255, 69, 58, 0.4);
 
-      ion-icon {
-        font-size: 18px;
-      }
+    transition:
+      transform 0.14s ease,
+      box-shadow 0.16s ease,
+      filter 0.14s ease;
 
-      &:hover:not(:disabled) {
-        background-color: #e63300;
-      }
+    ion-icon {
+      font-size: 18px;
+    }
 
-      &:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-      }
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.02);
+      box-shadow: 0 12px 26px rgba(255, 69, 58, 0.5);
+    }
+
+    &:disabled {
+      background: linear-gradient(135deg, #ffb3b8, #ffc2c0);
+      box-shadow: none;
+      cursor: not-allowed;
     }
   }
 }
 
-/* ====== Pantalla "¿Cómo quieres vender?" ====== */
+/* ================== ¿CÓMO QUIERES VENDER? ================== */
 .pregunta-vendedor {
-  margin: 24px auto;
-  padding: 24px;
-  max-width: 600px;
-  background-color: #d8d8d8;
-  border-radius: 16px;
-  text-align: center;
-  color: #222;
+  margin: 18px auto;
+  padding: 18px 16px;
+  max-width: 580px;
+
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid rgba(60, 60, 67, 0.12);
+  box-shadow:
+    0 12px 24px rgba(15, 23, 42, 0.16),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
 
   .texto-pregunta {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .logo-inline {
-    height: 22px;
-    vertical-align: middle;
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 16px;
+    color: #111827;
   }
 
   .botones-vendedor {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 14px;
+    gap: 12px;
   }
 
   .btn-vender-yo,
   .btn-vende-go {
-    padding: 12px 20px;
-    font-size: 16px;
+    padding: 10px 18px;
+    font-size: 14px;
     font-weight: 600;
+    border-radius: 999px;
     border: none;
-    border-radius: 8px;
     cursor: pointer;
-    display: flex;
+
+    display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: all 0.25s ease;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
+    transition:
+      transform 0.14s ease,
+      box-shadow 0.16s ease,
+      filter 0.14s ease;
   }
 
   .btn-vender-yo {
-    background: linear-gradient(135deg, #0072ff, #00c6ff);
-    color: white;
+    background: linear-gradient(135deg, #0a84ff, #4dabff);
+    color: #ffffff;
   }
 
   .btn-vende-go {
-    background: linear-gradient(135deg, #ff4e00, #ff9068);
-    color: white;
+    background: linear-gradient(135deg, #ff3b30, #ff453a);
+    color: #ffffff;
   }
 
   .btn-vender-yo:hover,
   .btn-vende-go:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+    filter: brightness(1.03);
   }
 
   .logo-boton {
-    height: 20px;
-    vertical-align: middle;
+    height: 18px;
   }
 }
 
-/* ====== Publicación asistida (WhatsApp) ====== */
+/* ================== PUBLICACIÓN POR WHATSAPP ================== */
 .formulario-publicacion {
-  padding: 16px;
-  background: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  margin-top: 18px;
+  padding: 16px 14px 18px;
+  border-radius: 18px;
+  background: #f2f2f7;
+  border: 1px solid rgba(60, 60, 67, 0.1);
+
+  .info-texto {
+    font-size: 14px;
+    color: #1c1c1e;
+    margin-bottom: 10px;
+
+    strong {
+      font-weight: 600;
+      color: #111827;
+    }
+  }
+
+  .info-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+
+    p {
+      margin: 0;
+      font-size: 13px;
+
+      strong {
+        margin-left: 4px;
+        font-weight: 600;
+      }
+    }
+
+    .estilo_unico {
+      margin-left: auto;
+    }
+  }
 
   ion-item {
-    --background: transparent;
-    --inner-border-width: 0px;
-    --highlight-color-focused: #e53935;
-    --border-color: #c0c0c09f;
-    margin-bottom: 12px;
-    border-bottom: 1px solid #c0c0c09f;
-    border-radius: 0;
+    --background: #ffffff;
+    --inner-border-width: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    --highlight-color-focused: #ff3b30;
 
-    &.item-has-focus {
-      border-bottom: 1px solid #e53935;
-    }
+    border-radius: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
   }
 
   ion-input,
   ion-select {
-    --padding-start: 0px;
-    --padding-end: 0px;
+    --padding-start: 0;
+    --padding-end: 8px;
     --background: transparent;
-  }
-
-  .info-texto {
-    font-size: 15px;
-    color: #333;
-    margin-bottom: 12px;
-  }
-
-  ion-item {
-    margin-bottom: 12px;
+    font-size: 14px;
   }
 
   .btn-wsp-container {
-    margin-top: 20px;
     text-align: center;
+    margin-top: 16px;
   }
 
   .btn-wsp {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 22px;
     background: #25d366;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: bold;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: background 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 12px 22px rgba(37, 211, 102, 0.45);
 
-    &:hover {
-      background: #1ebe5d;
-    }
+    transition:
+      transform 0.14s ease,
+      box-shadow 0.16s ease,
+      filter 0.14s ease;
 
     ion-icon {
-      font-size: 20px;
+      font-size: 18px;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.02);
     }
   }
 }
 
-/* ====== Estado de vehículo (si lo activas) ====== */
-.estado-vehiculo {
-  display: flex;
-  gap: 20px;
-  align-items: center;
+/* ================== FORMULARIO PRINCIPAL ================== */
+.formulario {
+  margin-top: 18px;
+  padding: 14px 12px 18px;
+  border-radius: 18px;
+  background: #f2f2f7;
+  border: 1px solid rgba(60, 60, 67, 0.12);
+}
 
-  label {
+/* top: ubicación / lote / imágenes */
+.contenedor-botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: stretch;
+  margin-bottom: 10px;
+
+  .bloque-imagenes {
+    flex: 1 1 260px;
     display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: bold;
+    flex-direction: column;
+    gap: 8px;
   }
 
-  input[type="radio"] {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border: 2px solid red;
-    border-radius: 50%;
-    outline: none;
+  button {
+    border-radius: 999px;
+    border: 1px solid rgba(60, 60, 67, 0.18);
+    background: #ffffff;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     cursor: pointer;
+
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+    transition:
+      background 0.14s ease,
+      box-shadow 0.16s ease,
+      transform 0.12s ease;
+
+    ion-icon {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background: #f8f9fb;
+      transform: translateY(-1px);
+    }
+  }
+
+  .select-lote {
+    margin-top: 6px;
+    border-radius: 12px;
+    border: 1px solid rgba(60, 60, 67, 0.18);
+    padding: 8px 12px;
+    font-size: 13px;
+    background: #ffffff;
+    outline: none;
+    -webkit-appearance: none;
+
+    &:focus {
+      border-color: #ff3b30;
+      box-shadow: 0 0 0 2px rgba(255, 59, 48, 0.18);
+    }
+  }
+
+  .ubicacion-mostrada {
+    margin-top: 6px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    background: #ffffff;
+    border-left: 3px solid #ff3b30;
+    font-size: 12px;
+    color: #3c3c43;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+
+    ion-icon {
+      font-size: 16px;
+      color: #ff3b30;
+      margin-top: 2px;
+    }
+  }
+
+  .btn-imagenes {
     position: relative;
   }
 
-  input[type="radio"]:checked {
-    background-color: red;
+  .btn-limpiar {
+    background: #fff5f4;
+    border-color: rgba(255, 59, 48, 0.35);
+    color: #b91c1c;
+    font-size: 11px;
+  }
+
+  .radio-validacion {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    .radio-custom {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid rgba(60, 60, 67, 0.35);
+    }
+
+    ion-icon {
+      font-size: 14px;
+    }
+
+    &.activo {
+      .radio-custom {
+        background: #34c759;
+        border-color: #34c759;
+      }
+      ion-icon {
+        color: #34c759;
+      }
+    }
+
+    &.inactivo {
+      opacity: 0.35;
+    }
   }
 }
 
-/* ====== Extras de motos ====== */
-/* ====== Colores (chips) ====== */
-.checkbox-colores {
+/* GRID PRINCIPAL CAMPOS */
+.grid-form {
+  margin-top: 8px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 6px;
+  gap: 12px;
 
-  @media (max-width: 992px) {
+  @media (max-width: 900px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  @media (max-width: 520px) {
+
+  @media (max-width: 640px) {
     grid-template-columns: 1fr;
   }
 }
 
-.color-opcion {
-  /* layout */
-  display: grid;
-  grid-template-columns: 18px 1fr 18px;
-  align-items: center;
-  gap: 10px;
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 
-  /* chip look */
-  padding: 10px 12px;
-  border: 1.5px solid #e5e5e5;
-  border-radius: 14px;
-  background: #fff;
-  color: #222;
-  font-size: 14px;
-  cursor: pointer;
-  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
-
-  /* quitar input nativo */
-  input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* circulito de color */
-  .swatch {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 1px solid #cfcfcf;
-    background: #f2f2f2; /* fallback */
-  }
-
-  /* si pasas opcionalmente el HEX en data-color lo aplicamos */
-  &[data-color] .swatch {
-    background: attr(data-color color, #f2f2f2);
-    border-color: rgba(0,0,0,.12);
-  }
-
-  .nombre {
+  label {
+    font-size: 12px;
     font-weight: 600;
-    letter-spacing: .2px;
+    color: #3c3c43;
   }
 
-  .tick {
-    display: grid;
-    place-items: center;
-    opacity: 0;
-    transform: scale(.8);
-    transition: opacity .18s ease, transform .18s ease;
-    color: #ff3d00;
-    font-size: 16px;
-
-    ion-icon {
-      font-size: 16px;
-    }
+  .requerido {
+    color: #ff3b30;
   }
 
-  /* hover/focus */
-  &:hover { border-color: #ffdccf; background: #fff8f5; }
-  &:focus-within {
-    outline: 2px solid transparent;
-    box-shadow: 0 0 0 3px rgba(255, 61, 0, .18);
-    border-color: #ff7a4d;
-  }
-
-  /* estado seleccionado (usamos :has para simplificar) */
-  &:has(input:checked) {
-    border-color: #ff7a4d;
-    background: #fff3ed;
-    box-shadow: 0 2px 6px rgba(255, 61, 0, .12);
-  }
-  &:has(input:checked) .tick {
-    opacity: 1;
-    transform: scale(1);
+  .opcional_css {
+    font-size: 10px;
+    color: #8e8e93;
   }
 }
 
-/* dropdown (cuando no es nuevo) puede quedar como estaba, pero si quieres chip-look: */
-.formulario select[name="color"] {
-  border: 1.5px solid #e5e5e5;
-  border-radius: 10px;
-  background: #fff;
-  padding: 10px 12px;
-  font-weight: 600;
+.campo-descripcion {
+  grid-column: 1 / -1;
 }
 
+/* inputs estilo iOS */
+.campo select,
+.campo input[type="number"],
+.campo input[type="text"],
+.campo textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(60, 60, 67, 0.18);
+  background: #f2f2f7;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: #111827;
+  outline: none;
+  -webkit-appearance: none;
+
+  &:focus {
+    border-color: #ff3b30;
+    box-shadow: 0 0 0 2px rgba(255, 59, 48, 0.18);
+    background: #ffffff;
+  }
+}
+
+.campo textarea {
+  resize: vertical;
+  min-height: 80px;
+}

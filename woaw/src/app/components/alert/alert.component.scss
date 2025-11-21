@@ -1,143 +1,192 @@
+/* ===== Alert base tipo iOS – tarjeta centrada ===== */
 .alert-content {
-  animation: fadeInScale 100ms ease-out;
-  max-width: 400px;
+  animation: fadeInScale 160ms ease-out;
+  max-width: 340px;
   width: 100%;
   box-sizing: border-box;
-  overflow-x: hidden;
-  padding: 15px 10px;
-  border-radius: 0px;
-  background-color: #fff;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
-  position: relative;
+  padding: 18px 20px 16px;
+  border-radius: 20px;
+  background: #ffffff;
   text-align: center;
+  position: relative;
+  overflow: hidden;
 
+  /* sombra iOS tipo sistema */
+  box-shadow:
+    0 22px 45px rgba(15, 23, 42, 0.35),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
 
+  /* barrita de acento arriba, centrada */
   .top-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 6px;
-    width: 100%;
+    width: 52px;
+    height: 4px;
+    border-radius: 999px;
+    margin: 0 auto 14px;
+    background: #e5e7eb; // se sobreescribe por tipo
   }
 
+  /* circulito para el icono */
   .icon-container {
-    animation: bounceIn 2100ms ease-out;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin: 0 auto 10px;
+    width: 56px;
+    height: 56px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f4f6; // se sobreescribe por tipo
+    animation: bounceIn 280ms ease-out;
   }
 
   .icon {
-    font-size: 45px;
+    font-size: 26px;
+    color: #111827; // se sobreescribe por tipo
   }
 
   h2 {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #111;
+    font-size: 17px;
+    font-weight: 600;
+    margin: 6px 0 4px;
+    color: #111827;
+    letter-spacing: -0.01em;
   }
 
   p {
-    font-size: 15px;
-    color: #494949;
-    margin-bottom: 30px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #4b5563;
+    margin: 0 0 16px;
   }
 
   .btn-ok {
-    --border-radius: 10px;
-    width: 120px;
-    height: 40px;
+    --border-radius: 999px;
+    --box-shadow: 0 10px 22px rgba(15, 23, 42, 0.22);
+    --padding-start: 22px;
+    --padding-end: 22px;
+    --background: #111827;
+    --background-focused: #020617;
+    --background-activated: #020617;
+
+    min-width: 120px;
+    height: 38px;
+    font-size: 14px;
     font-weight: 600;
-    margin: 0 auto;
-    display: block;
-    color: #fff;
-  }
-
-  &.success {
-    .top-bar {
-      background-color: #28a745;
-    }
-
-    .icon {
-      color: #28a745;
-    }
-
-    .btn-ok {
-      --background: #28a745;
-    }
-  }
-
-  &.danger {
-    .top-bar {
-      background-color: #dc3545;
-    }
-
-    .icon {
-      color: #dc3545;
-    }
-
-    .btn-ok {
-      --background: #dc3545;
-    }
-  }
-
-  &.warning {
-    .top-bar {
-      background-color: #ffc107;
-    }
-
-    .icon {
-      color: #ffc107;
-    }
-
-    .btn-ok {
-      --background: #ffc107;
-      color: #111;
-    }
-  }
-
-  &.info {
-    .top-bar {
-      background-color: #007bff;
-    }
-
-    .icon {
-      color: #007bff;
-    }
-
-    .btn-ok {
-      --background: #007bff;
-    }
+    text-transform: none;
+    margin: 0 auto 4px;
+    display: inline-flex;
+    justify-content: center;
   }
 }
 
+/* ===== Map de colores tipo iOS ===== */
+/* success → verde iOS (#34C759)
+   danger  → rojo iOS (#FF3B30)
+   warning → amarillo iOS (#FFCC00)
+   info    → azul iOS (#0A84FF)
+*/
+
+.alert-content.success {
+  .top-bar {
+    background: #34c759;
+  }
+
+  .icon-container {
+    background: rgba(52, 199, 89, 0.12);
+  }
+
+  .icon {
+    color: #34c759;
+  }
+
+  .btn-ok {
+    --background: #34c759;
+    --background-focused: #2ba44a;
+    --background-activated: #248a3f;
+  }
+}
+
+.alert-content.danger {
+  .top-bar {
+    background: #ff3b30;
+  }
+
+  .icon-container {
+    background: rgba(255, 59, 48, 0.12);
+  }
+
+  .icon {
+    color: #ff3b30;
+  }
+
+  .btn-ok {
+    --background: #ff3b30;
+    --background-focused: #e23628;
+    --background-activated: #c52f23;
+  }
+}
+
+.alert-content.warning {
+  .top-bar {
+    background: #ffcc00;
+  }
+
+  .icon-container {
+    background: rgba(255, 204, 0, 0.14);
+  }
+
+  .icon {
+    color: #ffcc00;
+  }
+
+  .btn-ok {
+    --background: #ffcc00;
+    --background-focused: #e0b500;
+    --background-activated: #c49e00;
+    color: #111827;
+  }
+}
+
+.alert-content.info {
+  .top-bar {
+    background: #0a84ff;
+  }
+
+  .icon-container {
+    background: rgba(10, 132, 255, 0.14);
+  }
+
+  .icon {
+    color: #0a84ff;
+  }
+
+  .btn-ok {
+    --background: #0a84ff;
+    --background-focused: #0060df;
+    --background-activated: #0047a8;
+  }
+}
+
+/* ===== Animaciones suaves tipo sistema ===== */
 @keyframes fadeInScale {
   0% {
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale(0.9) translateY(6px);
   }
-
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
   }
 }
 
 @keyframes bounceIn {
   0% {
-    transform: scale(0.3);
+    transform: scale(0.6);
     opacity: 0;
   }
-
-  50% {
-    transform: scale(1.1);
+  60% {
+    transform: scale(1.05);
     opacity: 1;
   }
-
-  80% {
-    transform: scale(0.95);
-  }
-
   100% {
     transform: scale(1);
   }

@@ -1,144 +1,274 @@
 /* ================================
-   Layout con navbar fija
+   BACKGROUND & LAYOUT iOS
    ================================ */
 
-/* Evita que la navbar tape el contenido */
-ion-content {
-  margin-top: 56px; /* ajusta a la altura real de tu navbar */
+.edit-lote-content {
+  --background: #f2f2f7;
+  padding-top: calc(12px + env(safe-area-inset-top, 0px));
+  padding-left: max(12px, env(safe-area-inset-left, 0px));
+  padding-right: max(12px, env(safe-area-inset-right, 0px));
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
 }
 
-/* Acolchado seguro (arriba + lados) cuando usas .ion-padding */
-.ion-padding {
-  /* Arriba: padding base + safe-area */
-  padding-top: calc(16px + env(safe-area-inset-top, 0px)) !important;
-
-  /* Lados: evita que se corten botones pegados al borde */
-  padding-left: max(16px, env(safe-area-inset-left, 0px)) !important;
-  padding-right: max(16px, env(safe-area-inset-right, 0px)) !important;
+/* Si tu navbar es fija, deja margen arriba */
+:host ::ng-deep app-navbar + ion-content.edit-lote-content {
+  margin-top: 56px;
 }
 
 /* ================================
-   Formulario
+   Botón back flotante estilo iOS
+   ================================ */
+
+.ios-back-fab {
+  --background: rgba(255, 255, 255, 0.9);
+  --box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
+  --padding-start: 0;
+  --padding-end: 0;
+  --border-radius: 999px;
+  --ripple-color: rgba(0, 0, 0, 0.06);
+  width: 34px;
+  height: 34px;
+  position: fixed;
+  left: max(12px, env(safe-area-inset-left, 8px));
+  top: calc(10px + env(safe-area-inset-top, 0px));
+  z-index: 30;
+  border: 0.5px solid rgba(148, 163, 184, 0.6);
+}
+
+.ios-back-fab ion-icon {
+  font-size: 20px;
+  color: #ef4444;
+}
+
+/* ================================
+   CARD iOS
    ================================ */
 
 .formulario-lote {
   max-width: 1000px;
-  margin: 0 auto;
+  margin: 0 auto 16px;
 }
 
-/* Inputs limpios con underline animado */
-ion-input {
-  --padding-start: 0px;
-  --padding-end:   0px;
-  border-bottom:   0.5px solid #c0c0c09f;
-  padding-bottom:  0.5px;
-  transition:      border-color 0.3s ease;
+.ios-card {
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.16),
+    0 0 0 0.5px rgba(148, 163, 184, 0.3);
+  border: none;
+}
 
-  &:focus-within {
-    border-bottom: 0.5px solid #e53935;
-  }
+.ios-card-header {
+  border-bottom: 0.5px solid rgba(229, 231, 235, 0.9);
+  padding-bottom: 10px;
+}
+
+.ios-card-header ion-card-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #111827;
+}
+
+.ios-card-header ion-card-subtitle {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* Card suave para mensaje no logueado */
+.ios-card-soft {
+  max-width: 900px;
+  margin: 16px auto;
+  padding: 14px 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 14px 30px rgba(15, 23, 42, 0.12),
+    0 0 0 0.5px rgba(248, 113, 113, 0.35);
 }
 
 /* ================================
-   Botón "icono solo" transparente
+   ITEMS / INPUTS estilo iOS
    ================================ */
 
-.btn-icon-clear {
-  /* Ion button tokens */
+.ios-item {
   --background: transparent;
-  --background-hover: transparent;
-  --background-activated: transparent;
-  --box-shadow: none;
+  --inner-border-width: 0;
   --padding-start: 0;
-  --padding-end: 0;
-  --color: #000; /* icono negro */
-  --ripple-color: rgba(0,0,0,.15);
-  margin: 0;
+  --inner-padding-end: 0;
+  --min-height: 60px;
+  margin-bottom: 8px;
 }
 
-/* Por si el tema usa partes nativas, refuerza la transparencia */
-ion-button.btn-icon-clear::part(native) {
-  background: transparent !important;
-  box-shadow: none !important;
+.ios-item ion-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.ios-input {
+  --padding-start: 0px;
+  --padding-end: 0px;
+  --padding-top: 6px;
+  --padding-bottom: 4px;
+  border-bottom: 0.6px solid rgba(148, 163, 184, 0.9);
+  font-size: 14px;
+  color: #111827;
+  transition: border-color 0.18s ease;
+}
+
+.ios-input:focus-within {
+  border-bottom-color: #ef4444;
+}
+
+/* item sin borde para bloque de ubicación */
+.ios-item-no-border {
+  --background: transparent;
+  --inner-border-width: 0;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
+/* Label suelto para campos fuera de ion-item */
+.ios-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 4px;
+  display: block;
 }
 
 /* ================================
    Área de subida / Previews
    ================================ */
 
-.preview-container {
-  display:      flex;
-  flex-wrap:    wrap;
-  gap:          10px;
-  margin-top:   10px;
-  max-width:    100%;
-  position:     relative;
-
-  div {
-    position: relative;
-    width:    80px;
-    height:   80px;
-  }
-
-  img {
-    width:        80px;
-    height:       80px;
-    object-fit:   cover;
-    border-radius:10px;
-    border:       2px solid #ccc;
-    box-shadow:   0 2px 5px rgba(0, 0, 0, 0.1);
-    display:      block;
-  }
-
-  .btn-eliminar-img {
-    position:         absolute;
-    top:              -6px;
-    right:            -6px;
-    background-color: rgba(255, 0, 0, 0.85);
-    border:           none;
-    border-radius:    50%;
-    color:            #fff;
-    width:            20px;
-    height:           20px;
-    font-size:        14px;
-    text-align:       center;
-    line-height:      20px;
-    cursor:           pointer;
-    z-index:          10;
-    box-shadow:       0 1px 4px rgba(0, 0, 0, 0.4);
-  }
+.area-subida {
+  width: 100%;
+  max-width: 320px;
+  height: 110px;
+  border-radius: 14px;
+  border: 1px dashed rgba(209, 213, 219, 0.95);
+  background: #f9fafb;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  margin-top: 4px;
 }
 
-.area-subida {
-  width:            80%;
-  height:           100px;
-  border:           2px dashed #e2d3d3;
-  background-color: transparent;
-  border-radius:    8px;
-  cursor:           pointer;
-  position:         relative;
-  display:          flex;
-  justify-content:  center;
-  align-items:      center;
-  transition:       background 0.3s;
+.area-subida ion-icon {
+  font-size: 30px;
+  color: #cbd5f5;
+}
 
-  .oculto {
-    opacity:        0;
-    pointer-events: none;
-  }
+.area-subida .oculto {
+  opacity: 0;
+  pointer-events: none;
+}
 
-  ion-icon {
-    font-size: 40px;
-    color:     #d0dce7;
-  }
+.area-subida:hover {
+  background: #f3f4f6;
+  border-color: #ef4444;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+}
 
-  &:hover {
-    background-color: #37373708;
-  }
+.preview-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  @media (max-width: 1090px) {
-    width: 100%;
-  }
+.preview-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+/* Botón X de imagen */
+.btn-eliminar-img {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(239, 68, 68, 0.95);
+  color: #fff;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+/* ================================
+   Ubicación
+   ================================ */
+
+.ubicacion-item {
+  margin-top: 8px;
+}
+
+.btn-ubicacion {
+  width: 100%;
+  max-width: 260px;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+
+  font-weight: 600;
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  transition: box-shadow 0.18s ease, transform 0.08s ease, background 0.18s ease;
+}
+
+.btn-ubicacion ion-icon {
+  font-size: 18px;
+  color: #ef4444;
+}
+
+.btn-ubicacion:hover {
+  background: #f9fafb;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
+  transform: translateY(-1px);
+}
+
+.btn-ubicacion:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.1);
+}
+
+/* Lista de ubicaciones estilo iOS */
+.ios-list {
+  border-radius: 14px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+}
+
+.ios-list-item {
+  --background: transparent;
+  --padding-start: 12px;
+  --inner-padding-end: 8px;
 }
 
 /* ================================
@@ -146,54 +276,47 @@ ion-button.btn-icon-clear::part(native) {
    ================================ */
 
 .mensaje-autenticacion {
-  font-size:       15px;
-  color:           #222;
-  margin:          16px 0;
-  padding:         16px;
-  background-color:#fff4f0;
-  border-left:     5px solid #ff3c00;
-  border-radius:   8px;
+  font-size: 0.95rem;
+  color: #111827;
+  padding: 14px 12px 16px;
 }
 
 .btn-acceso {
-  margin-top:   12px;
-  padding:      10px 20px;
-  font-size:    14px;
-  background:   linear-gradient(to right, #ff3c00, #ff6600);
-  border:       none;
-  border-radius:6px;
-  color:        #fff;
-  font-weight:  600;
-  cursor:       pointer;
-  transition:   transform 0.2s ease;
+  margin-top: 10px;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  background: linear-gradient(135deg, #ef4444, #f97373);
+  border: none;
+  border-radius: 999px;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(239, 68, 68, 0.5);
+  transition: transform 0.08s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
 
-  &:hover { transform: scale(1.05); }
+.btn-acceso:hover {
+  opacity: 0.97;
+  box-shadow: 0 18px 36px rgba(239, 68, 68, 0.65);
+}
+
+.btn-acceso:active {
+  transform: translateY(1px);
 }
 
 /* ================================
-   Botones redondeados lado a lado (opcionales)
+   Botones pill (Guardar / Cancelar)
    ================================ */
 
-/* Contenedor para acciones del formulario (si lo usas) */
-.acciones-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: flex-end; /* cambia a space-between si quieres separarlos */
-  margin-top: 16px;
-}
-
-/* Contenedor centrado y responsive */
 .boton-publicar-container {
   display: flex;
-  justify-content: center;   /* centrado */
+  justify-content: flex-end;
   align-items: center;
-  gap: 12px;
-  margin-top: 16px;
+  gap: 10px;
+  margin-top: 18px;
   flex-wrap: wrap;
 }
 
-/* Botones redondeados */
 .btn-pill {
   display: inline-flex;
   align-items: center;
@@ -205,24 +328,37 @@ ion-button.btn-icon-clear::part(native) {
   font-weight: 600;
   cursor: pointer;
   line-height: 1;
-  transition: transform .06s ease, box-shadow .2s ease, opacity .2s ease;
-  box-shadow: 0 2px 8px rgba(16, 24, 40, .1);
+  transition: transform 0.08s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
+  background: #ffffff;
 }
 
-/* Guardar (primario) */
+.btn-pill ion-icon {
+  font-size: 17px;
+}
+
+/* Guardar */
 .btn-guardar {
-  background: linear-gradient(135deg, #4aef44, #26dc26); /* rojo bonito */
-  color: #fff;
-}
-.btn-guardar:hover { opacity: .95; }
-
-/* Cancelar (neutral) */
-.btn-cancelar {
-  background: #ff0000;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
   color: #ffffff;
-  border: 1px solid #e5e7eb;
 }
-//.btn-cancelar:hover { background: #f9fafb; }
+
+/* Cancelar */
+.btn-cancelar {
+  background: #ffffff;
+  color: #ef4444;
+  border: 1px solid rgba(248, 113, 113, 0.7);
+}
+
+.btn-pill:hover {
+  opacity: 0.97;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.26);
+}
+
+.btn-pill:active {
+  transform: translateY(1px);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
+}
 
 /* Full width en móvil */
 @media (max-width: 480px) {
@@ -230,57 +366,24 @@ ion-button.btn-icon-clear::part(native) {
     justify-content: stretch;
     flex-direction: column;
   }
+
   .btn-pill {
     width: 100%;
     justify-content: center;
   }
 }
 
-/* ion-item sin líneas y con el label más limpio */
-.ubicacion-item {
-  --inner-padding-end: 0;
-  --padding-start: 0;
-  margin-top: 6px;
+/* ================================
+   RESPONSIVE
+   ================================ */
 
-  ion-label {
-    margin-bottom: 6px;
+@media (max-width: 768px) {
+  .formulario-lote {
+    margin: 0 auto 14px;
   }
-}
 
-/* Botón estilo campo, no tan redondo */
-.btn-ubicacion {
-  width: 20%;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start; /* icono/texto a la izquierda */
-  gap: 10px;
-
-  padding: 10px 14px;
-  border-radius: 12px;          /* antes 9999px */
-  background: #fff;
-  color: #111827;
-  border: 1px solid #e5e7eb;
-
-  font-weight: 600;
-  cursor: pointer;
-
-  box-shadow: 0 2px 8px rgba(16, 24, 40, .06);
-  transition: box-shadow .2s ease, transform .1s ease, background .2s ease;
-}
-
-.btn-ubicacion:hover {
-  background: #fafafa;
-  box-shadow: 0 4px 16px rgba(16, 24, 40, .10);
-  transform: translateY(-1px);
-}
-
-.btn-ubicacion:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(16, 24, 40, .08);
-}
-
-.btn-ubicacion ion-icon {
-  font-size: 18px;
-  opacity: .85;
+  .edit-lote-content {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }

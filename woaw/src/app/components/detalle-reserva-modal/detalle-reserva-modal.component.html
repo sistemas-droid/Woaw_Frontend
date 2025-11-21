@@ -1,158 +1,132 @@
-<ion-header translucent="true">
-  <ion-toolbar color="light">
+<ion-header collapse="fade" translucent="true">
+  <ion-toolbar class="ios-toolbar">
     <ion-title>
       <div class="title-line">
         <span>Reserva #{{ data.codigo || data._id || '—' }}</span>
-        <ion-badge *ngIf="data?.estatus" [color]="badgeColor(data.estatus)">{{ data.estatus }}</ion-badge>
+        <ion-badge *ngIf="data?.estatus"
+                   [color]="badgeColor(data.estatus)">
+          {{ data.estatus }}
+        </ion-badge>
       </div>
     </ion-title>
+
     <ion-buttons slot="end">
-      <ion-button (click)="dismiss()" fill="clear" aria-label="Cerrar">
+      <ion-button fill="clear" class="close-btn" (click)="dismiss()">
         <ion-icon name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-list *ngIf="loading">
+<ion-content class="ios-content" [fullscreen]="true">
+
+  <!-- LOADING SKELETON -->
+  <ion-list *ngIf="loading" class="skeleton-list">
     <ion-item *ngFor="let i of [1,2,3,4]">
       <ion-skeleton-text animated style="width:100%; height:62px;"></ion-skeleton-text>
     </ion-item>
   </ion-list>
 
   <ng-container *ngIf="!loading && data">
-    <section class="eyebrow">
+    
+    <!-- EYEBROW iOS -->
+    <section class="eyebrow-ios">
       <ion-icon name="calendar-outline"></ion-icon>
+
       <div class="dates">
         <b>{{ data.fechaInicio | date:'medium' }}</b>
-        <span> → </span>
+        <span class="arrow">→</span>
         <b>{{ data.fechaFin | date:'medium' }}</b>
       </div>
-      <ion-chip size="small" color="dark" outline> {{ dias() }} día(s) </ion-chip>
+
+      <ion-chip class="chip-ios" outline>{{ dias() }} día(s)</ion-chip>
     </section>
 
-    <ion-card class="ck-card">
+    <!-- CARD RESUMEN -->
+    <ion-card class="ios-card resume-card">
       <ion-card-header>
         <ion-card-title>Resumen</ion-card-title>
-        <ion-card-subtitle *ngIf="car">
-          {{ marcaModelo() }}
-        </ion-card-subtitle>
+        <ion-card-subtitle *ngIf="car">{{ marcaModelo() }}</ion-card-subtitle>
       </ion-card-header>
+
       <ion-card-content>
-        <div class="grid">
+        <div class="grid-ios">
           <div class="cell">
             <small>Moneda</small>
             <div class="row"><ion-icon name="card-outline"></ion-icon>{{ currency() }}</div>
           </div>
+
           <div class="cell">
             <small>Total</small>
             <div class="row strong">
-              <ion-icon name="cash-outline"></ion-icon>{{ data.total | currency:currency():'symbol-narrow' }}
+              <ion-icon name="cash-outline"></ion-icon>
+              {{ data.total | currency:currency():'symbol-narrow' }}
             </div>
           </div>
         </div>
       </ion-card-content>
     </ion-card>
 
-    <ion-accordion-group>
+    <!-- ACORDEONES iOS -->
+    <ion-accordion-group class="ios-accordion-group">
+
+      <!-- PERSONAS -->
       <ion-accordion value="personas">
-        <ion-item slot="header" color="light">
+        <ion-item slot="header" class="ios-accordion-header">
           <ion-label>Personas</ion-label>
         </ion-item>
-        <div slot="content" class="pad">
-          <div class="two">
-            <ion-card>
+
+        <div slot="content" class="pad-ios">
+          <div class="two-ios">
+            <ion-card class="ios-card mini-card">
               <ion-card-header><ion-card-title>Cliente</ion-card-title></ion-card-header>
-              <ion-card-content>
-                <div>{{ clienteNombre() }}</div>
-              </ion-card-content>
+              <ion-card-content>{{ clienteNombre() }}</ion-card-content>
             </ion-card>
-            <ion-card>
+
+            <ion-card class="ios-card mini-card">
               <ion-card-header><ion-card-title>Propietario</ion-card-title></ion-card-header>
-              <ion-card-content>
-                <div>{{ ownerNombre() }}</div>
-              </ion-card-content>
+              <ion-card-content>{{ ownerNombre() }}</ion-card-content>
             </ion-card>
           </div>
         </div>
       </ion-accordion>
 
+      <!-- OPERATIVO -->
       <ion-accordion value="operativo">
-        <ion-item slot="header" color="light">
-          <ion-label>Operativo (Check-In / Check-Out)</ion-label>
+        <ion-item slot="header" class="ios-accordion-header">
+          <ion-label>Operativo</ion-label>
         </ion-item>
-        <div slot="content" class="pad">
-          <div class="two">
-            <ion-card>
+
+        <div slot="content" class="pad-ios">
+          <div class="two-ios">
+
+            <ion-card class="ios-card mini-card">
               <ion-card-header><ion-card-title>Check-In</ion-card-title></ion-card-header>
               <ion-card-content>
                 <div><b>Fecha:</b> {{ data.checkIn?.fecha || '—' }}</div>
                 <div><b>Combustible:</b>
-                  {{ (data.checkIn?.combustible !== undefined && data.checkIn?.combustible !== null) ?
-                  data.checkIn?.combustible : '—' }}
+                  {{ data.checkIn?.combustible ?? '—' }}
                 </div>
-                <div><b>Notas:</b> {{ (data.checkIn?.notas ?? '') || '—' }}</div>
+                <div><b>Notas:</b> {{ data.checkIn?.notas || '—' }}</div>
               </ion-card-content>
             </ion-card>
-            <ion-card>
+
+            <ion-card class="ios-card mini-card">
               <ion-card-header><ion-card-title>Check-Out</ion-card-title></ion-card-header>
               <ion-card-content>
                 <div><b>Fecha:</b> {{ data.checkOut?.fecha || '—' }}</div>
                 <div><b>Combustible:</b>
-                  {{ (data.checkOut?.combustible !== undefined && data.checkOut?.combustible !== null) ?
-                  data.checkOut?.combustible : '—' }}
+                  {{ data.checkOut?.combustible ?? '—' }}
                 </div>
-                <div><b>Notas:</b> {{ (data.checkOut?.notas ?? '') || '—' }}</div>
+                <div><b>Notas:</b> {{ data.checkOut?.notas || '—' }}</div>
               </ion-card-content>
             </ion-card>
-          </div>
-        </div>
-      </ion-accordion>
 
-      <!-- Notas de la reserva (cliente / operador)
-      <ion-accordion value="notas">
-        <ion-item slot="header" color="light">
-          <ion-label>Notas de la reserva</ion-label>
-        </ion-item>
-        <div slot="content" class="pad">
-          <div class="two">
-            <ion-card>
-              <ion-card-header><ion-card-title>Notas del cliente</ion-card-title></ion-card-header>
-              <ion-card-content>
-                <div>{{ (data?.notasCliente ?? '') || '—' }}</div>
-              </ion-card-content>
-            </ion-card>
-            <ion-card>
-              <ion-card-header><ion-card-title>Notas del operador</ion-card-title></ion-card-header>
-              <ion-card-content>
-                <div>{{ (data?.notasOperador ?? '') || '—' }}</div>
-              </ion-card-content>
-            </ion-card>
           </div>
         </div>
       </ion-accordion>
- 
-      <ion-accordion value="items">
-        <ion-item slot="header" color="light">
-          <ion-label>Conceptos</ion-label>
-        </ion-item>
-        <div slot="content" class="pad">
-          <ion-list *ngIf="data?.items?.length; else noItems">
-            <ion-item *ngFor="let it of data.items">
-              <ion-label>
-                <b>{{ it.concepto }}</b>
-                <p>{{ it.cantidad }} × {{ it.precioUnitario | currency:currency():'symbol-narrow' }}</p>
-              </ion-label>
-              <ion-note slot="end">{{ it.subtotal | currency:currency():'symbol-narrow' }}</ion-note>
-            </ion-item>
-          </ion-list>
-          <ng-template #noItems>
-            <ion-item lines="none"><ion-label>No hay conceptos.</ion-label></ion-item>
-          </ng-template>
-        </div>
-      </ion-accordion> -->
 
     </ion-accordion-group>
   </ng-container>
+
 </ion-content>

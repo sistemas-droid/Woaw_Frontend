@@ -5,11 +5,121 @@
   --borde-suave: #e5e7eb;
   --bg-claro: #ffffff;
   --woaw-tabbar-h: 64px;
+
+  --vis-h: 260px;
+  --vis-h-lg: 320px;
+  --vis-h-sm: 110px;
 }
 
+/* ====== HEADER iOS ====== */
+.ios-header {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.ios-toolbar {
+  --background: rgba(248, 248, 250, 0.9);
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-width: 0 0 0.5px 0;
+  --color: #111827;
+  padding-inline: 6px;
+  min-height: 52px;
+}
+
+.ios-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+.logo-mini {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  object-fit: contain;
+  pointer-events: auto;
+}
+
+.ios-title-stack {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.ios-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #111827;
+}
+
+.ios-subtitle {
+  margin: 0;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.ios-back,
+.ios-close {
+  --padding-start: 4px;
+  --padding-end: 4px;
+  --background: transparent;
+  --box-shadow: none;
+  --ripple-color: transparent;
+  min-width: 32px;
+  height: 32px;
+  border-radius: 999px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ios-back ion-icon,
+.ios-close ion-icon {
+  font-size: 22px;
+  transition: transform .18s ease, color .18s ease;
+}
+
+.ios-back ion-icon {
+  color: #ff3b30;
+}
+
+.ios-close ion-icon {
+  color: #111827;
+}
+
+.ios-back:active ion-icon,
+.ios-close:active ion-icon {
+  transform: scale(0.9);
+  color: #c20012;
+}
+
+@media (max-width: 480px) {
+  .ios-title {
+    font-size: 15px;
+  }
+
+  .ios-subtitle {
+    font-size: 10px;
+  }
+
+  .logo-mini {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* ====== CONTENT iOS ====== */
+
 .disp-content {
-  --background: #ffffff;
+  --background: #f2f2f7;
   --padding-bottom: calc(env(safe-area-inset-bottom) + var(--woaw-tabbar-h) + 96px);
+  color: #111827;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
 }
 
 .disp-grid {
@@ -17,10 +127,9 @@
 }
 
 .head-wrap {
-  background: #ffffff;
+  background: transparent;
   color: #111;
   padding: 18px 12px 12px;
-  border-bottom: 1px solid #e5e7eb;
   text-align: center;
 }
 
@@ -40,6 +149,8 @@
   opacity: .9;
 }
 
+/* ====== PRESETS / BOTONES ====== */
+
 .preset-row {
   display: flex;
   align-items: center;
@@ -54,16 +165,24 @@
   --padding-bottom: 8px;
   min-height: 36px;
   min-width: 120px;
+  border-radius: 999px;
 }
 
 .preset-row ion-button[fill="outline"] {
   --border-color: var(--ion-color-danger);
   --color: var(--ion-color-danger);
+  --background: #fff;
 }
 
 .preset-row ion-button[fill="solid"] {
   --background: var(--ion-color-danger);
   --color: #ffffff;
+}
+
+@media (hover:hover) {
+  .preset-row ion-button[fill="outline"]:hover {
+    filter: brightness(1.06);
+  }
 }
 
 .editor-grid {
@@ -72,6 +191,8 @@
   align-items: center;
   gap: 12px;
 }
+
+/* ====== DATETIME (CALENDARIO) ====== */
 
 ion-item.center-item {
   width: 100%;
@@ -152,19 +273,21 @@ ion-item.center-item.danger-datetime ion-datetime::part(calendar-day):hover {
 
 .clear-actions ion-button {
   font-weight: 600;
-  --border-radius: 8px;
+  --border-radius: 10px;
 }
+
+/* ====== CARDS ====== */
 
 ion-card {
   border-radius: 14px;
   background: #ffffff;
   color: #111;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, .14);
-  border: 1px solid rgba(0, 0, 0, .06);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .10);
+  border: 1px solid rgba(0, 0, 0, .04);
 }
 
 ion-card-header {
-  border-bottom: 1px solid rgba(0, 0, 0, .06);
+  border-bottom: 1px solid rgba(0, 0, 0, .04);
 }
 
 ion-card-title {
@@ -176,24 +299,34 @@ ion-card-subtitle {
   color: #6b7280;
 }
 
+/* ====== SEGMENT iOS ====== */
+
 ion-segment {
-  --background: #ffffff;
-  border-radius: 10px;
-  padding: 2px;
+  --background: #f2f2f7;
+  border-radius: 12px;
+  padding: 3px;
   border: 1px solid var(--borde-suave);
 }
 
 ion-segment-button {
   --indicator-box-shadow: 0 2px 10px rgba(239, 68, 68, .25);
-  --indicator-color: var(--ion-color-danger);
+  --indicator-color: #ffffff;
   --indicator-transform: scale(1);
   --border-radius: 8px;
-  --color: #111111;
-  --color-checked: var(--ion-color-danger);
-  min-height: 38px;
+  --color: #6b7280;
+  --color-checked: #111827;
+  min-height: 36px;
   text-transform: none;
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 13px;
 }
+
+ion-segment-button::part(indicator) {
+  height: 100%;
+  border-radius: 8px;
+}
+
+/* ====== ERRORES ====== */
 
 .errors {
   background: #fef2f2;
@@ -208,22 +341,7 @@ ion-segment-button {
   }
 }
 
-.save-bar {
-  position: fixed;
-  left: 12px;
-  right: 88px;
-  bottom: calc(env(safe-area-inset-bottom) + var(--woaw-tabbar-h) + 14px);
-  background: #b91c1c;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, .12);
-  border-radius: 10px;
-  padding: 10px 12px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, .35);
-  z-index: 20;
-}
+/* ====== FAB GUARDAR ====== */
 
 .save-fab {
   --fab-h: 56px;
@@ -381,6 +499,8 @@ ion-content {
   }
 }
 
+/* ====== ACCESSIBILITY ====== */
+
 .sr-only {
   position: absolute !important;
   width: 1px;
@@ -392,6 +512,8 @@ ion-content {
   white-space: nowrap;
   border: 0;
 }
+
+/* ====== SUBLINE ====== */
 
 .subline {
   margin-top: 6px;
@@ -458,16 +580,7 @@ ion-content {
   font-weight: 900;
 }
 
-ion-segment-button::part(indicator) {
-  height: 3px;
-  border-radius: 999px;
-}
-
-@media (hover:hover) {
-  .preset-row ion-button[fill="outline"]:hover {
-    filter: brightness(1.06);
-  }
-}
+/* ====== GRID GENERAL ====== */
 
 .availability-grid {
   width: 100%;
@@ -506,6 +619,8 @@ ion-item.center-item {
 ion-item.center-item ion-datetime {
   max-width: 540px;
 }
+
+/* ====== WEEKDAY CHIPS ====== */
 
 .weekday-chip {
   height: 32px;
@@ -564,7 +679,7 @@ ion-item.center-item ion-datetime {
   pointer-events: none;
 }
 
-@media (min-width:992px) {
+@media (min-width: 992px) {
   .weekday-list.two-cols {
     flex-direction: row;
     flex-wrap: wrap;
@@ -575,6 +690,8 @@ ion-item.center-item ion-datetime {
   }
 }
 
+/* ====== SWITCH / TOGGLE ====== */
+
 .switch-label {
   display: inline-flex;
   align-items: center;
@@ -583,6 +700,8 @@ ion-item.center-item ion-datetime {
   font-size: 14px;
   color: #000000;
   user-select: none;
+  min-height: 34px;
+  line-height: 1;
 
   &.active {
     color: #ff0000;
@@ -628,7 +747,12 @@ ion-toggle.woaw-toggle {
     filter: grayscale(.2);
     opacity: .7;
   }
+
+  align-self: center;
+  margin: 0 2px;
 }
+
+/* ====== VISUAL ROW / CAR HERO ====== */
 
 .vis-row {
   align-items: stretch;
@@ -637,7 +761,7 @@ ion-toggle.woaw-toggle {
   --ion-grid-column-padding: 0px;
 }
 
-.vis-row>ion-col {
+.vis-row > ion-col {
   display: flex;
   padding-left: 0 !important;
   padding-right: 0 !important;
@@ -711,7 +835,43 @@ ion-toggle.woaw-toggle {
   --background: #ffffff;
 }
 
+/* ====== HEIGHTS ====== */
+
+.vis-card ion-card-content,
+.img-card {
+  min-height: var(--vis-h) !important;
+}
+
+.car-hero--small {
+  height: var(--vis-h) !important;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  overflow: hidden;
+}
+
+.car-hero--small ion-img,
+.car-hero--small ion-img::part(image) {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center;
+  --background: transparent;
+}
+
+.car-hero--small ion-img {
+  max-height: none !important;
+}
+
+/* ====== BREAKPOINTS ====== */
+
 @media (min-width: 992px) {
+  :host {
+    --vis-h: var(--vis-h-lg);
+  }
+
   .car-hero--small ion-img {
     max-height: 320px;
   }
@@ -721,20 +881,65 @@ ion-toggle.woaw-toggle {
   .car-hero--small ion-img {
     max-height: 230px;
   }
+
+  .vis-card ion-card-content {
+    min-height: 220px;
+  }
+
+  .switch-label {
+    font-size: 16px;
+    gap: 8px;
+  }
+
+  .switch-label ion-icon {
+    font-size: 18px;
+  }
+
+  ion-toggle.woaw-toggle::part(track) {
+    width: 88px;
+    height: 44px;
+    border-radius: 999px;
+  }
+
+  ion-toggle.woaw-toggle::part(handle) {
+    width: 34px;
+    height: 34px;
+  }
+
+  .switch-row {
+    gap: 16px;
+  }
+
+  .vis-card ion-card-content {
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .vis-card .switch-row {
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
 }
 
 @media (max-width: 480px) {
-  .vis-row>ion-col:first-child {
+  :host {
+    --vis-h: var(--vis-h-sm);
+    --pair-h: 140px;
+  }
+
+  .vis-row > ion-col:first-child {
     flex: 0 0 68%;
     max-width: 68%;
   }
 
-  .vis-row>ion-col:last-child {
+  .vis-row > ion-col:last-child {
     flex: 0 0 32%;
     max-width: 32%;
   }
 
-  .vis-row>ion-col {
+  .vis-row > ion-col {
     display: block;
   }
 
@@ -753,8 +958,11 @@ ion-toggle.woaw-toggle {
   }
 
   .vis-card ion-card-content {
-    padding: 8px 12px 10px;
+    padding: 8px 10px;
     gap: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .vis-card ion-card-title {
@@ -768,15 +976,46 @@ ion-toggle.woaw-toggle {
 
   .car-hero--small {
     padding: 8px;
+    height: var(--vis-h) !important;
   }
 
-  .car-hero--small ion-img {
-    max-height: 120px;
+  .vis-row > ion-col:last-child .img-card {
+    height: auto !important;
+    min-height: var(--vis-h) !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+  }
+
+  .vis-row > ion-col:last-child .car-hero--small {
+    height: var(--vis-h) !important;
+    min-height: var(--vis-h) !important;
+    border-radius: 12px !important;
+    background: #fff !important;
+  }
+
+  .vis-row {
+    column-gap: 0 !important;
+    --ion-grid-column-padding: 0px !important;
+  }
+
+  .vis-row > ion-col {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .vis-row .vis-card,
+  .vis-row .img-card {
+    margin: 0 !important;
+    border-radius: 12px;
   }
 
   .switch-row {
-    flex-wrap: nowrap;
-    gap: 6px;
+    margin: 0 !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    flex-wrap: nowrap !important;
   }
 
   .switch-label {
@@ -798,53 +1037,65 @@ ion-toggle.woaw-toggle {
     width: 20px;
     height: 20px;
   }
-}
 
-@media (max-width: 480px) {
-  .vis-row {
-    column-gap: 0 !important;
-    --ion-grid-column-padding: 0px !important;
-  }
-
-  .vis-row>ion-col {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-
-  .vis-row .vis-card,
-  .vis-row .img-card {
-    margin: 0 !important;
-    border-radius: 12px;
-  }
-
-  .vis-row>ion-col:last-child .img-card {
+  .vis-row > ion-col:first-child .vis-card,
+  .vis-row > ion-col:last-child .img-card {
+    height: var(--pair-h) !important;
+    min-height: var(--pair-h) !important;
     display: flex !important;
-    align-items: stretch;
-    justify-content: center;
-    padding: 0;
-    height: 100%;
-    min-height: auto;
+    flex-direction: column !important;
   }
 
-  .vis-row>ion-col:last-child .car-hero--small {
-    display: grid;
-    place-items: center;
-    width: 100%;
-    height: 100%;
-    padding: 8px;
-    background: #fff;
-    border-radius: 12px;
+  .vis-row > ion-col:first-child .vis-card ion-card-content {
+    flex: 1 1 auto !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 8px 10px !important;
+    gap: 8px !important;
   }
 
-  .vis-row>ion-col:last-child .car-hero--small ion-img {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    object-position: center;
+  .vis-row > ion-col:last-child .car-hero--small {
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 12px !important;
+    background: #fff !important;
+  }
+
+  .vis-row > ion-col:last-child .car-hero--small ion-img,
+  .vis-row > ion-col:last-child .car-hero--small ion-img::part(image) {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center !important;
+  }
+
+  .weekday-list {
+    display: none !important;
+  }
+
+  .weekday-accordion {
+    display: block !important;
+    margin-top: 6px;
+  }
+
+  .weekday-acc-header {
+    --inner-padding-top: 10px;
+    --inner-padding-bottom: 10px;
+  }
+
+  .weekday-menu ion-item {
+    --min-height: 42px;
   }
 }
+
+/* ====== ACCORDION WEEKDAYS ====== */
 
 .weekday-accordion {
   display: none;
@@ -880,231 +1131,8 @@ ion-accordion[aria-expanded="true"] .weekday-acc-header ion-icon {
   --checkbox-border-color: var(--ion-color-danger);
 }
 
-@media (max-width: 480px) {
-
-  .weekday-list {
-    display: none !important;
-  }
-
-  .weekday-accordion {
-    display: block !important;
-    margin-top: 6px;
-  }
-
-  .weekday-acc-header {
-    --inner-padding-top: 10px;
-    --inner-padding-bottom: 10px;
-  }
-
-  .weekday-menu ion-item {
-    --min-height: 42px;
-  }
-}
-
 @media (min-width: 768px) {
   .vis-card .switch-row {
     justify-content: center;
-  }
-}
-
-.switch-label {
-  display: inline-flex;
-  align-items: center;
-  min-height: 34px;
-  line-height: 1;
-}
-
-ion-toggle.woaw-toggle {
-  align-self: center;
-  margin: 0 2px;
-}
-
-@media (min-width: 768px) {
-  .vis-card ion-card-content {
-    min-height: 180px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .vis-card .switch-row {
-    justify-content: center;
-    margin-top: auto;
-    margin-bottom: auto;
-  }
-}
-
-@media (min-width: 768px) {
-  .vis-card ion-card-content {
-    min-height: 220px;
-  }
-
-  .switch-label {
-    font-size: 16px;
-    gap: 8px;
-  }
-
-  .switch-label ion-icon {
-    font-size: 18px;
-  }
-
-  ion-toggle.woaw-toggle {
-    align-self: center;
-  }
-
-  ion-toggle.woaw-toggle::part(track) {
-    width: 88px;
-    height: 44px;
-    border-radius: 999px;
-  }
-
-  ion-toggle.woaw-toggle::part(handle) {
-    width: 34px;
-    height: 34px;
-  }
-
-  .switch-row {
-    gap: 16px;
-  }
-}
-
-:host {
-  --vis-h: 260px;
-  --vis-h-lg: 320px;
-  --vis-h-sm: 110px;
-}
-
-@media (min-width: 992px) {
-  :host {
-    --vis-h: var(--vis-h-lg);
-  }
-}
-
-@media (max-width: 480px) {
-  :host {
-    --vis-h: var(--vis-h-sm);
-  }
-}
-
-.vis-card ion-card-content,
-.img-card {
-  min-height: var(--vis-h) !important;
-}
-
-.car-hero--small {
-  height: var(--vis-h) !important;
-  padding: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  overflow: hidden;
-}
-
-.car-hero--small ion-img,
-.car-hero--small ion-img::part(image) {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-  object-position: center;
-  --background: transparent;
-}
-
-.car-hero--small ion-img {
-  max-height: none !important;
-}
-
-@media (max-width: 480px) {
-  .vis-card ion-card-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 10px;
-    gap: 10px;
-  }
-
-  .vis-card .switch-row {
-    margin: 0;
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: nowrap;
-  }
-
-  .car-hero--small {
-    height: var(--vis-h) !important;
-    padding: 8px;
-  }
-
-  .vis-row>ion-col:last-child .img-card {
-    height: auto !important;
-    min-height: var(--vis-h) !important;
-    padding: 0 !important;
-    display: flex !important;
-    align-items: stretch !important;
-    justify-content: center !important;
-  }
-
-  .vis-row>ion-col:last-child .car-hero--small {
-    height: var(--vis-h) !important;
-    min-height: var(--vis-h) !important;
-    border-radius: 12px !important;
-    background: #fff !important;
-  }
-
-  .vis-card ion-card-header {
-    padding: 10px 12px 6px;
-  }
-
-  .vis-card ion-card-subtitle {
-    display: none !important;
-  }
-}
-
-@media (max-width: 480px) {
-  :host {
-    --pair-h: 140px;
-  }
-  .vis-row>ion-col:first-child .vis-card,
-  .vis-row>ion-col:last-child .img-card {
-    height: var(--pair-h) !important;
-    min-height: var(--pair-h) !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  .vis-row>ion-col:first-child .vis-card ion-card-content {
-    flex: 1 1 auto !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 8px 10px !important;
-    gap: 8px !important;
-  }
-
-  .vis-row>ion-col:first-child .vis-card .switch-row {
-    margin: 0 !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    flex-wrap: nowrap !important;
-  }
-
-  .vis-row>ion-col:last-child .car-hero--small {
-    height: 100% !important;
-    min-height: 0 !important;
-    padding: 8px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border-radius: 12px !important;
-    background: #fff !important;
-  }
-
-  .vis-row>ion-col:last-child .car-hero--small ion-img,
-  .vis-row>ion-col:last-child .car-hero--small ion-img::part(image) {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important;
-    object-position: center !important;
   }
 }

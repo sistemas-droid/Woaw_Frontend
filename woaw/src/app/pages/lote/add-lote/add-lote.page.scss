@@ -1,41 +1,145 @@
-/* Estilos para el formulario de lote */
+/* ===== PAGE BACKGROUND iOS ===== */
+.page-lote-content {
+  --background: #f2f2f7;
+  color: #111827;
+}
 
-.formulario-lote {
+/* ===== GRID GENERAL ===== */
+.grid-container {
+  margin-bottom: 4rem;
+}
+
+.grid-row {
+  align-items: flex-start;
+}
+
+/* ===== CARD PRINCIPAL (FORMULARIO) ===== */
+.formulario-lote.ios-card {
   max-width: 100%;
-  margin: 2rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
+  margin: 1.5rem 1.25rem;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.18),
+    0 0 0 0.5px rgba(148, 163, 184, 0.4);
+  overflow: hidden;
+  border: none;
+}
+
+/* ===== HEADER DEL CARD – ESTILO iOS ===== */
+.card-header-custom.ios-card-header {
+  background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
+  padding: 1.4rem 1.25rem;
+  border-bottom: 0;
+  position: relative;
   overflow: hidden;
 }
 
+.card-header-custom.ios-card-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(248, 113, 113, 0.18), transparent 55%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.header-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+}
+
+/* Botón back iOS */
+.ios-back {
+  --background: transparent;
+  --padding-start: 4px;
+  --padding-end: 4px;
+  --box-shadow: none;
+  --ripple-color: transparent;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+}
+
+.ios-back ion-icon {
+  font-size: 20px;
+  color: #ef4444;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.ios-back:active ion-icon {
+  transform: scale(0.9);
+  color: #b91c1c;
+}
+
+/* Logo + título */
+.logo-title-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.logo-circle {
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  flex-shrink: 0;
+  animation: float 3s ease-in-out infinite;
+}
+
+.logo-icon {
+  font-size: 1.8rem;
+  color: #ef0000;
+}
+
+.title-container {
+  flex: 1;
+}
 
 .titulo-principal {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.5px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 0.15rem;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 
 .subtitulo {
-  font-size: 1rem;
-  color: #6c757d;
-  font-weight: 400;
+  font-size: 0.9rem;
+  color: #ef4444;
+  font-weight: 500;
+  opacity: 0.9;
 }
 
-/* Estilos para la navegación entre secciones */
-.navegacion-secciones {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1.5rem;
+/* ===== ANIMACIÓN LOGO ===== */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
-.boton-continuar,
-.boton-regresar {
-  display: inline-block;
-}
-
-/* Estilos para las secciones del formulario */
+/* ===== FORM SECTIONS ===== */
 .seccion-formulario {
   padding: 0.5rem 0;
 }
@@ -43,29 +147,38 @@
 .campo-formulario {
   margin-bottom: 1rem;
 
-  @media(max-width: 768px) {
+  @media (max-width: 768px) {
     margin-bottom: 5px;
   }
 }
 
 .etiqueta-campo {
-  font-weight: 500;
-  color: #495057;
-  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.35rem;
   display: block;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
 }
 
-/* Estilos para los inputs */
-.input-mayusculas,
-.input-estandar {
+/* ===== INPUTS ESTILO iOS ===== */
+.ios-input {
   --padding-start: 12px;
   --padding-end: 12px;
-  --padding-top: 12px;
-  --padding-bottom: 12px;
-  border: 1px solid #ced4da;
-  border-radius: 8px;
-  margin-top: 0.25rem;
-  font-size: 1rem;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --background: #f9fafb;
+  --color: #111827;
+  --placeholder-color: #9ca3af;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  font-size: 0.95rem;
+  margin-top: 0.1rem;
+}
+
+.ios-input:focus-within {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.2);
 }
 
 .input-mayusculas {
@@ -73,35 +186,36 @@
 }
 
 .mensaje-error {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   margin-top: 0.25rem;
   display: block;
 }
 
-/* Estilos para el área de subida de imagen */
+/* ===== SUBIDA DE IMAGEN ===== */
 .area-subida {
   width: 100%;
-  height: 150px;
-  border: 2px dashed #dee2e6;
-  border-radius: 8px;
+  height: 160px;
+  border: 1.5px dashed #d1d5db;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 0.5rem;
+  transition: all 0.2s ease;
+  margin-top: 0.35rem;
   position: relative;
   overflow: hidden;
+  background: #f9fafb;
 }
 
 .area-subida:hover {
-  border-color: #ff0000;
-  background-color: #f8f9fa;
+  border-color: #ef4444;
+  background-color: #fef2f2;
 }
 
 .icono-camara {
-  font-size: 2.5rem;
-  color: #6c757d;
+  font-size: 2.4rem;
+  color: #9ca3af;
 }
 
 .area-subida .oculto {
@@ -125,35 +239,39 @@
 
 .btn-eliminar-img {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background-color: rgba(220, 53, 69, 0.9);
+  top: 7px;
+  right: 7px;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background-color: rgba(239, 68, 68, 0.95);
   color: white;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   transition: background-color 0.2s;
 }
 
 .btn-eliminar-img:hover {
-  background-color: #c82333;
+  background-color: #b91c1c;
 }
 
-/* Estilos para el botón de ubicación */
+/* ===== BOTÓN UBICACIÓN ===== */
 .btn-ubicacion {
   margin-top: 0.5rem;
-  --border-radius: 8px;
+  --border-radius: 12px;
   --padding-top: 12px;
   --padding-bottom: 12px;
+  --background: #ffffff;
+  --border-color: #e5e7eb;
+  --color: #111827;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
 }
 
-/* Estilos para la lista de ubicaciones */
+/* ===== LISTA UBICACIONES ===== */
 .lista-ubicaciones {
   margin-top: 1rem;
 }
@@ -162,22 +280,26 @@
   --padding-start: 0;
   --inner-padding-end: 0;
   margin-bottom: 0.5rem;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
 }
 
 .direccion {
   margin: 0;
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: #374151;
 }
 
 .btn-eliminar-ubicacion {
-  margin-right: 0.5rem;
+  margin-right: 0.35rem;
 }
 
-/* Estilos para los botones de acción */
+/* ===== BOTONES DE ACCIÓN (DESKTOP/TABLET) ===== */
 .botones-accion {
-  margin-top: 2rem;
+  margin-top: 1.8rem;
 }
 
 .boton-publicar-container {
@@ -186,299 +308,94 @@
 
 .botones-fila {
   display: flex;
-  gap: 2px;
+  gap: 8px;
   align-items: center;
   justify-content: center;
 }
 
-
-.btn-continuar,
-.btn-crear-lote {
-  --border-radius: 8px;
-  --padding-top: 16px;
-  --padding-bottom: 16px;
-  font-weight: 600;
+/* Botones iOS */
+.ios-primary-btn {
+  --border-radius: 999px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  font-weight: 700;
+  max-width: 320px;
   margin: 0 auto;
-  max-width: 300px;
+  text-transform: none;
 }
 
+.ios-secondary-btn {
+  --border-radius: 999px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  font-weight: 600;
+  max-width: 320px;
+  margin: 0 auto;
+  text-transform: none;
+}
 
+/* ===== MENSAJE NO AUTENTICADO ===== */
 .mensaje-autenticacion {
   max-width: 800px;
   margin: 2rem auto;
-  padding: 2rem;
+  padding: 1.6rem 1.4rem;
   text-align: center;
-  background-color: #f8f9fa;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  color: #495057;
-  font-size: 1.1rem;
-
-
+  background-color: #ffffff;
+  border-radius: 18px;
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.18),
+    0 0 0 0.5px rgba(148, 163, 184, 0.4);
+  color: #4b5563;
+  font-size: 1rem;
 
   .btn-acceso {
-    display: block;
+    display: inline-flex;
     margin: 1rem auto 0;
-    padding: 0.75rem 1.5rem;
-    background-color: #ff3838;
+    padding: 0.7rem 1.6rem;
+    background-color: #ef4444;
     color: white;
     border: none;
-    border-radius: 8px;
-    font-weight: 600;
+    border-radius: 999px;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.15s ease, transform 0.12s ease;
+    font-size: 0.95rem;
   }
 
   .btn-acceso:hover {
-    background-color: #2e6fd9;
-  }
-
-}
-
-
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .formulario-lote {
-    margin: 0rem;
-  }
-
-  .titulo-principal {
-    font-size: 1.5rem;
-  }
-
-  .card-header-custom {
-    padding: 1.5rem 1rem 0.75rem;
-  }
-
-  .navegacion-secciones {
-    margin-bottom: 1rem;
+    background-color: #b91c1c;
+    transform: translateY(-1px);
   }
 }
 
-
-
-
-
-
-
-
-
-/* Estilos mejorados para el card header */
-.card-header-custom {
-  background: linear-gradient(135deg, #e1e1e1 0%, #e6e6e6 100%);
-  padding: 1.5rem 1rem;
-  border-bottom: none;
-  position: relative;
-  overflow: hidden;
-}
-
-.card-header-custom::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-size: cover;
-}
-
-.header-content {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  position: relative;
-  z-index: 2;
-}
-
-.logo-title-container {
-  display: flex;
-  align-items: center;
-
-  gap: 1rem;
-  flex: 1;
-}
-
-.logo-circle {
-  width: 60px;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  flex-shrink: 0;
-}
-
-.logo-icon {
-  font-size: 2rem;
-  color: rgb(239, 0, 0);
-}
-
-.title-container {
-  flex: 1;
-}
-
-.titulo-principal {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: rgb(243, 0, 0);
-  margin-bottom: 0.25rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  line-height: 1.2;
-}
-
-.subtitulo {
-  font-size: 0.9rem;
-  color: rgba(240, 0, 0, 0.9);
-  font-weight: 400;
-  opacity: 0.9;
-}
-
-.btn-back {
-  --background: rgba(255, 255, 255, 0.2);
-  --border-radius: 50%;
-  --padding-start: 8px;
-  --padding-end: 8px;
-  width: 40px;
-  height: 40px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  flex-shrink: 0;
-  margin-left: 1rem;
-}
-
-.btn-back:hover {
-  --background: rgba(255, 255, 255, 0.3);
-}
-
-/* Efectos de animación */
-.logo-circle {
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-5px);
-  }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .card-header-custom {
-    padding: 1.25rem 1rem;
-  }
-
-  .logo-circle {
-    width: 50px;
-    height: 50px;
-  }
-
-  .logo-icon {
-    font-size: 1.75rem;
-  }
-
-  .titulo-principal {
-    font-size: 1.3rem;
-  }
-
-  .subtitulo {
-    font-size: 0.85rem;
-  }
-
-  .btn-back {
-    width: 36px;
-    height: 36px;
-  }
-}
-
-@media (max-width: 480px) {
-  .logo-title-container {
-    gap: 0.75rem;
-  }
-
-  .logo-circle {
-    width: 45px;
-    height: 45px;
-  }
-
-  .logo-icon {
-    font-size: 1.5rem;
-  }
-
-  .titulo-principal {
-    font-size: 1.1rem;
-  }
-
-  .header-content {
-    align-items: center;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-.obligatorio {
-  color: red;
-  font-size: 20px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-.grid-container {
-  margin-bottom: 4rem;
-}
-
-.card-informativa {
+/* ===== CARD INFORMATIVA LATERAL ===== */
+.card-informativa.ios-side-card {
   height: 100%;
-  margin: 0rem;
-  border-radius: 0;
-  box-shadow: none;
-  background: transparent;
+  margin: 1.5rem 0.5rem 1.5rem 0;
+  border-radius: 20px;
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.16);
+  background: linear-gradient(145deg, #ffffff 0%, #f9fafb 100%);
+  border: 1px solid rgba(148, 163, 184, 0.4);
 }
-
 
 .contenido-info {
-  padding: 20px;
+  padding: 18px;
 }
 
 .pasos-container {
   background: white;
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
+  padding: 16px 14px;
+  border-radius: 14px;
+  margin-bottom: 16px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
 }
 
 .paso {
   display: flex;
   align-items: center;
   margin: 5px 0;
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
+  opacity: 0.45;
+  transition: opacity 0.2s ease;
 }
 
 .paso.activo {
@@ -486,44 +403,46 @@
 }
 
 .numero-paso {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: #ff0303;
+  background: #ef4444;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  margin-right: 15px;
+  font-weight: 800;
+  margin-right: 12px;
+  font-size: 0.9rem;
 }
 
 .paso.activo .numero-paso {
-  background: #d90505;
+  background: #b91c1c;
 }
 
 .texto-paso h3 {
-  margin: 0 0 5px 0;
-  font-size: 1rem;
-  color: #2c3e50;
+  margin: 0 0 4px 0;
+  font-size: 0.95rem;
+  color: #111827;
 }
 
 .texto-paso p {
   margin: 0;
-  font-size: 0.9rem;
-  color: #7f8c8d;
+  font-size: 0.8rem;
+  color: #6b7280;
 }
 
 .separador-pasos {
-  height: 2px;
-  background: #e0e0e0;
-  margin: 10px 20px;
+  height: 1px;
+  background: #e5e7eb;
+  margin: 10px 8px;
 }
 
 .tips-container {
   background: white;
-  padding: 15px;
-  border-radius: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
 }
 
 .tip-item {
@@ -532,28 +451,84 @@
 }
 
 .tip-text {
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+/* ===== FOOTER iOS (TELÉFONO) ===== */
+.ios-footer {
+  --background: rgba(248, 248, 250, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-top: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.ios-footer ion-toolbar {
+  --background: transparent;
+  --border-width: 0;
+}
+
+/* footer buttons */
+.ios-footer ion-button {
+  --border-radius: 999px;
+  text-transform: none;
+  font-weight: 700;
+}
+
+/* ===== OBLIGATORIO (*) ===== */
+.obligatorio {
+  color: #ef4444;
   font-size: 0.9rem;
-  color: #5a6c7d;
 }
 
-
-
-/* Responsive */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .grid-container {
-    height: auto;
+  .formulario-lote.ios-card {
+    margin: 0.75rem 0.75rem 1.25rem;
+    border-radius: 18px;
   }
 
-  .columna-info {
-    display: none;
+  .card-header-custom.ios-card-header {
+    padding: 1.1rem 1rem;
   }
 
-  .columna-formulario {
-    padding: 10px;
+  .logo-circle {
+    width: 48px;
+    height: 48px;
+  }
+
+  .titulo-principal {
+    font-size: 1.2rem;
+  }
+
+  .subtitulo {
+    font-size: 0.8rem;
+  }
+
+  .card-informativa.ios-side-card {
+    margin: 0.25rem 0.75rem 1.25rem;
   }
 }
 
-/* Estilos existentes se mantienen igual */
-.logo-circle.info {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+@media (max-width: 480px) {
+  .logo-title-container {
+    gap: 0.7rem;
+  }
+
+  .logo-circle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .logo-icon {
+    font-size: 1.4rem;
+  }
+
+  .titulo-principal {
+    font-size: 1.05rem;
+  }
+
+  .header-content {
+    align-items: center;
+  }
 }

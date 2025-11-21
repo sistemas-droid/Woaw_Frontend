@@ -1,22 +1,26 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="dark">
+<ion-header [translucent]="true" class="perfil-header-ios">
+  <!-- Grabber tipo hoja iOS -->
+  <div class="grabber-ios"></div>
+
+  <ion-toolbar color="light" class="toolbar-ios">
     <ion-buttons slot="start">
       <div class="perfil-header">
-        <img src="/assets/icon/logo4.png" alt="Go Autos" class="logo" />
+        <img src="/assets/icon/logo2.png" alt="Go Autos" class="logo" />
         <span class="titulo-perfil">Mi perfil</span>
       </div>
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button (click)="cerrarModal()">
+      <ion-button fill="clear" color="medium" (click)="cerrarModal()" aria-label="Cerrar">
         <ion-icon name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-card *ngIf="!mostrarCambio">
+<ion-content class="perfil-content-ios ion-padding">
+  <!-- CARD PERFIL -->
+  <ion-card *ngIf="!mostrarCambio" class="perfil-card-ios">
     <ion-list class="perfil-grid" lines="none">
       <ion-item>
         <ion-avatar slot="start">
@@ -59,21 +63,16 @@
     </ion-list>
   </ion-card>
 
-  <!-- ## ----- ----- -->
-  <ion-card class="card-cambio" [class.is-open]="mostrarCambio">
-    <ion-card-header
-      (click)="mostrarCambio = !mostrarCambio"
-      class="cabecera-acordeon"
-    >
-      <ion-card-title
-        class="ion-align-items-center ion-justify-content-between"
-      >
-        <div class="titulo-acordeon">
-          Cambiar contraseña
+  <!-- CAMBIAR CONTRASEÑA (ACORDEÓN iOS) -->
+  <ion-card class="card-cambio-ios" [class.is-open]="mostrarCambio">
+    <ion-card-header class="cabecera-acordeon-ios" (click)="mostrarCambio = !mostrarCambio">
+      <ion-card-title>
+        <div class="titulo-acordeon-ios">
           <ion-icon name="lock-closed-outline"></ion-icon>
+          <span>Cambiar contraseña</span>
         </div>
-
         <ion-icon
+          class="chevron"
           [name]="mostrarCambio ? 'chevron-up-outline' : 'chevron-down-outline'"
         ></ion-icon>
       </ion-card-title>
@@ -81,9 +80,9 @@
 
     <ion-card-content *ngIf="mostrarCambio">
       <form [formGroup]="formCambio" (ngSubmit)="cambiarPassword()">
-        <p>Contraseña mínimo de 8 caracteres</p>
+        <p class="hint-text">Contraseña mínimo de 8 caracteres.</p>
 
-        <ion-item>
+        <ion-item class="item-input-ios">
           <ion-label position="stacked">Contraseña actual</ion-label>
           <ion-input
             [type]="verActual ? 'password' : 'text'"
@@ -94,11 +93,11 @@
             slot="end"
             [name]="verActual ? 'eye-off-outline' : 'eye-outline'"
             (click)="verActual = !verActual"
-            class="icono-ojito"
+            class="icono-ojito-ios"
           ></ion-icon>
         </ion-item>
 
-        <ion-item>
+        <ion-item class="item-input-ios">
           <ion-label position="stacked">Nueva contraseña</ion-label>
           <ion-input
             [type]="verNuevas ? 'password' : 'text'"
@@ -109,7 +108,7 @@
             slot="end"
             [name]="verNuevas ? 'eye-off-outline' : 'eye-outline'"
             (click)="verNuevas = !verNuevas"
-            class="icono-ojito"
+            class="icono-ojito-ios"
           ></ion-icon>
         </ion-item>
 
@@ -121,12 +120,11 @@
           "
         >
           <small>
-            La contraseña debe tener mínimo 8 caracteres, una mayúscula, un
-            número y un carácter especial.
+            La contraseña debe tener mínimo 8 caracteres, una mayúscula, un número y un carácter especial.
           </small>
         </ion-text>
 
-        <ion-item>
+        <ion-item class="item-input-ios">
           <ion-label position="stacked">Confirmar nueva contraseña</ion-label>
           <ion-input
             [type]="verNuevas ? 'password' : 'text'"
@@ -136,10 +134,11 @@
         </ion-item>
 
         <ion-button
-          color="danger"
           expand="block"
+          color="danger"
           type="submit"
           [disabled]="formCambio.invalid"
+          class="btn-actualizar-ios"
         >
           Actualizar contraseña
         </ion-button>
@@ -147,17 +146,15 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- CARD: Eliminar cuenta (idéntico diseño, actúa como botón/link) -->
-  <ion-card class="card-cambio" (click)="goEliminarCuenta()">
-    <ion-card-header class="cabecera-acordeon">
-      <ion-card-title
-        class="ion-align-items-center ion-justify-content-between"
-      >
-        <div class="titulo-acordeon">
-          Eliminar cuenta
+  <!-- ELIMINAR CUENTA (ROW iOS) -->
+  <ion-card class="card-eliminar-ios" (click)="goEliminarCuenta()">
+    <ion-card-header class="cabecera-acordeon-ios danger">
+      <ion-card-title>
+        <div class="titulo-acordeon-ios">
           <ion-icon name="trash-outline"></ion-icon>
+          <span>Eliminar cuenta</span>
         </div>
-        <ion-icon name="chevron-forward-outline"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
       </ion-card-title>
     </ion-card-header>
   </ion-card>

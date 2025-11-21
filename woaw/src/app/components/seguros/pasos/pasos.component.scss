@@ -1,208 +1,276 @@
-.opciones-grid {
-    display: grid;
-    grid-auto-flow: row;
-    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-    gap: 6px;
-    max-width: 100%;
-
-    .card {
-        display: grid;
-        grid-template-rows: auto auto 1fr;
-        justify-items: stretch;
-        align-content: start;
-        gap: 0px;
-        padding: 8px 6px 6px;
-        border-radius: 14px;
-        border: 1px solid #2a2a31;
-        background: #121216;
-        transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
-        width: 100%;
-        overflow: hidden;
-        position: relative;
-        cursor: pointer;
-
-        &::after {
-            content: "";
-            position: absolute;
-            top: 1px;
-            right: 6px;
-            width: 28px;
-            height: 28px;
-            border-radius: 999px;
-            display: grid;
-            place-items: center;
-            font: 900 14px/1 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-            color: #0b0b0e;
-            box-shadow: 0 0 0 2px #0b0b0e, 0 2px 10px rgba(0, 0, 0, .35);
-            pointer-events: none;
-            z-index: 1;
-            transform: translateZ(0);
-        }
-
-        &.card--ok {
-            border-color: #2ecc71;
-        }
-
-        &.card--ok::after {
-            content: "✓";
-            background: #16d674;
-        }
-
-        &.card--off {
-            border-color: #ff3b3b;
-        }
-
-        &.card--off::after {
-            content: "✕";
-            background: #ff3b3b;
-        }
-
-        &:hover {
-            opacity: .7;
-        }
-
-        ion-icon {
-            font-size: 26px;
-            color: #ff2121;
-            margin-top: 2px;
-            justify-self: center;
-        }
-
-        h3 {
-            margin: 0;
-            font-size: 10px;
-            font-weight: 900;
-            color: #fff;
-            letter-spacing: .2px;
-            line-height: 1.2;
-            justify-self: center;
-        }
-
-        .pasoTex {
-            color: #d5d5da;
-            font-size: 14px;
-            font-weight: 900;
-            margin: 0;
-            padding: p;
-        }
-
-        .card__body {
-            width: 100%;
-            margin-top: 4px;
-            padding: 12px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, .05);
-            display: grid;
-            gap: 10px;
-            text-align: left;
-
-            .kv {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: baseline;
-                gap: 6px 12px;
-                min-width: 0;
-
-                .k {
-                    flex: 0 0 110px;
-                    max-width: 40%;
-                    font-size: 9px;
-                    color: #b9bac2;
-                    line-height: 1.3;
-                    letter-spacing: .1px;
-                    white-space: nowrap;
-                }
-
-                .v {
-                    flex: 1 1 auto;
-                    min-width: 0;
-                    font-size: 10px;
-                    font-weight: 700;
-                    color: #fff;
-                    line-height: 1.4;
-                    letter-spacing: 0;
-                    white-space: normal;
-                    word-break: break-word;
-                    hyphens: auto;
-
-                    &.mono {
-                        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-                        font-size: 13px;
-                        line-height: 1.35;
-                        letter-spacing: .2px;
-                    }
-
-                    &.pill {
-                        display: inline-block;
-                        width: auto;
-                        padding: 2px 8px;
-                        border-radius: 999px;
-                        background: rgba(255, 255, 255, .12);
-                    }
-                }
-            }
-        }
-
-        .card__empty {
-            margin-top: 6px;
-            font-size: 13px;
-            color: #d5d5da;
-            padding: 12px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, .05);
-            text-align: left;
-            width: 100%;
-            line-height: 1.35;
-        }
-    }
+:host {
+  display: block;
 }
 
-@media (max-width: 520px) {
-    .opciones-grid .card::after {
-        top: 6px;
-        right: 6px;
-        width: 24px;
-        height: 24px;
-        font-size: 12px;
-        box-shadow: 0 0 0 2px #0b0b0e, 0 2px 8px rgba(0, 0, 0, .3);
-        z-index: 0;
-    }
+/* Shell clarito tipo hoja iOS */
+.seguros-steps-ios {
+  padding: 10px 12px 10px;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.12),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+
+  @media (max-width: 768px) {
+    padding: 8px 10px 10px;
+    border-radius: 20px;
+  }
 }
 
-.logo{
-    height: 24px;
-    margin-right: 8px;
-}
-
-
-.header_css {
+/* Header superior dentro del modal */
+.header_ios {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #000;
-  padding: 12px 18px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  padding: 4px 2px 8px;
+  margin-bottom: 4px;
+  background: transparent;
+
+  .header_ios-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 
   .logo {
-    height: 14px;
+    height: 20px;
     width: auto;
     object-fit: contain;
   }
 
-  button {
-    background: transparent;
-    border: none;
-    color: #fff;
-    font-size: 22px;
+  .titulo {
+    font-size: 14px;
     font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.2s ease, color 0.2s ease;
+    color: #000000;
+  }
 
-    &:hover {
-      color: #ff2121;
-      transform: scale(1.1);
+  button {
+    background: #e5e7eb;
+    border: none;
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 500;
+    color: #4b5563;
+    padding: 4px 8px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+
+    &:active {
+      background: #d1d5db;
+      color: #111827;
+      transform: scale(0.95);
+    }
+  }
+}
+
+/* Grid de pasos */
+.opciones-grid {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 10px;
+
+  @media (max-width: 520px) {
+    gap: 8px;
+  }
+}
+
+/* Card tipo “list group” de iOS */
+.step-card {
+  position: relative;
+  padding: 10px 12px 10px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 0.5px solid rgba(15, 23, 42, 0.08);
+  box-shadow:
+    0 10px 24px rgba(15, 23, 42, 0.10),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 6px;
+  cursor: pointer;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    border-color 0.16s ease,
+    background 0.16s ease;
+
+  &:active {
+    transform: scale(0.985);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
+    background: #f9fafb;
+  }
+
+  /* header */
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .step-pill {
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #111827;
+    background: #e5e7eb;
+    white-space: nowrap;
+  }
+
+  .step-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+    min-width: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  ion-icon {
+    font-size: 20px;
+    color: #ef4444;
+  }
+
+  /* cuerpo */
+  &__body {
+    margin-top: 4px;
+    padding: 9px 10px 8px;
+    border-radius: 12px;
+    background: #f9fafb;
+    display: grid;
+    gap: 6px;
+    text-align: left;
+  }
+
+  .kv {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 8px;
+    min-width: 0;
+
+    .k {
+      flex: 0 0 88px;
+      max-width: 40%;
+      font-size: 11px;
+      color: #9ca3af;
+      white-space: nowrap;
+    }
+
+    .v {
+      flex: 1 1 auto;
+      min-width: 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: #111827;
+      line-height: 1.4;
+      word-break: break-word;
+
+      &.mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      }
+
+      &.pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2px 9px;
+        border-radius: 999px;
+        background: #fee2e2;
+        color: #b91c1c;
+        font-size: 11px;
+      }
+    }
+  }
+
+  &__empty {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #4b5563;
+    padding: 9px 10px;
+    border-radius: 12px;
+    background: #f9fafb;
+    text-align: left;
+    line-height: 1.35;
+
+    &--ok {
+      background: #ecfdf5;
+      color: #166534;
+    }
+  }
+
+  /* badge estado */
+  &::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    font: 800 12px/1 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    color: #ffffff;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.2);
+    pointer-events: none;
+  }
+
+  &.step-card--ok {
+    border-color: rgba(34, 197, 94, 0.6);
+  }
+
+  &.step-card--ok::after {
+    content: "✓";
+    background: #22c55e;
+  }
+
+  &.step-card--off {
+    border-color: rgba(248, 113, 113, 0.7);
+  }
+
+  &.step-card--off::after {
+    content: "!";
+    background: #ef4444;
+  }
+}
+
+/* Ajustes mobile */
+@media (max-width: 520px) {
+  .step-card {
+    padding: 9px 10px 8px;
+    border-radius: 14px;
+
+    &__body {
+      padding: 8px 9px 7px;
+    }
+
+    .kv .k {
+      flex: 0 0 80px;
+      font-size: 10px;
+    }
+
+    .kv .v {
+      font-size: 11px;
+    }
+
+    &::after {
+      top: 8px;
+      right: 8px;
+      width: 18px;
+      height: 18px;
+      font-size: 11px;
     }
   }
 }

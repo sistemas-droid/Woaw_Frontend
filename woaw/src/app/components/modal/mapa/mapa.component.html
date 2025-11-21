@@ -1,29 +1,39 @@
-<ion-header translucent>
-  <!-- 🔹 Toolbar principal -->
-  <ion-toolbar color="light" class="header-completo">
+<ion-header translucent class="map-header-ios">
+  <!-- Grabber tipo sheet iOS -->
+  <div class="grabber-ios"></div>
+
+  <!-- Toolbar título -->
+  <ion-toolbar color="light" class="toolbar-ios">
     <ion-title>Ubicación</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="cancelar()">
+      <ion-button (click)="cancelar()" aria-label="Cerrar">
         <ion-icon name="close-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 
-  <!-- 🔍 Barra de búsqueda -->
-  <ion-toolbar color="light">
-    <ion-searchbar placeholder="Buscar dirección, colonia o lugar..." [debounce]="250"
-      (ionInput)="onInputChange($event)" showCancelButton="never" animated #inputDireccion>
+  <!-- Barra de búsqueda -->
+  <ion-toolbar color="light" class="toolbar-search-ios">
+    <ion-searchbar
+      class="search-ios"
+      placeholder="Buscar dirección, colonia o lugar..."
+      [debounce]="250"
+      (ionInput)="onInputChange($event)"
+      showCancelButton="never"
+      animated
+      #inputDireccion
+    >
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <!-- 📄 Texto informativo -->
+<ion-content [fullscreen]="true" class="map-content-ios">
+  <!-- Texto informativo -->
   <ion-text color="medium" class="texto-busqueda">
     Escribe el lugar, calle, colonia o ciudad para buscar.
   </ion-text>
 
-  <!-- 🟢 Leyenda / semáforo -->
+  <!-- Leyenda -->
   <div class="legend-ubicacion">
     <div class="legend-item">
       <span class="dot dot-green"></span>
@@ -36,12 +46,12 @@
     </div>
   </div>
 
-  <!-- 🗺️ Contenedor principal del mapa -->
+  <!-- Mapa -->
   <div class="map-wrapper">
     <!-- Spinner -->
     <div *ngIf="cargandoMapa" class="spinner-cargando">
       <ion-spinner name="crescent" color="primary"></ion-spinner>
-      <p style="font-size: 13px; margin-top: 8px;">Cargando mapa...</p>
+      <p class="txt-spinner">Cargando mapa...</p>
     </div>
 
     <!-- Mapa real -->
@@ -49,17 +59,22 @@
   </div>
 </ion-content>
 
-<!-- 📍 Footer con botones -->
-<ion-footer>
+<!-- Footer con dirección y CTA -->
+<ion-footer class="map-footer-ios">
   <ion-toolbar>
-    <ion-buttons slot="start" class="direccion-footer">
-      {{ direccionCompleta }}
-    </ion-buttons>
+    <div class="footer-inner-ios">
+      <div class="direccion-footer">
+        {{ direccionCompleta }}
+      </div>
 
-    <ion-buttons slot="end">
-      <ion-button color="danger" fill="solid" [disabled]="!ubicacionLugarInvalida" (click)="confirmarUbicacion()">
+      <ion-button
+        color="danger"
+        fill="solid"
+        [disabled]="!ubicacionLugarInvalida"
+        (click)="confirmarUbicacion()"
+      >
         {{ textoBoton }}
       </ion-button>
-    </ion-buttons>
+    </div>
   </ion-toolbar>
 </ion-footer>

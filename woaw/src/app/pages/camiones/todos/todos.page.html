@@ -1,25 +1,31 @@
 <app-navbar></app-navbar>
 
-
-<ion-content #pageContent [fullscreen]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+<ion-content #pageContent [fullscreen]="true" class="contenido-ios">
+  <!-- Refresher estilo iOS -->
+  <ion-refresher
+    slot="fixed"
+    (ionRefresh)="doRefresh($event)"
+    pullFactor="0.4"
+    pullMin="120"
+    pullMax="200"
+  >
     <ion-refresher-content
-      pullingIcon="arrow-down-outline"
-      refreshingSpinner="crescent"
+      pullingIcon="chevron-down-outline"
+      refreshingSpinner="lines"
       pullingText="Desliza para actualizar"
       refreshingText="Actualizando..."
     >
     </ion-refresher-content>
   </ion-refresher>
 
+  <!-- Acomodo / orden -->
   <app-acomodo
     [totalAutos]="totalCamiones"
     (ordenCambio)="ordenarCamiones($event)"
     [titulo]="'Camiones'"
   ></app-acomodo>
 
-
-  <ion-grid class="contenedor-catalogo">
+  <ion-grid class="contenedor-catalogo-ios">
     <ion-row>
       <!-- Columna lateral de filtros -->
       <ion-col size="12" size-md="3">
@@ -28,37 +34,39 @@
           [filtrosAplicados]="filtrosAplicados"
           (mostrarOpciones)="mostrarOpciones($event.event, $event.tipo)"
           (limpiarFiltros)="resetearFiltros()"
-        >
-        </app-menu>
+        ></app-menu>
       </ion-col>
 
       <!-- Columna de catálogo -->
       <ion-col size="12" size-md="9">
-        <div class="catalogo-autos">
-          <div *ngIf="camionesPaginados?.length === 0" class="mensaje-vacio">
-            <ion-icon name="truck-outline" class="icono-mensaje"></ion-icon
-            ><br />
-            No se encontraron camiones para esta sección.
+        <div class="catalogo-autos-ios">
+          <!-- Estado vacío iOS -->
+          <div *ngIf="camionesPaginados?.length === 0" class="mensaje-vacio-ios">
+            <ion-icon name="trail-sign-outline"></ion-icon>
+            <p>No se encontraron camiones para esta sección.</p>
           </div>
 
+          <!-- Cards -->
           <ng-container *ngFor="let camion of camionesPaginados">
-  <app-cartas
-    [auto]="camion"
-    [autosFavoritosIds]="camionesFavoritosIds"
-    [ubicacion]="'camiones'"
-    [esMio]="idsMisCamiones.includes(camion._id)"
-    (refrescarAutos)="handleRefrescarCamiones($event)">
-  </app-cartas>
-</ng-container>
+            <app-cartas
+              [auto]="camion"
+              [autosFavoritosIds]="camionesFavoritosIds"
+              [ubicacion]="'camiones'"
+              [esMio]="idsMisCamiones.includes(camion._id)"
+              (refrescarAutos)="handleRefrescarCamiones($event)"
+            ></app-cartas>
+          </ng-container>
         </div>
 
-        <div class="contenedor-paginacion" *ngIf="totalPaginas > 1">
-          <p class="titulo-paginacion">más</p>
-          <div class="paginacion-scroll">
-            <div class="paginacion">
+        <!-- Paginación iOS -->
+        <div class="contenedor-paginacion-ios" *ngIf="totalPaginas > 1">
+          <p class="titulo-paginacion-ios">Más</p>
+
+          <div class="paginacion-scroll-ios">
+            <div class="paginacion-ios">
               <!-- Flecha anterior -->
               <button
-                class="pagina"
+                class="pagina-ios"
                 (click)="cambiarPagina(paginaActual - 1)"
                 [disabled]="paginaActual === 1"
               >
@@ -69,18 +77,18 @@
               <ng-container *ngFor="let i of paginasReducidas">
                 <button
                   *ngIf="esNumero(i)"
-                  class="pagina"
+                  class="pagina-ios"
                   [class.activa]="paginaActual === i"
                   (click)="cambiarPagina(i)"
                 >
                   {{ i }}
                 </button>
-                <span *ngIf="!esNumero(i)" class="ellipsis">...</span>
+                <span *ngIf="!esNumero(i)" class="ellipsis-ios">...</span>
               </ng-container>
 
               <!-- Flecha siguiente -->
               <button
-                class="pagina"
+                class="pagina-ios"
                 (click)="cambiarPagina(paginaActual + 1)"
                 [disabled]="paginaActual === totalPaginas"
               >
@@ -93,5 +101,6 @@
     </ion-row>
   </ion-grid>
 
-  <app-footer></app-footer>
+
+ <br><br><br>
 </ion-content>

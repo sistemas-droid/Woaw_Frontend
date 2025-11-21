@@ -1,11 +1,92 @@
-.mensaje-vacio {
-  text-align: center;
-  margin-top: 25vh;
-  color: var(--ion-color-medium);
-  font-size: 1.1rem;
+ion-content.mensajes-wrap {
+  --background: #f2f2f7; // fondo iOS
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
 
-  ion-icon {
-    font-size: 48px;
-    margin-bottom: 12px;
+/* EMPTY STATE iOS */
+.mensaje-vacio {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px 24px;
+  text-align: center;
+  gap: 14px;
+  color: #8e8e93;
+}
+
+/* círculo tipo iOS detrás del icono */
+.bubble-icon {
+  width: 88px;
+  height: 88px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.03);
+  display: grid;
+  place-items: center;
+}
+
+.bubble-icon ion-icon {
+  font-size: 42px;
+  color: #8e8e93;
+}
+
+/* Título & texto */
+.mensaje-vacio h1 {
+  margin: 8px 0 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+
+.mensaje-vacio p {
+  margin: 0;
+  max-width: 260px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #6e6e73;
+}
+
+/* Botón tipo link iOS (tinte rojo de tu marca) */
+.ios-link {
+  margin-top: 8px;
+  border: none;
+  background: transparent;
+  padding: 4px 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ff3b30;
+  border-radius: 999px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ios-link:active {
+  background: rgba(255, 59, 48, 0.08);
+}
+
+/* Dark Mode automático */
+@media (prefers-color-scheme: dark) {
+  ion-content.mensajes-wrap {
+    --background: #000000;
+  }
+
+  .mensaje-vacio h1 {
+    color: #f5f5f7;
+  }
+
+  .mensaje-vacio p {
+    color: #a1a1aa;
+  }
+
+  .bubble-icon {
+    background: rgba(30, 30, 32, 0.95);
+    box-shadow:
+      0 10px 24px rgba(0, 0, 0, 0.7),
+      0 0 0 1px rgba(255, 255, 255, 0.04);
   }
 }

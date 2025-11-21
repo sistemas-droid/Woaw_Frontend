@@ -1,18 +1,30 @@
-<ion-header>
-  <ion-toolbar color="dark">
+<!-- 🔝 HEADER ESTILO IOS PRODUCT DETAIL -->
+<ion-header class="ios-header">
+  <ion-toolbar mode="ios">
     <ion-buttons slot="start">
       <ion-back-button text="" routerDirection="back" defaultHref="/"></ion-back-button>
-      <div class="perfil-header">
-        <img src="/assets/icon/logo4.png" alt="Go Autos" class="logo" />
+    </ion-buttons>
+
+    <ion-title>
+      <div class="ios-title-bar" *ngIf="auto">
+        <img src="/assets/icon/logo2.png" alt="Go Autos" class="logo" />
+        <div class="ios-title-text">
+          <span class="line-1">{{ auto.marca }} {{ auto.modelo }}</span>
+          <span class="line-2">{{ auto.anio }}</span>
+        </div>
       </div>
-      <ion-title>
-        <span *ngIf="auto" class="titulo-perfil">{{ auto.marca }} {{ auto.modelo }} {{ auto.anio }}</span>
-      </ion-title>
+    </ion-title>
+
+    <ion-buttons slot="end" *ngIf="auto">
+      <ion-button fill="clear" (click)="contactosService.compartirAuto(auto, tipo_veiculo)">
+        <ion-icon name="share-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ficha-auto" [fullscreen]="true">
+<!-- 👇 CAMBIÉ LA CLASE A ios-ficha-auto -->
+<ion-content class="ios-ficha-auto" [fullscreen]="true">
   <!-- SPINNER DE CARGA -->
   <div class="spinner-ficha-wrapper" *ngIf="!spinner">
     <div class="spinner-ficha"></div>
@@ -22,6 +34,7 @@
   <div class="contenedor_ficha" *ngIf="auto">
     <!-- {{ auto.estadoVehiculo }} -->
 
+    <!-- ================== NUEVOS ================== -->
     <ion-grid *ngIf="tipo === 'nuevo' ">
       <ion-row class="fila-ficha">
         <!-- Columna izquierda: Imagen grande, miniaturas y especificaciones -->
@@ -206,6 +219,7 @@
             </table>
           </div>
 
+          <!-- INFO + CTA EN MÓVIL -->
           <div *ngIf="esDispositivoMovil && auto.estadoVehiculo === 'disponible'" class="card-detalle">
             <h2>{{ auto.marca }} {{ auto.modelo }} {{ auto.anio }}</h2>
             <p class="precio-principal" *ngIf="tipo_veiculo === 'autos'">
@@ -243,18 +257,15 @@
               <button *ngIf="!esMio" (click)="contactosService.contactarWOAW(auto, tipo_veiculo)"
                 class="btn-personalizado success">
                 <ion-icon name="logo-whatsapp"></ion-icon>
-                <!-- WhatsApp -->
               </button>
 
               <button (click)="contactosService.compartirAuto(auto, tipo_veiculo)" class="btn-personalizado medium">
                 <ion-icon name="share-social-outline"></ion-icon>
-                <!-- Compartir -->
               </button>
 
               <button *ngIf="MyRole !== 'admin' && !esMio" (click)="contactosService.llamar()"
                 class="btn-personalizado primary">
                 <ion-icon name="call-outline"></ion-icon>
-                <!-- Llamar -->
               </button>
 
               <br />
@@ -602,6 +613,7 @@
       </ion-row>
     </ion-grid>
 
+    <!-- ================== SEMINUEVOS / USADOS ================== -->
     <ion-grid *ngIf="tipo === 'seminuevo' ||  tipo === 'usado'">
       <ion-row class="fila-ficha">
         <!-- Columna izquierda: Imagen grande, miniaturas y especificaciones -->
@@ -754,6 +766,7 @@
             </table>
           </div>
 
+          <!-- INFO + CTA EN MÓVIL -->
           <div *ngIf="esDispositivoMovil && auto.estadoVehiculo === 'disponible'" class="card-detalle">
             <h2>{{ auto.marca }} {{ auto.modelo }} {{ auto.anio }}</h2>
             <p class="precio-principal" *ngIf="tipo_veiculo === 'autos'">
@@ -972,7 +985,7 @@
           </div>
 
           <!-- Especificaciones -->
-          <div *ngIf="esDispositivoMovil" class="especificaciones">
+          <div class="especificaciones" *ngIf="esDispositivoMovil">
             <h4>Especificaciones</h4>
             <table>
               <tr *ngIf="auto.marca">
@@ -1077,5 +1090,5 @@
   </div>
 
   <app-sugerencias [idCar]="idvehiculo"></app-sugerencias>
-  <app-footer></app-footer>
+ <br><br><br>
 </ion-content>

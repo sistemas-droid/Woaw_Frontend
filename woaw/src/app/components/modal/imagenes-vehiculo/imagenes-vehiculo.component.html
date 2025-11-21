@@ -1,20 +1,53 @@
-<div class="modal-container" (click)="cerrar()">
-  <div class="header-botones">
-    <img src="assets/icon/girar.png" alt="Girar" class="btn-girar" (click)="rotarImagen($event)" />
-    <ion-icon name="close-circle" class="btn-cerrar" (click)="cerrar()"></ion-icon>
-  </div>
+<div class="modal-ios" (click)="cerrar()">
+  <div
+    class="viewer-ios"
+    (click)="$event.stopPropagation()"
+    (touchstart)="onTouchStart($event)"
+    (touchend)="onTouchEnd($event)"
+  >
+    <!-- HEADER flotante -->
+    <div class="viewer-header-ios">
+      <button class="btn-header-ios" (click)="rotarImagen($event)" type="button">
+        <img src="assets/icon/girar.png" alt="Girar" class="icon-girar-ios" />
+        <span>Girar</span>
+      </button>
 
-  <div class="imagen-wrapper" (click)="$event.stopPropagation()" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
-    <button class="nav izquierda" (click)="anterior()" *ngIf="indice > 0">
-      <ion-icon name="chevron-back-outline"></ion-icon>
-    </button>
-
-    <div class="contenedor-rotado">
-      <img [src]="actual" alt="Foto vehículo" class="imagen-grande" [ngStyle]="estilosImagenRotada" />
+      <button class="btn-header-ios btn-close-ios" (click)="cerrar()" type="button">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
     </div>
 
-    <button class="nav derecha" (click)="siguiente()" *ngIf="indice < imagenes.length - 1">
-      <ion-icon name="chevron-forward-outline"></ion-icon>
-    </button>
+    <!-- CUERPO: imagen + flechas -->
+    <div class="viewer-main-ios">
+      <!-- Flecha izquierda -->
+      <button
+        class="nav-ios nav-ios--left"
+        type="button"
+        (click)="anterior()"
+        *ngIf="indice > 0"
+      >
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+
+      <!-- Imagen -->
+      <div class="contenedor-rotado-ios">
+        <img
+          [src]="actual"
+          alt="Foto vehículo"
+          class="imagen-grande-ios"
+          [ngStyle]="estilosImagenRotada"
+        />
+      </div>
+
+      <!-- Flecha derecha -->
+      <button
+        class="nav-ios nav-ios--right"
+        type="button"
+        (click)="siguiente()"
+        *ngIf="indice < imagenes.length - 1"
+      >
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </button>
+    </div>
   </div>
 </div>

@@ -1,75 +1,134 @@
-
 :host {
   display: block;
   position: sticky;
   top: calc(var(--ion-safe-area-top, 0px) + var(--woaw-toolbar-h, 64px));
-  z-index: 50;
+  z-index: 40;
   isolation: isolate;
 }
 
+/* ===== Dock de pasos tipo pill iOS ===== */
 .poliza__card {
-  position: static;
   padding-inline: 8px;
+}
 
-  .dock-pasos {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 12px;
-    padding: 12px 8px;
-    overflow-x: auto;
-    background: transparent;
-    scrollbar-gutter: stable both-edges;
+.poliza__card .dock-pasos {
+  max-width: 1150px;
+  margin: 4px auto 6px;
+  padding: 8px 10px 10px;
+  border-radius: 20px;
 
-    .card {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 13px;
-      border-radius: 16px;
-      background: #101014;
-      color: #f2f2f5;
-      border: 2px solid #22c55e;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, .35);
-      transition: filter .2s, opacity .2s, transform .2s, border-color .2s;
-      white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
 
-      h3 {
-        margin: 0;
-        font-size: clamp(11px, 1vw, 13px);
-        letter-spacing: .2px;
-      }
+  background: rgba(248, 250, 252, 0.96);
+  backdrop-filter: saturate(180%) blur(18px);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  box-shadow:
+    0 10px 26px rgba(15, 23, 42, 0.16),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
 
-      ion-icon {
-        font-size: clamp(10px, 1vw, 13px);
-      }
+  overflow-x: auto;
+  scrollbar-width: none;
+}
 
-      &::after {
-        content: "✓";
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: #22c55e;
-        color: #0b0b0e;
-        display: grid;
-        place-items: center;
-        font-size: 12px;
-        box-shadow: 0 6px 14px rgba(0, 0, 0, .35);
-      }
+.poliza__card .dock-pasos::-webkit-scrollbar {
+  display: none;
+}
 
-      &.disabled {
-        border-color: #ff2121;
+/* ===== Pills de paso ===== */
+.poliza__card .card {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 
-        &::after {
-          content: "✕";
-          background: #ff2121;
-          color: #0b0b0e;
-        }
-      }
+  padding: 7px 12px 7px 10px;
+  border-radius: 999px;
+
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+
+  white-space: nowrap;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    opacity 0.18s ease;
+
+  h3 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  ion-icon {
+    font-size: 16px;
+    color: #ff3b30; /* rojito iOS */
+  }
+
+  /* mini indicador de “ok” arriba a la derecha */
+  &::after {
+    content: "";
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    border: 1.5px solid #34c759;
+    background: radial-gradient(circle at 30% 30%, #34c759 0, #22c55e 45%, transparent 46%);
+    box-shadow: 0 4px 8px rgba(52, 199, 89, 0.45);
+  }
+
+  &:active {
+    transform: scale(0.97);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.2);
+    background: #f9fafb;
+  }
+}
+
+/* ===== Estado deshabilitado / pendiente ===== */
+.poliza__card .card.disabled {
+  opacity: 0.55;
+  background: #f9fafb;
+  border-color: rgba(148, 163, 184, 0.7);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
+
+  ion-icon {
+    color: #9ca3af;
+  }
+
+  &::after {
+    border-color: #ff3b30;
+    background: radial-gradient(circle at 30% 30%, #ff3b30 0, #ef4444 45%, transparent 46%);
+    box-shadow: 0 4px 8px rgba(239, 68, 68, 0.45);
+  }
+}
+
+/* ===== Ajustes responsive ===== */
+@media (max-width: 600px) {
+  .poliza__card {
+    padding-inline: 4px;
+  }
+
+  .poliza__card .dock-pasos {
+    padding: 6px 8px 8px;
+    gap: 6px;
+  }
+
+  .poliza__card .card {
+    padding: 6px 10px;
+    h3 {
+      font-size: 11px;
+    }
+    ion-icon {
+      font-size: 14px;
     }
   }
 }

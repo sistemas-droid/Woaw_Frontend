@@ -1,30 +1,87 @@
 :host {
   display: block;
   width: 100%;
-  max-width: 500px; // 👈 Igual al buscador
-  padding: 0;
+  max-width: 500px; // mismo ancho que el buscador
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.18),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
+/* ===== Header tipo iOS (como “Recent Searches”) ===== */
+.encabezado-historial {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+  background: #f9fafb;
+
+  .titulo {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6b7280;
+  }
+
+  .btn-cerrar {
+    border: none;
+    outline: none;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    color: #4b5563;
+    font-size: 16px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.12s ease;
+
+    &:active {
+      background: #d1d5db;
+      color: #111827;
+      transform: scale(0.94);
+    }
+  }
+}
+
+/* ===== Lista de sugerencias tipo lista de ajustes iOS ===== */
 .sugerencias {
   width: 100%;
-  margin-top: 0;
+  margin: 0;
   padding: 0;
   list-style: none;
-  background: white;
-  overflow: hidden;
-  border-top: none;
+  background: #ffffff;
 }
 
 .sugerencias li {
-  padding: 12px 16px;
+  padding: 11px 16px;
   font-size: 15px;
-  color: #333;
+  color: #111827;
   cursor: pointer;
-  // border-bottom: 1px solid #eee;
-  transition: background-color 0.2s ease;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.9);
+  transition:
+    background-color 0.12s ease,
+    color 0.12s ease;
 
+  /* efecto tap/hover tipo celda iOS */
   &:hover {
-    background-color: #f3f3f3;
+    background-color: #f3f4f6;
+  }
+
+  &:active {
+    background-color: #e5e7eb;
   }
 
   &:last-child {
@@ -32,43 +89,13 @@
   }
 }
 
+/* ===== Estado sin historial ===== */
 .sin-historial {
   width: 100%;
-  background-color: white;
+  padding: 14px 16px 16px;
   text-align: center;
-  color: #666;
-  font-size: 14px;
-  padding: 16px;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-}
-
-
-.encabezado-historial {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 14px;
-  border-bottom: 1px solid #ddd;
-  // font-weight: bold;
-  font-size: 12px;
-
-  .titulo {
-    color: #5b5b5b;
-  }
-
-  .btn-cerrar {
-    background: none;
-    border: none;
-    font-size: 20px;
-    // font-weight: bold;
-    color: #666;
-    cursor: pointer;
-    transition: color 0.2s ease;
-  }
-
-  .btn-cerrar:hover {
-    color: #d62828;
-  }
-
+  background-color: #ffffff;
+  color: #9ca3af;
+  font-size: 13px;
+  line-height: 1.4;
 }

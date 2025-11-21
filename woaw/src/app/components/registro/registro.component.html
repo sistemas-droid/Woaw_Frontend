@@ -1,15 +1,37 @@
-<app-spinner *ngIf="mostrar_spinner" [tipo]="tipo_spinner" [text]="texto_spinner" [sub_text]="textoSub_spinner"></app-spinner>
+<app-spinner
+  *ngIf="mostrar_spinner"
+  [tipo]="tipo_spinner"
+  [text]="texto_spinner"
+  [sub_text]="textoSub_spinner">
+</app-spinner>
 
 <div class="overlay">
-  <img src="assets/icon/logo2.png" loading="lazy" alt="WOAW" class="logo-registro" />
+  <img
+    src="assets/icon/logo2.png"
+    loading="lazy"
+    alt="WOAW"
+    class="logo-registro"
+  />
+
   <h1 class="titulo">Registro</h1>
+  <p class="subtitulo">Crea tu cuenta para continuar.</p>
 
-  <form [formGroup]="registroForm" class="login-form" *ngIf="MostrarCOntenido_Pop_Up">
+  <form
+    [formGroup]="registroForm"
+    class="login-form"
+    *ngIf="MostrarCOntenido_Pop_Up">
 
-    <!-- <ion-span *ngIf="Seccionamostrar === 1"> -->
-    <!-- Usuario -->
-    <ion-item lines="none" class="input-wrapper" *ngIf="Seccionamostrar === 1">
-      <ion-input formControlName="usuario" type="text" placeholder="Nombre" required
+    <!-- ================= SECCIÓN 1: DATOS BÁSICOS ================= -->
+    <!-- Nombre -->
+    <ion-item
+      lines="none"
+      class="input-wrapper"
+      *ngIf="Seccionamostrar === 1">
+      <ion-input
+        formControlName="usuario"
+        type="text"
+        placeholder="Nombre"
+        required
         (ionInput)="transformarMayuscula('usuario')">
       </ion-input>
     </ion-item>
@@ -27,8 +49,15 @@
     </ion-note>
 
     <!-- Apellidos -->
-    <ion-item lines="none" class="input-wrapper" *ngIf="Seccionamostrar === 1">
-      <ion-input formControlName="apellidos" type="text" placeholder="Apellido(s)" required
+    <ion-item
+      lines="none"
+      class="input-wrapper"
+      *ngIf="Seccionamostrar === 1">
+      <ion-input
+        formControlName="apellidos"
+        type="text"
+        placeholder="Apellido(s)"
+        required
         (ionInput)="transformarMayuscula('apellidos')">
       </ion-input>
     </ion-item>
@@ -46,10 +75,19 @@
     </ion-note>
 
     <!-- Email -->
-    <ion-item lines="none" class="input-wrapper" *ngIf="Seccionamostrar === 1">
-      <ion-input formControlName="email" type="email" placeholder="Correo" required></ion-input>
+    <ion-item
+      lines="none"
+      class="input-wrapper"
+      *ngIf="Seccionamostrar === 1">
+      <ion-input
+        formControlName="email"
+        type="email"
+        placeholder="Correo"
+        required>
+      </ion-input>
     </ion-item>
-    <ion-note *ngIf="Seccionamostrar === 1 && registroForm.get('email')?.invalid && registroForm.get('email')?.touched">
+    <ion-note
+      *ngIf="Seccionamostrar === 1 && registroForm.get('email')?.invalid && registroForm.get('email')?.touched">
       <ng-container *ngIf="registroForm.get('email')?.errors?.['required']">
         El correo es obligatorio.
       </ng-container>
@@ -62,17 +100,36 @@
     </ion-note>
 
     <!-- Teléfono -->
-    <div class="telefono-input-wrapper" *ngIf="Seccionamostrar === 1">
-      <ion-item lines="none" class="lada-box" (click)="abrirModalLadas()">
-        <img [src]="'https://flagcdn.com/w40/' + ladaSeleccionada.bandera + '.png'" class="flag-img" />
+    <div
+      class="telefono-input-wrapper"
+      *ngIf="Seccionamostrar === 1">
+      <ion-item
+        lines="none"
+        class="lada-box"
+        (click)="abrirModalLadas()">
+        <img
+          [src]="'https://flagcdn.com/w40/' + ladaSeleccionada.bandera + '.png'"
+          class="flag-img"
+        />
         <p>{{ ladaSeleccionada.codigo }}</p>
       </ion-item>
-      <ion-item lines="none" class="telefono-input">
-        <ion-input formControlName="telefono" type="tel" inputmode="numeric" maxlength="10" placeholder="Teléfono"
-          required></ion-input>
+
+      <ion-item
+        lines="none"
+        class="telefono-input">
+        <ion-input
+          formControlName="telefono"
+          type="tel"
+          inputmode="numeric"
+          maxlength="10"
+          placeholder="Teléfono"
+          required>
+        </ion-input>
       </ion-item>
     </div>
-    <ion-note class="ion-note" *ngIf="registroForm.get('telefono')?.invalid && registroForm.get('telefono')?.touched">
+    <ion-note
+      class="ion-note"
+      *ngIf="registroForm.get('telefono')?.invalid && registroForm.get('telefono')?.touched">
       <ng-container *ngIf="registroForm.get('telefono')?.errors?.['required']">
         El número es obligatorio.
       </ng-container>
@@ -81,109 +138,156 @@
       </ng-container>
     </ion-note>
 
-    <span class="acepto-label" *ngIf="Seccionamostrar === 1">Acepto</span>
-    <div class="politicas-container" *ngIf="Seccionamostrar === 1">
+    <span
+      class="acepto-label"
+      *ngIf="Seccionamostrar === 1">
+      Acepto
+    </span>
+
+    <div
+      class="politicas-container"
+      *ngIf="Seccionamostrar === 1">
       <div class="checkbox-group">
-        <ion-checkbox formControlName="aviso" (ionChange)="onCheckboxClick($event, 'aviso')"></ion-checkbox>
+        <ion-checkbox
+          formControlName="aviso"
+          (ionChange)="onCheckboxClick($event, 'aviso')">
+        </ion-checkbox>
         <ion-label class="politicas-label">
-          <span class="link" (click)="ClickVer($event, 'aviso')">Aviso de Privacidad</span>
+          <span
+            class="link"
+            (click)="ClickVer($event, 'aviso')">
+            Aviso de Privacidad
+          </span>
         </ion-label>
       </div>
 
       <div class="checkbox-group">
-        <ion-checkbox formControlName="terminos" (ionChange)="onCheckboxClick($event, 'terminos')"></ion-checkbox>
+        <ion-checkbox
+          formControlName="terminos"
+          (ionChange)="onCheckboxClick($event, 'terminos')">
+        </ion-checkbox>
         <ion-label class="politicas-label">
-          <span class="link" (click)="ClickVer($event, 'terminos')">Términos y Condiciones</span>
+          <span
+            class="link"
+            (click)="ClickVer($event, 'terminos')">
+            Términos y Condiciones
+          </span>
         </ion-label>
       </div>
     </div>
 
-    <button type="button" class="btn-login" [disabled]="
+    <button
+      type="button"
+      class="btn-login"
+      [disabled]="
         registroForm.get('usuario')?.invalid ||
         registroForm.get('apellidos')?.invalid ||
         registroForm.get('email')?.invalid ||
         registroForm.get('telefono')?.invalid ||
         registroForm.get('aviso')?.invalid ||
         registroForm.get('terminos')?.invalid
-      " (click)="validarSeccion1()" *ngIf="Seccionamostrar === 1">
+      "
+      (click)="validarSeccion1()"
+      *ngIf="Seccionamostrar === 1">
       Siguiente
     </button>
 
-    <!-- <p class="popup" *ngIf="Seccionamostrar === 1">Tu número telefónico y correo electrónico no serán utilizados para enviarte mensajes publicitarios, llamadas no
-      solicitadas ni correos de spam.</p> -->
+    <br *ngIf="Seccionamostrar === 1" />
 
-    <br *ngIf="Seccionamostrar === 1">
-
-
-    <!-- </ion-span> -->
-
-    <!-- <ion-span *ngIf="Seccionamostrar === 2"> -->
-    <!-- NumeroConfirm -->
-    <span class="instrucciones" *ngIf="Seccionamostrar === 2">
-      Te hemos enviado un código de verificación a tu correo electrónico.
-      Por favor, revísalo para continuar con el
-      registro.
+    <!-- ================= SECCIÓN 2: CÓDIGO ================= -->
+    <span
+      class="instrucciones"
+      *ngIf="Seccionamostrar === 2">
+      Te enviamos un código de verificación a tu correo electrónico.
+      Revísalo para continuar con el registro.
     </span>
 
-    <!-- Fila con correo y botón -->
-    <div class="fila-revisar" *ngIf="registroForm.get('email')?.value && Seccionamostrar === 2">
+    <div
+      class="fila-revisar"
+      *ngIf="registroForm.get('email')?.value && Seccionamostrar === 2">
       <span class="correo-preview">
         {{ registroForm.get('email')?.value }}
       </span>
-      <button type="button" class="btn-revisar-codigo" (click)="revisarCodigo()">
-        Renviar código
+      <button
+        type="button"
+        class="btn-revisar-codigo"
+        (click)="revisarCodigo()">
+        Reenviar código
       </button>
     </div>
 
+    <br *ngIf="Seccionamostrar === 2" />
 
-    <br *ngIf="Seccionamostrar === 2">
-    <ion-item *ngIf="Seccionamostrar === 2" lines="none" class="input-wrapper">
-      <ion-input formControlName="numeroConfirm" type="number" inputmode="numeric" maxlength="6"
-        placeholder="Código de verificación" required (ionInput)="transformarMayuscula('numeroConfirm')">
+    <ion-item
+      *ngIf="Seccionamostrar === 2"
+      lines="none"
+      class="input-wrapper">
+      <ion-input
+        formControlName="numeroConfirm"
+        type="number"
+        inputmode="numeric"
+        maxlength="6"
+        placeholder="Código de verificación"
+        required>
       </ion-input>
     </ion-item>
     <ion-note
       *ngIf="Seccionamostrar === 2 && registroForm.get('numeroConfirm')?.invalid && registroForm.get('numeroConfirm')?.touched">
       <ng-container *ngIf="registroForm.get('numeroConfirm')?.errors?.['required']">
-        El código es obligatirio.
+        El código es obligatorio.
       </ng-container>
       <ng-container *ngIf="registroForm.get('numeroConfirm')?.errors?.['maxlength']">
-        Máximo 6 número.
+        Máximo 6 números.
       </ng-container>
       <ng-container *ngIf="registroForm.get('numeroConfirm')?.errors?.['pattern']">
-        Máximo 6 número.
+        Máximo 6 números.
       </ng-container>
     </ion-note>
 
-    <div class="advertencia" *ngIf="Seccionamostrar === 2">
-      📬 Revisa tu bandeja de <strong>spam</strong> o <strong>correo no deseado</strong>. ¡Es posible que el mensaje
-      esté ahí!
+    <div
+      class="advertencia"
+      *ngIf="Seccionamostrar === 2">
+      📬 Revisa tu bandeja de <strong>spam</strong> o
+      <strong>correo no deseado</strong>. ¡El mensaje podría estar ahí!
     </div>
 
-
-    <div class="botones-acciones" *ngIf="Seccionamostrar === 2">
-      <button type="button" class="btn-login-dos" (click)="regresarASeccion1()">
-        ← regresar
+    <div
+      class="botones-acciones"
+      *ngIf="Seccionamostrar === 2">
+      <button
+        type="button"
+        class="btn-login-dos btn-secundario"
+        (click)="regresarASeccion1()">
+        ← Regresar
       </button>
 
-      <button type="button" class="btn-login-dos" [disabled]="registroForm.get('numeroConfirm')?.invalid"
+      <button
+        type="button"
+        class="btn-login-dos"
+        [disabled]="registroForm.get('numeroConfirm')?.invalid"
         (click)="validarSeccion2()">
-        siguiente →
+        Siguiente →
       </button>
     </div>
 
-    <!-- </ion-span> -->
-
-
-
-    <span class="instrucciones" *ngIf="Seccionamostrar === 3">
-      Por seguridad, crea una contraseña para proteger tu cuenta antes de continuar con el registro.
+    <!-- ================= SECCIÓN 3: CONTRASEÑA ================= -->
+    <span
+      class="instrucciones"
+      *ngIf="Seccionamostrar === 3">
+      Por seguridad, crea una contraseña para proteger tu cuenta.
     </span>
 
-    <br *ngIf="Seccionamostrar === 3">
+    <br *ngIf="Seccionamostrar === 3" />
+
     <!-- Contraseña -->
-    <ion-item *ngIf="Seccionamostrar === 3" lines="none" class="input-wrapper">
-      <ion-input formControlName="contrasena" [type]="verPassword ? 'text' : 'password'" placeholder="Contraseña"
+    <ion-item
+      *ngIf="Seccionamostrar === 3"
+      lines="none"
+      class="input-wrapper">
+      <ion-input
+        formControlName="contrasena"
+        [type]="verPassword ? 'text' : 'password'"
+        placeholder="Contraseña"
         required>
       </ion-input>
     </ion-item>
@@ -203,10 +307,16 @@
       </ng-container>
     </ion-note>
 
-    <!-- Confirmar Contraseña -->
-    <ion-item *ngIf="Seccionamostrar === 3" lines="none" class="input-wrapper">
-      <ion-input formControlName="confirmarContrasena" [type]="verPassword ? 'text' : 'password'"
-        placeholder="Confirmar contraseña" required>
+    <!-- Confirmar contraseña -->
+    <ion-item
+      *ngIf="Seccionamostrar === 3"
+      lines="none"
+      class="input-wrapper">
+      <ion-input
+        formControlName="confirmarContrasena"
+        [type]="verPassword ? 'text' : 'password'"
+        placeholder="Confirmar contraseña"
+        required>
       </ion-input>
     </ion-item>
     <ion-note
@@ -219,51 +329,73 @@
       </ng-container>
     </ion-note>
 
-    <!-- mostrar contraseñas  -->
-    <ion-item *ngIf="Seccionamostrar === 3" class="checkbox-custom" lines="none">
-      <ion-checkbox slot="start" (ionChange)="toggleVerPassword()" class="check-rojo"></ion-checkbox>
+    <!-- Mostrar contraseñas -->
+    <ion-item
+      *ngIf="Seccionamostrar === 3"
+      class="checkbox-custom"
+      lines="none">
+      <ion-checkbox
+        slot="start"
+        (ionChange)="toggleVerPassword()"
+        class="check-rojo">
+      </ion-checkbox>
       <ion-label>Mostrar contraseñas</ion-label>
     </ion-item>
 
-    <ion-item *ngIf="Seccionamostrar === 3" class="checkbox-custom" lines="none">
-      <ion-checkbox formControlName="popup" slot="start" class="check-rojo"></ion-checkbox>
-      <ion-label>Consiento que mis Datos Personales, Financieros y/o Patrimoniales proporcionados en esta aplicación
-        sean tratados y transferidos por WOAW conforme a su <span (click)="ClickVer($event, 'aviso')">Aviso de
-          Privacidad</span></ion-label>
+    <ion-item
+      *ngIf="Seccionamostrar === 3"
+      class="checkbox-custom"
+      lines="none">
+      <ion-checkbox
+        formControlName="popup"
+        slot="start"
+        class="check-rojo">
+      </ion-checkbox>
+      <ion-label>
+        Consiento que mis Datos Personales, Financieros y/o Patrimoniales
+        sean tratados por WOAW conforme a su
+        <span (click)="ClickVer($event, 'aviso')">Aviso de Privacidad</span>
+      </ion-label>
     </ion-item>
 
-    <button *ngIf="Seccionamostrar === 3" type="button" (click)="EnvioRegistro()" class="btn-login" [disabled]="registroForm.invalid">
+    <button
+      *ngIf="Seccionamostrar === 3"
+      type="button"
+      (click)="EnvioRegistro()"
+      class="btn-login"
+      [disabled]="registroForm.invalid">
       Registrarme
     </button>
-    <br *ngIf="Seccionamostrar === 3">
 
-    <!-- </span> -->
-
-    <!-- <button *ngIf="Seccionamostrar === 1" type="button" class="btn-google">
-      <img src="assets/img/google.png" loading="lazy" alt="Google Login" />
-    </button> -->
+    <br *ngIf="Seccionamostrar === 3" />
   </form>
-
 </div>
 
-
-<ion-modal [isOpen]="mostrarModal" (didDismiss)="cerrarModal()">
+<!-- MODAL LADAS estilo iOS claro -->
+<ion-modal
+  [isOpen]="mostrarModal"
+  (didDismiss)="cerrarModal()"
+  class="modal-ladas">
   <ng-template>
     <ion-header>
-      <ion-toolbar color="dark">
+      <ion-toolbar color="light" class="modal-toolbar-ios">
         <ion-title>Seleccionar país</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="cerrarModal()">Cerrar</ion-button>
+          <ion-button (click)="cerrarModal()" fill="clear" color="primary">
+            Cerrar
+          </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
+
     <ion-content>
       <ion-list>
-        <ion-item button *ngFor="let pais of paises" (click)="seleccionarLada(pais)">
-          <!-- <ion-avatar slot="start"> -->
+        <ion-item
+          button
+          *ngFor="let pais of paises"
+          (click)="seleccionarLada(pais)">
           <img [src]="pais.banderaUrl" />
-          <!-- </ion-avatar> -->
-          <ion-label style="margin-left: 4px;">
+          <ion-label style="margin-left: 4px">
             {{ pais.nombre }} ({{ pais.codigo }})
           </ion-label>
         </ion-item>

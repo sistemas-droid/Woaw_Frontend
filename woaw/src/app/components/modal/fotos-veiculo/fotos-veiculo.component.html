@@ -1,73 +1,119 @@
-<ion-header translucent>
-  <ion-toolbar color="light" class="header-completo">
-    <ion-title>Imágenes</ion-title>
+<ion-header translucent="true">
+  <ion-toolbar color="light" class="header-ios">
+    <ion-title class="title-ios">Imágenes</ion-title>
+
     <ion-buttons slot="end">
-      <ion-button (click)="cancelar()">
+      <ion-button class="btn-close-ios" (click)="cancelar()" fill="clear">
         <ion-icon name="close-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen class="ion-padding">
- 
- <!-- Imagen principal -->
-<div class="campo campo-principal">
-  <label class="etiqueta">Imagen principal *</label>
+<ion-content [fullscreen]="true" class="imagenes-content-ios">
 
-  <!-- Input oculto -->
-  <input type="file" id="fileInputPrincipal" accept="image/*"
-         (change)="seleccionarImagenPrincipal($event)" hidden />
+  <div class="sheet-inner-ios">
 
-  <!-- Recuadro que abre el input -->
-  <label class="preview-placeholder" for="fileInputPrincipal" *ngIf="!imagenPrincipalMostrada">
-    <ion-icon name="image-outline"></ion-icon>
-  </label>
+    <!-- Imagen principal -->
+    <div class="campo campo-principal-ios">
+      <label class="etiqueta-ios">
+        Imagen principal <span class="req">*</span>
+      </label>
 
-  <!-- Preview -->
-  <div class="preview-container" *ngIf="imagenPrincipalMostrada">
-    <img [src]="imagenPrincipalMostrada" class="preview-img" />
-    <ion-icon name="close-circle" class="icono-borrar-principal"
-              (click)="eliminarImagenPrincipal()"></ion-icon>
-  </div>
-</div>
+      <!-- Input oculto -->
+      <input
+        type="file"
+        id="fileInputPrincipal"
+        accept="image/*"
+        (change)="seleccionarImagenPrincipal($event)"
+        hidden
+      />
 
-<!-- Imágenes secundarias -->
-<div class="campo">
-  <label class="etiqueta">Imágenes secundarias (máx. 10)</label>
+      <!-- Placeholder -->
+      <label
+        class="preview-placeholder-ios"
+        for="fileInputPrincipal"
+        *ngIf="!imagenPrincipalMostrada"
+      >
+        <ion-icon name="image-outline"></ion-icon>
+        <span>Agregar imagen</span>
+      </label>
 
-  <!-- Input oculto -->
-  <input type="file" id="fileInputSecundario" accept="image/*" multiple
-         (change)="seleccionarImagenesSecundarias($event)" hidden />
-
-  <div class="imagenes-secundarias">
-    <!-- Previews -->
-    <div class="preview-wrapper" *ngFor="let img of imagenesSecundariasMostradas; let i = index">
-      <img [src]="img" class="preview-img" />
-      <ion-icon name="close-circle" class="icono-borrar"
-                (click)="eliminarImagenSecundaria(i)"></ion-icon>
+      <!-- Preview principal -->
+      <div class="preview-container-ios" *ngIf="imagenPrincipalMostrada">
+        <img [src]="imagenPrincipalMostrada" class="preview-img-ios" />
+        <ion-icon
+          name="close-circle"
+          class="icono-borrar-principal-ios"
+          (click)="eliminarImagenPrincipal()"
+        ></ion-icon>
+      </div>
     </div>
 
-    <!-- Recuadro “+” -->
-    <label class="add-more-placeholder"
-           *ngIf="imagenesSecundariasMostradas.length < 10"
-           for="fileInputSecundario">
+    <!-- Imágenes secundarias -->
+    <div class="campo campo-secundario-ios">
+      <label class="etiqueta-ios">
+        Imágenes secundarias <span class="opc">(máx. 10)</span>
+      </label>
 
-      <ion-icon name="add-outline"></ion-icon>
-    </label>
+      <!-- Input oculto -->
+      <input
+        type="file"
+        id="fileInputSecundario"
+        accept="image/*"
+        multiple
+        (change)="seleccionarImagenesSecundarias($event)"
+        hidden
+      />
+
+      <div class="imagenes-secundarias-ios">
+        <!-- Previews -->
+        <div
+          class="preview-wrapper-ios"
+          *ngFor="let img of imagenesSecundariasMostradas; let i = index"
+        >
+          <img [src]="img" class="preview-img-ios" />
+          <ion-icon
+            name="close-circle"
+            class="icono-borrar-ios"
+            (click)="eliminarImagenSecundaria(i)"
+          ></ion-icon>
+        </div>
+
+        <!-- Botón + -->
+        <label
+          class="add-more-placeholder-ios"
+          *ngIf="imagenesSecundariasMostradas.length < 10"
+          for="fileInputSecundario"
+        >
+          <ion-icon name="add-outline"></ion-icon>
+          <span>Agregar</span>
+        </label>
+      </div>
+    </div>
+
   </div>
-</div>
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-    <div class="botones-footer">
-      <ion-button color="dark" expand="block" (click)="cancelar()">
+  <ion-toolbar class="footer-ios">
+    <div class="botones-footer-ios">
+      <ion-button
+        expand="block"
+        fill="solid"
+        class="btn-footer-ios btn-cancel-ios"
+        (click)="cancelar()"
+      >
         <ion-icon name="close-outline" slot="start"></ion-icon>
         Cancelar
       </ion-button>
 
-      <ion-button color="danger" expand="block" (click)="confirmar()">
+      <ion-button
+        expand="block"
+        fill="solid"
+        class="btn-footer-ios btn-save-ios"
+        (click)="confirmar()"
+      >
         <ion-icon name="save-outline" slot="start"></ion-icon>
         Guardar imágenes
       </ion-button>

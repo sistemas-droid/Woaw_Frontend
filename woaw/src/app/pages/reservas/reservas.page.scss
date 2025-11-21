@@ -1,571 +1,474 @@
 :host {
-    --borde: #e5e7eb;
-    --bg: #fff;
-    --ok: #10b981;
-    --borde-suave: #e5e7eb;
-    --bg-claro: #ffffff;
-    --negro: #0f0f10;
-    --negro-2: #161718;
-    --rojo: #e11d2f;
-    --rojo-600: #c81628;
-    --rojo-700: #a31221;
-    --ion-color-primary: var(--rojo);
-    --ion-color-primary-contrast: #fff;
-    --ion-color-danger: var(--rojo);
-    --ion-color-dark: var(--negro);
+  /* Colores base */
+  --borde: #e5e7eb;
+  --bg: #ffffff;
+  --bg-app: #f2f2f7; /* grisito iOS */
+  --ok: #10b981;
+  --borde-suave: #e5e7eb;
+  --bg-claro: #ffffff;
+  --negro: #111827;
+  --negro-2: #161718;
+  --rojo: #e11d2f;
+  --rojo-600: #c81628;
+  --rojo-700: #a31221;
+
+  --ion-color-primary: var(--rojo);
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-danger: var(--rojo);
+  --ion-color-dark: var(--negro);
+
+  --ion-background-color: var(--bg-app);
 }
 
-ion-header ion-toolbar[color="dark"] {
-    --background: var(--negro);
-    --color: #fff;
-    --border-width: 0 0 1px 0;
-    --border-color: rgba(255, 255, 255, .08);
+/* 🧊 HEADER TIPO iOS (translúcido, claro) */
+ion-header.ios-header {
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  --background: rgba(248, 248, 250, 0.9);
+  --color: #111827;
+  border-bottom: 0.55px solid rgba(60, 60, 67, 0.18);
 }
 
-.perfil-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-
-    .btn-regresar {
-        background: transparent;
-        border: 0;
-        color: #fff;
-        font-size: 18px;
-        display: grid;
-        place-items: center;
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-    }
-
-    .btn-regresar:hover {
-        background: rgba(255, 255, 255, .08);
-    }
-
-    .logo {
-        width: 28px;
-        height: 28px;
-        object-fit: contain;
-    }
-
-    .titulo-perfil {
-        color: #fff;
-        font-weight: 700;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: clamp(160px, 40vw, 520px);
-    }
+ion-header.ios-header ion-toolbar {
+  --min-height: 48px;
+  padding-inline: 8px;
 }
 
-.hero {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin: 12px;
-    text-align: center;
+/* Botón back tipo iOS */
+.btn-back {
+  --padding-start: 4px;
+  --padding-end: 8px;
+  --background: transparent;
+  text-transform: none;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--ion-color-primary);
+  border-radius: 999px;
 
-    .hero-info .titulo {
-        margin: 0;
-        font-weight: 800;
-        font-size: 22px;
-        color: var(--negro);
-    }
-
-    .chips {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        margin-top: 6px;
-        flex-wrap: wrap;
-
-        ion-badge[color="primary"],
-        ion-badge[color="danger"] {
-            --background: var(--rojo) !important;
-            --color: #fff !important;
-        }
-
-        ion-badge[color="medium"],
-        ion-badge[color="dark"] {
-            --background: var(--negro) !important;
-            --color: #fff !important;
-        }
-
-        ion-badge[color="tertiary"] {
-            --background: rgba(225, 29, 47, .12);
-            --color: var(--rojo);
-            border: 1px solid rgba(225, 29, 47, .22);
-        }
-    }
+  ion-icon {
+    font-size: 20px;
+  }
 }
 
-@media (min-width: 768px) {
-    .hero .hero-info .titulo {
-        font-size: 24px;
-    }
+.btn-back:hover {
+  --background: rgba(0, 0, 0, 0.04);
 }
 
+.btn-close {
+  --padding-start: 4px;
+  --padding-end: 4px;
+  color: #6b7280;
+}
+
+.titulo-perfil {
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  max-width: 60vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* CONTENIDO GENERAL iOS */
+.ios-content {
+  --background: var(--bg-app);
+}
+
+/* GRID GENERAL */
 .grid-cal-img {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-    margin: 0 12px 12px;
-}
-
-.grid-cal-img ion-card {
-    margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 12px 12px 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
-    .grid-cal-img {
-        grid-template-columns: 1fr 1fr;
-        align-items: start;
-    }
+  .grid-cal-img {
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: flex-start;
+  }
 
-    .grid-cal-img .card-resumen {
-        grid-column: 1 / -1;
-    }
+  .grid-cal-img .card-resumen {
+    grid-column: 1 / -1;
+  }
+
+  .card-notas {
+    grid-column: 1 / -1;
+  }
 }
 
 .col-media {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.grid-cal-img .card-media {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.grid-cal-img .card-media img {
-    width: 100%;
-    height: auto;
-    max-height: clamp(260px, 60vh, 560px);
-    object-fit: contain;
-    display: block;
-}
-
-ion-card {
-    margin: 12px;
-    border: 1px solid var(--borde);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, .04);
-    background: #fff;
-}
-
-ion-card-header {
-    padding: 12px 16px;
-}
-
-ion-card-title {
-    font-weight: 800;
-    color: var(--negro);
-}
-
-ion-card-subtitle {
-    opacity: .8;
-}
-
-ion-card-content form ion-item {
-    --padding-start: 10px;
-    --inner-padding-end: 8px;
-    --min-height: 48px;
-    margin-bottom: 4px;
-    border-radius: 10px;
-}
-
-ion-datetime,
-ion-input,
-ion-textarea {
-    width: 100%;
-}
-
-ion-textarea {
-    --min-height: 80px;
-    --highlight-color-focused: var(--rojo);
-}
-
-ion-note[color="danger"] {
-    display: block;
-    margin: 4px 0 10px 12px;
-    font-size: 12.5px;
-}
-
-.fechas-grid {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 12px 0;
-    gap: 8px;
-}
-
-ion-item.danger-datetime,
-ion-item.center-item.danger-datetime {
-    width: auto;
-    --padding-start: 0;
-    --padding-end: 0;
-    --inner-padding-start: 0;
-    --inner-padding-end: 0;
-    display: block;
-}
-
-ion-item.danger-datetime .input-wrapper,
-ion-item.center-item.danger-datetime .input-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-ion-item.danger-datetime ion-datetime,
-ion-item.center-item.danger-datetime ion-datetime {
-    max-width: none;
-    width: 100%;
-    margin: 0 auto;
-    border: 1px solid var(--borde-suave);
-    border-radius: 14px;
-    --background: var(--bg-claro);
-    --ion-text-color: var(--ion-color-dark);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, .06);
-    padding-bottom: 6px;
-}
-
-ion-item.danger-datetime ion-datetime,
-ion-item.center-item.danger-datetime ion-datetime {
-
-    &.ion-invalid,
-    &.datetime-error {
-        box-shadow: 0 0 0 2px rgba(239, 68, 68, .12), 0 6px 18px rgba(0, 0, 0, .06);
-    }
-}
-
-ion-item.danger-datetime ion-datetime::part(calendar-month-year),
-ion-item.center-item.danger-datetime ion-datetime::part(calendar-month-year) {
-    padding: 8px 10px;
-}
-
-ion-item.danger-datetime ion-datetime::part(calendar-day),
-ion-item.center-item.danger-datetime ion-datetime::part(calendar-day) {
-    border-radius: 6px;
-    padding: 0;
-    transition: box-shadow .15s ease;
-}
-
-ion-item.danger-datetime ion-datetime::part(calendar-day):hover,
-ion-item.center-item.danger-datetime ion-datetime::part(calendar-day):hover {
-    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .06);
-}
-
-ion-item.danger-datetime ion-datetime::part(calendar-day-active),
-ion-item.center-item.danger-datetime ion-datetime::part(calendar-day-active) {
-    border-radius: 6px;
-    background: var(--rojo) !important;
-    color: #fff !important;
-    box-shadow: 0 0 0 2px rgba(225, 29, 47, .18);
-}
-
-ion-item.danger-datetime ion-datetime::part(calendar-day-in-range),
-ion-item.center-item.danger-datetime ion-datetime::part(calendar-day-in-range) {
-    background: rgba(225, 29, 47, .10);
-}
-
-ion-item.danger-datetime ion-datetime::part(calendar-day-start),
-ion-item.danger-datetime ion-datetime::part(calendar-day-end),
-ion-item.center-item.danger-datetime ion-datetime::part(calendar-day-start),
-ion-item.center-item.danger-datetime ion-datetime::part(calendar-day-end) {
-    background: var(--rojo);
-    color: #fff;
-    box-shadow: 0 0 0 2px rgba(225, 29, 47, .24);
-}
-
-ion-item.danger-datetime ion-datetime::part(calendar-day-today),
-ion-item.center-item.danger-datetime ion-datetime::part(calendar-day-today) {
-    outline: 2px solid rgba(225, 29, 47, .35);
-    outline-offset: 1px;
-    border-radius: 6px;
-}
-
-ion-item.danger-datetime ion-datetime::part(calendar-day-disabled),
-ion-item.center-item.danger-datetime ion-datetime::part(calendar-day-disabled) {
-    opacity: .35;
-    filter: grayscale(.2);
-}
-
-:host .grid-cal-img .media-head .titulo {
-    font-weight: 800;
+/* Título y chips arriba del coche */
+.media-head .titulo {
+  margin: 0 0 6px;
+  font-weight: 800;
+  font-size: clamp(20px, 2.4vw, 24px);
+  color: var(--negro);
 }
 
 .car-name {
-    color: var(--ion-color-danger);
-    font-weight: 900;
+  color: var(--ion-color-danger);
+  font-weight: 900;
 }
 
 .media-head .chips {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
 }
 
+/* Precio pill */
 .chips .precio-dia {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-weight: 900;
-    font-size: clamp(16px, 2.2vw, 18px);
-    line-height: 1;
-    background: rgba(225, 29, 47, .10);
-    border: 1px solid rgba(225, 29, 47, .22);
-    color: var(--rojo);
-    white-space: nowrap;
-    flex: 0 0 auto;
-    margin-left: auto;
-    order: 2;
-}
-
-.media-head .chips ion-badge {
-    order: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: clamp(16px, 2.2vw, 18px);
+  line-height: 1;
+  background: rgba(225, 29, 47, 0.1);
+  border: 1px solid rgba(225, 29, 47, 0.22);
+  color: var(--rojo);
+  white-space: nowrap;
+  margin-left: auto;
+  order: 2;
 }
 
 .chips .precio-dia .por-dia {
-    font-weight: 700;
-    opacity: .95;
-    margin-left: 2px;
+  font-weight: 600;
+  opacity: 0.9;
+  margin-left: 2px;
+}
+
+.media-head .chips ion-badge {
+  order: 1;
+}
+
+.media-head .chips ion-badge[color='dark'] {
+  --background: #111827;
+  --color: #ffffff;
+  --border-radius: 999px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+}
+
+.media-head .chips ion-badge[color='danger'] {
+  --background: rgba(225, 29, 47, 0.12);
+  --color: var(--rojo);
+  border-radius: 999px;
+  border: 1px solid rgba(225, 29, 47, 0.22);
+  --padding-start: 10px;
+  --padding-end: 10px;
 }
 
 @media (max-width: 420px) {
-    .media-head .chips {
-        flex-wrap: wrap;
-        row-gap: 6px;
-    }
+  .media-head .chips {
+    row-gap: 6px;
+  }
 
-    .media-head .chips .precio-dia {
-        margin-left: auto;
-    }
+  .media-head .chips .precio-dia {
+    margin-left: auto;
+  }
 }
 
+/* CARD GENERIC iOS */
+ion-card,
+.ios-card {
+  margin: 0;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+/* Coche */
+.card-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 4px 10px;
+}
+
+.card-media img {
+  width: 100%;
+  height: auto;
+  max-height: clamp(260px, 60vh, 520px);
+  object-fit: contain;
+  display: block;
+}
+
+@media (min-width: 992px) {
+  .grid-cal-img .card-media img {
+    max-height: clamp(270px, 47vh, 470px) !important;
+  }
+
+  .grid-cal-img .card-media {
+    padding: 8px !important;
+  }
+}
+
+/* CARD HEADER / CONTENT */
+ion-card-header {
+  padding: 12px 16px 10px;
+}
+
+ion-card-title {
+  font-weight: 800;
+  color: var(--negro);
+  font-size: 16px;
+}
+
+ion-card-subtitle {
+  opacity: 0.7;
+  font-size: 13px;
+}
+
+ion-card-content {
+  padding: 14px 16px 16px;
+}
+
+/* FORM ITEMS iOS */
+.ios-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --min-height: 48px;
+  margin-bottom: 6px;
+}
+
+/* DATETIME estilo iOS */
+.fechas-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0 6px;
+}
+
+ion-item.danger-datetime {
+  width: 100%;
+  --padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
+  display: block;
+}
+
+ion-item.danger-datetime .input-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+ion-item.danger-datetime ion-datetime {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  border-radius: 18px;
+  border: 1px solid var(--borde-suave);
+  --background: #ffffff;
+  --ion-text-color: var(--negro);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+  padding-bottom: 6px;
+}
+
+/* estado error */
+ion-item.danger-datetime ion-datetime.ion-invalid,
+ion-item.danger-datetime ion-datetime.datetime-error {
+  box-shadow:
+    0 0 0 2px rgba(239, 68, 68, 0.12),
+    0 10px 28px rgba(15, 23, 42, 0.08);
+}
+
+/* partes del calendario */
+ion-item.danger-datetime ion-datetime::part(calendar-month-year) {
+  padding: 8px 10px;
+}
+
+ion-item.danger-datetime ion-datetime::part(calendar-day) {
+  border-radius: 999px;
+  padding: 0;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+ion-item.danger-datetime ion-datetime::part(calendar-day):hover {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+ion-item.danger-datetime ion-datetime::part(calendar-day-active) {
+  border-radius: 999px;
+  background: var(--rojo) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 2px rgba(225, 29, 47, 0.22);
+}
+
+ion-item.danger-datetime ion-datetime::part(calendar-day-in-range) {
+  background: rgba(225, 29, 47, 0.08);
+}
+
+ion-item.danger-datetime ion-datetime::part(calendar-day-start),
+ion-item.danger-datetime ion-datetime::part(calendar-day-end) {
+  background: var(--rojo);
+  color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(225, 29, 47, 0.26);
+}
+
+ion-item.danger-datetime ion-datetime::part(calendar-day-today) {
+  outline: 2px solid rgba(225, 29, 47, 0.3);
+  outline-offset: 1px;
+  border-radius: 999px;
+}
+
+ion-item.danger-datetime ion-datetime::part(calendar-day-disabled) {
+  opacity: 0.4;
+  filter: grayscale(0.3);
+}
+
+/* Errores form */
+ion-note[color='danger'] {
+  display: block;
+  margin: 2px 0 4px 4px;
+  font-size: 12.5px;
+}
+
+/* CARD RESUMEN iOS */
 .card-resumen {
-    background: #fff;
-    border: 1px solid var(--borde-suave);
-    border-radius: 14px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, .05);
-    overflow: hidden;
-}
-
-.card-resumen ion-card-header {
-    padding: 14px 18px 10px;
-    border-bottom: 1px solid #f1f1f1;
-}
-
-.card-resumen ion-card-title {
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: var(--negro);
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
 }
 
 .card-resumen ion-card-content {
-    padding: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.resumen {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    .row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 15px;
-        color: var(--negro);
-    }
-
-    .label {
-        font-weight: 600;
-        opacity: 0.85;
-    }
-
-    .value {
-        font-weight: 700;
-    }
-
-    .divider {
-        height: 1px;
-        background: var(--borde-suave);
-        margin: 8px 0;
-    }
-
-    .total-row {
-        font-size: 1.1rem;
-        font-weight: 800;
-    }
-
-    .total {
-        color: var(--rojo);
-        font-size: 1.3rem;
-    }
-}
-
-.card-resumen .btn-reservar {
-    --border-radius: 12px;
-    --box-shadow: 0 8px 18px rgba(225, 29, 47, .25);
-    letter-spacing: .4px;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-top: 6px;
-}
-
-.card-resumen .btn-reservar[disabled] {
-    opacity: 1;
-    cursor: not-allowed;
-    --background: #f3b6bd;
-    --color: #fff;
-    --box-shadow: none;
-}
-
-@media (min-width: 768px) {
-    .grid-cal-img .card-resumen {
-        grid-column: 1 / -1;
-        max-width: none;
-        width: 100%;
-        margin: 0;
-    }
-}
-
-@media (min-width: 992px) {
-    .card-fechas {
-        max-width: 92%;
-        margin-left: auto;
-        margin-right: auto;
-    }
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .resumen-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    align-items: center;
-    padding-bottom: 4px;
-}
-
-.resumen-grid .col {
-    display: flex;
-    flex-direction: column;
-    background: #fafafa;
-    border: 1px solid var(--borde-suave);
-    border-radius: 12px;
-    padding: 14px 16px;
-    text-align: center;
-    transition: all 0.2s ease-in-out;
-}
-
-.resumen-grid .col:hover {
-    background: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.resumen-grid .label {
-    font-weight: 700;
-    color: #555;
-    font-size: 14px;
-    margin-bottom: 6px;
-}
-
-.resumen-grid .value {
-    font-weight: 800;
-    color: var(--negro);
-    font-size: 1.1rem;
-}
-
-.resumen-grid .value.total {
-    color: var(--rojo);
-    font-size: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  align-items: center;
 }
 
 @media (max-width: 480px) {
-    .resumen-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
+  .resumen-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
+.resumen-grid .col {
+  display: flex;
+  flex-direction: column;
+  background: #f9fafb;
+  border: 1px solid var(--borde-suave);
+  border-radius: 14px;
+  padding: 12px 14px;
+  text-align: center;
+}
+
+.resumen-grid .label {
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.resumen-grid .value {
+  font-weight: 800;
+  color: var(--negro);
+  font-size: 1.1rem;
+}
+
+.resumen-grid .value.total {
+  color: var(--rojo);
+  font-size: 1.25rem;
+}
+
+/* BOTÓN RESERVAR – pill iOS */
 .card-resumen .btn-reservar {
-    width: clamp(240px, 50%, 420px);
-    align-self: center;
-    margin-left: auto;
-    margin-right: auto;
+  --border-radius: 999px;
+  --box-shadow: 0 10px 24px rgba(225, 29, 47, 0.35);
+  letter-spacing: 0.4px;
+  font-weight: 700;
+  text-transform: none;
+  margin-top: 4px;
+  width: clamp(240px, 60%, 420px);
+  align-self: center;
 }
 
-@media (max-width: 520px) {
-    .card-resumen .btn-reservar {
-        width: 100%;
-    }
+.card-resumen .btn-reservar[disabled] {
+  opacity: 1;
+  cursor: not-allowed;
+  --background: #f3b6bd;
+  --color: #ffffff;
+  --box-shadow: none;
 }
 
-.grid-cal-img {
-    max-width: 1400px;
+/* CARD NOTAS */
+.card-notas {
+  margin-top: 4px;
+}
+
+.card-notas ion-card-title {
+  font-size: 15px;
+}
+
+.card-notas ion-textarea {
+  --background: #f9fafb;
+  --border-radius: 12px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --min-height: 90px;
+  --highlight-color-focused: var(--rojo);
+}
+
+/* AJUSTES DESKTOP DATETIME */
+@media (min-width: 992px) {
+  .grid-cal-img > .card-fechas {
+    max-height: clamp(440px, 64vh, 640px) !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .grid-cal-img > .card-fechas ion-card-header {
+    padding-top: 10px;
+    padding-bottom: 6px;
+  }
+
+  .grid-cal-img > .card-fechas ion-card-content {
+    padding-top: 8px;
+    overflow: auto;
+  }
+
+  .grid-cal-img > .card-fechas ion-datetime {
+    max-height: 360px;
     margin: 0 auto;
-    width: 100%;
-    padding: 0 12px;
-    box-sizing: border-box;
-}
+    transform-origin: top center;
+    transform: scale(0.95);
+  }
 
-.grid-cal-img ion-card,
-.col-media,
-.card-fechas,
-.card-resumen {
-    max-width: 100%;
-}
+  .grid-cal-img > .card-fechas ion-datetime::part(calendar-day) {
+    padding: 0.12rem 0.25rem;
+  }
 
-@media (min-width: 992px) {
-    .grid-cal-img>.card-fechas {
-        max-height: clamp(440px, 64vh, 640px) !important;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .grid-cal-img>.card-fechas ion-card-header {
-        padding-top: 10px;
-        padding-bottom: 6px;
-    }
-
-    .grid-cal-img>.card-fechas ion-card-content {
-        padding-top: 8px;
-        overflow: auto;
-    }
-
-    .grid-cal-img>.card-fechas ion-datetime {
-        max-height: 360px;
-        margin: 0 auto;
-        transform-origin: top center;
-        transform: scale(.95);
-    }
-
-    .grid-cal-img>.card-fechas ion-datetime::part(calendar-day) {
-        padding: 0.15rem .25rem;
-    }
-
-    .grid-cal-img>.card-fechas ion-datetime::part(calendar-month-year) {
-        padding: 6px 8px;
-    }
-}
-
-@media (min-width: 992px) {
-    .grid-cal-img .card-media img {
-        max-height: clamp(270px, 47vh, 470px) !important;
-    }
-
-    .grid-cal-img .card-media {
-        padding: 8px !important;
-    }
+  .grid-cal-img > .card-fechas ion-datetime::part(calendar-month-year) {
+    padding: 6px 8px;
+  }
 }

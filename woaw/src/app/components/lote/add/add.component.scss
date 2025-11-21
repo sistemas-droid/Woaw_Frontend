@@ -1,120 +1,268 @@
-.formulario-lote {
-  max-width: 1000px;
-  margin: 0 auto;
+/* ====== CARD CONTENEDOR LOTE (iOS) ====== */
+.form-lote-ios {
+  max-width: 900px;
+  margin: 12px auto 24px;
+  border-radius: 22px;
+  overflow: hidden;
+  --background: #ffffff;
+  box-shadow:
+    0 22px 40px rgba(15, 23, 42, 0.14),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.35);
 }
 
-ion-input {
-  --padding-start: 0px;
-  --padding-end: 0px;
-  border-bottom: 0.5px solid #c0c0c09f;
-  padding-bottom: 0.5px;
-  transition: border-color 0.3s ease;
+/* Header del card */
+.lote-header-ios {
+  padding: 16px 18px 10px;
 
-  &:focus-within {
-    border-bottom: 0.5px solid #e53935;
+  ion-card-title {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #111827;
+  }
+
+  ion-card-subtitle {
+    margin-top: 2px;
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 500;
   }
 }
 
-
-.preview-container {
+/* Botoncitos arriba en móvil */
+.top-actions-ios {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-  max-width: 100%;
-  position: relative;
+  justify-content: flex-end;
+  margin: 4px 4px 8px;
+}
 
-  div {
-    position: relative;
-    width: 80px;
-    height: 80px;
+.btn-outline-ios {
+  --border-radius: 999px;
+  --border-color: rgba(148, 163, 184, 0.8);
+  --color: #111827;
+  --background: #f3f4f6;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* ====== CAMPOS / INPUTS estilo iOS ====== */
+.field-ios {
+  margin-bottom: 14px;
+
+  ion-label[position="stacked"] {
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+
+    strong {
+      color: #ef4444;
+      font-weight: 700;
+    }
   }
 
-  img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 2px solid #ccc;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: block;
+  ion-input {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    --background: #f3f4f6;
+    --border-radius: 12px;
+    --color: #111827;
+    --placeholder-color: #9ca3af;
+    --highlight-color-focused: #ef4444;
+    border: 1px solid rgba(148, 163, 184, 0.7);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+
+    &:focus-within {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.35);
+    }
   }
 
-  .btn-eliminar-img {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    background-color: rgba(255, 0, 0, 0.85);
-    border: none;
-    border-radius: 50%;
-    color: white;
-    width: 20px;
-    height: 20px;
-    font-size: 14px;
-    text-align: center;
-    line-height: 20px;
-    cursor: pointer;
-    z-index: 10;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  ion-note {
+    margin-top: 4px;
+    font-size: 11px;
   }
 }
 
-.area-subida {
-  width: 80%;
-  height: 100px;
-  border: 2px dashed #e2d3d3;
-  background-color: #e3313100;
-  border-radius: 8px;
-  cursor: pointer;
-  position: relative;
+/* ====== Área de subida de imagen (iOS) ====== */
+.area-subida-ios {
+  width: 100%;
+  min-height: 110px;
+  border-radius: 14px;
+  border: 1.6px dashed rgba(148, 163, 184, 0.9);
+  background: #f9fafb;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background 0.3s;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+
+  ion-icon {
+    font-size: 34px;
+    color: #9ca3af;
+  }
 
   .oculto {
     opacity: 0;
     pointer-events: none;
   }
 
-  ion-icon {
-    font-size: 40px;
-    color: #d0dce7;
-  }
-
   &:hover {
-    background-color: #37373708;
-  }
-
-  @media (max-width: 1090px) {
-    width: 100%;
+    background: #f3f4f6;
+    border-color: #ef4444;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
   }
 }
 
+/* Preview imagen principal */
+.preview-container-ios {
+  position: relative;
+  display: inline-block;
 
-.mensaje-autenticacion {
-  font-size: 15px;
-  color: #222;
-  margin: 16px 0;
-  padding: 16px;
-  background-color: #fff4f0;
-  border-left: 5px solid #ff3c00;
-  border-radius: 8px;
+  img {
+    width: 96px;
+    height: 96px;
+    border-radius: 16px;
+    object-fit: cover;
+    border: 1px solid rgba(148, 163, 184, 0.9);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.22);
+    display: block;
+  }
+
+  .btn-eliminar-img-ios {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    border: none;
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 13px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.5);
+  }
 }
 
-.btn-acceso {
-  margin-top: 12px;
-  padding: 10px 20px;
+/* ====== Botón seleccionar ubicación ====== */
+.btn-ubicacion-ios {
+  --border-radius: 14px;
+  --background: #111827;
+  --background-activated: #0f172a;
+  --color: #f9fafb;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --box-shadow: 0 10px 20px rgba(15, 23, 42, 0.35);
+  font-weight: 600;
+  font-size: 13px;
+
+  ion-icon {
+    color: #f97373;
+  }
+}
+
+/* Lista de ubicaciones */
+.lista-ubicaciones-ios {
+  margin-top: 8px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f9fafb;
+}
+
+.lista-ubicaciones-ios ion-item {
+  --background: transparent;
+  --min-height: 46px;
+  --padding-start: 12px;
+  --inner-padding-end: 8px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  ion-label p {
+    margin: 0;
+    font-size: 13px;
+    color: #111827;
+  }
+}
+
+.btn-remove-ios {
+  --padding-start: 6px;
+  --padding-end: 6px;
+  --color: #ef4444;
+}
+
+/* ====== CTA inferior (Continuar / Crear lote) ====== */
+.boton-publicar-container-ios {
+  margin-top: 10px;
+}
+
+.btn-primary-ios {
+  --border-radius: 16px;
+  --background: linear-gradient(135deg, #ef4444, #b91c1c);
+  --background-activated: linear-gradient(135deg, #dc2626, #991b1b);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --box-shadow: 0 16px 32px rgba(239, 68, 68, 0.45);
+  font-weight: 700;
   font-size: 14px;
-  background: linear-gradient(to right, #ff3c00, #ff6600);
+  letter-spacing: 0.02em;
+  color: #ffffff;
+}
+
+/* ====== Mensaje cuando no está logueado ====== */
+.mensaje-autenticacion-ios {
+  max-width: 900px;
+  margin: 16px auto 0;
+  padding: 14px 14px 12px;
+  background: #fef2f2;
+  border-radius: 16px;
+  border: 1px solid rgba(248, 113, 113, 0.6);
+  box-shadow: 0 12px 26px rgba(248, 113, 113, 0.28);
+  font-size: 13px;
+  color: #7f1d1d;
+
+  p {
+    margin: 0;
+    line-height: 1.4;
+  }
+}
+
+.btn-acceso-ios {
+  margin-top: 10px;
+  padding: 8px 18px;
+  border-radius: 999px;
   border: none;
-  border-radius: 6px;
-  color: white;
+  background: #111827;
+  color: #f9fafb;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.4);
+}
 
-  &:hover {
-    transform: scale(1.05);
+/* ====== Responsive ====== */
+@media (max-width: 640px) {
+  .form-lote-ios {
+    border-radius: 18px;
+  }
+
+  .lote-header-ios {
+    padding: 14px 14px 8px;
+
+    ion-card-title {
+      font-size: 17px;
+    }
   }
 }

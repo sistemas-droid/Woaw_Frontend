@@ -1,7 +1,110 @@
+:host {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui,
+    sans-serif;
+}
+
+/* ===== HEADER TIPO HOJA iOS ===== */
+
+.tc-header-ios {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(16px);
+}
+
+.grabber-ios {
+  width: 36px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.9);
+  margin: 6px auto 4px;
+}
+
+.toolbar-ios {
+  --background: rgba(255, 255, 255, 0.92);
+  --color: #111827;
+  box-shadow: none;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+  min-height: 44px;
+  padding-inline: 8px;
+  display: flex;
+  align-items: center;
+}
+
+/* logo + texto */
+.logo-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  img {
+    height: 20px;
+    width: auto;
+    object-fit: contain;
+
+    @media (max-width: 768px) {
+      height: 16px;
+    }
+  }
+}
+
+.titulo-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* botón cerrar */
+.toolbar-ios ion-buttons[slot="end"] ion-button {
+  --padding-start: 6px;
+  --padding-end: 6px;
+  color: #6b7280;
+}
+
+.toolbar-ios ion-buttons[slot="end"] ion-button ion-icon {
+  font-size: 20px;
+}
+
+/* ===== CONTENT ===== */
+
+.tc-content-ios {
+  --background: linear-gradient(180deg, #f4f4f7 0, #ffffff 16%, #ffffff 100%);
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+}
+
+.pdf-wrap {
+  height: 70vh; /* cuadra con initialBreakpoint si la usas */
+  max-height: calc(100vh - 140px);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #f3f4f6;
+  box-shadow:
+    0 16px 30px rgba(15, 23, 42, 0.12),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+}
+
+.pdf-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* Si usas modal sheet con breakpoints */
+.modal-perfil::part(content) {
+  --height: 70vh;
+}
+
+/* ===== TEXTO (por si lo usas en otra vista) ===== */
+
 .texto-privacidad {
   p {
     text-align: justify;
-    color: black;
+    color: #111827;
     font-size: 14px;
     line-height: 1.6;
     margin-bottom: 12px;
@@ -9,81 +112,131 @@
 
   .titulo-seccion {
     color: #e53935;
-    font-weight: bold;
+    font-weight: 600;
     margin-top: 3px;
     text-align: left;
   }
 
   strong {
-    color: orange;
+    color: #f97316;
     font-style: italic;
     text-decoration: underline;
   }
 
   .resaltado {
-    color: orange;
+    color: #f97316;
     font-style: italic;
     text-decoration: underline;
-    font-weight: bold;
+    font-weight: 700;
   }
 }
 
+/* ===== FOOTER iOS ===== */
 
-.footer-toolbar {
+.tc-footer-ios {
+  --background: transparent;
+}
+
+.footer-toolbar-ios {
+  --background: rgba(255, 255, 255, 0.96);
+  border-top: 1px solid rgba(226, 232, 240, 0.9);
+  padding: 8px 10px;
+  box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.08);
+}
+
+.footer-row {
   display: flex;
-  justify-content: flex-end;
-  padding: 12px 16px;
-  background-color: #f9f9f9;
-  border-top: 1px solid #ddd;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
 
-  .footer-actions {
-    display: flex;
-    gap: 10px;
-  }
-
-  button {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 600;
-    font-size: 15px;
-    padding: 8px 14px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-
-    ion-icon {
-      font-size: 18px;
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  }
-
-  .btn-cancelar {
-    background-color: #e0e0e0;
-    color: #333;
-
-    &:hover:not(:disabled) {
-      background-color: #d6d6d6;
-    }
-  }
-
-  .btn-aceptar {
-    background-color: #ff1500;
-    color: #fff;
-
-    &:hover:not(:disabled) {
-      background-color: #ff4400;
-    }
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 
+.footer-leyenda {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+  flex: 1;
+  min-width: 180px;
 
+  @media (max-width: 480px) {
+    text-align: center;
+    font-size: 11px;
+  }
+}
 
+.footer-botones {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    justify-content: center;
+  }
+}
+
+.footer-botones button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+
+  ion-icon {
+    font-size: 17px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}
+
+/* cancelar gris iOS */
+.btn-cancelar {
+  background-color: #e5e7eb;
+  color: #374151;
+  box-shadow: 0 2px 6px rgba(148, 163, 184, 0.5);
+
+  &:hover:not(:disabled) {
+    background-color: #d1d5db;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+    box-shadow: 0 1px 3px rgba(148, 163, 184, 0.6);
+  }
+}
+
+/* aceptar estilo iOS rojo */
+.btn-aceptar {
+  background: linear-gradient(135deg, #ff3b30, #ff453a);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(248, 113, 113, 0.55);
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.03);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+    box-shadow: 0 4px 10px rgba(248, 113, 113, 0.6);
+  }
+}
+
+/* ===== OPCIONAL: header reutilizado de consentimiento ===== */
 
 .encabezado-consentimiento {
   display: flex;
@@ -106,145 +259,4 @@
     --padding-end: 0;
     margin: 0;
   }
-}
-
-
-
-
-.footer-toolbar {
-  padding: 10px 16px;
-  background-color: #f9f9f9;
-  border-top: 1px solid #ddd;
-
-  .footer-actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    width: 100%;
-
-    @media (max-width: 480px) {
-      flex-direction: column;
-      align-items: stretch;
-    }
-  }
-
-  .footer-leyenda {
-    font-size: 12px;
-    color: #666;
-    margin: 0;
-    flex: 1;
-    min-width: 200px;
-
-    @media (max-width: 480px) {
-      text-align: center;
-      margin-bottom: 8px;
-      font-size: 10px;
-    }
-  }
-
-  .footer-botones {
-    display: flex;
-    gap: 10px;
-    flex-shrink: 0;
-
-    @media (max-width: 480px) {
-      justify-content: center;
-    }
-  }
-
-  button {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 600;
-    font-size: 15px;
-    padding: 8px 14px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-
-    ion-icon {
-      font-size: 18px;
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  }
-
-  .btn-cancelar {
-    background-color: #e0e0e0;
-    color: #333;
-
-    &:hover:not(:disabled) {
-      background-color: #d6d6d6;
-    }
-  }
-
-  .btn-aceptar {
-    background-color: #ff1500;
-    color: #fff;
-
-    &:hover:not(:disabled) {
-      background-color: #ff4400;
-    }
-  }
-}
-
-
-
-
-.header-toolbar {
-  --background: #ffffff;
-  box-shadow: none;
-  padding: 0;
-}
-
-.header-flex {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 8px 16px;
-}
-
-.logo-titulo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  img {
-    height: 26px;
-    width: auto;
-
-    @media (max-width: 768px) {
-      height: 15px;
-    }
-  }
-
-}
-
-ion-button {
-  font-size: 14px;
-}
-
-
-
-.pdf-wrap {
-  height: 70vh;                  /* cuadra con initialBreakpoint: 0.7 */
-  max-height: calc(100vh - 140px);
-}
-.pdf-frame {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
-}
-
-/* Si usas el modal sheet con breakpoints */
-.modal-perfil::part(content) {
-  --height: 70vh;
 }

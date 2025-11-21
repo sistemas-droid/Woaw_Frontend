@@ -1,18 +1,18 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true">
+<ion-content mode="ios" [fullscreen]="true" class="page-lote-content">
 
   <ion-grid class="grid-container" *ngIf="isLoggedIn">
     <ion-row class="grid-row">
 
-
+      <!-- 📝 CARD FORMULARIO -->
       <ion-col size="12" size-md="8">
-        <ion-card class="formulario-lote">
+        <ion-card class="formulario-lote ios-card">
 
-          <ion-card-header class="card-header-custom">
+          <ion-card-header class="card-header-custom ios-card-header">
             <div class="header-content">
-              <ion-button fill="clear" color="dark" class="btn-back" (click)="regresar()">
-                <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+              <ion-button fill="clear" class="btn-back ios-back" (click)="regresar()" aria-label="Regresar">
+                <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
               </ion-button>
 
               <div class="logo-title-container">
@@ -20,9 +20,17 @@
                   <ion-icon name="car-sport-outline" class="logo-icon"></ion-icon>
                 </div>
                 <div class="title-container">
-                  <ion-card-title class="titulo-principal">Registra tu <br> agencia seminuevos / Lote</ion-card-title>
-                  <ion-card-subtitle class="subtitulo" *ngIf="posicion">Completa la información</ion-card-subtitle>
-                  <ion-card-subtitle class="subtitulo" *ngIf="!posicion">Agrega tu ubicación</ion-card-subtitle>
+                  <ion-card-title class="titulo-principal">
+                    Registra tu<br />
+                    agencia seminuevos / Lote
+                  </ion-card-title>
+
+                  <ion-card-subtitle class="subtitulo" *ngIf="posicion">
+                    Completa la información
+                  </ion-card-subtitle>
+                  <ion-card-subtitle class="subtitulo" *ngIf="!posicion">
+                    Agrega tu ubicación
+                  </ion-card-subtitle>
                 </div>
               </div>
             </div>
@@ -32,71 +40,118 @@
             <form [formGroup]="formLote" (ngSubmit)="registrarLote()">
 
               <ion-grid>
+                <!-- 🧩 Sección 1: datos generales -->
                 <ion-row *ngIf="posicion" class="seccion-formulario">
 
                   <ion-col size="12" size-md="6" class="campo-formulario">
-                    <ion-label position="stacked" class="etiqueta-campo">
-                      Nombre del Lote: <strong class="obligatorio">*</strong>
-                    </ion-label>
+                    <label class="etiqueta-campo">
+                      Nombre del Lote <strong class="obligatorio">*</strong>
+                    </label>
 
-                    <ion-input formControlName="nombre" placeholder="Ej. AUTOS EL RÁPIDO" maxlength="25"
-                      autocapitalize="characters" inputmode="text" (ionInput)="onNombreInput($event)"
-                      class="input-mayusculas"></ion-input>
+                    <ion-input
+                      formControlName="nombre"
+                      placeholder="Ej. AUTOS EL RÁPIDO"
+                      maxlength="25"
+                      autocapitalize="characters"
+                      inputmode="text"
+                      (ionInput)="onNombreInput($event)"
+                      class="input-mayusculas ios-input">
+                    </ion-input>
 
-                    <ion-note *ngIf="formLote.get('nombre')?.hasError('maxlength') && formLote.get('nombre')?.touched"
-                      color="danger" class="mensaje-error">
+                    <ion-note
+                      *ngIf="formLote.get('nombre')?.hasError('maxlength') && formLote.get('nombre')?.touched"
+                      color="danger"
+                      class="mensaje-error">
                       Máximo 25 caracteres.
                     </ion-note>
                   </ion-col>
 
                   <ion-col size="12" size-md="6" class="campo-formulario">
-                    <ion-label position="stacked" class="etiqueta-campo">Teléfono: <strong
-                        class="obligatorio">*</strong></ion-label>
-                    <ion-input type="number" formControlName="telefono" placeholder="Ej. 4421234567"
-                      class="input-estandar"></ion-input>
+                    <label class="etiqueta-campo">
+                      Teléfono <strong class="obligatorio">*</strong>
+                    </label>
+                    <ion-input
+                      type="number"
+                      formControlName="telefono"
+                      placeholder="Ej. 4421234567"
+                      class="input-estandar ios-input">
+                    </ion-input>
                   </ion-col>
 
                   <ion-col size="12" size-md="6" class="campo-formulario">
-                    <ion-label position="stacked" class="etiqueta-campo">Correo electrónico:
-                      <strong>(opcional)</strong></ion-label>
-                    <ion-input type="email" formControlName="email" placeholder="Ej. contacto@autosrapido.com"
-                      class="input-estandar"></ion-input>
+                    <label class="etiqueta-campo">
+                      Correo electrónico <strong>(opcional)</strong>
+                    </label>
+                    <ion-input
+                      type="email"
+                      formControlName="email"
+                      placeholder="Ej. contacto@autosrapido.com"
+                      class="input-estandar ios-input">
+                    </ion-input>
                   </ion-col>
 
                   <!-- Imagen principal -->
                   <ion-col size="12" size-md="6" class="campo-formulario">
-                    <ion-label position="stacked" class="etiqueta-campo">Imagen principal de : <strong
-                        class="obligatorio">*</strong></ion-label>
+                    <label class="etiqueta-campo">
+                      Imagen principal <strong class="obligatorio">*</strong>
+                    </label>
 
                     <div class="area-subida" (click)="seleccionarImagenPrincipal()">
-                      <ion-icon name="camera-outline" class="icono-camara"
-                        [class.oculto]="previewImagenPrincipal"></ion-icon>
+                      <ion-icon
+                        name="camera-outline"
+                        class="icono-camara"
+                        [class.oculto]="previewImagenPrincipal">
+                      </ion-icon>
+
                       <div *ngIf="previewImagenPrincipal" class="preview-container">
-                        <img [src]="previewImagenPrincipal" alt="Imagen principal" class="imagen-preview" />
-                        <button type="button" class="btn-eliminar-img"
-                          (click)="eliminarImagenPrincipal(); $event.stopPropagation()">✕</button>
+                        <img
+                          [src]="previewImagenPrincipal"
+                          alt="Imagen principal"
+                          class="imagen-preview" />
+                        <button
+                          type="button"
+                          class="btn-eliminar-img"
+                          (click)="eliminarImagenPrincipal(); $event.stopPropagation()">
+                          ✕
+                        </button>
                       </div>
                     </div>
                   </ion-col>
                 </ion-row>
 
-                <!-- Segunda sección: ubicación -->
+                <!-- 🧭 Sección 2: ubicación -->
                 <ion-row *ngIf="!posicion" class="seccion-formulario">
                   <ion-col size="12" size-md="6" class="campo-formulario">
-                    <ion-label position="stacked" class="etiqueta-campo">Ubicación del lote: *</ion-label>
-                    <ion-button expand="block" color="light" (click)="seleccionarUbicacion()" class="btn-ubicacion">
+                    <label class="etiqueta-campo">Ubicación del lote <strong class="obligatorio">*</strong></label>
+                    <ion-button
+                      expand="block"
+                      color="light"
+                      (click)="seleccionarUbicacion()"
+                      class="btn-ubicacion">
                       <ion-icon name="location-outline" slot="start"></ion-icon>
                       Seleccionar ubicación(es)
                     </ion-button>
                   </ion-col>
 
-                  <ion-col size="12" *ngIf="ubicacionesSeleccionadas.length > 0" class="lista-ubicaciones">
+                  <ion-col
+                    size="12"
+                    *ngIf="ubicacionesSeleccionadas.length > 0"
+                    class="lista-ubicaciones">
                     <ion-list>
-                      <ion-item *ngFor="let u of ubicacionesSeleccionadas; let i = index" class="item-ubicacion">
+                      <ion-item
+                        *ngFor="let u of ubicacionesSeleccionadas; let i = index"
+                        class="item-ubicacion">
                         <ion-label>
-                          <p class="direccion"><strong>{{ direccionesTraducidas[i] }}</strong></p>
+                          <p class="direccion">
+                            <strong>{{ direccionesTraducidas[i] }}</strong>
+                          </p>
                         </ion-label>
-                        <ion-button color="danger" fill="clear" slot="end" size="small" (click)="eliminarUbicacion(i)"
+                        <ion-button
+                          color="danger"
+                          fill="clear"
+                          slot="end"
+                          size="small"
+                          (click)="eliminarUbicacion(i)"
                           class="btn-eliminar-ubicacion">
                           <ion-icon name="close-outline" slot="icon-only"></ion-icon>
                         </ion-button>
@@ -106,24 +161,41 @@
                 </ion-row>
               </ion-grid>
 
+              <!-- 💾 Botones desktop / tablet -->
               <div class="botones-accion" *ngIf="tipoDispocitivo !== 'telefono'">
                 <div class="boton-publicar-container" *ngIf="posicion">
-                  <ion-button color="danger" expand="block" type="button" (click)="sigiente()" class="btn-continuar">
-                    <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+                  <ion-button
+                    color="danger"
+                    expand="block"
+                    type="button"
+                    (click)="sigiente()"
+                    class="btn-continuar ios-primary-btn">
                     Continuar
+                    <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
                   </ion-button>
                 </div>
 
                 <div class="boton-publicar-container" *ngIf="!posicion">
                   <div class="botones-fila">
-                    <ion-button color="dark" expand="block" type="button" class="btn-crear-lote" (click)="sigiente()">
+                    <ion-button
+                      color="medium"
+                      fill="outline"
+                      expand="block"
+                      type="button"
+                      class="btn-crear-lote ios-secondary-btn"
+                      (click)="sigiente()">
                       <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
                       Atrás
                     </ion-button>
-                    <ion-button color="danger" expand="block" type="submit"
-                      [disabled]="ubicacionesSeleccionadas.length === 0" class="btn-crear-lote">
-                      <ion-icon name="save-outline" slot="end"></ion-icon>
+
+                    <ion-button
+                      color="danger"
+                      expand="block"
+                      type="submit"
+                      [disabled]="ubicacionesSeleccionadas.length === 0"
+                      class="btn-crear-lote ios-primary-btn">
                       Crear Lote
+                      <ion-icon name="save-outline" slot="end"></ion-icon>
                     </ion-button>
                   </div>
                 </div>
@@ -134,17 +206,16 @@
         </ion-card>
       </ion-col>
 
+      <!-- 📋 CARD LATERAL INFO -->
       <ion-col size="12" size-md="4">
-        <ion-card class="card-informativa">
-
+        <ion-card class="card-informativa ios-side-card">
           <ion-card-content class="contenido-info">
             <div class="pasos-container">
-
               <div class="paso" [class.activo]="posicion">
                 <div class="numero-paso">1</div>
                 <div class="texto-paso">
                   <h3>Información General</h3>
-                  <p>Completa los datos de contacto e imagen del agencia seminuevos / Lote</p>
+                  <p>Completa los datos de contacto e imagen de tu agencia seminuevos / Lote.</p>
                 </div>
               </div>
 
@@ -154,7 +225,7 @@
                 <div class="numero-paso">2</div>
                 <div class="texto-paso">
                   <h3>Ubicación</h3>
-                  <p>Selecciona la ubicación de tu agencia seminuevos / Lote en el mapa</p>
+                  <p>Selecciona la ubicación de tu agencia seminuevos / Lote en el mapa.</p>
                 </div>
               </div>
             </div>
@@ -162,25 +233,29 @@
             <div class="tips-container">
               <ion-item lines="none" class="tip-item">
                 <ion-icon name="checkmark-circle-outline" slot="start" color="success"></ion-icon>
-                <ion-label class="tip-text">Puedes agregar múltiples ubicaciones</ion-label>
+                <ion-label class="tip-text">Puedes agregar múltiples ubicaciones.</ion-label>
               </ion-item>
+
               <ion-item lines="none" class="tip-item">
                 <ion-icon name="checkmark-circle-outline" slot="start" color="success"></ion-icon>
-                <ion-label class="tip-text">La imagen debe mostrar claramente tu agencia seminuevos / Lote</ion-label>
+                <ion-label class="tip-text">
+                  La imagen debe mostrar claramente tu agencia seminuevos / Lote.
+                </ion-label>
               </ion-item>
+
               <ion-item lines="none" class="tip-item">
                 <ion-icon name="checkmark-circle-outline" slot="start" color="success"></ion-icon>
-                <ion-label class="tip-text">Los campos marcados con * son obligatorios</ion-label>
+                <ion-label class="tip-text">Los campos marcados con * son obligatorios.</ion-label>
               </ion-item>
             </div>
           </ion-card-content>
         </ion-card>
-
       </ion-col>
 
     </ion-row>
   </ion-grid>
 
+  <!-- 🔐 No logueado -->
   <div *ngIf="!isLoggedIn" class="mensaje-autenticacion">
     Para publicar un <strong>Lote</strong>, primero debes iniciar sesión o crear una cuenta.
     <button class="btn-acceso" (click)="irAInicio()">Acceder</button>
@@ -189,7 +264,8 @@
   <app-footer *ngIf="tipoDispocitivo !== 'telefono'"></app-footer>
 </ion-content>
 
-<ion-footer *ngIf="tipoDispocitivo === 'telefono'" class="safe-footer footer_css_seguros">
+<!-- 📱 Footer iOS solo teléfono -->
+<ion-footer *ngIf="tipoDispocitivo === 'telefono'" class="safe-footer footer_css_seguros ios-footer">
   <ion-toolbar>
 
     <ion-buttons slot="start">
@@ -200,11 +276,22 @@
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button *ngIf="posicion" color="danger" fill="solid" type="button" (click)="sigiente()">
+      <ion-button
+        *ngIf="posicion"
+        color="danger"
+        fill="solid"
+        type="button"
+        (click)="sigiente()">
         Continuar
         <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="!posicion" [disabled]="formLote.invalid" color="danger" fill="solid" type="submit"
+
+      <ion-button
+        *ngIf="!posicion"
+        [disabled]="formLote.invalid"
+        color="danger"
+        fill="solid"
+        type="submit"
         (click)="registrarLote()">
         Crear
         <ion-icon name="save-outline" slot="end"></ion-icon>

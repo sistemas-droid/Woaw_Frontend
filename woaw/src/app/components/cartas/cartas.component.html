@@ -1,40 +1,19 @@
-<div class="auto-card" (click)="onCardClick(auto, $event)">
-  <!-- *ngIf="auto.estadoPublicacion !== 'pendiente'" -->
+<div class="card-ios" (click)="onCardClick(auto, $event)">
 
-  <!-- Botón de favorito -->
-  <ion-button
-    class="btn-favorito"
-    *ngIf="ubicacion !== 'favoritos' && auto.estadoVehiculo === 'disponible'"
-    (click)="agregarAFavoritos(auto._id); $event.stopPropagation()"
-    shape="round"
-    size="small"
-  >
-    <ion-icon
-      slot="icon-only"
-      [name]="autosFavoritosIds.has(auto._id) ? 'heart' : 'heart-outline'"
-    ></ion-icon>
-  </ion-button>
+  <!-- Botón de favorito iOS -->
+  <button class="fav-btn" *ngIf="ubicacion !== 'favoritos'" 
+          (click)="agregarAFavoritos(auto._id); $event.stopPropagation()">
+    <ion-icon [name]="autosFavoritosIds.has(auto._id) ? 'heart' : 'heart-outline'"></ion-icon>
+  </button>
 
-  <!-- Botón eliminar de favoritos -->
-  <ion-button
-    *ngIf="ubicacion === 'favoritos'"
-    class="btn-favorito-delete"
-    shape="round"
-    size="small"
-    (click)="eliminarDeFavoritos(auto._id); $event.stopPropagation()"
-  >
-    <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
-  </ion-button>
+  <!-- Botón borrar favoritos -->
+  <button class="fav-btn delete" *ngIf="ubicacion === 'favoritos'"
+          (click)="eliminarDeFavoritos(auto._id); $event.stopPropagation()">
+    <ion-icon name="trash-outline"></ion-icon>
+  </button>
 
-  <div
-    class="cinta-esquina"
-    [ngClass]="{'verde': auto.estadoVehiculo === 'disponible', 'rojo': auto.estadoVehiculo === 'vendido' }"
-    *ngIf="auto.estadoVehiculo != 'vendido'"
-  >
-    {{ auto.estadoVehiculo | titlecase }}
-  </div>
-
-  <div class="imagen-container">
+  <!-- Imagen -->
+  <div class="img-box">
     <img
       [src]="auto.imagenes[0]"
       [alt]="auto.modelo"
@@ -44,96 +23,34 @@
       [class.oculta]="!imagenCargada"
     />
 
-    <!-- Capa de oscurecimiento si está vendido -->
-    <div class="overlay" *ngIf="auto.estadoVehiculo === 'vendido'"></div>
-
-    <div class="loader" *ngIf="!imagenCargada">
-      <div class="spinner"></div>
-      <span>Cargando...</span>
+    <div class="loading" *ngIf="!imagenCargada">
+      <ion-spinner name="crescent"></ion-spinner>
     </div>
   </div>
 
-  <div class="contenido-auto">
-    <div
-      *ngIf="!FormatoPrecios"
-      [ngClass]="generalService.getClaseTipoBarra(auto.tipoVenta)"
-    ></div>
+  <!-- Info -->
+  <div class="info-box">
+    <h4 class="title">
+      {{ auto.marca }} • {{ auto.modelo }} {{ auto.anio }}
+    </h4>
 
-    <button
-      *ngIf="ubicacion === 'mis_autos' || ubicacion === 'mis_motos' || ubicacion === 'mis_camiones'"
-      class="estado-btn"
-      [ngClass]="{ 'disponible': auto.estadoVehiculo === 'disponible', 'vendido': auto.estadoVehiculo === 'vendido' }"
-      (click)="toggleEstado(auto, $event)"
-    >
-      <ion-icon
-        [name]="auto.estadoVehiculo === 'disponible' ? 'toggle-outline' : 'toggle-sharp'"
-        class="icono-switch"
-      ></ion-icon>
-      {{ auto.estadoVehiculo | titlecase }}
-    </button>
-
-    <p class="marca-modelo">
-      <strong>{{ auto.marca }}</strong> • {{ auto.modelo }} {{auto.anio}}
+    <!-- Precio -->
+    <p class="price" *ngIf="!FormatoPrecios">
+      {{ auto?.version?.length > 1 ?
+      ('Desde ' + (obtenerPrecioMinimo(auto.version) | currency:'MXN':'symbol':'1.0-0')) :
+      (auto.version?.[0]?.Precio | currency:'MXN':'symbol':'1.0-0') }}
     </p>
-    <!-- <div class="linea-divisora"></div> -->
 
-    <!-- Si hay más de una versión (carro nuevo): Mostrar "Desde" el menor precio -->
-    <h2
-      class="precio"
-      *ngIf="((auto?.version?.length || 0) > 1) && !FormatoPrecios"
-    >
-      Desde {{ obtenerPrecioMinimo(auto.version) |
-      currency:'MXN':'symbol':'1.0-0' }}
-    </h2>
-
-    <h2 class="precio" *ngIf="FormatoPrecios">
+    <p class="price" *ngIf="FormatoPrecios">
       {{ auto.precio.porDia | currency:'MXN':'symbol':'1.0-0' }}
-    </h2>
+    </p>
 
-    <!-- Si hay exactamente una versión (carro usado/seminuevo): Mostrar ese precio -->
-    <h2
-      class="precio"
-      *ngIf="((auto?.version?.length || 0) === 1) && !FormatoPrecios"
-    >
-      {{ auto?.version?.[0]?.Precio | currency:'MXN':'symbol':'1.0-0' }}
-    </h2>
-
-    <!-- Si es moto o vehículo sin "version" pero con "precio" directo -->
-    <h2 class="precio" *ngIf="auto.precio && !FormatoPrecios">
-      {{ auto.precio | currency:'MXN':'symbol':'1.0-0' }}
-    </h2>
-
-    <div class="detalles-auto">
-      <!-- Kilometraje -->
-      <div class="item-detalle" *ngIf="auto.kilometraje">
-        <ion-icon name="speedometer-outline"></ion-icon>
-        <span title="{{ auto.kilometraje }} km"
-          >{{ auto.kilometraje | number:'1.0-0' }} km</span
-        >
-      </div>
-
-      <!-- Transmisión -->
-      <div class="item-detalle" *ngIf="auto.transmision">
-        <ion-icon name="swap-horizontal-outline"></ion-icon>
-        <span title="{{ auto.transmision }}">{{ auto.transmision }}</span>
-      </div>
-
-      <!-- Ubicación ciudad -->
-      <div class="item-detalle" *ngIf="auto.ubicacion?.ciudad">
-        <ion-icon name="location-outline"></ion-icon>
-        <span title="{{ auto.ubicacion.ciudad }}"
-          >{{ auto.ubicacion.ciudad }}</span
-        >
-      </div>
+    <!-- Specs -->
+    <div class="specs">
+      <span *ngIf="auto.kilometraje">{{ auto.kilometraje | number }} km</span>
+      <span *ngIf="auto.transmision">{{ auto.transmision }}</span>
+      <span *ngIf="auto.ubicacion?.ciudad">{{ auto.ubicacion.ciudad }}</span>
     </div>
 
-    <br />
-
-    <p
-      *ngIf="!FormatoPrecios"
-      [ngClass]="generalService.getClaseTipo(auto.tipoVenta)"
-    >
-      {{ auto.tipoVenta }}
-    </p>
   </div>
 </div>

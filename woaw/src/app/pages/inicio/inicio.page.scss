@@ -1,19 +1,22 @@
+/* home.page.scss */
+
+/* Fondo general tipo iOS */
+ion-content {
+  --background: #f2f2f7; /* system grouped background */
+  position: relative;
+}
+
 .home-bg {
-  background-color: rgba(226, 226, 226, 0.7);
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   text-align: center;
-  height: 100%;
-  margin-top: 5rem !important;
+  min-height: 100%;
+  margin-top: 0 !important;
 }
 
-ion-content {
-  --background: #fff;
-  position: relative;
-}
-
+/* Capa global para splash */
 .home-bg::before {
   content: "";
   position: fixed;
@@ -25,168 +28,7 @@ ion-content {
   pointer-events: none;
 }
 
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-a.enlace-politica {
-  color: #f5410b;
-  font-weight: bold;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-
-.pantalla-dividida {
-  display: flex;
-  width: 100%;
-  min-height: 100%;
-  box-sizing: border-box;
-
-  .lado-izquierdo {
-    flex: 1.5;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-
-
-    video.video-fondo {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-      // opacity: 0.7;
-      pointer-events: none;
-    }
-
-
-    img {
-      max-width: 50%;
-      height: auto;
-      margin-bottom: 1rem;
-      opacity: 0;
-    }
-
-    .texto-izquierdo {
-      opacity: 0;
-
-      h2 {
-        font-size: 4rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-        margin-bottom: 10px;
-      }
-
-      p {
-        font-size: 1.2rem;
-        color: #ffffff;
-        font-weight: bold;
-      }
-    }
-
-    .animar-izquierda {
-      animation: aparecerIzquierda 1s ease forwards;
-    }
-
-    .animar-arriba {
-      animation: aparecerArriba 1s ease forwards;
-    }
-  }
-
-  .lado-derecho {
-    flex: 1;
-    background-color: #ffffff;
-    display: flex;
-
-    .container_vidrio {
-      display: flex;
-      overflow: visible;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 0px auto;
-      width: 100%;
-      max-width: 360px;
-      border-radius: 20px;
-      padding: 12px;
-      padding-bottom: 60px;
-      transform: translateY(0px);
-
-      @media (max-width: 768px) {
-        border-radius: 0px;
-        padding: 7px;
-        transform: translateY(5px) !important;
-      }
-
-      .link-registro {
-        margin-top: 0px;
-        font-size: 14px;
-        color: #3e3e3e;
-        text-align: center;
-
-        strong {
-          font-size: 15px;
-          cursor: pointer;
-          color: #ff0000;
-          text-decoration: underline;
-        }
-      }
-    }
-
-    .separador {
-      width: 100%;
-      height: 1px;
-      background-color: #ccc;
-      margin: 16px 0;
-    }
-  }
-}
-
-
-
-
-@keyframes aparecerIzquierda {
-  0% {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes aparecerArriba {
-  0% {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-
-
-
-
-
+/* ================= SPLASH ================= */
 
 .video-fondo2 {
   position: fixed;
@@ -201,7 +43,7 @@ a.enlace-politica {
 }
 
 .texto-titulo {
-  margin-top: 12vh;
+  margin-top: 14vh;
   text-align: center;
   max-width: 90%;
   margin-left: auto;
@@ -210,41 +52,41 @@ a.enlace-politica {
 
   h1 {
     color: #fff;
-    font-size: 40px;
-    font-weight: bolder;
+    font-size: clamp(26px, 6vw, 40px);
+    font-weight: 800;
     opacity: 0;
     animation: fadeDown 1s ease-out forwards;
+    letter-spacing: -0.02em;
   }
 }
 
-/* Imagen con efecto zoom suave */
 img[alt="Imagen ilustrativa"] {
   display: block;
-  margin: 2rem auto;
+  margin: 2rem auto 0;
   max-width: 320px;
   width: min(70vw, 320px);
   z-index: 2;
   opacity: 0;
-  transform: scale(0.9);
+  transform: scale(0.92);
   animation: zoomIn 1.2s ease-out 0.5s forwards;
 }
 
-/* Texto inferior con efecto fadeUp */
 .texto-contenido {
-  margin-top: 2rem;
+  margin-top: 1.6rem;
   text-align: center;
   color: #fff;
   max-width: 85%;
   margin-left: auto;
   margin-right: auto;
-  font-size: clamp(20px, 2.5vw, 22px);
-  font-weight: bolder;
+  font-size: clamp(16px, 2.5vw, 20px);
+  font-weight: 600;
   line-height: 1.6;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .55));
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.55));
   opacity: 0;
   animation: fadeUp 1s ease-out 1s forwards;
 }
 
+/* Animaciones splash */
 @keyframes fadeDown {
   from {
     opacity: 0;
@@ -281,6 +123,218 @@ img[alt="Imagen ilustrativa"] {
   }
 }
 
+/* ============== PANTALLA DIVIDIDA ============== */
+
+.pantalla-dividida {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
+  /* LADO IZQUIERDO */
+  .lado-izquierdo {
+    flex: 1.4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    color: #ffffff;
+
+    @media (max-width: 1024px) {
+      padding: 2rem 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      display: none; /* en iPhone dejamos solo el login */
+    }
+
+    video.video-fondo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    img {
+      max-width: 50%;
+      height: auto;
+      margin-bottom: 1rem;
+      opacity: 0;
+    }
+
+    .texto-izquierdo {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      opacity: 0;
+
+      h2 {
+        font-size: clamp(28px, 3.4vw, 40px);
+        font-weight: 800;
+        margin-bottom: 10px;
+        letter-spacing: -0.02em;
+        text-shadow: 0 4px 18px rgba(0, 0, 0, 0.65);
+      }
+
+      p {
+        font-size: clamp(14px, 1.6vw, 18px);
+        color: #f9fafb;
+        font-weight: 500;
+        text-shadow: 0 3px 14px rgba(0, 0, 0, 0.7);
+      }
+    }
+
+    .animar-izquierda {
+      animation: aparecerIzquierda 1s ease forwards;
+    }
+
+    .animar-arriba {
+      animation: aparecerArriba 1s ease forwards;
+    }
+  }
+
+  /* LADO DERECHO – LOGIN iOS */
+  .lado-derecho {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    background: #f2f2f7;
+
+    @media (max-width: 768px) {
+      padding: 8px 12px 20px;
+    }
+
+    .safe-area {
+      width: 100%;
+      max-width: 430px;
+      margin: 0 auto;
+      padding: max(16px, env(safe-area-inset-top)) 12px
+        max(16px, env(safe-area-inset-bottom));
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .container_vidrio {
+      width: 100%;
+      max-width: 380px;
+      margin: 4px auto 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+
+      /* MOBILE: que se vea pantalla nativa, sin card negra */
+      background: transparent;
+      border-radius: 24px;
+      padding: 4px 0 10px;
+      border: none;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+
+      @media (min-width: 769px) {
+        margin: 32px auto;
+        padding: 18px 18px 24px;
+        border-radius: 26px;
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        box-shadow:
+          0 18px 40px rgba(15, 23, 42, 0.22),
+          0 0 0 0.5px rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+
+      app-login,
+      app-registro,
+      app-resetpassword {
+        width: 100%;
+      }
+
+      .link-registro {
+        margin-top: 10px;
+        font-size: 13px;
+        color: #6b7280;
+        text-align: center;
+
+        strong {
+          font-size: 14px;
+          cursor: pointer;
+          color: #ff3b30;
+          font-weight: 700;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .separador {
+        width: 100%;
+        height: 1px;
+        background-color: #e5e7eb;
+        margin: 16px 0;
+      }
+    }
+  }
+}
+
+/* Acepto términos / políticas */
+a.enlace-politica {
+  color: #ff3b30;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+/* Animaciones lado izquierdo */
+@keyframes aparecerIzquierda {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes aparecerArriba {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= IMG FONDO MÓVIL ================= */
+
 .bg-img2 {
   display: block;
   width: 100vw;
@@ -288,39 +342,47 @@ img[alt="Imagen ilustrativa"] {
   height: auto;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  border-radius: 0;
+  border-radius: 18px;
   object-fit: cover;
   opacity: 1;
-  
+  margin-top: 18px;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.25);
+
+  @media (max-width: 540px) {
+    border-radius: 14px;
+  }
 }
-/* 💊 TABLET – corregido para NO pegarle al texto */
+
+/* 💊 TABLET – sin pisar texto */
 @media (max-width: 1024px) and (min-width: 821px) {
   .bg-img2 {
-    height: 300px;
+    height: 280px;
     object-fit: contain;
     transform: scale(0.9);
-    opacity: 0.95;
-
-    margin-top: 60px;   /* 🔥 la bajamos más */
+    opacity: 0.96;
+    margin-top: 60px;
   }
 }
 
 /* 📱 Tablet chica / phablet */
 @media (max-width: 820px) and (min-width: 541px) {
   .bg-img2 {
-    height: 250px;
-    transform: scale(0.85);
+    height: 240px;
+    transform: scale(0.9);
     object-fit: contain;
-
-    margin-top: 70px;   /* 🔥 aquí EL FIX CLAVE */
+    margin-top: 65px;
   }
 }
-/* 📱 MÓVIL – subir un poquito la imagen */
+
+/* 📱 MÓVIL – app feel, no landing */
 @media (max-width: 540px) {
   .bg-img2 {
-    margin-top: -20px;    /* 🔥 aquí la subimos */
-    height: 200px;         /* controlamos el tamaño */
+    margin-top: -10px;
+    height: 190px;
     object-fit: contain;
-    transform: scale(0.95); /* leve ajuste para que no se vea atascada */
+    transform: scale(0.96);
   }
 }
+
+/* 🌙 Dark mode general */
+

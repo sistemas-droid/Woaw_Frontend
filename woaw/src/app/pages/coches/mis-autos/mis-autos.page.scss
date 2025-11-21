@@ -1,93 +1,258 @@
-.mensaje-vacio {
-  text-align: center;
-  margin-top: 25vh;
-  color: var(--ion-color-medium);
-  font-size: 1.1rem;
+/* ============================= */
+/*   BASE / FONDO                */
+/* ============================= */
+.contenido-ios {
+  --background: #f2f2f7;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+/* ============================= */
+/*   HEADER iOS                  */
+/* ============================= */
+.header-ios {
+  --background: rgba(249, 249, 249, 0.94);
+  --border-color: rgba(0, 0, 0, 0.08);
+  --color: #111827;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 0.33px solid var(--border-color);
+  padding-inline: 8px;
+  min-height: 52px;
+}
+
+.btn-back-ios {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(0, 0, 0, 0.04);
+  color: #007aff;
+  font-size: 14px;
+  font-weight: 500;
 
   ion-icon {
-    font-size: 48px;
-    margin-bottom: 12px;
+    font-size: 18px;
+  }
+
+  span {
+    transform: translateY(-0.5px);
+  }
+
+  &:active {
+    background: rgba(0, 0, 0, 0.08);
   }
 }
 
-.buscador-navbar {
-  --border-radius: 12px;
-  --background: #1e1e1e;
-  --color: #fff;
-  --placeholder-color: #a0a0a0;
-  --icon-color: #a0a0a0;
+.logo-ios {
+  height: 22px;
+  width: auto;
+}
+
+/* Searchbar */
+.search-toolbar-ios {
+  --background: rgba(249, 249, 249, 0.94);
+  border-bottom: 0.33px solid rgba(0, 0, 0, 0.04);
+  padding-inline: 8px;
+}
+
+.buscador-navbar-ios {
   width: 100%;
-  max-width: 480px;
-  margin-left: auto;
-  margin-right: 8px;
+  max-width: 520px;
+  margin: 6px auto 8px;
+  --background: #e5e5ea;
+  --color: #111827;
+  --placeholder-color: #8e8e93;
+  --icon-color: #8e8e93;
+  --border-radius: 12px;
+  --cancel-button-color: #007aff;
 }
 
 @media (max-width: 768px) {
-  .buscador-navbar {
-    max-width: 260px;
-    height: 38px;
-    --min-height: 36px;
+  .buscador-navbar-ios {
+    max-width: 100%;
+    margin-inline: 0;
     --padding-start: 8px;
     --padding-end: 8px;
     font-size: 14px;
   }
+}
 
-  ion-toolbar[color='dark'] {
-    min-height: 52px;
+/* ============================= */
+/*   SEGMENT iOS                 */
+/* ============================= */
+.segment-woaw-ios {
+  margin: 6px 12px 4px;
+  border-radius: 999px;
+  padding: 3px;
+  background: #e5e5ea;
+
+  --background: transparent;
+  --indicator-color: #ffffff;
+  --indicator-height: 28px;
+  --color: #3c3c43;
+  --color-checked: #ffffff;
+}
+
+.segment-woaw-ios ion-segment-button {
+  text-transform: none;
+  font-weight: 600;
+  font-size: 13px;
+  min-height: 32px;
+  --color-checked: #007aff;
+}
+
+/* ============================= */
+/*   CATÁLOGO – GRID iOS         */
+/* ============================= */
+.contenedor-catalogo-ios {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 12px 20px;
+}
+
+.catalogo-autos-ios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 10px;
   }
 
-  .perfil-header img {
-    width: 64px;
+  @media (max-width: 540px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 
-  .perfil-header button {
-    scale: 0.9;
+  /* host de la carta */
+  app-cartas {
+    display: block;
   }
 }
 
-.perfil-header {
+/* ============================= */
+/*   EMPTY STATE – iOS           */
+/* ============================= */
+.mensaje-vacio-ios {
+  text-align: center;
+  margin-top: 18vh;
+  color: #6b7280;
+  font-size: 0.95rem;
+  padding: 0 24px 32px;
+
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 8px;
+
+  ion-icon {
+    font-size: 52px;
+    margin-bottom: 4px;
+    color: #d1d5db;
+  }
+
+  p {
+    margin: 0;
+    max-width: 300px;
+    line-height: 1.45;
+    font-weight: 500;
+  }
 }
 
-ion-segment {
-  --background: transparent;
-  --color: #000;
-  --color-checked: #e11b22;
-  --indicator-color: #e11b22;
-  --indicator-height: 4px;
-  margin-top: 12px;
+/* ============================= */
+/*   PAGINACIÓN – iOS            */
+/* ============================= */
+.contenedor-paginacion-ios {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+  padding-bottom: 10px;
+}
+
+.titulo-paginacion-ios {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #6b7280;
+}
+
+.paginacion-scroll-ios {
+  width: 100%;
   display: flex;
   justify-content: center;
-  gap: 8px;
-  padding: 6px 0;
+  overflow-x: auto;
+  padding-bottom: 4px;
+
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.9);
+    border-radius: 999px;
+  }
 }
 
-ion-segment-button {
-  font-weight: 800;
-  font-size: 1.05rem;
-  letter-spacing: 0.5px;
-  color: #000;
+.paginacion-ios {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 6px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 10px 22px rgba(15, 23, 42, 0.16),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+}
+
+/* Botón */
+.pagina-ios {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
   background: transparent;
   border: none;
-  transition: color 0.25s ease, transform 0.2s ease;
 
-  &.segment-button-checked {
-    color: #e11b22;
-    transform: scale(1.04);
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.16s ease;
+
+  &:disabled { opacity: 0.35; }
+
+  &:not(.activa):hover:not(:disabled) {
+    background: rgba(148, 163, 184, 0.16);
+    transform: translateY(-1px);
   }
 
-  &:hover {
-    color: #e11b22;
-  }
-
-  &:focus-visible {
-    outline: none;
+  &.activa {
+    background: #ff3b30;
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(255, 59, 48, 0.55);
+    transform: translateY(-1px);
   }
 }
 
-ion-segment-button,
-ion-segment-button * {
-  --ion-color-primary: #e11b22 !important;
+.ellipsis-ios {
+  padding: 0 6px;
+  font-size: 14px;
+  color: #9ca3af;
 }

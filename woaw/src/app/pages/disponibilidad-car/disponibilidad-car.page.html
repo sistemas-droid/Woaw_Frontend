@@ -1,23 +1,30 @@
-<ion-header>
-  <ion-toolbar color="dark">
+<ion-header class="ios-header">
+  <ion-toolbar class="ios-toolbar" mode="ios">
     <ion-buttons slot="start">
-      <div class="perfil-header">
-        <button class="btn-regresar" (click)="volver()" aria-label="Regresar">
-          <ion-icon name="arrow-back-outline"></ion-icon>
-        </button>
-        <img src="/assets/icon/logo4.png" alt="WOAW" class="logo" />
-      </div>
+      <ion-button fill="clear" class="ios-back" (click)="volver()" aria-label="Regresar">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
 
+    <div class="ios-title-wrap" *ngIf="coche">
+      <img src="/assets/icon/logo4.png" alt="WOAW" class="logo-mini" />
+      <div class="ios-title-stack">
+        <h1 class="ios-title">Disponibilidad</h1>
+        <p class="ios-subtitle">
+          {{ coche?.marca }} {{ coche?.modelo }}
+        </p>
+      </div>
+    </div>
+
     <ion-buttons slot="end">
-      <ion-button (click)="cerrar()" aria-label="Cerrar">
-        <ion-icon name="close-outline"></ion-icon>
+      <ion-button fill="clear" class="ios-close" (click)="cerrar()" aria-label="Cerrar">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="disp-content">
+<ion-content mode="ios" [fullscreen]="true" class="disp-content">
   <ion-grid class="disp-grid">
     <div class="head-wrap" *ngIf="coche">
       <h1 class="page-title">
@@ -51,8 +58,12 @@
                 Inactivo
               </span>
 
-              <ion-toggle mode="md" class="woaw-toggle" [checked]="estadoActual === 'disponible'"
-                [disabled]="!esPropietario" aria-label="Cambiar visibilidad"
+              <ion-toggle
+                mode="ios"
+                class="woaw-toggle"
+                [checked]="estadoActual === 'disponible'"
+                [disabled]="!esPropietario"
+                aria-label="Cambiar visibilidad"
                 (ionChange)="estadoActual = ($event.detail.checked ? 'disponible' : 'inactivo'); onEstadoChange()">
               </ion-toggle>
 
@@ -95,24 +106,44 @@
               <ion-row class="availability-row">
                 <ion-col size="12" size-lg="7">
                   <div class="editor-bar">
-                    <ion-segment [(ngModel)]="modoSeleccion" (ionChange)="resetSelection()" [disabled]="!esPropietario">
-                      <ion-segment-button value="dia"><ion-label>Día</ion-label></ion-segment-button>
-                      <ion-segment-button value="rango"><ion-label>Rango</ion-label></ion-segment-button>
+                    <ion-segment
+                      mode="ios"
+                      [(ngModel)]="modoSeleccion"
+                      (ionChange)="resetSelection()"
+                      [disabled]="!esPropietario">
+                      <ion-segment-button value="dia">
+                        <ion-label>Día</ion-label>
+                      </ion-segment-button>
+                      <ion-segment-button value="rango">
+                        <ion-label>Rango</ion-label>
+                      </ion-segment-button>
                     </ion-segment>
                   </div>
 
                   <ion-item class="center-item danger-datetime" lines="none">
                     <ion-label position="stacked" class="sr-only">Calendario</ion-label>
-                    <ion-datetime *ngIf="calendarMounted" presentation="date" [multiple]="modoSeleccion === 'rango'"
-                      [firstDayOfWeek]="1" [(ngModel)]="rangeUnified" (ionChange)="onUnifiedChange($event)"
-                      [highlightedDates]="highlightedCombined" [min]="minDate" [max]="maxDate"
+                    <ion-datetime
+                      *ngIf="calendarMounted"
+                      presentation="date"
+                      [multiple]="modoSeleccion === 'rango'"
+                      [firstDayOfWeek]="1"
+                      [(ngModel)]="rangeUnified"
+                      (ionChange)="onUnifiedChange($event)"
+                      [highlightedDates]="highlightedCombined"
+                      [min]="minDate"
+                      [max]="maxDate"
                       [disabled]="!esPropietario">
                     </ion-datetime>
                   </ion-item>
 
                   <div class="clear-actions">
-                    <ion-button size="small" fill="solid" color="danger" (click)="clearExcepciones()"
-                      [disabled]="!esPropietario" aria-label="Limpiar calendario">
+                    <ion-button
+                      size="small"
+                      fill="solid"
+                      color="danger"
+                      (click)="clearExcepciones()"
+                      [disabled]="!esPropietario"
+                      aria-label="Limpiar calendario">
                       <ion-icon name="trash-outline" slot="start"></ion-icon>
                       Limpiar calendario
                     </ion-button>
@@ -123,14 +154,20 @@
                   <div class="controls-panel">
 
                     <div class="preset-row" role="group" aria-label="Acciones rápidas de bloqueo">
-                      <ion-button size="small" [fill]="activePreset === 'week' ? 'solid' : 'outline'"
-                        (click)="applyPreset('week')" [disabled]="!esPropietario">
+                      <ion-button
+                        size="small"
+                        [fill]="activePreset === 'week' ? 'solid' : 'outline'"
+                        (click)="applyPreset('week')"
+                        [disabled]="!esPropietario">
                         <ion-icon name="calendar-number-outline" slot="start"></ion-icon>
                         Esta semana
                       </ion-button>
 
-                      <ion-button size="small" [fill]="activePreset === 'month' ? 'solid' : 'outline'"
-                        (click)="applyPreset('month')" [disabled]="!esPropietario">
+                      <ion-button
+                        size="small"
+                        [fill]="activePreset === 'month' ? 'solid' : 'outline'"
+                        (click)="applyPreset('month')"
+                        [disabled]="!esPropietario">
                         <ion-icon name="calendar-outline" slot="start"></ion-icon>
                         Este mes
                       </ion-button>
@@ -138,9 +175,13 @@
 
                     <div class="weekday-block">
                       <div class="weekday-list" aria-label="Días fijos no disponibles">
-                        <ion-chip *ngFor="let d of weekDays" class="weekday-chip full"
-                          [class.active]="isWeekdaySelected(d.value)" (click)="toggleWeekday(d.value)"
-                          [disabled]="!esPropietario" [attr.aria-pressed]="isWeekdaySelected(d.value)">
+                        <ion-chip
+                          *ngFor="let d of weekDays"
+                          class="weekday-chip full"
+                          [class.active]="isWeekdaySelected(d.value)"
+                          (click)="toggleWeekday(d.value)"
+                          [disabled]="!esPropietario"
+                          [attr.aria-pressed]="isWeekdaySelected(d.value)">
                           <ion-label>{{ d.label }}</ion-label>
                         </ion-chip>
                       </div>
@@ -153,10 +194,16 @@
 
                           <div slot="content">
                             <ion-list class="weekday-menu" lines="full">
-                              <ion-item button detail="false" *ngFor="let d of weekDays"
+                              <ion-item
+                                button
+                                detail="false"
+                                *ngFor="let d of weekDays"
                                 (click)="toggleWeekday(d.value)">
-                                <ion-checkbox slot="start" [checked]="isWeekdaySelected(d.value)"
-                                  [disabled]="!esPropietario" (ionChange)="toggleWeekday(d.value)">
+                                <ion-checkbox
+                                  slot="start"
+                                  [checked]="isWeekdaySelected(d.value)"
+                                  [disabled]="!esPropietario"
+                                  (ionChange)="toggleWeekday(d.value)">
                                 </ion-checkbox>
                                 <ion-label>{{ d.label }}</ion-label>
                               </ion-item>
@@ -197,12 +244,17 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
   <app-footer></app-footer>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="save-fab">
-    <ion-button class="fab-extended" color="danger" shape="round"
+    <ion-button
+      class="fab-extended"
+      color="danger"
+      shape="round"
       [disabled]="!esPropietario || guardando || errores.length > 0 || !hasChanges"
-      [class.enabled]="esPropietario && !guardando && errores.length === 0 && hasChanges" (click)="guardar()"
+      [class.enabled]="esPropietario && !guardando && errores.length === 0 && hasChanges"
+      (click)="guardar()"
       aria-label="Guardar cambios">
 
       <ion-spinner *ngIf="guardando" name="crescent"></ion-spinner>
@@ -210,6 +262,4 @@
       <span class="fab-text" *ngIf="!guardando">¡GUARDAR!</span>
     </ion-button>
   </ion-fab>
-
-
 </ion-content>

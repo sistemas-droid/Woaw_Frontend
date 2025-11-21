@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true">
+<ion-content class="ios-cotizar" [fullscreen]="true">
   <app-spinner *ngIf="mostrar_spinnet"></app-spinner>
 
   <div class="fondo-seguros">
@@ -11,7 +11,7 @@
   <section class="carta_manual_cotizar">
     <div class="carta_manual_cotizar__contenido">
       <div class="header_manual_cotizar">
-        <button (click)="atras()">
+        <button (click)="atras()" aria-label="Regresar">
           <ion-icon name="arrow-back-outline"></ion-icon>
         </button>
         <h1 class="titulo_manual_cotizar">Cotiza tu {{tipo_vehiculo}}</h1>
@@ -83,8 +83,6 @@
 
             <ng-content *ngIf="marcador === 1 && tipo_vehiculo === 'Moto'">
               <ion-col size="12" size-md="12" class="col-field">
-
-
                 <div class="field">
                   <label for="marca">Selecciona la marca <span>*</span></label>
 
@@ -133,7 +131,6 @@
                 </div>
               </ion-col>
 
-              <!-- SELECT de modelo (visible por defecto) -->
               <ion-col size="12" size-md="6" class="col-field" *ngIf="!showOtroModelo && tipo_vehiculo !== 'ERT'">
                 <div class="field">
                   <label for="modelo">Selecciona el modelo <span>*</span></label>
@@ -156,7 +153,6 @@
                 </div>
               </ion-col>
 
-              <!-- SELECT de modelo (visible por defecto) -->
               <ion-col size="12" size-md="6" class="col-field" *ngIf="!showOtroModelo && tipo_vehiculo === 'ERT'">
                 <div class="field">
                   <label for="modelo">Selecciona el modelo <span>*</span></label>
@@ -202,7 +198,6 @@
                   <p *ngIf="analizaForm('version')" class="error">Escribe una Versión</p>
                 </div>
               </ion-col>
-
 
               <ion-col size="12" size-md="6" class="col-field">
                 <div class="field">
@@ -278,7 +273,6 @@
               </ion-col>
 
             </ng-content>
-
 
           </ion-row>
         </ion-grid>

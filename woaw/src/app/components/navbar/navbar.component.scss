@@ -1,401 +1,243 @@
-ion-toolbar {
-  height: 72px;
-  --min-height: 72px;
-  padding: 0 16px;
+/* ===========================
+   BASE HEADER / TOOLBAR iOS
+   =========================== */
 
+ion-header {
+  --background: transparent;
+  --border-color: transparent;
+}
+
+/* toolbar tipo iOS: blur, claro, sombra suave */
+.ios-toolbar {
+  --background: rgba(249, 249, 252, 0.94);
+  --color: #111827;
+  --border-color: rgba(0, 0, 0, 0.06);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.06);
+
+  padding-inline: 12px;
+  min-height: 58px;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: space-between;
+}
 
-
-  ion-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    text-align: center;
-    width: 100%;
-  }
-
-  @media (max-width: 768px) {
-    height: 55px;
-    --min-height: 55px;
-    padding: 0 8px;
-
-    ion-buttons {
-      padding: 0;
-      margin: 0;
-    }
-
-    ion-button {
-      margin: 0;
-      padding: 0 6px;
-    }
+@media (min-width: 768px) {
+  .ios-toolbar {
+    min-height: 64px;
+    padding-inline: 18px;
   }
 }
 
+/* LOGO + BUSCADOR START */
 
-
-
-
-
-
-
-
-
-
-
-
-
-.titulo-movil {
-  font-family: 'Poppins', sans-serif;
-  font-size: 6px;
-  font-weight: 900;
-  color: #d3d0d3;
-  letter-spacing: 0.5px;
-  margin-left: 5px;
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-
-.submenu-coches {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  background: #1a1a1a;
-  border-radius: 8px;
-  padding: 10px;
-  z-index: 999;
-  top: 60px;
-  right: 160px;
-
-  ion-button {
-    --color: white;
-    --background: transparent;
-    --padding-start: 10px;
-    --padding-end: 10px;
-    font-size: 14px;
-
-    &:hover {
-      --background: #2a2a2a;
-    }
-  }
-}
-
-ion-buttons[slot="end"] {
+.logo_content {
   display: flex;
   align-items: center;
-  gap: 2px;
-  flex-wrap: nowrap;
-
-  ion-button {
-    white-space: nowrap;
-    font-size: 8px;
-    height: 2px;
-    padding: 0 5px;
-
-    ion-icon {
-      font-size: 18px;
-    }
-  }
-
-  .activo {
-    font-weight: bold;
-    color: #ff0400 !important;
-    border-bottom: 2px solid #ff0400;
-    transition: all 0.2s ease-in-out;
-    border-radius: 0;
-
-    ion-icon {
-      color: #fb2b28;
-    }
-  }
-
-  .usuario-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: 5px;
-    padding-left: 5px;
-    cursor: pointer;
-
-    .icono-bandera {
-      width: 20px;
-      height: auto;
-      border-radius: 2px;
-    }
-
-    .contenedor-nombre {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .icono-user {
-      font-size: 12px;
-      color: #ffffff;
-
-      @media (max-width: 820px) {
-        font-size: 10px;
-      }
-    }
-
-    .nombre-usuario {
-      font-size: 9px;
-      color: #fff;
-      white-space: nowrap;
-
-      @media (max-width: 820px) {
-        font-size: 7px;
-      }
-    }
-  }
-
-
+  gap: 8px;
 }
 
-.btn-vender {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  background: linear-gradient(90deg, #ff0000, #ff0000);
-  color: #fff;
-  font-weight: 600;
-  font-size: 9px;
-  padding: 0 16px;
-  height: 38px;
-
-  border: none;
-  border-radius: 12px;
+.logo_content .logo {
+  width: clamp(64px, 9vw, 92px);
+  height: auto;
+  object-fit: contain;
   cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.4s ease, transform 0.2s ease;
-  animation: pulse 1.6s infinite;
-  box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.2);
-
-  ion-icon {
-    font-size: 18px;
-    margin-right: 8px;
-    display: flex;
-    align-items: center;
-  }
-
-  &:hover {
-    background: linear-gradient(90deg, #ff0000, #000000);
-    transform: scale(1.03);
-    animation: none;
-  }
-
 }
 
-.activo-btn-new {
-  position: relative;
-  background: transparent;
-  animation: none;
-  overflow: hidden;
-  border-radius: 0px;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    height: 2px;
-    width: 100%;
-    background: linear-gradient(270deg, transparent, #f40303, transparent);
-    animation: animateGlow 1.5s linear infinite;
-    animation-delay: 0.5s;
-  }
+/* Botón lupa móvil */
+.btn-buscar {
+  --padding-start: 4px;
+  --padding-end: 4px;
+  --background: transparent;
+  --color: #111827;
 }
 
-@keyframes animateGlow {
-  0% {
-    right: -100%;
-  }
-
-  50% {
-    right: 50%;
-  }
-
-  100% {
-    right: 100%;
-  }
+.btn-buscar ion-icon {
+  font-size: 22px;
 }
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(255, 77, 0, 0.5);
-  }
-
-  70% {
-    box-shadow: 0 0 0 8px rgba(255, 77, 0, 0);
-  }
-
-  100% {
-    box-shadow: 0 0 0 0 rgba(255, 77, 0, 0);
-  }
-}
-
-
 
 /* ===========================
-   NAVBAR BASE
+   SEARCHBAR ESTILO iOS
    =========================== */
-.navbar,
-.custom-toolbar,
-ion-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.custom-toolbar,
-ion-toolbar.custom-toolbar {
-  position: relative;
-  min-height: 56px;
-}
 
 .buscador-container {
   position: relative;
   display: flex;
   align-items: center;
-  margin-left: 5px;
+  margin-left: 8px;
   flex: 0 1 auto;
   min-width: 0;
-  width: clamp(140px, 24vw, 320px);
-  transition: width .28s ease;
+  width: clamp(150px, 26vw, 320px);
+  transition: width 0.25s ease;
+}
 
-  &:hover,
-  &:focus-within {
-    width: clamp(200px, 34vw, 460px);
+.buscador-container:focus-within {
+  width: clamp(200px, 36vw, 460px);
+}
+
+@media (max-width: 820px) {
+  .buscador-container {
+    width: clamp(140px, 45vw, 260px);
   }
 
-  /* que pueda reducirse antes de desbordar */
-  flex: 0 1 auto;
-  min-width: 0;
-
-  /* tamaños más chicos */
-  width: clamp(120px, 20vw, 240px);
-  transition: width .30s ease;
-
-  /* expandir mientras se usa, pero moderado */
-  &:hover,
-  &:focus-within {
-    width: clamp(160px, 32vw, 360px);
+  .buscador-container:focus-within {
+    width: clamp(180px, 70vw, 310px);
   }
+}
 
-  /* MOBILE: compacto real */
-  @media (max-width: 820px) {
-    width: clamp(120px, 46vw, 220px);
+.buscador-container ion-searchbar {
+  --height: 34px;
+  --background: #f2f2f7;
+  --color: #111827;
+  --placeholder-color: #9ca3af;
+  --icon-color: #9ca3af;
+  --clear-button-color: #9ca3af;
+  --box-shadow: none;
+  --border-radius: 999px;
 
-    &:hover,
-    &:focus-within {
-      width: clamp(150px, 72vw, 280px);
-    }
-  }
-
-  ion-searchbar {
-    --height: 34px;
-    --background: rgba(12, 12, 12, .92);
-    --color: #fff;
-    --placeholder-color: #a7a7a7;
-    --icon-color: #e9e9e9;
-    --clear-button-color: #e9e9e9;
-    --box-shadow: none;
-    border: 1px solid #2f2f2f;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: border-color .2s ease, box-shadow .2s ease;
-
-    /* tipografía e interior más compactos */
-    .searchbar-input {
- 
-      font-size: 13px !important;
-      line-height: 1.2;
-      padding-inline: 32px 28px !important;
- 
-    }
-
-    /* iconos más chicos y alineados */
-    .searchbar-search-icon {
-      font-size: 16px;
-      top: 8px;
-      left: 8px;
- 
-    }
-
-    .searchbar-clear-button {
-      width: 20px;
-      height: 20px;
-      right: 4px;
-      border-radius: 6px;
-    }
-  }
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.55);
 }
 
 .buscador-container:focus-within ion-searchbar {
-  border-color: #ff2121;
-  box-shadow: 0 0 0 1px rgba(255, 33, 33, .18);
+  border-color: #ff3b30;
+  box-shadow: 0 0 0 1px rgba(255, 59, 48, 0.25);
 }
 
-.btn-buscar {
+/* ===========================
+   BOTONES DERECHA (DESKTOP)
+   =========================== */
+
+ion-buttons[slot='end'] {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+ion-buttons[slot='end'] ion-button {
+  --background: transparent;
   --padding-start: 6px;
   --padding-end: 6px;
-  --background: transparent;
-  --box-shadow: none;
+  --color: #3e4857;
 
-  ion-icon {
-    font-size: 22px;
+  text-transform: none;
+  font-size: 13px;
+  font-weight: 500;
+  min-height: 34px;
+}
+
+@media (max-width: 900px) {
+  ion-buttons[slot='end'] ion-button {
+    font-size: 12px;
   }
 }
 
- 
-.logo_content {
+/* activo tipo iOS: texto rojo + subrayado suave */
+ion-buttons[slot='end'] .activo {
+  --color: #ff3b30;
+  font-weight: 700;
+  position: relative;
+}
+
+ion-buttons[slot='end'] .activo::after {
+  content: '';
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: 2px;
+  height: 2px;
+  border-radius: 999px;
+  background: #ff3b30;
+}
+
+/* ===========================
+   BOTÓN PUBLICAR (pill rojo)
+   =========================== */
+
+.btn-vender {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  background: #ff3b30;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 0 16px;
+  height: 34px;
+
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px rgba(255, 59, 48, 0.32);
+  transition: transform 0.16s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.btn-vender ion-icon {
+  font-size: 18px;
+}
+
+.btn-vender:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 11px 24px rgba(255, 59, 48, 0.4);
+}
+
+.activo-btn-new {
+  box-shadow: 0 0 0 2px rgba(255, 59, 48, 0.35);
+}
+
+/* ===========================
+   INFO DE USUARIO
+   =========================== */
+
+.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.usuario-info .icono-bandera {
+  width: 20px;
+  height: auto;
+  border-radius: 2px;
+}
+
+.usuario-info .contenedor-nombre {
   display: flex;
   align-items: center;
   gap: 6px;
-
-  .logo {
-    width: clamp(56px, 7vw, 90px);
-    height: auto;
-    object-fit: contain;
-    cursor: pointer;
-  }
 }
 
+.usuario-info .icono-user {
+  font-size: 18px;
+  color: #4b5563;
+}
 
-/* ===========================
-   EXTRA COMPACT (opcional)
-   =========================== */
-.buscador-container.ultra {
-  width: clamp(110px, 20vw, 220px);
-
-  &:focus-within {
-    width: clamp(160px, 48vw, 320px);
-  }
-
-  ion-searchbar {
-    --height: 30px;
-  }
+.usuario-info .nombre-usuario {
+  font-size: 13px;
+  color: #111827;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 /* ===========================
-   ACCESIBILIDAD
+   NAV MÓVIL (stack buttons)
    =========================== */
-@media (prefers-reduced-motion: reduce) {
-
-  .buscador-container,
-  .buscador-container ion-searchbar {
-    transition: none !important;
-  }
-}
 
 ion-toolbar ion-button.stack {
-  --padding-start: 1px;
-  --padding-end: 1px;
-  min-width: 20px;
+  --background: transparent;
+  --padding-start: 4px;
+  --padding-end: 4px;
+  min-width: 40px;
 }
 
 ion-toolbar ion-button.stack .vcol {
@@ -408,43 +250,75 @@ ion-toolbar ion-button.stack .vcol {
 }
 
 ion-toolbar ion-button.stack ion-icon {
-  font-size: 13px;
+  font-size: 18px;
+  color: #4b5563;
 }
 
 ion-toolbar ion-button.stack .label {
-  font-size: 6px;
+  font-size: 10px;
+  color: #6b7280;
 }
 
+/* activo en móvil */
+ion-toolbar ion-button.stack.activo ion-icon,
+ion-toolbar ion-button.stack.activo .label {
+  color: #ff3b30;
+}
 
+/* ===========================
+   SUBMENÚ AUTOS (popover)
+   =========================== */
 
-/* ====== XXS: hasta 400px ====== */
+.submenu-coches {
+  position: absolute;
+  top: 60px;
+  right: 160px;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 10px;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.26);
+  z-index: 999;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+}
+
+.submenu-coches ion-button {
+  --background: transparent;
+  --color: #111827;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  font-size: 14px;
+  text-transform: none;
+}
+
+.submenu-coches ion-button:hover {
+  --background: #f3f4f6;
+}
+
+/* ===========================
+   XS EXTRA PEQUEÑO
+   =========================== */
+
 @media (max-width: 400px) {
-  ion-toolbar {
-    padding: 0 4px;
-    gap: 6px;
+  .ios-toolbar {
+    padding-inline: 8px;
   }
 
   .logo_content .logo {
-    width: clamp(40px, 18vw, 56px);
+    width: clamp(46px, 18vw, 64px);
   }
 
-  .buscador-container {
-    width: clamp(100px, 46vw, 180px);
+  ion-buttons[slot='end'] ion-button {
+    font-size: 11px;
   }
-  .buscador-container:focus-within {
-    width: clamp(140px, 72vw, 240px);
-  }
+}
 
-  ion-buttons[slot="end"] {
-    max-width: 65%;
-    gap: 2px;
-  }
-  ion-buttons[slot="end"] ion-button {
-    height: 15px;
-    min-width: 15px;
-    font-size: 5px;
-  }
-  ion-buttons[slot="end"] ion-button ion-icon {
-    font-size: 15px;
+/* accesibilidad: menos animaciones */
+@media (prefers-reduced-motion: reduce) {
+  .buscador-container,
+  .buscador-container ion-searchbar,
+  .btn-vender {
+    transition: none !important;
   }
 }

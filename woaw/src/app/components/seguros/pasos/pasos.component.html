@@ -1,23 +1,36 @@
-<section>
-  <div class="header_css"  *ngIf="tipoDispocitivo === 'telefono'">
-    <img src="/assets/icon/logo4.png" alt="Go Autos" class="logo" />
-    <button (click)="cerrarModal()">x</button>
+<section class="seguros-steps-ios">
+  <div class="header_ios" *ngIf="tipoDispocitivo === 'telefono'">
+    <div class="header_ios-left">
+      <img src="/assets/icon/logo2.png" alt="Go Autos" class="logo" />
+      <span class="titulo">Flujo de seguro</span>
+    </div>
+    <button (click)="cerrarModal()" aria-label="Cerrar hoja">×</button>
   </div>
-  <div class="opciones-grid">
-    <div class="card" (click)="redireccion('seguros/autos')" [class.card--ok]="cards[0].estatus"
-      [class.card--off]="!cards[0].estatus">
-      <h1 class="pasoTex">Paso 1°</h1>
-      <ion-icon [name]="cards[0].icon"></ion-icon>
-      <h3>{{ cards[0].nombre }}</h3>
 
-      <div class="card__body" *ngIf="cotizacionVM; else cotizacionVacia">
+  <div class="opciones-grid">
+    <!-- PASO 1 -->
+    <div
+      class="step-card"
+      (click)="redireccion('seguros/autos')"
+      [class.step-card--ok]="cards[0].estatus"
+      [class.step-card--off]="!cards[0].estatus"
+    >
+      <div class="step-card__header">
+        <div class="step-card__left">
+          <span class="step-pill">Paso 1</span>
+          <span class="step-label">{{ cards[0].nombre }}</span>
+        </div>
+        <ion-icon [name]="cards[0].icon"></ion-icon>
+      </div>
+
+      <div class="step-card__body" *ngIf="cotizacionVM; else cotizacionVacia">
         <div class="kv">
           <span class="k">Plan</span>
           <span class="v">{{ cotizacionVM.plan }}</span>
         </div>
         <div class="kv">
           <span class="k">Total</span>
-          <span class="v">{{ formatMXN(cotizacionVM.total) }}</span>
+          <span class="v mono">{{ formatMXN(cotizacionVM.total) }}</span>
         </div>
         <div class="kv">
           <span class="k">Pago</span>
@@ -29,24 +42,35 @@
         </div>
       </div>
       <ng-template #cotizacionVacia>
-        <div class="card__empty">Selecciona marca, modelo y versión de tu vehículo</div>
+        <div class="step-card__empty">
+          Selecciona marca, modelo y versión de tu vehículo.
+        </div>
       </ng-template>
     </div>
 
-    <div class="card" (click)="redireccion('seguros/persona')" [class.card--ok]="cards[1].estatus"
-      [class.card--off]="!cards[1].estatus">
-      <h1 class="pasoTex">Paso 2°</h1>
-      <ion-icon [name]="cards[1].icon"></ion-icon>
-      <h3>{{ cards[1].nombre }}</h3>
+    <!-- PASO 2 -->
+    <div
+      class="step-card"
+      (click)="redireccion('seguros/persona')"
+      [class.step-card--ok]="cards[1].estatus"
+      [class.step-card--off]="!cards[1].estatus"
+    >
+      <div class="step-card__header">
+        <div class="step-card__left">
+          <span class="step-pill">Paso 2</span>
+          <span class="step-label">{{ cards[1].nombre }}</span>
+        </div>
+        <ion-icon [name]="cards[1].icon"></ion-icon>
+      </div>
 
-      <div class="card__body" *ngIf="usuarioVM; else usuarioVacio">
+      <div class="step-card__body" *ngIf="usuarioVM; else usuarioVacio">
         <div class="kv">
           <span class="k">Nombre</span>
           <span class="v">{{ usuarioVM.nombre }}</span>
         </div>
         <div class="kv">
           <span class="k">RFC</span>
-          <span class="v">{{ usuarioVM.rfc }}</span>
+          <span class="v mono">{{ usuarioVM.rfc }}</span>
         </div>
         <div class="kv" *ngIf="usuarioVM.email">
           <span class="k">Correo</span>
@@ -62,22 +86,40 @@
         </div>
       </div>
       <ng-template #usuarioVacio>
-        <div class="card__empty">Ingresa tu información básica para personalizar tu cobertura.</div>
+        <div class="step-card__empty">
+          Ingresa tu información básica para personalizar tu cobertura.
+        </div>
       </ng-template>
     </div>
 
-    <div class="card" (click)="redireccion('seguros/poliza')" [class.card--ok]="cards[2].estatus"
-      [class.card--off]="!cards[2].estatus">
-      <h1 class="pasoTex">Paso 3°</h1>
-      <ion-icon [name]="cards[2].icon"></ion-icon>
-      <h3>{{ cards[2].nombre }}</h3>
-      <div class="card__body" *ngIf="polizaVM; else polizaVacia">
-        <div class="card__empty">Poliza creada correctamente</div>
+    <!-- PASO 3 -->
+    <div
+      class="step-card"
+      (click)="redireccion('seguros/poliza')"
+      [class.step-card--ok]="cards[2].estatus"
+      [class.step-card--off]="!cards[2].estatus"
+    >
+      <div class="step-card__header">
+        <div class="step-card__left">
+          <span class="step-pill">Paso 3</span>
+          <span class="step-label">{{ cards[2].nombre }}</span>
+        </div>
+        <ion-icon [name]="cards[2].icon"></ion-icon>
+      </div>
+
+      <div class="step-card__body" *ngIf="polizaVM; else polizaVacia">
+        <div class="step-card__empty step-card__empty--ok">
+          Póliza creada correctamente.
+        </div>
       </div>
 
       <ng-template #polizaVacia>
-        <div *ngIf="isLoggedIn" class="card__empty">Cotiza y descarga tu polizá al instante.</div>
-        <div *ngIf="!isLoggedIn" class="card__empty">Crea tu cuenta para guardar tu cotización y descarga tu polizá al instante.</div>
+        <div *ngIf="isLoggedIn" class="step-card__empty">
+          Cotiza y descarga tu póliza al instante.
+        </div>
+        <div *ngIf="!isLoggedIn" class="step-card__empty">
+          Crea tu cuenta para guardar tu cotización y descargar tu póliza al instante.
+        </div>
       </ng-template>
     </div>
   </div>

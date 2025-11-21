@@ -1,8 +1,13 @@
 <app-navbar></app-navbar>
 
-<ion-content>
+<ion-content [fullscreen]="true" class="telefono-ios">
+
+  <!-- Fondo suave con la imagen -->
+  <img [src]="imgenPrincipal" alt="Fondo" class="bg-img2" />
+
   <div class="page-telefono">
     <div class="form-wrapper">
+      <!-- Logo arriba tipo app de banco -->
       <img
         src="assets/icon/logo2.png"
         loading="lazy"
@@ -10,6 +15,7 @@
         class="logo"
       />
 
+      <!-- Bienvenida con avatar -->
       <div class="bienvenida" *ngIf="user as u">
         <div class="avatar">
           <img
@@ -34,7 +40,12 @@
 
       <form [formGroup]="form" (ngSubmit)="submit()">
         <div class="telefono-input-wrapper">
-          <ion-item lines="none" class="lada-box" (click)="abrirModalLadas()">
+          <!-- LADA / PAÍS -->
+          <ion-item
+            lines="none"
+            class="lada-box"
+            (click)="abrirModalLadas()"
+          >
             <img
               [src]="ladaSeleccionada.banderaUrl"
               class="flag-img"
@@ -43,6 +54,7 @@
             <p class="lada-text">{{ ladaSeleccionada.codigo }}</p>
           </ion-item>
 
+          <!-- TELÉFONO -->
           <ion-item lines="none" class="telefono-input">
             <ion-input
               formControlName="numero"
@@ -68,35 +80,39 @@
     </div>
   </div>
 
-  <img [src]="imgenPrincipal" alt="Fondo" class="bg-img2" />
-
   <app-footer></app-footer>
 </ion-content>
 
+<!-- MODAL LADAS ESTILO iOS -->
 <ion-modal
   [isOpen]="mostrarModal"
-  cssClass="modal-ladas"
+  cssClass="modal-ladas-ios"
   (didDismiss)="cerrarModal()"
 >
   <ng-template>
-    <ion-header>
+    <ion-header translucent>
       <ion-toolbar>
         <ion-title>Selecciona tu país</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="cerrarModal()">Cerrar</ion-button>
+          <ion-button fill="clear" (click)="cerrarModal()">
+            Cerrar
+          </ion-button>
         </ion-buttons>
+      </ion-toolbar>
+
+      <ion-toolbar class="toolbar-busqueda-ios">
+        <ion-searchbar
+          placeholder="Buscar país o código..."
+          [(ngModel)]="filtroPais"
+          [debounce]="200"
+          showCancelButton="never"
+          mode="ios"
+        >
+        </ion-searchbar>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content>
-      <div class="buscador-ladas">
-        <ion-input
-          placeholder="Buscar país o código..."
-          [(ngModel)]="filtroPais"
-        >
-        </ion-input>
-      </div>
-
+    <ion-content class="contenido-ladas-ios">
       <ion-list>
         <ion-item
           button
@@ -112,5 +128,4 @@
       </ion-list>
     </ion-content>
   </ng-template>
-  <app-footer></app-footer>
 </ion-modal>

@@ -1,6 +1,15 @@
 <app-navbar></app-navbar>
-<ion-content [fullscreen]="true">
-  <div class="mensaje-vacio">
-    <p>No tienes mensajes.</p>
-  </div>
+
+<ion-content class="mensajes-wrap" [fullscreen]="true">
+  <section class="mensaje-vacio">
+    <div class="bubble-icon">
+      <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+    </div>
+
+    <h1>Sin mensajes aún</h1>
+    <p>
+      Cuando alguien te escriba, sus conversaciones aparecerán aquí.
+    </p>
+
+  </section>
 </ion-content>

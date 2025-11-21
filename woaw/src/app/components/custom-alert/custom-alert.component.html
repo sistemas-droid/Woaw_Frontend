@@ -1,8 +1,10 @@
 <ion-content class="custom-alert-wrapper" scrollY="false">
-  <div class="custom-alert-box animate-in">
-    <img *ngIf="icon" [src]="icon" class="alert-icon" />
-    <h2 class="alert-title">{{ title }}</h2>
-    <p class="alert-message">{{ message }}</p>
-    <button class="alert-button" (click)="dismiss()">OK</button>
+  <div class="custom-alert-backdrop">
+    <div class="custom-alert-box animate-in">
+      <img *ngIf="icon" [src]="icon" class="alert-icon" />
+      <h2 class="alert-title">{{ title }}</h2>
+      <p class="alert-message">{{ message }}</p>
+      <button class="alert-button" (click)="dismiss()">OK</button>
+    </div>
   </div>
 </ion-content>

@@ -1,70 +1,127 @@
+/* Overwrite del ion-content del modal */
 ::ng-deep .custom-alert-wrapper {
-  --background: rgba(0, 0, 0, 0.4); // Fondo oscuro del overlay
+  --background: transparent;
+  padding: 0;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0;
 }
 
+/* Backdrop con blur tipo iOS */
+.custom-alert-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Caja principal del alert */
 .custom-alert-box {
-  background: white;
-  padding: 32px 24px;
-  border-radius: 14px;
+  position: relative;
   width: 100%;
-  max-width: 360px;
+  max-width: 340px;
+  margin: 0 24px;
+
+  padding: 22px 20px 18px;
+  border-radius: 22px;
+
+  background: radial-gradient(circle at top, #f9fafb 0, #ffffff 55%, #f9fafb 100%);
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.35),
+    0 0 0 0.5px rgba(255, 255, 255, 0.95);
+
   text-align: center;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-  animation: fadeInScale 0.25s ease-out;
+  animation: fadeInScale 0.22s ease-out;
+  box-sizing: border-box;
 }
 
+/* Iconito arriba (si viene) */
 .alert-icon {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 20px;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 12px;
   display: block;
-  border-radius: 50%;
-  background: #eafaf1;
-  padding: 12px;
+
+  border-radius: 20px;
+  padding: 10px;
+
+  background: rgba(248, 250, 252, 0.9);
+  box-shadow:
+    0 6px 14px rgba(15, 23, 42, 0.16),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+
+  object-fit: contain;
 }
 
+/* Título */
 .alert-title {
-  font-size: 22px;
-  font-weight: bold;
-  color: #111;
-  margin-bottom: 10px;
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #111827;
 }
 
+/* Mensaje */
 .alert-message {
-  font-size: 15px;
-  color: #666;
-  margin-bottom: 24px;
-}
-
-.alert-button {
-  background: #3085d6;
-  color: white;
-  font-weight: bold;
+  margin: 0 0 16px;
   font-size: 14px;
-  padding: 10px 32px;
-  border-radius: 8px;
-  border: 2px solid white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  line-height: 1.5;
+  color: #4b5563;
+  max-width: 260px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Botón tipo iOS pill */
+.alert-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 120px;
+  padding: 9px 22px;
+
+  border-radius: 999px;
+  border: none;
+
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+
+  background: linear-gradient(135deg, #007aff, #0a84ff);
+  color: #ffffff;
+
+  box-shadow: 0 10px 22px rgba(10, 132, 255, 0.35);
   cursor: pointer;
-  transition: background 0.2s ease;
+
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    filter 0.12s ease;
 }
 
-.alert-button:hover {
-  background: #2874c1;
+/* “Tap” feel, nada de hover mamón de desktop */
+.alert-button:active {
+  transform: scale(0.96);
+  box-shadow: 0 6px 14px rgba(10, 132, 255, 0.4);
+  filter: brightness(0.97);
 }
 
-// Animación
+/* Animación de entrada */
 @keyframes fadeInScale {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.9) translateY(6px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
   }
 }

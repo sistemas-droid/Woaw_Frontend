@@ -1,51 +1,59 @@
-<ion-header>
-  <ion-toolbar class="header-toolbar">
+<ion-header [translucent]="true" class="tc-header-ios">
+  <!-- Grabber tipo hoja iOS -->
+  <div class="grabber-ios"></div>
 
+  <ion-toolbar color="light" class="toolbar-ios">
     <ion-buttons slot="start">
       <div class="logo-titulo">
         <img src="assets/icon/logo2.png" alt="WOAW" />
+        <span class="titulo-text">Términos y condiciones</span>
       </div>
-      <ion-title>Términos y condiciones</ion-title>
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button (click)="cancelar()">
+      <ion-button fill="clear" color="medium" (click)="cancelar()">
         <ion-icon slot="icon-only" name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" class="ion-padding" class="ion-padding" scrollEvents="true"
-  (ionScroll)="verificarScroll()" #contenidoPrivacidad>
-
+<ion-content
+  class="tc-content-ios ion-padding"
+  scrollEvents="true"
+  (ionScroll)="verificarScroll()"
+  #contenidoPrivacidad
+>
   <div class="pdf-wrap">
-    <iframe class="pdf-frame" [src]="pdfUrlSafe" title="TÉRMINOS Y CONDICIONES" allowfullscreen
-      referrerpolicy="no-referrer">
+    <iframe
+      class="pdf-frame"
+      [src]="pdfUrlSafe"
+      title="TÉRMINOS Y CONDICIONES"
+      allowfullscreen
+      referrerpolicy="no-referrer"
+    >
     </iframe>
   </div>
-
 </ion-content>
-<!--  //☢️☢️ -->
-<ion-footer *ngIf="!mostrarFooter">
-  <ion-toolbar class="footer-toolbar">
-    <span class="footer-leyenda">
-      Desliza hacia abajo para habilitar el botón "Aceptar".
-    </span>
-    <br>
-    <div class="footer-actions">
+
+<ion-footer *ngIf="!mostrarFooter" class="tc-footer-ios">
+  <ion-toolbar class="footer-toolbar-ios">
+    <div class="footer-row">
+      <span class="footer-leyenda">
+        Desliza hasta el final para habilitar el botón "Aceptar".
+      </span>
+
       <div class="footer-botones">
         <button class="btn-cancelar" (click)="cancelar()">
           <ion-icon name="close-outline"></ion-icon>
-          Cancelar
+          <span>Cancelar</span>
         </button>
+
         <button class="btn-aceptar" (click)="aceptar()">
           <ion-icon name="checkmark-outline"></ion-icon>
-          Aceptar
+          <span>Aceptar</span>
         </button>
       </div>
     </div>
-    <br>
   </ion-toolbar>
 </ion-footer>

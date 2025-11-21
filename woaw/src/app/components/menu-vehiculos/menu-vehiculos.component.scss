@@ -1,83 +1,100 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* ============================
+   LISTA iOS
+============================ */
+ion-list {
+  padding: 0;
+  margin: 0;
+  background: #ffffff !important;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow:
+    0 12px 26px rgba(15, 23, 42, 0.10),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+}
+
+/* ============================
+   ESTILO iOS ESCRITORIO
+============================ */
 .estilo-escritorio {
-  background: #000000;
+  background: #ffffff !important;
 
   ion-item {
-    color: #ffffff;
+    --background: #ffffff;
+    color: #111827;
 
     &:hover {
-      background-color: #ffffff;
-      color: #000000;
+      background: #f3f4f6 !important;
     }
   }
 }
 
+/* ============================
+   ESTILO iOS MÓVIL
+============================ */
 .estilo-movil {
-  background: #ffffff;
-
-  ion-item {
-    color: #000000;
-
-
-  }
+  background: #ffffff !important;
 }
 
-// Reglas comunes
-ion-list {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-
-.item-movil {
-  --background: #fdfdfd;
-}
-
-.item-escritorio {
-  --background: transparent;
-}
-
+/* ============================
+   CELDAS TIPO iOS
+============================ */
 ion-item {
+  --background: #ffffff;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-width: 0 0 1px 0;
+  --inner-padding-start: 14px;
+  --inner-padding-end: 14px;
+  --min-height: 48px;
 
-  // --background: #fdfdfd;
-  --border-width: 0;
-  --border-color: transparent;
-  border: none !important;
-  box-shadow: none !important;
-  font-size: 12px;
-  margin-bottom: 2px;
-  padding: 1px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  color: #111827;
+  transition: background 0.15s ease, color 0.15s ease;
 
+  ion-icon {
+    font-size: 18px;
+    color: #9ca3af;
+  }
 
-  ion-label {
-    margin: 0;
+  &:active {
+    background: #f2f2f7 !important;
   }
 }
 
-ion-item::part(native) {
-  border: none !important;
+ion-item:last-child {
+  --border-width: 0;
 }
 
+/* ============================
+   CELDA MÓVIL
+============================ */
+.item-movil {
+  --background: #ffffff;
+}
 
+/* ============================
+   HEADER tipo iOS (solo móvil)
+============================ */
 .encabezado-consentimiento {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
-  padding: 15px 10px;
+  gap: 10px;
+  padding: 14px 16px;
+  background: #f9fafb;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
 
   img {
-    height: 28px;
+    height: 26px;
     object-fit: contain;
-
-    @media (max-width: 768px) {
-      height: 18px;
-    }
-  }
-
-  ion-button {
-    --padding-start: 0;
-    --padding-end: 0;
-    margin: 0;
   }
 }

@@ -1,354 +1,642 @@
 .renta {
-  margin-top: 12px;
+  margin-top: 14px;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro Text",
+    "Helvetica Neue", Arial, sans-serif;
 }
 
+/* ============ RESUMEN + PUBLICAR (card iOS) ============ */
 .resumen-estado {
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse; /* botón a la derecha visualmente */
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 10px;
-  padding: 10px 0;
-  margin-left: 5px;
 
-  .fila-info {
+  padding: 10px 14px;
+  margin: 0 4px 10px;
+
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(60, 60, 67, 0.15);
+  box-shadow:
+    0 10px 24px rgba(15, 23, 42, 0.16),
+    0 0 0 0.5px rgba(255, 255, 255, 0.8);
+}
+
+.resumen-estado .fila-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.resumen-estado .fila-info p {
+  margin: 0;
+  font-size: 13px;
+  color: #3c3c43;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+
+  strong {
+    font-weight: 600;
+    margin-left: 4px;
+    color: #111827;
+  }
+}
+
+.btn-guardar {
+  border: none;
+  outline: none;
+  background: linear-gradient(135deg, #ff3b30, #ff453a);
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+
+  box-shadow: 0 10px 22px rgba(255, 69, 58, 0.46);
+  transition:
+    transform 0.14s ease,
+    box-shadow 0.16s ease,
+    filter 0.14s ease;
+
+  ion-icon.icono-guardar {
+    font-size: 18px;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
+    box-shadow: 0 12px 26px rgba(255, 69, 58, 0.55);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 7px 18px rgba(255, 69, 58, 0.35);
+  }
+}
+
+/* ============ TIPO VEHÍCULO (chips) ============ */
+.tipo-vehiculo-container {
+  text-align: center;
+  margin: 20px auto 12px;
+  max-width: 560px;
+  padding: 16px 14px 18px;
+
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid rgba(60, 60, 67, 0.12);
+  box-shadow:
+    0 12px 24px rgba(15, 23, 42, 0.18),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+
+  .titulo-tipo {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    color: #111827;
+  }
+
+  .opciones-vehiculo {
     display: flex;
+    justify-content: center;
+    gap: 14px;
     flex-wrap: wrap;
+  }
+
+  .casilla {
+    width: 132px;
+    height: 132px;
+    border-radius: 18px;
+    background-color: #f2f2f7;
+    border: 1px solid transparent;
+
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 15px;
+    justify-content: center;
+
+    position: relative;
+    cursor: pointer;
+
+    transition:
+      background 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      transform 0.12s ease;
+
+    img {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 8px;
+    }
 
     p {
       margin: 0;
+      font-weight: 600;
       font-size: 13px;
-      white-space: nowrap;
-
-      @media (max-width: 768px) {
-        font-size: 10px;
-      }
-
-      strong {
-        font-weight: 600;
-        margin-left: 5px;
-      }
+      color: #111827;
+      padding: 0 8px;
     }
-  }
 
-  .btn-guardar {
-    align-self: flex-end;
-    background: linear-gradient(90deg, #ff0000, #ff6600);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: background 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    .icono-check {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      color: #ff3b30;
+      font-size: 18px;
+    }
+
+    &.activa {
+      background-color: #ffffff;
+      border-color: #ff3b30;
+      box-shadow: 0 10px 22px rgba(255, 69, 58, 0.28);
+      transform: translateY(-1px);
+    }
 
     &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    &:active {
-      transform: translateY(0);
-      box-shadow: none;
-    }
-
-    ion-icon.icono-guardar {
-      font-size: 18px;
-      color: white;
+      background-color: #ffffff;
     }
   }
-}
 
-.contenedor-botones {
-  display: flex;
-  flex-wrap: wrap; // Por si en móviles no caben
-  gap: 16px;
-  align-items: flex-start;
-
-  .bloque-contenido {
+  .contenedor-boton {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background: #f8f8f800;
-    padding: 5px;
-    border-radius: 12px;
-    flex: 1 1 300px;
+    justify-content: center;
+    margin-top: 18px;
   }
 
-  .select-lote {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 2px solid #ddd;
-    font-size: 16px;
-    background-color: #fff;
-    margin-top: 8px;
-    appearance: none;
-
-    &:focus {
-      border-color: #ff3c00;
-      outline: none;
-    }
-  }
-
-
-  button {
-    display: flex;
+  .btn-continuar {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #ff3b30, #ff453a);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 15px;
+    display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-weight: 600;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 8px 14px;
-    color: #000;
-    border-radius: 8px;
     cursor: pointer;
-    transition: 0.2s ease-in-out;
+    box-shadow: 0 10px 22px rgba(255, 69, 58, 0.4);
+
+    transition:
+      transform 0.14s ease,
+      box-shadow 0.16s ease,
+      filter 0.14s ease;
 
     ion-icon {
       font-size: 18px;
     }
 
-    &:hover {
-      background-color: #eee;
-    }
-  }
-
-  .btn-limpiar {
-    background-color: #ffecec;
-    border: 1px solid #ff6666;
-    color: #b20000;
-    font-size: 10px;
-
-    &:hover {
-      background-color: #ffcccc;
-    }
-  }
-
-  .radio-validacion {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-
-    &.activo ion-icon {
-      color: green;
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.02);
+      box-shadow: 0 12px 26px rgba(255, 69, 58, 0.5);
     }
 
-    &.inactivo ion-icon {
-      color: gray;
-      display: none;
+    &:disabled {
+      background: linear-gradient(135deg, #ffb3b8, #ffc2c0);
+      box-shadow: none;
+      cursor: not-allowed;
     }
   }
 }
 
-.ubicacion-mostrada {
-  padding: 0.5rem 1rem;
-  background: #f9f9f9;
-  border-left: 4px solid #e41212;
-  border-radius: 8px;
-  font-size: 13px;
-  color: #444;
+/* ============ CONTENEDOR BOTONES (ubicación / imágenes / TC) ============ */
+section .contenedor-botones {
   display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
   align-items: flex-start;
-  gap: 8px;
-
-  @media (max-width: 768px) {
-    font-size: 9px;
-  }
-
-  ion-icon {
-    color: #eb0404;
-    font-size: 18px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-  }
+  margin-top: 14px;
 }
 
-.formulario {
+.bloque-contenido {
+  flex: 1 1 260px;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background-color: #f7f7f7;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  .grid-form {
-    display: grid;
-    gap: 1rem;
+  gap: 10px;
 
-    &.cols-4 {
-      grid-template-columns: repeat(4, 1fr);
-    }
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 10px 10px 12px;
+  border: 1px solid rgba(60, 60, 67, 0.12);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.16);
+}
 
-    &.cols-2 {
-      grid-template-columns: repeat(2, 1fr);
-    }
+/* ion-button ubicación */
+.bloque-contenido ion-button {
+  --border-radius: 999px;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --background: linear-gradient(135deg, #ff3b30, #ff453a);
+  --color: #ffffff;
+  --box-shadow: 0 10px 22px rgba(255, 69, 58, 0.4);
+  font-weight: 600;
+  font-size: 14px;
+}
 
-    @media (max-width: 900px) {
-      &.cols-4 {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
+/* lista de ubicaciones seleccionadas (particular) */
+.ubicaciones-list {
+  margin-top: 6px;
+  border-radius: 14px;
+  border: 1px solid rgba(60, 60, 67, 0.14);
+  overflow: hidden;
+  background: #f2f2f7;
 
-    @media (max-width: 520px) {
-
-      &.cols-4,
-      &.cols-2 {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .campo {
-      display: flex;
-      flex-direction: column;
-
-      label {
-        font-weight: 600;
-        margin-bottom: 4px;
-        font-size: 13px;
-      }
-
-      .requerido {
-        color: #ff3d00;
-      }
-
-      input,
-      select,
-      textarea {
-        width: 100%;
-        padding: 10px 12px;
-        font-size: 14px;
-        border: 1px solid #cbd5e1;
-        border-radius: 10px;
-        background: #fff;
-        color: #000;
-        min-height: 42px;
-      }
-
-      &.full {
-        grid-column: 1 / -1;
-      }
-    }
+  ion-list {
+    padding: 0;
   }
 
-  .extras-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
+  ion-item.ubicacion-item {
+    --background: transparent;
+    --min-height: 40px;
+    --padding-start: 10px;
+    --padding-end: 6px;
+    --inner-padding-end: 0;
 
-    input[type="text"] {
-      flex: 1 1 220px;
+    p {
+      font-size: 13px;
+      color: #1c1c1e;
     }
-  }
 
-  .btn-secundario {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 600;
-    background: #fff;
-    border: 1px solid #ddd;
-    padding: 8px 14px;
-    color: #000;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.2s;
-
-    &:hover {
-      background: #eee;
+    ion-icon[slot="start"] {
+      color: #ff3b30;
+      font-size: 18px;
     }
-  }
 
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
-  }
-
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 10px;
-    background: #fff7f3;
-    border: 1px solid #ffd2c2;
-    color: #222;
-    border-radius: 999px;
-    font-size: 12px;
-
-    .chip__close {
-      background: transparent;
-      border: none;
-      font-size: 14px;
-      cursor: pointer;
-      line-height: 1;
-      color: #b20000;
-      padding: 0 2px;
+    ion-button[slot="end"] {
+      --padding-start: 0;
+      --padding-end: 0;
+      --color: #ff3b30;
+      --ripple-color: rgba(255, 59, 48, 0.2);
     }
   }
 }
 
-.tarifas {
-  margin-top: 12px;
-  background: #f7f7f7;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+/* bloque LOTE: ion-item + lista de checkboxes */
+.bloque-direcciones ion-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --min-height: 34px;
+
+  ion-label {
+    font-size: 13px;
+    color: #3c3c43;
+  }
+}
+
+.ubicaciones-checkbox-list {
+  border-radius: 14px;
+  border: 1px solid rgba(60, 60, 67, 0.14);
+  overflow: hidden;
+  background: #f2f2f7;
+}
+
+.checkbox-item {
+  --background: transparent;
+  --padding-start: 8px;
+  --inner-padding-end: 8px;
+  --min-height: 38px;
+
+  p {
+    font-size: 13px;
+    color: #1c1c1e;
+    margin: 0;
+  }
+}
+
+/* imágenes y tarjeta circulación */
+.grupo-botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-imagenes {
+  border-radius: 999px;
+  border: 1px solid rgba(60, 60, 67, 0.18);
+  background: #ffffff;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 5px 12px rgba(15, 23, 42, 0.16);
+  transition:
+    background 0.14s ease,
+    transform 0.12s ease,
+    box-shadow 0.16s ease;
+
+  ion-icon {
+    font-size: 18px;
+  }
+
+  .requerido {
+    color: #ff3b30;
+    margin-left: 4px;
+  }
+
+  &:hover {
+    background: #f8f9fb;
+    transform: translateY(-1px);
+  }
+}
+
+.btn-limpiar {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 59, 48, 0.35);
+  background: #fff5f4;
+  padding: 7px 12px;
+  font-size: 11px;
+  color: #b91c1c;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background 0.14s ease;
+
+  ion-icon {
+    font-size: 14px;
+  }
+
+  &:hover:not(:disabled) {
+    background: #ffe2de;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+/* Tarjeta de circulación */
+.tc {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+
+  .tc__label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #3c3c43;
+  }
+
+  .btn-subir {
+    border-radius: 999px;
+    border: 1px solid rgba(60, 60, 67, 0.18);
+    background: #f2f2f7;
+    padding: 7px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+
+    ion-icon {
+      font-size: 17px;
+    }
+
+    &:hover {
+      background: #ffffff;
+    }
+  }
+
+  .tc__filename {
+    font-size: 11px;
+    color: #6b7280;
+  }
+}
+
+/* ============ FORMULARIO PRINCIPAL (tarjeta iOS) ============ */
+.formulario {
+  margin-top: 18px;
+  padding: 14px 12px 18px;
+  border-radius: 18px;
+  background: #f2f2f7;
+  border: 1px solid rgba(60, 60, 67, 0.12);
+}
+
+/* grids */
+.grid-form {
+  margin-top: 8px;
+  background: #ffffff;
+  border-radius: 16px;
   padding: 12px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+
+  display: grid;
+  gap: 12px;
+
+  &.cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  &.cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 900px) {
+    &.cols-4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    &.cols-4,
+    &.cols-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &.full {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #3c3c43;
+  }
+
+  .requerido {
+    color: #ff3b30;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid rgba(60, 60, 67, 0.18);
+    background: #f2f2f7;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #111827;
+    outline: none;
+    min-height: 40px;
+
+    &:focus {
+      border-color: #ff3b30;
+      box-shadow: 0 0 0 2px rgba(255, 59, 48, 0.18);
+      background: #ffffff;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+}
+
+/* extras */
+.extras-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+
+  select {
+    min-width: 160px;
+  }
+
+  input[type="text"] {
+    flex: 1 1 220px;
+  }
+}
+
+.btn-secundario {
+  border-radius: 999px;
+  border: 1px solid rgba(60, 60, 67, 0.18);
+  background: #ffffff;
+  padding: 7px 13px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.14s ease;
+
+  &:hover {
+    background: #f3f4f6;
+  }
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: #fff3ec;
+  border: 1px solid #ffd2c2;
+  color: #222;
+  border-radius: 999px;
+  font-size: 12px;
+
+  .chip__close {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    line-height: 1;
+    color: #b20000;
+    padding: 0;
+  }
+}
+
+/* ============ TARIFAS POR DISTANCIA ============ */
+.tarifas {
+  margin-top: 14px;
+  background: #f2f2f7;
+  border-radius: 18px;
+  border: 1px solid rgba(60, 60, 67, 0.14);
+  padding: 12px 12px 14px;
 
   .tarifas__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 6px;
+    gap: 10px;
+    margin-bottom: 4px;
 
     .tarifas__title {
+      margin: 0;
       font-weight: 700;
       font-size: 14px;
-      margin: 0;
+      color: #111827;
+    }
+
+    button {
+      border-radius: 999px;
+      border: 1px solid rgba(60, 60, 67, 0.18);
+      background: #ffffff;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
     }
   }
 
   .hint {
     color: #6b7280;
-    font-size: 12px;
-    margin: 4px 0 8px;
+    font-size: 11px;
+    margin: 2px 0 8px;
   }
 
   .tarifa-card {
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 14px;
-    margin-top: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid rgba(60, 60, 67, 0.16);
+    padding: 12px;
+    margin-top: 8px;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
 
     &__top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     &__title {
       margin: 0;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
+      color: #111827;
     }
 
     &__grid {
       display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 10px;
 
       .campo {
         grid-column: span 3;
@@ -359,7 +647,7 @@
       }
 
       @media (max-width: 900px) {
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(6, minmax(0, 1fr));
 
         .campo {
           grid-column: span 3;
@@ -375,271 +663,75 @@
       }
     }
 
-    .campo {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-
-      label {
-        font-weight: 600;
-        font-size: 13px;
-      }
-
-      input,
-      select,
-      textarea {
-        width: 100%;
-        padding: 10px 12px;
-        font-size: 14px;
-        border: 1px solid #cbd5e1;
-        border-radius: 10px;
-        background: #fff;
-        color: #000;
-        min-height: 42px;
-      }
-
-      .hint {
-        display: block;
-        margin-top: 2px;
-        color: #6b7280;
-        font-size: 12px;
-        line-height: 1.2;
-      }
+    .campo .hint {
+      display: block;
+      margin-top: 2px;
+      color: #6b7280;
+      font-size: 11px;
+      line-height: 1.2;
     }
   }
 }
 
-
-
-/* ====== Tipo de vehículo (particular / lote) ====== */
-.tipo-vehiculo-container {
-  text-align: center;
-  margin-top: 24px;
-
-  .titulo-tipo {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: #222;
-  }
-
-  .opciones-vehiculo {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  .casilla {
-    width: 130px;
-    height: 130px;
-    border-radius: 16px;
-    background-color: #f7f7f7;
-    border: 2px solid transparent;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
-
-    img {
-      width: 48px;
-      height: 48px;
-      margin-bottom: 8px;
-    }
-
-    p {
-      margin: 0;
-      font-weight: 600;
-      color: #444;
-    }
-
-    .icono-check {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      color: #ff3c00;
-      font-size: 18px;
-    }
-
-    &.activa {
-      border: 2px solid #ff3c00;
-      background-color: #fff0e8;
-    }
-
-    &:hover {
-      background-color: #fff7f3;
-    }
-  }
-
-  .contenedor-boton {
-    display: flex;
-    justify-content: center;
-    margin-top: 24px;
-
-    .btn-continuar {
-      background-color: #ff3c00;
-      color: #fff;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 30px;
-      font-size: 16px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
-
-      ion-icon {
-        font-size: 18px;
-      }
-
-      &:hover:not(:disabled) {
-        background-color: #e63300;
-      }
-
-      &:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-      }
-    }
-  }
-}
-
-
-
-.pregunta-vendedor {
-  margin: 24px auto;
-  padding: 24px;
-  max-width: 600px;
-  background-color: #d8d8d8;
-  border-radius: 16px;
-  text-align: center;
-  color: #222;
-
-
-  .texto-pregunta {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .logo-inline {
-    height: 22px;
-    vertical-align: middle;
-  }
-
-  .botones-vendedor {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 14px;
-  }
-
-  .btn-vender-yo,
-  .btn-vende-go {
-    padding: 12px 20px;
-    font-size: 16px;
-    font-weight: 600;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.25s ease;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-  }
-
-  .btn-vender-yo {
-    background: linear-gradient(135deg, #0072ff, #00c6ff);
-    color: white;
-  }
-
-  .btn-vende-go {
-    background: linear-gradient(135deg, #ff4e00, #ff9068);
-    color: white;
-  }
-
-  .btn-vender-yo:hover,
-  .btn-vende-go:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
-  }
-
-  .logo-boton {
-    height: 20px;
-    vertical-align: middle;
-  }
-}
-
+/* ============ PUBLICACIÓN POR WHATSAPP (si reutilizas el bloque) ============ */
 .formulario-publicacion {
-  padding: 16px;
-  background: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  margin-top: 18px;
+  padding: 16px 14px 18px;
+  border-radius: 18px;
+  background: #f2f2f7;
+  border: 1px solid rgba(60, 60, 67, 0.12);
+
+  .info-texto {
+    font-size: 14px;
+    color: #1c1c1e;
+    margin-bottom: 10px;
+
+    strong {
+      font-weight: 600;
+    }
+  }
 
   ion-item {
-    --background: transparent;
-    --inner-border-width: 0px;
-    --highlight-color-focused: #e53935;
-    --border-color: #c0c0c09f;
-    margin-bottom: 12px;
-    border-bottom: 1px solid #c0c0c09f;
-    border-radius: 0;
+    --background: #ffffff;
+    --inner-border-width: 0;
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --highlight-color-focused: #ff3b30;
 
-    &.item-has-focus {
-      border-bottom: 1px solid #e53935;
-    }
+    border-radius: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
   }
 
   ion-input,
   ion-select {
-    --padding-start: 0px;
-    --padding-end: 0px;
+    --padding-start: 0;
+    --padding-end: 0;
     --background: transparent;
-  }
-
-  .info-texto {
-    font-size: 15px;
-    color: #333;
-    margin-bottom: 12px;
-  }
-
-  ion-item {
-    margin-bottom: 12px;
+    font-size: 14px;
   }
 
   .btn-wsp-container {
-    margin-top: 20px;
+    margin-top: 14px;
     text-align: center;
   }
 
   .btn-wsp {
+    border-radius: 999px;
+    border: none;
+    padding: 10px 20px;
     background: #25d366;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: bold;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: background 0.3s ease;
-
-    &:hover {
-      background: #1ebe5d;
-    }
+    cursor: pointer;
+    box-shadow: 0 12px 22px rgba(37, 211, 102, 0.45);
 
     ion-icon {
-      font-size: 20px;
+      font-size: 18px;
     }
   }
 }

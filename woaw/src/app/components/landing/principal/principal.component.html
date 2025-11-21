@@ -1,293 +1,92 @@
-<div class="contenedor_titulo">
-  <h2 class="titulo_principal">Nuestros Servicios</h2>
-</div>
-
-<div class="band-cards">
-  <article class="mini-card mini-arrendamiento" (click)="redirecion('/m-nuevos')">
-    <img [src]="img2" alt="Auto en arrendamiento" class="bg-card-min">
-    <h4>Motos</h4>
-    <p>De calle, touring y más </p>
-    <button class="mini-btn">Cotizar ahora</button>
-  </article>
-
-  <article class="mini-card mini-seguros" (click)="redirecion('/camiones/todos')">
-    <img [src]="img3" alt="Auto nuevo" class="bg-card-min">
-    <h4>Camiones</h4>
-    <p></p>
-    <button class="mini-btn">Carga y flotillas</button>
-  </article>
-</div>
-
-<section class="contenedor_cratas_home">
-  <div class="cards-grid">
-
-    <article class="car-card car-card-nuevos" (click)="redirecion('/nuevos')">
-      <img src="/assets/home/cartasHome1.webp" alt="Auto nuevo" class="bg-card">
-      <header class="card-head">
-        <h3><span>Autos</span> Nuevos</h3>
-        <p>Estrena hoy con garantía total.</p>
-      </header>
-      <ul class="card-list">
-        <li>0 km</li>
-        <li>Financiamiento</li>
-      </ul>
-      <footer class="card-foot">
-        <button class="btn-card btn-nuevos">Ver catálogo</button>
-      </footer>
-    </article>
-
-    <article class="car-card car-card-seminuevos" (click)="redirecion('/seminuevos')">
-      <img src="/assets/home/cartasHome2.webp" alt="Auto seminuevo" class="bg-card">
-      <header class="card-head">
-        <h3><span>Autos</span> Seminuevos</h3>
-        <p>Historial verificado.</p>
-      </header>
-      <ul class="card-list">
-        <li>Tomamos tu auto</li>
-        <li>Financiamiento</li>
-      </ul>
-      <footer class="card-foot">
-        <button class="btn-card btn-seminuevos">Explorar</button>
-      </footer>
-    </article>
-
-    <article class="car-card car-card-usados" (click)="redirecion('/usados')">
-      <img src="/assets/home/cartasHome3.webp" alt="Auto nuevo" class="bg-card">
-      <header class="card-head">
-        <h3><span>Autos</span> Usados</h3>
-        <p>Listos para una nueva historia.</p>
-      </header>
-      <ul class="card-list">
-        <li>Entrega rápida</li>
-        <li>Financiamiento</li>
-      </ul>
-      <footer class="card-foot">
-        <button class="btn-card btn-usados">Ver ofertas</button>
-      </footer>
-    </article>
-
+<section class="home-servicios-ios">
+  <div class="contenedor_titulo">
+    <h2 class="titulo_principal">Nuestros Servicios</h2>
   </div>
-</section>
 
+  <!-- BAND CARDS: Motos / Camiones (SIN SCROLL) -->
 
-<section class="grid-categorias">
-  <div class="grid-categorias__wrap">
+    <section class="contenedor_cratas_home">
+    <div class="cards-grid">
 
-    <a class="cat-card" href="/renta-coches" style="background-image: url('/assets/home/F5.png')">
-      <span class="cat-card__overlay">
-        <h3 class="cat-card__title">Renta</h3>
-        <p class="cat-card__subtitle">Muévete cuando quieras.</p>
-      </span>
-    </a>
+      <article class="car-card car-card-nuevos" (click)="redirecion('/nuevos')">
+        <img src="/assets/home/cartasHome1.webp" alt="Auto nuevo" class="bg-card" />
+        <header class="card-head">
+          <h3><span>Autos</span> Nuevos</h3>
+          <p>Estrena hoy con garantía total.</p>
+        </header>
+        <ul class="card-list">
+          <li>0 km</li>
+          <li>Financiamiento</li>
+        </ul>
+        <footer class="card-foot">
+          <button class="btn-card btn-nuevos">Ver catálogo</button>
+        </footer>
+      </article>
 
-    <a class="cat-card" href="/arrendamiento" style="background-image: url('/assets/home/F6.png')">
-      <span class="cat-card__overlay">
-        <h3 class="cat-card__title">Arrendamiento</h3>
-        <p class="cat-card__subtitle">Estrena sin comprar.</p>
-      </span>
-    </a>
+      <article class="car-card car-card-seminuevos" (click)="redirecion('/seminuevos')">
+        <img src="/assets/home/cartasHome2.webp" alt="Auto seminuevo" class="bg-card" />
+        <header class="card-head">
+          <h3><span>Autos</span> Seminuevos</h3>
+          <p>Historial verificado.</p>
+        </header>
+        <ul class="card-list">
+          <li>Tomamos tu auto</li>
+          <li>Financiamiento</li>
+        </ul>
+        <footer class="card-foot">
+          <button class="btn-card btn-seminuevos">Explorar</button>
+        </footer>
+      </article>
 
-    <a class="cat-card" href="/seguros/disponibles" style="background-image: url('/assets/home/F7.png')">
-      <span class="cat-card__overlay">
-        <h3 class="cat-card__title">Seguros</h3>
-        <p class="cat-card__subtitle">Cotiza y asegura en minutos.</p>
-      </span>
-    </a>
-  </div>
-</section>
+      <article class="car-card car-card-usados" (click)="redirecion('/usados')">
+        <img src="/assets/home/cartasHome3.webp" alt="Auto usado" class="bg-card" />
+        <header class="card-head">
+          <h3><span>Autos</span> Usados</h3>
+          <p>Listos para una nueva historia.</p>
+        </header>
+        <ul class="card-list">
+          <li>Entrega rápida</li>
+          <li>Financiamiento</li>
+        </ul>
+        <footer class="card-foot">
+          <button class="btn-card btn-usados">Ver ofertas</button>
+        </footer>
+      </article>
 
-
-
-<section class="anuncio-app" *ngIf="!isNative">
-  <div class="contenido">
-    <h2 class="titulo">¡Ya disponible! <br> <span>App Móvil</span></h2>
-    <p class="descripcion">
-      Ya puedes instalarla desde la
-      <span class="resaltado">Play Store</span>.
-    </p>
-
-    <div class="row-cta">
-
-      <div class="stores">
-        <a href="https://play.google.com/store/apps/details?id=com.helscode.woaw" target="_blank" rel="noopener">
-          <img src="/assets/autos/google play.png" alt="Play Store" />
-        </a>
-      </div>
-
-      <div class="play">
-        <img src="/assets/autos/QR.png" alt="QR Play Store" />
-      </div>
     </div>
-    <p class="msj_2">Prepárate para una experiencia única en compra, venta y gestión de vehículos.</p>
-  </div>
-</section>
+  </section>
+
+  <!-- CARDS AUTOS -->
 
 
+  <!-- GRID CATEGORÍAS GRANDES -->
+  <section class="grid-categorias">
+    <div class="grid-categorias__wrap">
 
+      <a class="cat-card" href="/renta-coches"
+         style="background-image: url('/assets/home/F5.png')">
+        <span class="cat-card__overlay">
+          <h3 class="cat-card__title">Renta</h3>
+          <p class="cat-card__subtitle">Muévete cuando quieras.</p>
+        </span>
+      </a>
 
+      <a class="cat-card" href="/arrendamiento"
+         style="background-image: url('/assets/home/F6.png')">
+        <span class="cat-card__overlay">
+          <h3 class="cat-card__title">Arrendamiento</h3>
+          <p class="cat-card__subtitle">Estrena sin comprar.</p>
+        </span>
+      </a>
 
-
-
-
-
-
-
-
-
-<!-- <section class="grid-categorias">
-  <div class="side-card" data-side="left" style="--i:0;">
-    <img src="/assets/autos/W3.png" alt="Autos usados" class="card-img">
-    <span>AUTOS USADOS</span>
-  </div>
-  <div class="side-card" data-side="left" style="--i:1;">
-    <img src="/assets/autos/W2.png" alt="Autos seminuevos" class="card-img">
-    <span>AUTOS SEMINUEVOS</span>
-  </div>
-  <div class="side-card" data-side="left" style="--i:2;">
-    <img src="/assets/autos/W1.png" alt="Autos nuevos" class="card-img">
-    <span>AUTOS NUEVOS</span>
-  </div>
-
-  <div class="center-card" style="--top:5rem;">
-    <img src="/assets/autos/home8.png" alt="Servicio top" class="card-img">
-    <span>ARRENDAMIENTO</span>
-  </div>
-  <div class="center-card" style="--j:1;">
-    <img src="/assets/autos/home7.png" alt="Promociones" class="card-img">
-    <span>SEGUROS</span>
-  </div>
-
-  <div class="side-card" data-side="right" style="--i:0;">
-    <img src="/assets/autos/A3.png" alt="Camiones" class="card-img">
-    <span>CAMIONES</span>
-  </div>
-  <div class="side-card" data-side="right" style="--i:1;">
-    <img src="/assets/autos/renta.jpg" alt="Renta" class="card-img">
-    <span>RENTA</span>
-  </div>
-  <div class="side-card" data-side="right" style="--i:2;">
-    <img src="/assets/autos/A5.png" alt="Motos" class="card-img">
-    <span>MOTOS</span>
-  </div>
-</section> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <div class="contenedor_titulo">
-  <div class="animate three">
-    <span>N</span><span>u</span><span>e</span><span>s</span><span>t</span><span>r</span><span>o</span><span>s</span> &nbsp;
-    <span>S</span><span>e</span><span>r</span><span>v</span><span>i</span><span>c</span><span>i</span><span>o</span><span>s</span>
-  </div>
-</div>
-
-
-<section class="grid-categorias">
-  <div class="gc__grid">
-
-    <a class="gc__card gc--nuevo" href="/nuevos" style="--bg:url('/assets/autos/home1.png'); --i:2">
-      <div class="gc__info">
-        <h3>Nuevos</h3>
-        <p>0 km</p>
-        <button class="btn_info"> ver más </button>
-      </div>
-    </a>
-
-    <a class="gc__card gc--arrenda" href="/arrendamiento" style="--bg:url('/assets/autos/home8.png'); --i:2">
-      <div class="gc__info">
-        <h3>Arrendamiento</h3>
-        <p>Estrena pagando menos</p>
-        <button class="btn_info"> ver más </button>
-      </div>
-    </a>
-
-    <a class="gc__card gc--motos" href="/m-nuevos" style="--bg:url('/assets/autos/home5.png'); --i:3">
-      <div class="gc__info">
-        <h3>Motos</h3>
-        <p>De ciudad y pista</p>
-        <button class="btn_info"> ver más </button>
-      </div>
-    </a>
-
-    <a class="gc__card gc--seminuevo" href="/seminuevos" style="--bg:url('/assets/autos/home2.png'); --i:4">
-      <div class="gc__info">
-        <h3>Seminuevos</h3>
-        <p>Garantía y historial</p>
-        <button class="btn_info"> ver más </button>
-      </div>
-    </a>
-
-    <a class="gc__card gc--seguro" href="/seguros" style="--bg:url('/assets/autos/home7.png'); --i:5">
-      <div class="gc__info">
-        <h3>Seguros</h3>
-        <p>Cotiza en segundos</p>
-        <button class="btn_info"> ver más </button>
-      </div>
-    </a>
-
-    <a class="gc__card gc--usados" href="/usados" style="--bg:url('/assets/autos/home3.png'); --i:6">
-      <div class="gc__info">
-        <h3>Usados</h3>
-        <p>Opciones para todos</p>
-        <button class="btn_info"> ver más </button>
-      </div>
-    </a>
-
-    <a class="gc__card gc--camiones" href="/camiones/todos" style="--bg:url('/assets/autos/home4.png'); --i:7">
-      <div class="gc__info">
-        <h3>Camiones</h3>
-        <p>Carga y flotillas</p>
-        <button class="btn_info"> ver más </button>
-      </div>
-    </a>
-
-    <a class="gc__card gc--renta" href="/renta-coches" style="--bg:url('/assets/autos/home6.png'); --i:8">
-      <div class="gc__info">
-        <h3>Renta</h3>
-        <p>Por día o mes</p>
-        <button class="btn_info"> ver más </button>
-      </div>
-    </a>
-  </div>
-
-</section>
-
-
-
-<section class="anuncio-app" *ngIf="!isNative">
-  <div class="contenido">
-    <h2 class="titulo">¡Ya disponible! <br> <span>App Móvil</span></h2>
-    <p class="descripcion">
-      Ya puedes instalarla desde la
-      <span class="resaltado">Play Store</span>.
-    </p>
-
-    <div class="row-cta">
-
-      <div class="stores">
-        <a href="https://play.google.com/store/apps/details?id=com.helscode.woaw" target="_blank" rel="noopener">
-          <img src="/assets/autos/google play.png" alt="Play Store" />
-        </a>
-      </div>
-
-      <div class="play">
-        <img src="/assets/autos/QR.png" alt="QR Play Store" />
-      </div>
+      <a class="cat-card" href="/seguros/disponibles"
+         style="background-image: url('/assets/home/F7.png')">
+        <span class="cat-card__overlay">
+          <h3 class="cat-card__title">Seguros</h3>
+          <p class="cat-card__subtitle">Cotiza y asegura en minutos.</p>
+        </span>
+      </a>
     </div>
+  </section>
 
-
-    <p class="msj_2">Prepárate para una experiencia única en compra, venta y gestión de vehículos.</p>
-  </div>
-</section> -->
+</section>

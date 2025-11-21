@@ -1,7 +1,9 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true">
+<!-- 👑 Skin iOS -->
+<ion-content class="ios-cotizar" [fullscreen]="true">
 
+  <!-- HERO sin difuminado culero -->
   <div class="hero">
     <img src="/assets/autos/seguro_fondo.webp" class="cabecera" alt="Seguro de autos" />
 
@@ -13,47 +15,50 @@
     </div>
   </div>
 
+  <!-- Sheet blanco con categorías -->
   <section class="categorias">
-    <div class="categorias__grid">
-      
-      <div class="cat-card autos" (click)="elegirSeguro('Auto', '/seguros/autos')">
-        <div class="icon-wrap">
-          <img src="/assets/img/icon-coche.png" alt="Autos" class="cat-img" />
-        </div>
-        <h3>Autos</h3>
-        <p class="desc">Protege tu vehículo particular con las mejores coberturas del mercado.</p>
-        <button class="cta">Cotizar ahora</button>
-      </div>
+    <div class="categorias__sheet">
+      <div class="categorias__grid">
 
-      <div class="cat-card camiones" (click)="elegirSeguro('Camion', 'seguros/cotiza/camiones')">
-        <div class="icon-wrap">
-          <img src="/assets/img/icon-camion.png" alt="Camiones" class="cat-img" />
+        <div class="cat-card autos" (click)="elegirSeguro('Auto', '/seguros/autos')">
+          <div class="icon-wrap">
+            <img src="/assets/img/icon-coche.png" alt="Autos" class="cat-img" />
+          </div>
+          <h3>Autos</h3>
+          <p class="desc">Protege tu vehículo particular con las mejores coberturas del mercado.</p>
+          <button class="cta">Cotizar ahora</button>
         </div>
-        <h3>Camiones</h3>
-        <p class="desc">Seguro especializado para carga pesada y transporte comercial.</p>
-        <!-- <span class="soon">Próximamente</span> -->
-        <button class="cta">Cotizar ahora</button>
-      </div>
 
-      <div class="cat-card motos" (click)="elegirSeguro('Moto', 'seguros/cotiza/motos')">
-        <div class="icon-wrap">
-          <img src="/assets/img/icon-moto.png" alt="Motos" class="cat-img" />
+        <div class="cat-card camiones" (click)="elegirSeguro('Camion', 'seguros/cotiza/camiones')">
+          <div class="icon-wrap">
+            <img src="/assets/img/icon-camion.png" alt="Camiones" class="cat-img" />
+          </div>
+          <h3>Camiones</h3>
+          <p class="desc">Seguro especializado para carga pesada y transporte comercial.</p>
+          <button class="cta">Cotizar ahora</button>
         </div>
-        <h3>Motos</h3>
-        <p class="desc">Coberturas rápidas y flexibles para motocicletas urbanas o deportivas.</p>
-        <button class="cta">Cotizar ahora</button>
-      </div>
 
-      <div class="cat-card ERT" (click)="elegirSeguro('ERT', 'seguros/cotiza/ert')">
-        <div class="icon-wrap">
-          <img src="/assets/img/icon-coche-rt.png" alt="Servicios RT" class="cat-img" />
+        <div class="cat-card motos" (click)="elegirSeguro('Moto', 'seguros/cotiza/motos')">
+          <div class="icon-wrap">
+            <img src="/assets/img/icon-moto.png" alt="Motos" class="cat-img" />
+          </div>
+          <h3>Motos</h3>
+          <p class="desc">Coberturas rápidas y flexibles para motocicletas urbanas o deportivas.</p>
+          <button class="cta">Cotizar ahora</button>
         </div>
-        <h3>Servicios ERT</h3>
-        <p class="desc">Soluciones para autos de plataforma como Uber, Didi, inDrive Y más.</p>
-        <button class="cta">Cotizar ahora</button>
+
+        <div class="cat-card ERT" (click)="elegirSeguro('ERT', 'seguros/cotiza/ert')">
+          <div class="icon-wrap">
+            <img src="/assets/img/icon-coche-rt.png" alt="Servicios RT" class="cat-img" />
+          </div>
+          <h3>Servicios ERT</h3>
+          <p class="desc">Soluciones para autos de plataforma como Uber, Didi, inDrive y más.</p>
+          <button class="cta">Cotizar ahora</button>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <app-footer></app-footer>
+  <br><br><br>
 </ion-content>

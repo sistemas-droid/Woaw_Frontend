@@ -1,13 +1,11 @@
-@keyframes fadeBackground {
-  0% {
-    opacity: 0;
-  }
+/* app-login.component.scss */
 
-  100% {
-    opacity: 0.3;
-  }
+/* Que el componente se comporte como bloque normal */
+:host {
+  display: block;
 }
 
+/* ====== ANIMACIONES ====== */
 @keyframes fadeOverlay {
   to {
     opacity: 1;
@@ -22,217 +20,260 @@
   }
 }
 
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
+/* ====== OVERLAY / LAYOUT GENERAL ====== */
 .overlay {
-  z-index: 10;
+  z-index: 1;
   position: relative;
+  width: 100%;
+  padding: 16px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+
   text-align: center;
-  color: rgb(0, 0, 0);
-  padding: 20px;
-  animation: fadeOverlay 0.2s ease-out 0.2s forwards;
+  color: #1c1c1e;
+
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(18px);
+  animation: fadeOverlay 0.25s ease-out 0.15s forwards;
 
   .logo {
-    width: 50px;
+    width: 56px;
     height: auto;
-    z-index: 11;
-    animation: scaleLogo 0.2s ease-out 0.5s forwards;
-    transform: scale(0.8);
+    z-index: 2;
+    transform: scale(0.9);
     opacity: 0;
+    animation: scaleLogo 0.28s ease-out 0.25s forwards;
 
     @media (max-width: 828px) {
-      width: 90px;
+      width: 68px;
     }
   }
 
   .titulo {
-    font-size: 20px;
-    // font-weight: bold;
-    color: #ff0000;
+    margin-top: 6px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #ff3b30;
+    letter-spacing: -0.02em;
   }
 
+  .subtitulo {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: #6e6e73;
+  }
 }
 
+/* ====== CARD / FORM TIPO iOS ====== */
 .login-form {
+  width: 100%;
+  max-width: 320px;
+  margin-top: 14px;
+
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px 14px 18px;
+
+  border: 1px solid rgba(60, 60, 67, 0.08);
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.06),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  gap: 6px;
+  box-sizing: border-box;
 
+  /* ===== INPUTS TIPO iOS ===== */
   .input-wrapper {
     width: 100%;
-    max-width: 280px;
-    border: 0.5px solid rgba(189, 189, 189, 0.369);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    margin-bottom: 16px;
-    color: rgb(74, 74, 74);
+    border-radius: 12px;
+    margin-bottom: 4px;
+
+    --background: transparent;
+    --inner-padding-start: 10px;
+    --inner-padding-end: 10px;
+    --padding-start: 0;
+    --padding-end: 0;
+    --min-height: 44px;
+    --highlight-height: 0;
+    --inner-border-width: 0;
+
+    background: #f2f2f7;
+    border: 1px solid rgba(60, 60, 67, 0.16);
+    box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.9);
 
     ion-input {
-      color: rgb(74, 74, 74);
-      padding-left: 10px;
+      color: #1c1c1e;
+      font-size: 14px;
+      --padding-top: 10px;
+      --padding-bottom: 10px;
+      --padding-start: 0;
+      --padding-end: 0;
+
+      &::placeholder {
+        color: #8e8e93;
+      }
     }
 
     .eye-icon {
-      color: rgb(74, 74, 74);
-      font-size: 20px;
-      margin-right: 10px;
+      color: #8e8e93;
+      font-size: 18px;
+      margin-right: 4px;
       cursor: pointer;
-    }
-
-  }
-
-  .btn-login {
-    width: 220px;
-    background: #d62828;
-    color: white;
-    font-weight: bold;
-    border: none;
-    padding: 22px;
-    border-radius: 30px;
-    margin-top: 10px;
-    font-size: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  }
-
-  // #google-button {
-  //   width: 220px !important;
-  //   border-radius: 30px !important;
-  //   padding: 12px 0 !important;
-  //   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
-  //   font-weight: bold !important;
-  //   margin-top: 10px;
-  //   transition: transform 0.2s ease;
-  // }
-
-  // #google-button:hover {
-  //   transform: scale(1.03);
-  // }
-
-
-  .btn-google {
-    width: 220px;
-    background: #ffffff;
-    border: none;
-    padding: 28px 28px 28px 48px;
-    border-radius: 30px;
-    margin-top: 10px;
-    position: relative;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-
-    img {
-      position: absolute;
-      top: 50%;
-      left: 45%;
-      width: 20px;
-      height: auto;
-      transform: translateY(-50%);
     }
   }
 
   ion-note {
-    font-size: 12px;
-    // font-weight: bold;
-    margin-top: -15px;
-    margin-bottom: 10px;
-    --color: #e00000;
-    // text-shadow:
-    //   -0.5px -0.5px 0 rgba(255, 0, 0, 0.129),
-    //   0.5px -0.5px 0 rgba(255, 0, 0, 0.129),
-    //   -0.5px 0.5px 0 rgba(255, 0, 0, 0.129),
-    //   0.5px 0.5px 0 rgba(255, 0, 0, 0.129);
+    align-self: flex-start;
+    font-size: 11px;
+    margin-top: -2px;
+    margin-bottom: 4px;
+    padding-left: 4px;
+    --color: #ff3b30;
+    color: #ff3b30;
+    letter-spacing: 0.02em;
+  }
 
-    letter-spacing: 0.08em; // Espaciado entre letras
-    word-spacing: 0.3em; // Espaciado entre palabras
-    // line-height: 1.5; //separación entre lineas vetialmente
+  /* ===== BOTÓN PRINCIPAL ===== */
+  .btn-login {
+    width: 100%;
+    margin-top: 8px;
+
+    background: linear-gradient(135deg, #ff3b30, #ff453a);
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    padding: 11px 16px;
+    border-radius: 999px;
+    font-size: 15px;
+
+    box-shadow: 0 8px 18px rgba(255, 69, 58, 0.35);
+    cursor: pointer;
+    transition:
+      transform 0.16s ease,
+      box-shadow 0.18s ease,
+      filter 0.16s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      box-shadow: 0 10px 22px rgba(255, 69, 58, 0.45);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 6px 16px rgba(255, 69, 58, 0.3);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      box-shadow: none;
+      cursor: default;
+    }
+  }
+
+  br {
+    display: none;
+  }
+
+  #google-button {
+    width: 100% !important;
+    margin-top: 10px;
+    border-radius: 999px !important;
+    overflow: hidden;
   }
 }
 
-
-
-
+/* ===== BOTÓN GOOGLE NATIVO ===== */
 .google-btn {
+  margin-top: 8px;
+  width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
 
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
 
-  background: #fff;
-  color: #444;
+  background: #ffffff;
+  color: #1c1c1e;
   font-weight: 600;
-  font-size: 15px;
-  font-family: 'Poppins', sans-serif;
-  letter-spacing: 0.3px;
+  font-size: 14px;
+  letter-spacing: 0.02em;
 
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(60, 60, 67, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.16s ease;
 
   .google-icon {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
 
   &:hover {
     background: #f7f7f7;
     transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
   }
 
   &:active {
-    transform: scale(0.98);
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   }
 }
 
+/* ===== BOTÓN APPLE iOS ===== */
 .apple-btn {
+  margin-top: 6px;
+  width: 100%;
+
   display: flex;
-  margin-top: 10px;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
 
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
 
-  background: #fff;
-  color: #444;
+  background: #000000;
+  color: #ffffff;
   font-weight: 600;
-  font-size: 15px;
-  font-family: 'Poppins', sans-serif;
-  letter-spacing: 0.3px;
+  font-size: 14px;
+  letter-spacing: 0.02em;
 
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border: 1px solid #000;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
 
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.16s ease;
 
   .apple-icon {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
+  }
+
+  span {
+    transform: translateY(0.5px);
   }
 
   &:hover {
-    background: #f7f7f7;
+    filter: brightness(1.05);
     transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   }
 
   &:active {
-    transform: scale(0.98);
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
   }
 }
+
+

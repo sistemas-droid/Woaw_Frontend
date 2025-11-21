@@ -1,258 +1,326 @@
-ion-header {
+:host {
+  display: block;
+  background: transparent;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+}
+
+/* ===== HEADER TIPO SHEET iOS ===== */
+
+.perfil-header-ios {
   position: sticky;
   top: 0;
   z-index: 10;
+  backdrop-filter: blur(16px);
 }
 
-ion-header ion-toolbar {
-  position: relative;
-  --background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-  --color: #fff;
-  min-height: clamp(50px, 6vw, 64px);
-  padding-inline: clamp(8px, 2vw, 16px);
+.grabber-ios {
+  width: 36px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.9);
+  margin: 6px auto 4px;
 }
 
-/* acento rojo inferior */
-ion-header ion-toolbar::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: clamp(2px, 0.5vw, 3px);
-  background: linear-gradient(90deg, #ff4757, rgba(255, 71, 87, .35));
+.toolbar-ios {
+  --background: rgba(255, 255, 255, 0.9);
+  --color: #111827;
+  box-shadow: none;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+  min-height: 44px;
+  padding-inline: 8px;
 }
 
-/* logo + título (lado izquierdo) */
+/* logo + título */
 .perfil-header {
   display: flex;
   align-items: center;
-  gap: clamp(6px, 1.2vw, 10px);
+  gap: 8px;
 }
 
 .perfil-header .logo {
-  width: clamp(24px, 4vw, 32px);
-  height: clamp(24px, 4vw, 32px);
+  width: 26px;
+  height: 26px;
   object-fit: contain;
-  border-radius: clamp(4px, 1vw, 6px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
 }
 
 .perfil-header .titulo-perfil {
-  font-weight: 800;
-  letter-spacing: .4px;
-  font-size: clamp(14px, 2vw, 18px);
-  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  font-size: 16px;
+  color: #111827;
 }
 
 /* botón cerrar */
-ion-header ion-buttons[slot="end"] ion-button {
-  color: #ffffff;
-  transition: transform .15s ease, color .15s ease;
+.toolbar-ios ion-buttons[slot="end"] ion-button {
+  --padding-start: 6px;
+  --padding-end: 6px;
+  color: #6b7280;
 }
 
-ion-header ion-buttons[slot="end"] ion-button:hover {
-  color: #ff4757;
-  transform: scale(1.06);
+.toolbar-ios ion-buttons[slot="end"] ion-button ion-icon {
+  font-size: 20px;
 }
 
-ion-card:not(.card-cambio) .perfil-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: clamp(8px, 1.2vw, 12px);
-  padding: clamp(8px, 1.6vw, 12px);
+/* ===== CONTENT SHEET ===== */
+
+.perfil-content-ios {
+  --background: linear-gradient(180deg, #f4f4f7 0, #ffffff 16%, #ffffff 100%);
 }
 
-ion-card:not(.card-cambio) .perfil-grid ion-item {
-  --background: #fff;
-  --padding-start: clamp(10px, 1.2vw, 12px);
-  --inner-padding-top: clamp(8px, 1.2vw, 10px);
-  --inner-padding-bottom: clamp(8px, 1.2vw, 10px);
+/* ===== CARD PERFIL ===== */
+
+.perfil-card-ios {
+  margin: 12px 0 10px;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow:
+    0 16px 30px rgba(15, 23, 42, 0.08),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+}
+
+.perfil-card-ios ion-list {
+  background: transparent;
+  padding: 4px 4px 6px;
+}
+
+/* Items dentro del card, estilo Settings iOS */
+.perfil-grid ion-item {
+  --background: #ffffff;
+  --padding-start: 10px;
+  --inner-padding-end: 10px;
+  --inner-padding-top: 8px;
+  --inner-padding-bottom: 8px;
   --border-style: none;
   --inner-border-width: 0;
 
-  min-height: clamp(56px, 8vw, 72px);
-  border: 1px solid rgba(255, 71, 87, .12);
-  border-radius: clamp(8px, 1.2vw, 12px);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.9);
+  min-height: 52px;
+}
+
+.perfil-grid ion-item:last-child {
+  border-bottom: none;
+}
+
+/* avatar */
+.perfil-grid ion-avatar {
+  width: 40px;
+  height: 40px;
+}
+
+.perfil-grid ion-avatar img {
+  border-radius: 999px;
+}
+
+/* íconos de la lista */
+.perfil-grid ion-item ion-icon[slot="start"] {
+  font-size: 20px;
+  color: #ef4444;
+  margin-right: 6px;
+}
+
+/* textos */
+.perfil-grid ion-item ion-label h2 {
   margin: 0;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, .04);
-  transition: transform .15s ease, box-shadow .15s ease;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
 }
 
-ion-card:not(.card-cambio) .perfil-grid ion-item::before {
-  display: none;
-}
-
-ion-card:not(.card-cambio) .perfil-grid ion-item:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(255, 71, 87, .12);
-}
-
-ion-card:not(.card-cambio) .perfil-grid ion-item ion-icon[slot="start"] {
-  font-size: clamp(18px, 2.4vw, 22px);
-  color: #ff4757;
-  margin-right: clamp(6px, 1.4vw, 10px);
-  padding: clamp(6px, 1vw, 8px);
-  border-radius: clamp(8px, 1.2vw, 10px);
-  background: radial-gradient(120% 120% at 30% 30%, rgba(255, 71, 87, .18), rgba(255, 71, 87, .06));
-}
-
-ion-card:not(.card-cambio) .perfil-grid ion-item ion-label h2 {
-  margin: 0;
-  font-size: clamp(13px, 1.6vw, 15px);
-  font-weight: 800;
-  color: #2c3e50;
-}
-
-ion-card:not(.card-cambio) .perfil-grid ion-item ion-label p {
+.perfil-grid ion-item ion-label p {
   margin: 2px 0 0;
-  font-size: clamp(11px, 1.2vw, 12px);
-  color: #7f8c8d;
-  text-transform: uppercase;
-  letter-spacing: .35px;
+  font-size: 11px;
+  color: #9ca3af;
 }
 
+/* ===== CARD CAMBIAR CONTRASEÑA ===== */
 
-.card-cambio {
-  border: 1px solid rgba(44, 62, 80, .08);
-  border-radius: clamp(10px, 1.4vw, 14px);
+.card-cambio-ios {
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow:
+    0 14px 26px rgba(15, 23, 42, 0.08),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+  margin-top: 8px;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, .05);
-  transition: box-shadow .2s ease, transform .2s ease;
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
 }
 
-.card-cambio.is-open {
-  box-shadow: 0 10px 28px rgba(255, 71, 87, .15);
+.card-cambio-ios.is-open {
+  box-shadow:
+    0 18px 34px rgba(248, 113, 113, 0.32),
+    0 0 0 0.5px rgba(255, 255, 255, 1);
   transform: translateY(-1px);
 }
 
-/* header del acordeón */
-.cabecera-acordeon {
-  background: linear-gradient(180deg, #ffffff 0%, #fff5f6 100%);
-  padding: clamp(10px, 2vw, 14px) clamp(12px, 2.4vw, 18px);
+/* header acordeón */
+.cabecera-acordeon-ios {
+  background: linear-gradient(180deg, #ffffff 0, #fef2f2 100%);
+  padding: 10px 12px;
   cursor: pointer;
-  user-select: none;
-  border-bottom: 1px solid rgba(255, 71, 87, .12);
+  border-bottom: 1px solid rgba(248, 113, 113, 0.35);
 }
 
-.cabecera-acordeon ion-card-title {
+.cabecera-acordeon-ios ion-card-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(8px, 2vw, 12px);
-  font-weight: 800;
-  font-size: clamp(16px, 2.4vw, 20px);
-  color: #2c3e50;
+  gap: 8px;
   margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
 }
 
-.titulo-acordeon {
+.titulo-acordeon-ios {
   display: inline-flex;
   align-items: center;
-  gap: clamp(6px, 1vw, 8px);
+  gap: 6px;
 }
 
-.titulo-acordeon ion-icon {
-  color: #ff4757;
-  font-size: clamp(16px, 2vw, 18px);
-  padding: 2px 3px;
-  border-radius: 8px;
-  background: radial-gradient(120% 120% at 30% 30%, rgba(255, 71, 87, .18), rgba(255, 71, 87, .06));
+.titulo-acordeon-ios ion-icon {
+  font-size: 18px;
+  color: #ef4444;
 }
 
-.cabecera-acordeon ion-card-title>ion-icon:last-child {
-  color: #7f8c8d;
-  transition: transform .25s ease, color .2s ease;
+.titulo-acordeon-ios span {
+  font-size: 14px;
 }
 
-.card-cambio.is-open .cabecera-acordeon ion-card-title>ion-icon:last-child {
+.cabecera-acordeon-ios .chevron {
+  font-size: 18px;
+  color: #9ca3af;
+  transition: transform 0.2s ease, color 0.18s ease;
+}
+
+.card-cambio-ios.is-open .cabecera-acordeon-ios .chevron {
   transform: rotate(180deg);
-  color: #ff4757;
+  color: #ef4444;
 }
 
-/* cuerpo del acordeón */
-.card-cambio ion-card-content {
-  padding: clamp(12px, 2.2vw, 18px) clamp(12px, 2.4vw, 18px);
-  background: #fff;
+/* contenido acordeón */
+.card-cambio-ios ion-card-content {
+  background: #ffffff;
+  padding: 10px 12px 14px;
 }
 
-/* texto guía */
-.card-cambio ion-card-content p {
-  margin: 0 0 clamp(8px, 1.2vw, 10px);
-  color: #6b7580;
-  font-size: clamp(13px, 1.8vw, 15px);
+.hint-text {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: #6b7280;
 }
 
-/* items del formulario */
-.card-cambio ion-item {
+/* inputs estilo iOS */
+.item-input-ios {
   --background: transparent;
   --padding-start: 0;
-  --inner-padding-top: clamp(6px, 1vw, 8px);
-  --inner-padding-bottom: clamp(6px, 1vw, 8px);
+  --inner-padding-end: 0;
+  --inner-padding-top: 6px;
+  --inner-padding-bottom: 6px;
   --border-style: none;
   --inner-border-width: 0;
 
-  border-bottom: 1px solid rgba(44, 62, 80, .12);
+  border-bottom: 1px solid rgba(209, 213, 219, 0.9);
   border-radius: 0;
-  margin-bottom: clamp(10px, 2vw, 14px);
-  transition: border-color .2s ease;
+  margin-bottom: 8px;
 }
 
-.card-cambio ion-item:last-of-type {
-  margin-bottom: clamp(12px, 2.2vw, 16px);
+.item-input-ios:last-of-type {
+  margin-bottom: 10px;
 }
 
-.card-cambio ion-item.ion-focused,
-.card-cambio ion-item:hover {
-  border-bottom-color: #ff4757;
-}
-
-/* etiquetas e inputs */
-.card-cambio ion-item ion-label {
-  font-size: clamp(14px, 2.2vw, 18px);
+.item-input-ios ion-label {
+  font-size: 12px;
   font-weight: 600;
-  color: #4a5568;
+  color: #6b7280;
 }
 
-.card-cambio ion-item ion-input {
-  font-size: clamp(16px, 2.4vw, 20px);
-  color: #2c3e50;
+.item-input-ios ion-input {
+  font-size: 15px;
+  color: #111827;
 }
 
-/* icono ojo */
-.icono-ojito {
-  font-size: clamp(20px, 2.6vw, 22px);
-  color: #95a5a6;
+/* icono ojito */
+.icono-ojito-ios {
+  font-size: 20px;
+  color: #9ca3af;
   cursor: pointer;
-  transition: color .2s ease, transform .1s ease;
+  margin-left: 4px;
+  transition: color 0.18s ease, transform 0.12s ease;
 }
 
-.icono-ojito:hover {
-  color: #ff4757;
+.icono-ojito-ios:hover {
+  color: #ef4444;
 }
 
-.icono-ojito:active {
-  transform: scale(.95);
+.icono-ojito-ios:active {
+  transform: scale(0.95);
 }
 
-/* error helper text */
+/* error */
 ion-text[color="danger"] small {
   display: inline-block;
-  margin: 2px 0 clamp(8px, 1.2vw, 10px);
-  font-size: clamp(12px, 1.6vw, 13px);
+  margin: 4px 0 8px;
+  font-size: 12px;
   line-height: 1.35;
 }
 
-/* botón principal */
-.card-cambio ion-button {
-  --border-radius: clamp(8px, 1.2vw, 10px);
-  --box-shadow: 0 8px 16px rgba(255, 71, 87, .22);
-  height: clamp(40px, 6.4vw, 48px);
-  font-weight: 800;
-  letter-spacing: .45px;
+/* botón actualizar */
+.btn-actualizar-ios {
+  --border-radius: 999px;
+  --background: linear-gradient(135deg, #ff3b30, #ff453a);
+  --box-shadow: 0 12px 22px rgba(248, 113, 113, 0.45);
+  height: 40px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
 }
 
-.card-cambio ion-button[disabled] {
-  --opacity: .7;
-  filter: grayscale(.1);
+.btn-actualizar-ios[disabled] {
+  --background: #e5e7eb;
+  --color: #9ca3af;
+  --box-shadow: none;
+}
+
+/* ===== CARD ELIMINAR CUENTA ===== */
+
+.card-eliminar-ios {
+  margin-top: 10px;
+  border-radius: 18px;
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  box-shadow:
+    0 14px 26px rgba(248, 113, 113, 0.28),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+}
+
+.card-eliminar-ios .cabecera-acordeon-ios.danger {
+  background: #fef2f2;
+  border-bottom-color: transparent;
+}
+
+.card-eliminar-ios .titulo-acordeon-ios ion-icon {
+  color: #ef4444;
+}
+
+.card-eliminar-ios .titulo-acordeon-ios span {
+  color: #b91c1c;
+}
+
+.card-eliminar-ios .chevron {
+  color: #ef4444;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+  .perfil-card-ios,
+  .card-cambio-ios,
+  .card-eliminar-ios {
+    border-radius: 16px;
+  }
+
+  .perfil-content-ios {
+    padding-top: 8px;
+  }
 }

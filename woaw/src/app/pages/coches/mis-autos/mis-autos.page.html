@@ -1,121 +1,204 @@
-<ion-header>
-  <ion-toolbar color="dark">
+
+<ion-header [translucent]="true">
+  <!-- Header principal tipo iOS -->
+  <ion-toolbar class="header-ios">
     <ion-buttons slot="start">
-      <div class="perfil-header">
-        <button class="btn-regresar" (click)="regresar()">
-          <ion-icon name="arrow-back-outline"></ion-icon>
-        </button>
-        <img src="/assets/icon/logo4.png" alt="WOAW" class="logo" />
-      </div>
+      <button class="btn-back-ios" (click)="regresar()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+        <span>Regresar</span>
+      </button>
     </ion-buttons>
 
-    <ion-searchbar slot="end" [(ngModel)]="terminoBusqueda" (ionInput)="filtrarPorBusqueda()"
-      placeholder="marca, modelo, año o versión" debounce="100" animated class="buscador-navbar">
+    <ion-buttons slot="end">
+      <img src="/assets/icon/logo2.png" alt="WOAW" class="logo-ios" />
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Searchbar en barra propia, como iOS -->
+  <ion-toolbar class="search-toolbar-ios">
+    <ion-searchbar
+      [(ngModel)]="terminoBusqueda"
+      (ionInput)="filtrarPorBusqueda()"
+      placeholder="Marca, modelo, año o versión"
+      debounce="120"
+      animated
+      showClearButton="focus"
+      class="buscador-navbar-ios"
+    >
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content #pageContent [fullscreen]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="arrow-down-outline" refreshingSpinner="crescent"
-      pullingText="Desliza para actualizar" refreshingText="Actualizando...">
+<ion-content #pageContent [fullscreen]="true" class="contenido-ios">
+  <!-- Refresher iOS -->
+  <ion-refresher
+    slot="fixed"
+    (ionRefresh)="doRefresh($event)"
+    pullFactor="0.4"
+    pullMin="120"
+    pullMax="200"
+  >
+    <ion-refresher-content
+      pullingIcon="chevron-down-outline"
+      refreshingSpinner="lines"
+      pullingText="Desliza para actualizar"
+      refreshingText="Actualizando..."
+    >
     </ion-refresher-content>
   </ion-refresher>
 
-  <app-acomodo [totalAutos]="vistaActiva === 'venta' ? totalAutosVenta : totalAutosRenta"
-    [titulo]="vistaActiva === 'venta' ? 'MIS AUTOS EN VENTA' : 'MIS AUTOS EN RENTA'"
-    (ordenCambio)="ordenarAutos($event)">
+  <!-- Acomodo / resumen -->
+  <app-acomodo
+    [totalAutos]="vistaActiva === 'venta' ? totalAutosVenta : totalAutosRenta"
+    [titulo]="vistaActiva === 'venta' ? 'Mis autos en venta' : 'Mis autos en renta'"
+    (ordenCambio)="ordenarAutos($event)"
+  >
   </app-acomodo>
 
-  <ion-segment [(ngModel)]="vistaActiva" (ionChange)="onSegmentChange()" class="segment-woaw">
+  <!-- Segment tipo iOS -->
+  <ion-segment
+    [(ngModel)]="vistaActiva"
+    (ionChange)="onSegmentChange()"
+    class="segment-woaw-ios"
+  >
     <ion-segment-button value="venta">
-      <ion-label>Autos venta ({{ totalAutosVenta }})</ion-label>
+      <ion-label>Venta ({{ totalAutosVenta }})</ion-label>
     </ion-segment-button>
     <ion-segment-button value="renta">
-      <ion-label>Autos renta ({{ totalAutosRenta }})</ion-label>
+      <ion-label>Renta ({{ totalAutosRenta }})</ion-label>
     </ion-segment-button>
   </ion-segment>
 
-  <ion-grid class="contenedor-catalogo">
+  <ion-grid class="contenedor-catalogo-ios">
     <ion-row>
+      <!-- Columna lateral de filtros -->
       <ion-col size="12" size-md="3">
-        <app-menu [filtros]="filtros" [filtrosAplicados]="filtrosAplicados"
-          (mostrarOpciones)="mostrarOpciones($event.event, $event.tipo)" (limpiarFiltros)="resetearFiltros()">
+        <app-menu
+          [filtros]="filtros"
+          [filtrosAplicados]="filtrosAplicados"
+          (mostrarOpciones)="mostrarOpciones($event.event, $event.tipo)"
+          (limpiarFiltros)="resetearFiltros()"
+        >
         </app-menu>
       </ion-col>
 
+      <!-- Columna catálogo -->
       <ion-col size="12" size-md="9">
-        <div class="catalogo-autos" *ngIf="vistaActiva === 'venta'">
-          <div *ngIf="autosVentaPaginados?.length === 0" class="mensaje-vacio">
-            <ion-icon name="car-sport-outline" class="icono-mensaje"></ion-icon><br />
-            No se encontraron autos de venta.
+        <!-- VENTA -->
+        <div class="catalogo-autos-ios" *ngIf="vistaActiva === 'venta'">
+          <div *ngIf="autosVentaPaginados?.length === 0" class="mensaje-vacio-ios">
+            <ion-icon name="car-sport-outline"></ion-icon>
+            <p>No se encontraron autos de venta.</p>
           </div>
 
           <ng-container *ngFor="let auto of autosVentaPaginados; trackBy: trackById">
-            <app-cartas [auto]="auto" [autosFavoritosIds]="autosFavoritosIds" [ubicacion]="'mis_autos'"
-              [esMio]="idsMisAutos.includes(auto._id)">
+            <app-cartas
+              [auto]="auto"
+              [autosFavoritosIds]="autosFavoritosIds"
+              [ubicacion]="'mis_autos'"
+              [esMio]="idsMisAutos.includes(auto._id)"
+            >
             </app-cartas>
           </ng-container>
         </div>
 
-        <div class="contenedor-paginacion" *ngIf="totalPaginasVenta > 1 && vistaActiva === 'venta'">
-          <p class="titulo-paginacion">más</p>
-          <div class="paginacion-scroll">
-            <div class="paginacion">
-              <button class="pagina" (click)="cambiarPagina('venta', paginaVentaActual - 1)"
-                [disabled]="paginaVentaActual === 1">‹</button>
+        <!-- Paginación venta -->
+        <div
+          class="contenedor-paginacion-ios"
+          *ngIf="totalPaginasVenta > 1 && vistaActiva === 'venta'"
+        >
+          <p class="titulo-paginacion-ios">Más</p>
+          <div class="paginacion-scroll-ios">
+            <div class="paginacion-ios">
+              <button
+                class="pagina-ios"
+                (click)="cambiarPagina('venta', paginaVentaActual - 1)"
+                [disabled]="paginaVentaActual === 1"
+              >
+                ‹
+              </button>
 
               <ng-container *ngFor="let i of paginasReducidasVenta">
-                <button *ngIf="esNumero(i)" class="pagina" [class.activa]="paginaVentaActual === i"
-                  (click)="cambiarPagina('venta', i)">
+                <button
+                  *ngIf="esNumero(i)"
+                  class="pagina-ios"
+                  [class.activa]="paginaVentaActual === i"
+                  (click)="cambiarPagina('venta', i)"
+                >
                   {{ i }}
                 </button>
-                <span *ngIf="!esNumero(i)" class="ellipsis">...</span>
+                <span *ngIf="!esNumero(i)" class="ellipsis-ios">...</span>
               </ng-container>
 
-              <button class="pagina" (click)="cambiarPagina('venta', paginaVentaActual + 1)"
-                [disabled]="paginaVentaActual === totalPaginasVenta">›</button>
+              <button
+                class="pagina-ios"
+                (click)="cambiarPagina('venta', paginaVentaActual + 1)"
+                [disabled]="paginaVentaActual === totalPaginasVenta"
+              >
+                ›
+              </button>
             </div>
           </div>
         </div>
 
-        <div class="catalogo-autos" *ngIf="vistaActiva === 'renta'">
-          <div *ngIf="autosRentaPaginados?.length === 0" class="mensaje-vacio">
-            <ion-icon name="car-sport-outline" class="icono-mensaje"></ion-icon><br />
-            No se encontraron autos de renta.
+        <!-- RENTA -->
+        <div class="catalogo-autos-ios" *ngIf="vistaActiva === 'renta'">
+          <div *ngIf="autosRentaPaginados?.length === 0" class="mensaje-vacio-ios">
+            <ion-icon name="car-sport-outline"></ion-icon>
+            <p>No se encontraron autos de renta.</p>
           </div>
 
           <ng-container *ngFor="let auto of autosRentaPaginados; trackBy: trackById">
-            <app-cartas [auto]="auto" [autosFavoritosIds]="autosFavoritosIds" [ubicacion]="'mis_autos_renta'"
-              [esMio]="idsMisAutos.includes(auto._id)">
+            <app-cartas
+              [auto]="auto"
+              [autosFavoritosIds]="autosFavoritosIds"
+              [ubicacion]="'mis_autos_renta'"
+              [esMio]="idsMisAutos.includes(auto._id)"
+            >
             </app-cartas>
           </ng-container>
         </div>
 
-        <div class="contenedor-paginacion" *ngIf="totalPaginasRenta > 1 && vistaActiva === 'renta'">
-          <p class="titulo-paginacion">más</p>
-          <div class="paginacion-scroll">
-            <div class="paginacion">
-              <button class="pagina" (click)="cambiarPagina('renta', paginaRentaActual - 1)"
-                [disabled]="paginaRentaActual === 1">‹</button>
+        <!-- Paginación renta -->
+        <div
+          class="contenedor-paginacion-ios"
+          *ngIf="totalPaginasRenta > 1 && vistaActiva === 'renta'"
+        >
+          <p class="titulo-paginacion-ios">Más</p>
+          <div class="paginacion-scroll-ios">
+            <div class="paginacion-ios">
+              <button
+                class="pagina-ios"
+                (click)="cambiarPagina('renta', paginaRentaActual - 1)"
+                [disabled]="paginaRentaActual === 1"
+              >
+                ‹
+              </button>
 
               <ng-container *ngFor="let i of paginasReducidasRenta">
-                <button *ngIf="esNumero(i)" class="pagina" [class.activa]="paginaRentaActual === i"
-                  (click)="cambiarPagina('renta', i)">
+                <button
+                  *ngIf="esNumero(i)"
+                  class="pagina-ios"
+                  [class.activa]="paginaRentaActual === i"
+                  (click)="cambiarPagina('renta', i)"
+                >
                   {{ i }}
                 </button>
-                <span *ngIf="!esNumero(i)" class="ellipsis">...</span>
+                <span *ngIf="!esNumero(i)" class="ellipsis-ios">...</span>
               </ng-container>
 
-              <button class="pagina" (click)="cambiarPagina('renta', paginaRentaActual + 1)"
-                [disabled]="paginaRentaActual === totalPaginasRenta">›</button>
+              <button
+                class="pagina-ios"
+                (click)="cambiarPagina('renta', paginaRentaActual + 1)"
+                [disabled]="paginaRentaActual === totalPaginasRenta"
+              >
+                ›
+              </button>
             </div>
           </div>
         </div>
-
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <app-footer></app-footer>
 </ion-content>

@@ -1,154 +1,207 @@
-.header-toolbar {
+:host {
+  display: block;
+  background: transparent;
+}
+
+/* ===== HEADER / SHEET STYLE ===== */
+.arr-header-ios {
   --background: #ffffff;
   box-shadow: none;
-  padding: 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+  padding-top: 4px;
 }
 
-.header-flex {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 2px 5px;
+.grabber-ios {
+  width: 36px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.9);
+  margin: 4px auto 6px;
 }
 
-.logo-titulo {
+.header-toolbar-ios {
+  --background: #ffffff;
+  min-height: 44px;
+  padding-inline: 6px;
+}
+
+.header-toolbar-ios ion-title {
+  text-align: left;
+}
+
+/* Stack de título tipo iOS (eyebrow + título) */
+.title-stack {
   display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+.title-main {
+  font-size: 17px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Botón cerrar */
+.header-toolbar-ios ion-button {
+  --padding-start: 6px;
+  --padding-end: 6px;
+}
+
+.header-toolbar-ios ion-button ion-icon {
+  font-size: 20px;
+}
+
+/* ===== CONTENT ===== */
+.modal-arr-ios {
+  --background: linear-gradient(180deg, #f4f4f7 0, #ffffff 18%, #ffffff 100%);
+  padding: 14px 16px 18px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+}
+
+/* Card introductoria */
+.intro-card {
+  margin-bottom: 12px;
+}
+
+.intro-chip {
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 8px;
 
-  img {
-    height: 18px;
-    width: auto;
-
-    @media (max-width: 768px) {
-      height: 14px;
-    }
+  ion-icon {
+    font-size: 14px;
   }
-
 }
 
-ion-button {
+.intro-card p {
+  margin: 0;
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.55;
+}
+
+/* Secciones tipo “card” iOS */
+.section-card {
+  margin: 10px 0 0;
+  padding: 10px 12px 12px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow:
+    0 14px 28px rgba(15, 23, 42, 0.08),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+}
+
+/* Título de sección */
+.section-title {
+  margin: 0 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 14px;
-}
+  font-weight: 700;
+  color: #111827;
 
-
-.modal-arrendamiento {
-  --background: #f9f9f9; // fondo claro neutro
-  font-family: 'Poppins', sans-serif;
-  padding: 1.5rem;
-
-  h4 {
-    font-size: 17px !important;
-    font-weight: 700;
-    color: #e00909;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    ion-icon {
-      color: #e00909;
-      font-size: 1.5rem;
-    }
-  }
-
-  h5 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #333;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-
-    ion-icon {
-      color: #e00909;
-      font-size: 1.2rem;
-    }
-  }
-
-  p {
-    color: #444;
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-  }
-
-  ul {
-    list-style: none;
-    padding-left: 0;
-
-    li {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.95rem;
-      color: #222;
-      background-color: #f2f2f2;
-      padding: 0.6rem 1rem;
-      border-radius: 8px;
-      margin-bottom: 0.5rem;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-
-      ion-icon {
-        color: #e00909;
-        font-size: 1.1rem;
-      }
-
-      &:hover {
-        background-color: #e0090920;
-      }
-    }
-  }
-
-  @media (max-width: 768px) {
-
-    h4,
-    h5 {
-      font-size: 1.1rem;
-    }
-
-    p,
-    ul li {
-      font-size: 0.9rem;
-    }
+  ion-icon {
+    font-size: 17px;
+    color: #ef4444;
   }
 }
 
+/* Lista estilo iOS */
+.ios-list {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+}
 
+.ios-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: #374151;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.9);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  ion-icon {
+    font-size: 18px;
+    color: #ef4444;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  span {
+    line-height: 1.4;
+  }
+}
+
+/* Botón “interesado” (si lo usas) */
 .contenedor-boton-final {
-  margin-top: 32px;
+  margin-top: 18px;
   display: flex;
   justify-content: center;
 }
 
 .btn-interesado {
-  background: linear-gradient(90deg, #ff6f00, #e00909);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #ff3b30, #ff453a);
   color: #fff;
-  font-family: 'Poppins', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  padding: 12px 24px;
-  border-radius: 12px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: none;
+  box-shadow: 0 12px 22px rgba(248, 113, 113, 0.45);
+  cursor: pointer;
   width: 100%;
-  max-width: 300px;
-  box-shadow: 0 4px 12px rgba(224, 9, 9, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  max-width: 280px;
 
   ion-icon {
     font-size: 18px;
-    vertical-align: middle;
   }
 
-  &:hover {
-    filter: brightness(1.1);
+  &:active {
+    transform: scale(0.97);
+    box-shadow: 0 8px 16px rgba(248, 113, 113, 0.4);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-arr-ios {
+    padding: 12px 14px 16px;
   }
 
-  @media (max-width: 768px) {
-    font-size: 14px;
-    padding: 10px 20px;
+  .section-card {
+    padding: 9px 10px 11px;
+    border-radius: 14px;
+  }
+
+  .ios-list-item {
+    font-size: 12px;
   }
 }

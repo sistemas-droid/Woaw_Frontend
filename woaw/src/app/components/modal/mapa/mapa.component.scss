@@ -1,140 +1,157 @@
 :host {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
-  max-width: 600px;
-  margin: auto;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+  max-width: 620px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 24px 24px 0 0;
   overflow: hidden;
-  animation: modalFadeIn 0.25s ease-out;
+  box-shadow:
+    0 -4px 18px rgba(15, 23, 42, 0.25),
+    0 0 0 0.5px rgba(148, 163, 184, 0.4);
+  animation: sheetIn 0.22s ease-out;
 }
 
-/* ===== MODAL CENTRADA ===== */
+/* ===== MODAL COMO SHEET iOS ===== */
 ::ng-deep .mapa-modal-flotante {
   display: flex !important;
-  align-items: center !important;
+  align-items: flex-end !important;
   justify-content: center !important;
 }
 
 ::ng-deep .mapa-modal-flotante .modal-wrapper {
   position: fixed !important;
-  top: 50% !important;
+  bottom: 0 !important;
   left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  width: 92% !important;
-  max-width: 600px !important;
-  height: auto !important;
-  max-height: 92dvh !important;
-  /* límite de alto: no pantalla completa */
-  background: #fff !important;
-  border-radius: 16px !important;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25) !important;
+  transform: translateX(-50%) !important;
+  width: 100% !important;
+  max-width: 620px !important;
+  max-height: 90dvh !important;
+  border-radius: 24px 24px 0 0 !important;
   overflow: hidden !important;
-  animation: popIn 0.25s ease-out;
-}
-
-/* ===== HEADER ===== */
-ion-header {
-  --background: #fff;
-  border-bottom: 1px solid #eee;
+  background: transparent !important;
   box-shadow: none !important;
 }
 
-ion-toolbar {
-  --background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 48px;
+/* Fondo blur tipo iOS */
+::ng-deep ion-backdrop {
+  backdrop-filter: blur(14px);
+  background-color: rgba(15, 23, 42, 0.42);
 }
 
-ion-title {
+/* ===== HEADER ===== */
+.map-header-ios {
+  --background: #ffffff;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+/* Grabber */
+.grabber-ios {
+  width: 36px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.9);
+  margin: 6px auto 4px;
+}
+
+/* Toolbar principal */
+.toolbar-ios {
+  --background: #ffffff;
+  min-height: 44px;
+  padding-inline: 4px;
+}
+
+.toolbar-ios ion-title {
   font-weight: 600;
   font-size: 15px;
   text-align: center;
 }
 
-ion-button ion-icon {
+.toolbar-ios ion-button ion-icon {
   font-size: 20px;
 }
 
-/* ===== CONTENIDO ===== */
-ion-content {
-  --background: #fff;
+/* Toolbar búsqueda */
+.toolbar-search-ios {
+  --background: #ffffff;
+  padding-inline: 8px;
+  padding-bottom: 4px;
+}
+
+.search-ios {
+  --background: #f3f4f6;
+  --icon-color: #9ca3af;
+  --color: #111827;
+  --placeholder-color: #9ca3af;
+  --border-radius: 999px;
+  --box-shadow: 0 0 0 1px rgba(209, 213, 219, 0.7);
+  font-size: 13px;
+}
+
+/* ===== CONTENT ===== */
+.map-content-ios {
+  --background: #ffffff;
   --padding-start: 0;
   --padding-end: 0;
   --padding-top: 6px;
   --padding-bottom: 6px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-
-  /* hace que el scroll ocurra aquí si falta espacio,
-     dejando el footer y el header fijos dentro de la modal */
-  flex: 1 1 auto;
-  height: auto !important;
-  overflow: auto !important;
 }
 
 .texto-busqueda {
   font-size: 12px;
-  color: #555;
-  margin: 4px 0 6px 14px;
-  align-self: flex-start;
+  color: #6b7280;
+  margin: 2px 14px 6px;
 }
 
-/* ===== LEYENDA ===== */
+/* Leyenda */
 .legend-ubicacion {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 2px 10px 8px;
+  margin: 0 12px 8px;
   font-size: 12px;
-  color: #666;
+  color: #4b5563;
 }
 
 .legend-item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
-  border-radius: 9999px;
-  background: #f7f7f7;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 999px;
+  background: #f9fafb;
+  border: 1px solid rgba(148, 163, 184, 0.35);
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
 }
 
 .dot-green {
-  background: #00c853;
-  box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.15);
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22);
 }
 
 .pin {
   font-size: 14px;
-  color: #ea4335;
+  color: #ef4444;
 }
 
-/* ===== MAPA ===== */
+/* Mapa */
 .map-wrapper {
-  width: 92%;
-  max-width: 540px;
-  height: 270px;
-  /* web/base */
-  border-radius: 12px;
+  width: calc(100% - 24px);
+  max-width: 560px;
+  height: 260px;
+  border-radius: 18px;
   overflow: hidden;
-  background: #f4f4f4;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
-  margin: 8px auto;
+  background: #f3f4f6;
+  box-shadow:
+    0 14px 30px rgba(15, 23, 42, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.9);
+  margin: 6px auto 10px;
 }
 
 .map-container {
@@ -151,89 +168,85 @@ ion-content {
   height: 100%;
 }
 
-/* ===== FOOTER ===== */
-ion-footer {
-  --background: #fff;
-  border-top: 1px solid #eaeaea;
-  padding: 8px 10px;
+.txt-spinner {
+  font-size: 12px;
+  margin-top: 6px;
+  color: #6b7280;
 }
 
-ion-footer ion-toolbar {
-  --background: #fff;
+/* ===== FOOTER ===== */
+.map-footer-ios {
+  --background: #ffffff;
+  border-top: 1px solid rgba(209, 213, 219, 0.8);
+}
+
+.map-footer-ios ion-toolbar {
+  --background: #ffffff;
+  padding: 6px 10px calc(6px + env(safe-area-inset-bottom));
+  min-height: 52px;
+}
+
+.footer-inner-ios {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  min-height: 46px;
-  gap: 6px;
-  padding-bottom: env(safe-area-inset-bottom);
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .direccion-footer {
   font-size: 12px;
-  color: #555;
+  color: #4b5563;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 70%;
+  flex: 1 1 auto;
 }
 
-ion-button[color="danger"] {
+/* Botón principal */
+.map-footer-ios ion-button[color="danger"] {
   --background: #ff3b30;
-  --border-radius: 10px;
+  --background-activated: #e11d28;
+  --background-hover: #ff453a;
+  --border-radius: 999px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  height: 34px;
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.3px;
-  height: 34px;
-  min-width: 90px;
+  letter-spacing: 0.2px;
+  flex-shrink: 0;
 }
 
-/* ===== RESPONSIVE (móvil) ===== */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   ::ng-deep .mapa-modal-flotante .modal-wrapper {
-    width: 94% !important;
-    max-width: 94% !important;
+    max-width: 100% !important;
+    width: 100% !important;
     max-height: 92dvh !important;
-    /* asegura límite en móvil */
   }
 
-  /* 🔥 Alargamos el mapa para comernos el hueco blanco
-     (restamos header/busca/leyenda/footer ≈ 220px) */
   .map-wrapper {
-    height: clamp(360px, calc(92dvh - 200px), 650px);
+    height: clamp(320px, 55dvh, 520px);
+    border-radius: 16px;
   }
 
-  .direccion-footer {
-    font-size: 11.5px;
+  .footer-inner-ios {
+    align-items: stretch;
+  }
+
+  .map-footer-ios ion-button {
+    min-width: 110px;
   }
 }
 
-/* ===== ANIMACIONES ===== */
-@keyframes modalFadeIn {
+/* ===== ANIMACIÓN SHEET ===== */
+@keyframes sheetIn {
   from {
-    transform: translateY(8px) scale(0.97);
+    transform: translateY(12px);
     opacity: 0;
   }
-
   to {
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
     opacity: 1;
   }
-}
-
-@keyframes popIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -45%) scale(0.97);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-/* ===== FONDO DIFUMINADO ===== */
-::ng-deep ion-backdrop {
-  backdrop-filter: blur(3px);
-  background-color: rgba(0, 0, 0, 0.35);
 }

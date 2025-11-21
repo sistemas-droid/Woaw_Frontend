@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ios-polizas">
 
 <section class="cta-section">
   <ion-button fill="clear" class="btn-regresar" (click)="redirigir('/home')">
@@ -9,11 +9,7 @@
 </section>
 
   <section class="polizas-section">
-    <ion-header collapse="condense">
-      <ion-toolbar>
-        <ion-title size="large">verPolizas</ion-title>
-      </ion-toolbar>
-    </ion-header>
+
 
     <header class="cotiza__head">
       <h1>Pólizas</h1>
@@ -105,5 +101,4 @@
     </ng-template>
   </section>
 
-  <app-footer></app-footer>
 </ion-content>

@@ -1,4 +1,4 @@
-<section class="bloque-carrusel">
+<section class="bloque-carrusel-ios">
 
   <div class="contenedor_texto">
     <h2>Otros</h2>
@@ -7,19 +7,25 @@
 
   <div class="carrusel-scroll-wrapper">
     <div class="carrusel-autos">
-      <div class="card-auto" *ngFor="let auto of autos" (click)="onCardClick(auto, $event)">
+      <div
+        class="card-auto"
+        *ngFor="let auto of autos"
+        (click)="onCardClick(auto, $event)"
+      >
 
-        <!-- Imagen con fallbacks (autos/motos/camiones) -->
-        <img
-          [src]="auto.imagenes?.length ? auto.imagenes[0]
-                : (auto.imagenPrincipal || auto.imagen || auto.foto || auto.thumbnail || auto.fotoPrincipal || '')"
-          alt="{{ auto.marca }} {{ auto.modelo }}"
-        />
+        <!-- Imagen principal con fallbacks -->
+        <div class="img-shell">
+          <img
+            [src]="auto.imagenes?.length ? auto.imagenes[0]
+                  : (auto.imagenPrincipal || auto.imagen || auto.foto || auto.thumbnail || auto.fotoPrincipal || '')"
+            alt="{{ auto.marca }} {{ auto.modelo }}"
+          />
+        </div>
 
         <div class="info">
           <h3>{{ auto.marca }} {{ auto.modelo }} {{ auto.anio }}</h3>
 
-          <!-- AUTOS (como ya lo tenías, pero seguro) -->
+          <!-- AUTOS (con versiones) -->
           <p *ngIf="auto?.version?.length > 0">
             <span *ngIf="auto.vehiculo === 'auto' && auto.tipoVenta === 'nuevo'">
               Desde MX ${{ auto.version | priceMin | number:'1.0-0' }}
@@ -29,13 +35,12 @@
             </span>
           </p>
 
-          <!-- CAMIONES/MOTOS (precio directo; muchas motos traen 'precio') -->
+          <!-- CAMIONES / MOTOS (precio directo) -->
           <p *ngIf="!auto?.version?.length && (auto?.precio != null || auto?.precioCamion != null)">
             MX ${{ (auto.precio ?? auto.precioCamion) | number:'1.0-0' }}
           </p>
 
           <div class="detalles-auto">
-            <!-- Kilometraje (si aplica) -->
             <div class="item-detalle" *ngIf="auto.kilometraje">
               <ion-icon name="speedometer-outline"></ion-icon>
               <span title="{{ auto.kilometraje }} km">
@@ -43,13 +48,11 @@
               </span>
             </div>
 
-            <!-- Transmisión (si aplica) -->
             <div class="item-detalle" *ngIf="auto.transmision">
               <ion-icon name="swap-horizontal-outline"></ion-icon>
               <span title="{{ auto.transmision }}">{{ auto.transmision }}</span>
             </div>
 
-            <!-- MOTOS: cilindrada o tipo de motor -->
             <div class="item-detalle" *ngIf="auto.cilindrada || auto.tipoMotor">
               <ion-icon name="construct-outline"></ion-icon>
               <span
@@ -60,7 +63,7 @@
           </div>
         </div>
 
-        <!-- Badges de tipo de venta (si existe el campo) -->
+        <!-- Badges tipoVenta (siguen igual, solo cambias CSS global si quieres) -->
         <div *ngIf="auto.tipoVenta" [ngClass]="generalService.getClaseTipoBarra(auto.tipoVenta)"></div>
         <p *ngIf="auto.tipoVenta" [ngClass]="generalService.getClaseTipo(auto.tipoVenta)">
           {{ auto.tipoVenta }}

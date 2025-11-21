@@ -1,66 +1,50 @@
-.loading-spinner {
-  display: block;
-  margin: 40px auto;
-  width: 48px;
-  height: 48px;
+/* ============================= */
+/*   FONDO / BASE iOS            */
+/* ============================= */
+.contenido-ios {
+  --background: #f2f2f7;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
 }
 
-.no-coches {
-  text-align: center;
-  margin-top: 60px;
-  color: var(--ion-color-medium);
+/* ============================= */
+/*   CONTENEDOR GRID iOS         */
+/* ============================= */
+.contenedor-catalogo-ios {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 12px 20px;
 }
 
-.no-coches .icono-carro {
-  font-size: 64px;
-  color: var(--ion-color-danger);
-}
-
-.no-coches h2 {
-  font-size: 22px;
-  font-weight: 700;
-  margin: 12px 0 6px;
-  color: var(--ion-color-dark);
-}
-
-.no-coches p {
-  font-size: 14px;
-}
-
-.eyebrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, .08);
-  border: 1px solid rgba(255, 255, 255, .12);
+/* ============================= */
+/*   SEGMENT iOS (mismo patrón)  */
+/* ============================= */
+.segment-woaw-ios {
+  margin: 6px 12px 8px;
   border-radius: 999px;
-  width: max-content;
-  color: #ffffff;
-  font-weight: bolder;
-  font-size: 15px;
+  padding: 3px;
+  background: #e5e5ea;
 
-  .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 999px;
-    background: #ff0000;
-  }
+  --background: transparent;
+  --indicator-color: #ffffff;
+  --indicator-height: 28px;
+  --color: #3c3c43;
+  --color-checked: #ffffff;
 }
 
-@media (max-width: 1025px) {
-  .eyebrow {
-    font-size: 13px;
-  }
+.segment-woaw-ios ion-segment-button {
+  text-transform: none;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  min-height: 32px;
+  --color-checked: #007aff;
+  --indicator-color: #ffffff;
 }
 
-@media (max-width: 768px) {
-  .eyebrow {
-    font-size: 12px;
-  }
-}
-
+/* ============================= */
+/*   CARDS GRID                  */
+/* ============================= */
 .cards-grid {
   display: grid;
   gap: 14px;
@@ -86,44 +70,52 @@
   }
 }
 
+/* CARD VEHÍCULO */
 .veh-card {
   position: relative;
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, .06);
-  transition: transform .15s ease, box-shadow .15s ease;
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.10),
+    0 0 0 0.4px rgba(255, 255, 255, 0.9);
+  background: #ffffff;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
   cursor: pointer;
   width: 100%;
   min-width: 0;
 }
 
 .veh-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, .10);
+  transform: translateY(-3px);
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.14),
+    0 0 0 0.4px rgba(255, 255, 255, 0.9);
 }
 
 .veh-card ion-card-content {
   padding: 12px 14px 14px;
 }
 
+/* Badge "Mi coche" */
 .badge {
   position: absolute;
   top: 8px;
   left: 8px;
   z-index: 2;
-  background: var(--ion-color-danger, #ff0000);
+  background: #ff3b30;
   color: #fff;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 4px 8px;
-  border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+  padding: 4px 9px;
+  border-radius: 999px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
 }
 
+/* Imagen */
 .img-wrap {
   width: 100%;
   aspect-ratio: 16 / 9;
-  background: #f7f7f8;
+  background: #f5f5f7;
 }
 
 .img-wrap img {
@@ -139,15 +131,18 @@
   }
 }
 
+/* Texto */
 .title {
   font-size: clamp(14px, 1.6vw, 16px);
   font-weight: 700;
+  color: #111827;
 }
 
 .price {
   font-size: clamp(14px, 1.4vw, 15px);
   font-weight: 800;
   margin-bottom: 8px;
+  color: #ff3b30;
 }
 
 .meta {
@@ -164,7 +159,7 @@
   align-items: center;
   gap: 6px;
   font-size: clamp(11px, 1.2vw, 12px);
-  color: var(--ion-color-medium);
+  color: #6b7280;
 }
 
 .meta .meta-item ion-icon {
@@ -177,13 +172,14 @@
   text-overflow: ellipsis;
 }
 
+/* Barra de acento */
 .accent-bar {
-  height: 4px;
+  height: 3px;
   width: 100%;
-  background: linear-gradient(90deg, var(--ion-color-danger), #000000);
-  border-radius: 0 0 14px 14px;
-  opacity: 0.7;
-  margin-top: 10px;
+  background: linear-gradient(90deg, #ff3b30, #111827);
+  border-radius: 0 0 16px 16px;
+  opacity: 0.8;
+  margin-top: 6px;
 }
 
 @media (max-width: 768px) {
@@ -197,37 +193,172 @@
 
   .price {
     font-size: 14px;
-    margin-bottom: 8px;
   }
 }
 
-@media (min-width: 768px) {
-  app-menu {
-    position: sticky;
-    top: 12px;
-    display: block;
+/* ============================= */
+/*   ESTADO VACÍO / NO COCHES    */
+/* ============================= */
+.loading-spinner {
+  display: block;
+  margin: 40px auto;
+  width: 48px;
+  height: 48px;
+}
+
+.no-coches {
+  text-align: center;
+  margin-top: 60px;
+  color: #6b7280;
+}
+
+.no-coches .icono-carro {
+  font-size: 64px;
+  color: #ff3b30;
+}
+
+.no-coches h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 12px 0 6px;
+  color: #111827;
+}
+
+.no-coches p {
+  font-size: 14px;
+}
+
+/* ============================= */
+/*   PAGINACIÓN iOS ROJA        */
+/* ============================= */
+.contenedor-paginacion-ios {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+  padding-bottom: 10px;
+}
+
+.titulo-paginacion-ios {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #6b7280;
+}
+
+.paginacion-scroll-ios {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  padding-bottom: 4px;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.9) transparent;
+
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.9);
+    border-radius: 999px;
   }
 }
 
-.top-controls {
-  display: flex;
-  justify-content: space-between;
+.paginacion-ios {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 8px;
-  margin: 4px 0 10px;
+  gap: 6px;
+  padding: 5px 6px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 10px 22px rgba(15, 23, 42, 0.16),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
 }
 
-.top-controls .right {
+/* Botones rojos */
+.pagina-ios {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
   display: flex;
   align-items: center;
+  justify-content: center;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  background: transparent;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.16s ease,
+    box-shadow 0.16s ease;
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  &:not(.activa):not(:disabled):hover {
+    background: rgba(148, 163, 184, 0.18);
+    transform: translateY(-1px);
+  }
+
+  &.activa {
+    background: #ff3b30; /* rojo iOS */
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(255, 59, 48, 0.55);
+    transform: translateY(-1px);
+  }
+}
+
+.ellipsis-ios {
+  padding: 0 6px;
+  font-size: 14px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* ============================= */
+/*   CARD FILTRO / RANGO FECHAS  */
+/* ============================= */
+.filtro-card {
+  border-radius: 14px;
+  box-shadow:
+    0 8px 18px rgba(15, 23, 42, 0.12),
+    0 0 0 0.4px rgba(255, 255, 255, 0.9);
+}
+
+.resumen-rango {
+  display: grid;
   gap: 10px;
+
+  .acciones {
+    display: flex;
+    gap: 8px;
+  }
 }
 
-.mb-3 {
-  margin-bottom: 12px;
-}
-
+/* ============================= */
+/*   MODAL MÍO                   */
+/* ============================= */
 ion-modal.mio-modal {
   --background: transparent;
   --backdrop-opacity: .35;
@@ -270,7 +401,7 @@ ion-modal.mio-modal::part(content) {
 .mio-modal__msg {
   margin: 0 0 16px;
   font-size: 14px;
-  color: var(--ion-color-medium);
+  color: #6b7280;
   text-align: center;
 }
 
@@ -296,45 +427,13 @@ ion-modal.mio-modal .mio-modal__actions ion-button:first-child {
   --ripple-color: rgba(255, 255, 255, .15);
 }
 
-ion-modal.mio-modal .mio-modal__actions ion-button:first-child::part(native) {
-  border-radius: 10px;
-  border: 2px solid transparent;
-  box-shadow: none;
-}
-
-@media (hover: hover) {
-  ion-modal.mio-modal .mio-modal__actions ion-button:first-child:hover::part(native) {
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, .06);
-  }
-}
-
-ion-modal.mio-modal .mio-modal__actions ion-button:first-child:focus-visible::part(native) {
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, .12);
-}
-
 ion-modal.mio-modal .mio-modal__actions ion-button:last-child {
-  --background: var(--ion-color-danger);
-  --background-hover: color-mix(in srgb, var(--ion-color-danger) 92%, black);
-  --background-activated: color-mix(in srgb, var(--ion-color-danger) 88%, black);
-  --background-focused: color-mix(in srgb, var(--ion-color-danger) 92%, black);
+  --background: #ff3b30;
+  --background-hover: color-mix(in srgb, #ff3b30 92%, black);
+  --background-activated: color-mix(in srgb, #ff3b30 88%, black);
+  --background-focused: color-mix(in srgb, #ff3b30 92%, black);
   --color: #fff;
-  --ripple-color: color-mix(in srgb, var(--ion-color-danger) 25%, white);
-}
-
-ion-modal.mio-modal .mio-modal__actions ion-button:last-child::part(native) {
-  border-radius: 10px;
-  border: 2px solid transparent;
-  box-shadow: none;
-}
-
-@media (hover: hover) {
-  ion-modal.mio-modal .mio-modal__actions ion-button:last-child:hover::part(native) {
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ion-color-danger) 22%, transparent);
-  }
-}
-
-ion-modal.mio-modal .mio-modal__actions ion-button:last-child:focus-visible::part(native) {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ion-color-danger) 30%, transparent);
+  --ripple-color: color-mix(in srgb, #ff3b30 25%, white);
 }
 
 .mio-modal__cancel {
@@ -342,48 +441,22 @@ ion-modal.mio-modal .mio-modal__actions ion-button:last-child:focus-visible::par
   width: 100%;
   text-align: center;
   border-radius: 10px;
-  --color: var(--ion-color-danger);
+  --color: #ff3b30;
   --background: transparent;
   --background-hover: transparent;
   --background-activated: transparent;
   --background-focused: transparent;
-  --ripple-color: color-mix(in srgb, var(--ion-color-danger) 20%, transparent);
+  --ripple-color: color-mix(in srgb, #ff3b30 20%, transparent);
 }
 
 .mio-modal__cancel::part(native) {
-  border: 2px solid var(--ion-color-danger);
+  border: 2px solid #ff3b30;
   border-radius: 10px;
 }
 
-@media (hover: hover) {
-  .mio-modal__cancel:hover::part(native) {
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ion-color-danger) 16%, transparent);
-  }
-}
-
-.mio-modal__cancel:focus-visible::part(native) {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ion-color-danger) 24%, transparent);
-}
-
-:host-context(.dark) .mio-modal__box {
-  background: #1e1f22;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, .5);
-}
-
-.filtro-card {
-  border-radius: 12px;
-}
-
-.resumen-rango {
-  display: grid;
-  gap: 10px;
-
-  .acciones {
-    display: flex;
-    gap: 8px;
-  }
-}
-
+/* ============================= */
+/*   MODAL CALENDARIO            */
+/* ============================= */
 .modal-calendario::part(content) {
   border-radius: 14px;
   max-width: 720px;
@@ -424,19 +497,14 @@ ion-datetime ::part(calendar-day) {
   font-weight: 500;
 }
 
-ion-datetime ::part(calendar-day-active) {
-  background: var(--ion-color-danger);
+ion-datetime ::part(calendar-day-active),
+ion-datetime ::part(calendar-day-selected) {
+  background: #ff3b30;
   color: #fff;
   border-radius: 6px;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, .06);
 }
 
-ion-datetime::part(calendar-day-active),
-ion-datetime::part(calendar-day-selected) {
-  background: var(--ion-color-danger);
-  color: #fff;
-}
-
+/* SR only */
 .sr-only {
   position: absolute !important;
   width: 1px;
@@ -449,33 +517,11 @@ ion-datetime::part(calendar-day-selected) {
   border: 0;
 }
 
-ion-segment.mb-3 {
-  --background: transparent;
-  --indicator-color: var(--ion-color-danger);
-  --indicator-height: 3px;
-  --indicator-box-shadow: none;
-  --ripple-color: rgba(229, 9, 20, .18);
-  padding-inline: 8px;
-}
-
-ion-segment-button {
-  --color: #111;
-  --color-checked: var(--ion-color-danger);
-  --background: transparent;
-  --background-checked: transparent;
-  text-transform: uppercase;
-  letter-spacing: .3px;
-  font-weight: 700;
-}
-
-ion-segment-button.segment-button-checked {
-  font-weight: 800;
-}
-
-:host-context(.dark) ion-segment-button {
-  --color: #a3a3a3;
-}
-
-:host-context(.dark) ion-segment.mb-3 {
-  --indicator-color: var(--ion-color-danger);
+/* Sticky menú en desktop */
+@media (min-width: 768px) {
+  app-menu {
+    position: sticky;
+    top: 12px;
+    display: block;
+  }
 }

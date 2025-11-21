@@ -1,52 +1,86 @@
+<!-- app-login.component.html -->
 <div class="overlay">
-  <img src="assets/icon/logo2.png" loading="lazy" alt="Go Autos" class="logo" />
+
   <h1 class="titulo">Inicia sesión</h1>
 
   <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
- 
+    <!-- EMAIL -->
     <ion-item lines="none" class="input-wrapper">
-      <ion-input formControlName="email" type="email" placeholder="Correo">
-      </ion-input>
+      <ion-input
+        formControlName="email"
+        type="email"
+        placeholder="Correo"
+      ></ion-input>
     </ion-item>
-    <ion-note *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
-      <ng-container *ngIf="loginForm.get('email')?.errors?.['required']">
+    <ion-note
+      *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+    >
+      <ng-container
+        *ngIf="loginForm.get('email')?.errors?.['required']"
+      >
         El email es obligatorio.
       </ng-container>
-      <ng-container *ngIf="loginForm.get('email')?.errors?.['email']">
+      <ng-container
+        *ngIf="loginForm.get('email')?.errors?.['email']"
+      >
         Email inválido
       </ng-container>
     </ion-note>
 
+    <!-- PASSWORD -->
     <ion-item lines="none" class="input-wrapper">
-      <ion-input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Contraseña">
-      </ion-input>
-      <ion-icon [name]="showPassword ? 'eye-off' : 'eye'" slot="end" (click)="showPassword = !showPassword"
-        class="eye-icon">
-      </ion-icon>
+      <ion-input
+        [type]="showPassword ? 'text' : 'password'"
+        formControlName="password"
+        placeholder="Contraseña"
+      ></ion-input>
+      <ion-icon
+        [name]="showPassword ? 'eye-off' : 'eye'"
+        slot="end"
+        (click)="showPassword = !showPassword"
+        class="eye-icon"
+      ></ion-icon>
     </ion-item>
-    <ion-note *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-      <ng-container>
-        La contraseña es obligatoria.
-      </ng-container>
+    <ion-note
+      *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+    >
+      La contraseña es obligatoria.
     </ion-note>
 
-    <button type="submit" class="btn-login">Iniciar sesión</button>
-    <br>
+    <!-- BOTÓN PRINCIPAL -->
+    <button type="submit" class="btn-login">
+      Iniciar sesión
+    </button>
 
     <!-- botón web (GIS) -->
     <div #googleBtn id="google-button" *ngIf="!isNative"></div>
 
     <!-- botón nativo (Android) -->
-    <div class="google-btn" *ngIf="isNative" (click)="loginWithGoogleMobile()">
-      <img src="assets/icon/Google_logo.png" alt="Google" class="google-icon" />
+    <div
+      class="google-btn"
+      *ngIf="isNative"
+      (click)="loginWithGoogleMobile()"
+    >
+      <img
+        src="assets/icon/Google_logo.png"
+        alt="Google"
+        class="google-icon"
+      />
       <span>Continuar con Google</span>
     </div>
 
-    <!-- NUEVO: botón Apple solo para iOS -->
-    <div class="apple-btn" *ngIf="isIOS" (click)="loginWithApple()">
-      <img src="assets/icon/Apple_logo.png" alt="Apple" class="apple-icon" />
+    <!-- botón Apple solo para iOS -->
+    <div
+      class="apple-btn"
+      *ngIf="isIOS"
+      (click)="loginWithApple()"
+    >
+      <img
+        src="assets/icon/Apple_logo.png"
+        alt="Apple"
+        class="apple-icon"
+      />
       <span>Continuar con Apple</span>
     </div>
-
   </form>
 </div>

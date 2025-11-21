@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ios-poliza">
 
   <app-spinner *ngIf="mostrar_spinnet"></app-spinner>
   <app-otros-seguros [refreshKey]="islandKey" *ngIf="tipoDispocitivo === 'telefono'"></app-otros-seguros>

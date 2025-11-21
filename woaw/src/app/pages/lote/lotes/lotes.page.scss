@@ -1,188 +1,264 @@
+/* ================================
+   FONDO / LAYOUT iOS
+   ================================ */
+
+.lotes-content {
+  --background: #f2f2f7;
+  padding-top: calc(12px + env(safe-area-inset-top, 0px));
+  padding-left: max(10px, env(safe-area-inset-left, 0px));
+  padding-right: max(10px, env(safe-area-inset-right, 0px));
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Contenedor general sin carta gigante */
 .ocntenedor_css_lotes {
   max-width: 1300px;
   margin: 0 auto;
-  padding: 5px;
+  padding: 4px 4px 12px;
+
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
-.mi-boton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #ff4b2b, #ff9f00);
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
+/* ================================
+   HEADER / TOOLBAR LOTES
+   ================================ */
+
+.boton-container {
+  margin: 4px 0 10px;
 }
 
-.mi-boton .icon {
-  width: 18px;
-  height: 18px;
-}
-
+/* Header “plano”, sin card gigante */
 .header-lotes-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: 15px;
-
-  @media (max-width: 768px) {
-    gap: 5px;
-  }
 }
 
-/* Buscador + título en la misma fila, bien separados */
+/* Buscador + título en la misma fila */
 .header-lotes-left {
   display: flex;
   align-items: flex-end;
-  gap: 40px;
-  /* separación fuerte entre buscador y título */
+  gap: 24px;
   flex: 1;
   min-width: 0;
 }
 
-/* Buscador con ancho fijo para que el título pueda centrarse en el resto */
-.buscador-lotes {
-  flex: 0 0 430px;
+/* 🔍 Card SOLO del tamaño del buscador */
+.search-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   max-width: 430px;
+  width: 100%;
 
-  @media (max-width: 768px) {
-    width: 100%;
-    max-width: none;
-  }
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 999px;
+  padding: 4px 6px;
+  box-shadow:
+    0 10px 25px rgba(15, 23, 42, 0.15),
+    0 0 0 0.6px rgba(148, 163, 184, 0.35);
 }
 
-/* Título “LOTES” centrado y ajustado a la izquierda donde te gustó */
+/* Searchbar estilo iOS pill, ocupando todo dentro de la card */
+.ios-search {
+  width: 100%;
+  max-width: 100%;
+
+  --background: #f2f2f7;
+  --border-radius: 999px;
+  --icon-color: #9ca3af;
+  --color: #111827;
+  --placeholder-color: #9ca3af;
+  --box-shadow: none;
+}
+
+/* Título LOTES */
 .titulo-seccion-lotes {
   flex: 1;
   margin: 0;
   font-weight: 900;
-  font-size: 26px;
+  font-size: 20px;
   color: #c62828;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-align: center;
   white-space: nowrap;
-  text-shadow: 0 1px 0 #fff, 0 2px 4px rgba(0, 0, 0, .15);
+  text-shadow: 0 1px 0 #fff, 0 2px 4px rgba(0, 0, 0, 0.12);
 
   @media (min-width: 992px) {
-    font-size: 28px;
+    font-size: 22px;
   }
 
-  /* 🔥 ajuste fuerte hacia la izquierda para compensar los 430px del buscador */
   @media (min-width: 768px) {
-    transform: translateX(-200px);
+    transform: translateX(-110px);
   }
 
   @media (max-width: 640px) {
-    font-size: 20px;
-    text-align: left;
+    font-size: 18px;
+    text-align: center;
     transform: none;
-    /* en móvil no movemos nada */
   }
 }
 
-@media (max-width: 640px) {
-  .titulo-seccion-lotes {
-    width: 100%;
-    text-align: center !important;
-    transform: none !important;
-    margin-top: 10px;
-  }
-
-  .header-lotes-left {
-    align-items: center !important;
-  }
-}
-
-
-/* En móvil se apilan buscador y título */
+/* Ajustes mobile header */
 @media (max-width: 640px) {
   .header-lotes-left {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 6px;
   }
 
-  .buscador-lotes {
-    flex: 1 1 auto;
-    max-width: 100%;
+  .search-card {
+    max-width: none;
+    width: 100%;
+  }
+
+  .titulo-seccion-lotes {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .header-lotes-bar {
+    gap: 8px;
   }
 }
 
+/* Texto de resultados */
 .titulo-lotes {
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 600;
   margin: 0;
-  color: #222;
+  color: #4b5563;
+  white-space: nowrap;
 
   @media (max-width: 768px) {
     display: none;
   }
 }
 
-.lotes-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  align-items: stretch;
+/* ================================
+   SEGMENT iOS
+   ================================ */
+
+.ios-segment {
+  --background: transparent;
+  padding-inline: 6px;
+  flex: 0 0 auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 2px;
+  border-radius: 999px;
+  background: #f2f2f7;
+  box-shadow: 0 0 0 0.5px rgba(209, 213, 219, 0.9);
 }
 
-@media (min-width: 768px) {
-  .lotes-grid {
-    grid-template-columns: repeat(3, 1fr);
+.ios-segment::part(indicator) {
+  display: none;
+}
+
+.ios-segment ion-segment-button {
+  --color: #6b7280;
+  --color-checked: #ffffff;
+  --background: transparent;
+  --background-checked: transparent;
+  --indicator-color: transparent;
+  --indicator-height: 0;
+
+  min-width: 110px;
+  text-transform: none;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.ios-segment ion-segment-button::part(native) {
+  border-radius: 999px;
+  padding-inline: 10px;
+}
+
+.ios-segment ion-segment-button.segment-button-checked::part(native) {
+  background: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(239, 68, 68, 0.5);
+}
+
+@media (hover: hover) {
+  .ios-segment ion-segment-button:hover::part(native) {
+    background: rgba(148, 163, 184, 0.08);
+  }
+
+  .ios-segment ion-segment-button.segment-button-checked:hover::part(native) {
+    background: #ef4444;
   }
 }
 
-@media (min-width: 992px) {
-  .lotes-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+/* ================================
+   GRID / CARDS
+   ================================ */
+
+.lotes-grid-shell {
+  margin-top: 6px;
 }
 
-@media (min-width: 1400px) {
-  .lotes-grid {
-    grid-template-columns: repeat(6, 1fr);
-  }
+.lotes-row {
+  row-gap: 12px;
 }
 
-.lote-card {
+.lote-col {
+  display: flex;
+}
+
+/* Card estilo iOS */
+.lote-card,
+.ios-card-lote {
   width: 100%;
   height: 230px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, .06);
-  transition: transform .2s ease, box-shadow .2s ease;
+  border-radius: 18px;
+  background: #ffffff;
+  margin: 0;
   cursor: pointer;
   outline: none;
-  margin: 0;
+
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.2),
+    0 0 0 0.5px rgba(148, 163, 184, 0.35);
+  border: none;
 
   position: relative !important;
   z-index: 1;
+
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .lote-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, .08);
+  transform: translateY(-3px);
+  box-shadow:
+    0 24px 52px rgba(15, 23, 42, 0.3),
+    0 0 0 0.5px rgba(248, 113, 113, 0.3);
 }
 
 .lote-card:focus-visible {
-  box-shadow: 0 0 0 3px rgba(198, 40, 40, .25);
+  box-shadow:
+    0 0 0 2px rgba(239, 68, 68, 0.6),
+    0 24px 52px rgba(15, 23, 42, 0.3);
 }
 
+/* Imagen */
 .lote-img {
   width: 100%;
   aspect-ratio: 16 / 9;
-  background: #f7f7f8;
+  background: #f3f4f6;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -196,21 +272,22 @@
   display: block;
 }
 
+/* Contenido */
 .lote-header {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 12px 14px;
+  gap: 6px;
+  padding: 10px 12px 12px;
   overflow: hidden;
 }
 
 .lote-title {
   margin: 0;
   font-size: 14px;
-  font-weight: 700;
-  color: #c62828;
-  line-height: 1.25;
+  font-weight: 800;
+  color: #b91c1c;
+  line-height: 1.2;
   display: flex;
   gap: 6px;
   align-items: flex-start;
@@ -219,20 +296,20 @@
 .lote-subtitle {
   margin: 0;
   font-size: 12px;
-  color: #666;
+  color: #6b7280;
   display: flex;
   gap: 6px;
   align-items: flex-start;
 }
 
-.icon {
-  width: 16px;
-  height: 16px;
-  flex: 0 0 16px;
-  margin-top: 2px;
-  opacity: .9;
+.lote-title ion-icon,
+.lote-subtitle ion-icon {
+  font-size: 14px;
+  margin-top: 1px;
+  color: #ef4444;
 }
 
+/* Clamps */
 .clamp-1,
 .clamp-2 {
   display: -webkit-box;
@@ -253,63 +330,7 @@
   line-clamp: 2;
 }
 
-.no-lotes {
-  text-align: center;
-  padding: 40px 20px;
-  color: #888;
-  font-size: 16px;
-
-  p {
-    margin-top: 10px;
-    font-weight: 500;
-  }
-
-  .no-icon {
-    font-size: 50px;
-    color: #ccc;
-  }
-}
-
-.back-button {
-  background: transparent;
-  border: none;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-
-  .icon {
-    width: 24px;
-    height: 24px;
-  }
-}
-
-@media (max-width: 360px) {
-  .lote-card {
-    height: 250px;
-  }
-
-  .lote-img {
-    aspect-ratio: 4 / 3;
-  }
-
-  .lote-title {
-    font-size: 13px;
-  }
-
-  .lote-subtitle {
-    font-size: 11px;
-  }
-}
-
-.clamp {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  line-clamp: var(--lc, 2);
-  -webkit-line-clamp: var(--lc, 2);
-}
+/* Responsive cards */
 
 @media (max-width: 640px) {
   .lote-card {
@@ -318,27 +339,6 @@
 
   .lote-img {
     aspect-ratio: 4 / 3;
-  }
-
-  .lote-title,
-  .lote-subtitle {
-    display: block;
-    line-height: 1.3;
-    margin: 0;
-  }
-
-  .lote-title .icon,
-  .lote-subtitle .icon {
-    vertical-align: text-top;
-    margin-right: 6px;
-  }
-
-  .ellipsis-2 {
-    display: block;
-    -webkit-line-clamp: unset;
-    line-clamp: unset;
-    overflow: visible;
-    white-space: normal;
   }
 
   .lote-title {
@@ -350,127 +350,125 @@
   }
 
   .lote-header {
-    gap: 10px;
-    padding: 10px 12px;
+    padding: 9px 10px 11px;
   }
 }
 
-ion-segment {
-  --background: transparent;
-  --indicator-color: var(--ion-color-danger);
-  --indicator-height: 3px;
-  --indicator-box-shadow: none;
-  --ripple-color: rgba(229, 9, 20, .18);
-  padding-inline: 8px;
-}
-
-ion-segment-button {
-  --color: #111;
-  --color-checked: var(--ion-color-danger);
-  --background: transparent;
-  --background-checked: transparent;
-  text-transform: uppercase;
-  letter-spacing: .3px;
-  font-weight: 700;
-  transition: background .15s ease, color .15s ease;
-}
-
-@media (hover: hover) {
-  ion-segment-button:hover::part(native) {
-    background: rgba(229, 9, 20, .06);
+@media (max-width: 360px) {
+  .lote-card {
+    height: 250px;
   }
 }
 
-ion-segment-button:focus-visible::part(native),
-ion-segment-button.segment-button-checked:focus-visible::part(native) {
-  box-shadow: 0 0 0 3px rgba(229, 9, 20, .18);
-  border-radius: 8px;
+/* ================================
+   MENSAJE SIN LOTES
+   ================================ */
+
+.no-lotes {
+  text-align: center;
+  padding: 36px 20px 40px;
+  color: #6b7280;
+  font-size: 15px;
 }
 
-ion-segment-button.segment-button-checked {
-  font-weight: 800;
+.no-lotes p {
+  margin-top: 10px;
+  font-weight: 500;
 }
 
-:host-context(.dark) ion-segment-button {
-  --color: #a3a3a3;
+.no-lotes .no-icon {
+  font-size: 40px;
+  color: #d1d5db;
 }
+
+.ios-empty {
+  max-width: 480px;
+  margin: 14px auto 0;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow:
+    0 16px 36px rgba(15, 23, 42, 0.18),
+    0 0 0 0.5px rgba(209, 213, 219, 0.9);
+}
+
+/* ================================
+   BADGE RANKING
+   ================================ */
 
 .ranking-badge {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  bottom: 8px;
+  right: 8px;
   z-index: 30;
   pointer-events: none;
-
-  span {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 45px;
-    height: 45px;
-    font-size: 20px;
-    font-weight: 900;
-    border-radius: 50%;
-    color: #000;
-    border: 2px solid #000;
-    text-shadow: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
-  }
-
-  .gold {
-    background: #fbbf24;
-
-    &::before {
-      content: "👑";
-      position: absolute;
-      top: -18px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 22px;
-      -webkit-text-stroke: 0.5px #000;
-    }
-  }
-
-  .silver {
-    background: #e5e7eb;
-
-    &::before {
-      content: "★";
-      position: absolute;
-      bottom: -16px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 22px;
-      color: #f3f4f6;
-      -webkit-text-stroke: 0.6px rgba(0, 0, 0, 0.6);
-    }
-  }
-
-  .bronze {
-    background: #cd7f32;
-
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: -14px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 22px;
-      height: 16px;
-      background: #2563eb;
-      clip-path: polygon(0 0, 100% 0, 80% 100%, 50% 70%, 20% 100%);
-      border: 1px solid #000;
-      box-sizing: border-box;
-    }
-  }
 }
 
-.lote-img ion-icon {
-  display: none !important;
+.ranking-badge span {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  font-weight: 900;
+  border-radius: 50%;
+  color: #111827;
+  border: 2px solid rgba(15, 23, 42, 0.9);
+  text-shadow: none;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
 }
 
+.ranking-badge .gold {
+  background: #fbbf24;
+}
+
+.ranking-badge .gold::before {
+  content: "👑";
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  -webkit-text-stroke: 0.5px #000;
+}
+
+.ranking-badge .silver {
+  background: #e5e7eb;
+}
+
+.ranking-badge .silver::before {
+  content: "★";
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  color: #f3f4f6;
+  -webkit-text-stroke: 0.6px rgba(0, 0, 0, 0.6);
+}
+
+.ranking-badge .bronze {
+  background: #cd7f32;
+}
+
+.ranking-badge .bronze::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 14px;
+  background: #2563eb;
+  clip-path: polygon(0 0, 100% 0, 80% 100%, 50% 70%, 20% 100%);
+  border: 1px solid #000;
+  box-sizing: border-box;
+}
+
+/* Por si algún icono raro en lote-img */
+.lote-img ion-icon,
 .lote-img ::ng-deep ion-icon {
   display: none !important;
 }

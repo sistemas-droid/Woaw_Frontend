@@ -1,163 +1,154 @@
-<!-- search.page.html -->
 <app-navbar></app-navbar>
 
-<ion-content #pageContent [fullscreen]="true">
+<ion-content #pageContent [fullscreen]="true" class="contenido-ios">
 
-  <app-acomodo [totalAutos]="totalVehiculos" [titulo]="terminoBusqueda" (ordenCambio)="ordenarAutos($event)">
+  <app-acomodo
+    [totalAutos]="totalVehiculos"
+    [titulo]="terminoBusqueda"
+    (ordenCambio)="ordenarAutos($event)">
   </app-acomodo>
 
-  <ion-grid *ngIf="tieneResultadosPaginados">
+  <ion-grid *ngIf="tieneResultadosPaginados" class="contenedor-catalogo-ios">
     <ion-row>
 
       <!-- Columna lateral de filtros -->
       <ion-col size="12" size-md="3">
-        <app-menu [filtros]="filtros" [filtrosAplicados]="filtrosAplicados"
-          (mostrarOpciones)="mostrarOpciones($event.event, $event.tipo)" (limpiarFiltros)="resetearFiltros()">
+
+        <app-menu
+          [filtros]="filtros"
+          [filtrosAplicados]="filtrosAplicados"
+          (mostrarOpciones)="mostrarOpciones($event.event, $event.tipo)"
+          (limpiarFiltros)="resetearFiltros()">
         </app-menu>
 
-        <div class="line"></div>
+        <div class="linea-ios"></div>
 
-        <div class="servicios-container" *ngIf="mostrarServicios">
-          <div class="lista-servicios">
-            <ion-item *ngFor="let servicio of serviciosEncontrados" button detail="false"
-              (click)="navegarAServicio(servicio.ruta)" class="item-servicio">
-              <ion-icon [name]="servicio.icono || 'help-circle'" slot="start"
-                [color]="servicio.tipo === 'servicio' ? 'danger' : 'success'"></ion-icon>
+        <!-- Lista de servicios encontrados -->
+        <div class="servicios-container-ios" *ngIf="mostrarServicios">
+          <div class="lista-servicios-ios">
+            <ion-item
+              *ngFor="let servicio of serviciosEncontrados"
+              button
+              detail="false"
+              (click)="navegarAServicio(servicio.ruta)"
+              class="item-servicio-ios">
 
-              <ion-label class="contenido-servicio">
-                <h4 class="titulo-servicio">{{ servicio.titulo }}</h4>
-                <p class="descripcion-servicio">{{ servicio.descripcion }}</p>
-                <ion-badge [color]="servicio.tipo === 'servicio' ? 'danger' : 'success'" class="badge-tipo">
+              <ion-icon
+                [name]="servicio.icono || 'help-circle'"
+                slot="start"
+                [class.icono-servicio]="servicio.tipo === 'servicio'"
+                [class.icono-categoria]="servicio.tipo !== 'servicio'">
+              </ion-icon>
+
+              <ion-label class="contenido-servicio-ios">
+                <h4>{{ servicio.titulo }}</h4>
+                <p>{{ servicio.descripcion }}</p>
+                <ion-badge
+                  [class.badge-servicio]="servicio.tipo === 'servicio'"
+                  [class.badge-categoria]="servicio.tipo !== 'servicio'">
                   {{ servicio.tipo }}
                 </ion-badge>
               </ion-label>
 
-              <ion-icon name="chevron-forward" slot="end" color="medium"></ion-icon>
+              <ion-icon name="chevron-forward" slot="end" class="forward-ios"></ion-icon>
             </ion-item>
           </div>
         </div>
 
       </ion-col>
 
-      <!-- Columna de catálogo -->
+      <!-- Columna resultados autos -->
       <ion-col size="12" size-md="9">
-        <div class="catalogo-autos">
+
+        <div class="catalogo-autos-ios">
           <ng-container *ngFor="let auto of resultadosPaginados">
-            <app-cartas [auto]="auto" [autosFavoritosIds]="autosFavoritosIds" [ubicacion]="'m-nuevos'"
-              (refrescarAutos)="handleRefrescarAutos($event)" [esMio]="idsMisVehiculos.includes(auto._id)">
+            <app-cartas
+              [auto]="auto"
+              [autosFavoritosIds]="autosFavoritosIds"
+              [ubicacion]="'m-nuevos'"
+              (refrescarAutos)="handleRefrescarAutos($event)"
+              [esMio]="idsMisVehiculos.includes(auto._id)">
             </app-cartas>
           </ng-container>
         </div>
 
-        <!-- Paginación -->
-        <div class="contenedor-paginacion" *ngIf="totalPaginas > 1">
-          <div class="paginacion-scroll">
-            <div class="paginacion">
-              <!-- Flecha anterior -->
-              <button class="pagina" (click)="cambiarPagina(paginaActual - 1)"
+        <!-- Paginación iOS -->
+        <div class="contenedor-paginacion-ios" *ngIf="totalPaginas > 1">
+          <p class="titulo-paginacion-ios">Más</p>
+
+          <div class="paginacion-scroll-ios">
+            <div class="paginacion-ios">
+
+              <button
+                class="pagina-ios"
+                (click)="cambiarPagina(paginaActual - 1)"
                 [disabled]="paginaActual === 1">‹</button>
 
-              <!-- Botones dinámicos -->
               <ng-container *ngFor="let i of paginasReducidas">
-                <button *ngIf="esNumero(i)" class="pagina" [class.activa]="paginaActual === i"
+                <button
+                  *ngIf="esNumero(i)"
+                  class="pagina-ios"
+                  [class.activa]="paginaActual === i"
                   (click)="cambiarPagina(i)">
                   {{ i }}
                 </button>
-                <span *ngIf="!esNumero(i)" class="ellipsis">...</span>
+
+                <span *ngIf="!esNumero(i)" class="ellipsis-ios">…</span>
               </ng-container>
 
-              <!-- Flecha siguiente -->
-              <button class="pagina" (click)="cambiarPagina(paginaActual + 1)"
+              <button
+                class="pagina-ios"
+                (click)="cambiarPagina(paginaActual + 1)"
                 [disabled]="paginaActual === totalPaginas">›</button>
+
             </div>
           </div>
         </div>
 
-        <div *ngIf="resultados.length === 0" class="mensaje-vacio">
-          <p>No se encontraron <span>Autos</span> resultados para tu búsqueda.</p>
+        <div *ngIf="resultados.length === 0" class="mensaje-vacio-ios">
+          <ion-icon name="search-outline"></ion-icon>
+          <p>No se encontraron autos en tu búsqueda.</p>
         </div>
 
       </ion-col>
+
     </ion-row>
   </ion-grid>
 
+  <!-- SIN RESULTADOS / SUGERENCIAS -->
+  <div *ngIf="!tieneResultadosPaginados && !mostrarServicios" class="seccion-sin-resultados-ios">
 
-  <!-- NUEVA SECCIÓN PARA CUANDO NO HAY RESULTADOS -->
-  <div *ngIf="!tieneResultadosPaginados && !mostrarServicios" class="seccion-sin-resultados">
-
-    <div class="contenedor_servicios">
-      <div class="servicios_container">
-          <div class="mensaje-principal">
-            <ion-icon name="search-outline" class="icono-busqueda"></ion-icon>
-            <h2>No encontramos resultados para tu búsqueda</h2>
-            <p>Pero tenemos estas opciones que podrían interesarte:</p>
-          </div>
-
-        <div class="grid-servicios">
-
-
-          <div class="card-servicio" *ngFor="let servicio of serviciosSugeridos"
-            (click)="navegarAServicio(servicio.ruta)">
-            <div class="card-header">
-              <ion-icon [name]="servicio.icono || 'help-circle'"
-                [class]="servicio.tipo === 'servicio' ? 'icono-servicio' : 'icono-categoria'"></ion-icon>
-              <ion-badge [class]="servicio.tipo === 'servicio' ? 'badge-servicio' : 'badge-categoria'">
-                {{ servicio.tipo }}
-              </ion-badge>
-            </div>
-
-            <div class="card-content-sugerido">
-              <h4 class="titulo-servicio-sugerido">{{ servicio.titulo }}</h4>
-              <p class="descripcion-servicio-sugerido">{{ servicio.descripcion }}</p>
-            </div>
-
-            <div class="card-footer-sugerido">
-              <ion-icon name="chevron-forward" class="icono-flecha-sugerido"></ion-icon>
-            </div>
-          </div>
-        </div>
+    <div class="contenedor_servicios_ios">
+      <div class="mensaje-principal-ios">
+        <ion-icon name="search-outline"></ion-icon>
+        <h2>No encontramos resultados</h2>
+        <p>Pero tenemos estas opciones:</p>
       </div>
 
+      <div class="grid-servicios-ios">
+        <div
+          class="card-servicio-ios"
+          *ngFor="let servicio of serviciosSugeridos"
+          (click)="navegarAServicio(servicio.ruta)"
+        >
+
+          <div class="card-header-ios">
+            <ion-icon [name]="servicio.icono"></ion-icon>
+            <ion-badge
+              [class.badge-servicio]="servicio.tipo === 'servicio'"
+              [class.badge-categoria]="servicio.tipo !== 'servicio'">
+              {{ servicio.tipo }}
+            </ion-badge>
+          </div>
+
+          <h4>{{ servicio.titulo }}</h4>
+          <p>{{ servicio.descripcion }}</p>
+
+          <ion-icon name="chevron-forward" class="flecha-ios"></ion-icon>
+        </div>
+      </div>
     </div>
+
   </div>
 
-
-
-
-  <ng-container *ngIf="mostrarServicios && !tieneResultadosPaginados">
-
-    <div class="contenedor_servicios">
-      <div class="servicios_container">
-        <div class="grid-servicios">
-
-          <div class="card-servicio" *ngFor="let servicio of serviciosEncontrados"
-            (click)="navegarAServicio(servicio.ruta)">
-            <div class="card-header">
-              <ion-icon [name]="servicio.icono || 'help-circle'"
-                [class]="servicio.tipo === 'servicio' ? 'icono-servicio' : 'icono-categoria'"></ion-icon>
-              <ion-badge [class]="servicio.tipo === 'servicio' ? 'badge-servicio' : 'badge-categoria'">
-                {{ servicio.tipo }}
-              </ion-badge>
-            </div>
-
-            <div class="card-content">
-              <h4 class="titulo-servicio">{{ servicio.titulo }}</h4>
-              <p class="descripcion-servicio">{{ servicio.descripcion }}</p>
-            </div>
-
-            <div class="card-footer">
-              <ion-icon name="chevron-forward" class="icono-flecha"></ion-icon>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-  </ng-container>
-
-
-  <br><br><br><br><br>
-
-  <app-footer></app-footer>
 </ion-content>

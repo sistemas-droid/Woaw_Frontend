@@ -1,94 +1,174 @@
 .barra-superior {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 20;
+
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 7px;
+  justify-content: space-between;
+  gap: 10px;
   flex-wrap: wrap;
-  background-color: #f9f9f9;
-  border: solid 1px #0000001b;
+
+  padding: 6px 12px;
+  margin: 0 -4px 6px;
+
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro Text",
+    "Helvetica Neue", Arial, sans-serif;
+
+  /* barra tipo iOS, blur + translucida */
+  background: rgba(248, 248, 250, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 0.5px solid rgba(60, 60, 67, 0.18);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
 
   @media (max-width: 768px) {
-    min-width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    padding: 6px 10px;
+    gap: 8px;
   }
 }
 
-
-
+/* ===== Conteo de resultados estilo iOS ===== */
 .resultado-cantidad {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #000000;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+
+  font-weight: 700;
+  font-size: 16px;
+  color: #111827;
 
   span {
-    font-size: 14px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6e6e73;
   }
 
   @media (max-width: 768px) {
-    font-size: 13px;
+    font-size: 14px;
 
     span {
-      font-size: 8px;
-      color: #3c3c3c;
+      font-size: 10px;
+      letter-spacing: 0.04em;
     }
   }
 }
 
-.controles-derecha {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+/* ===== Título alineado al centro en desktop ===== */
+.acomodo_titulo {
+  flex: 1 1 auto;
+  text-align: center;
+
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #a1a1aa;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  @media (max-width: 1024px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 820px) {
+    font-size: 12px;
+  }
 }
 
+/* ===== Controles de la derecha ===== */
+.controles-derecha {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+
+  @media (max-width: 768px) {
+    margin-left: auto;
+  }
+}
+
+/* ===== Toggle de vista: pill iOS ===== */
 .botones-vista {
-  display: flex;
-  gap: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  padding: 2px;
+  border-radius: 999px;
+  background: #f2f2f7;
+  border: 1px solid rgba(60, 60, 67, 0.18);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8),
+    0 2px 6px rgba(15, 23, 42, 0.12);
 }
 
 .icono-vista {
-  font-size: 16px;
-  color: #999;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 15px;
+  color: #6e6e73;
   cursor: pointer;
-  padding: 0.4rem;
-  border-radius: 6px;
-  transition: background 0.3s ease;
+  transition:
+    background 0.16s ease,
+    color 0.16s ease,
+    box-shadow 0.16s ease,
+    transform 0.1s ease;
 
   @media (max-width: 768px) {
-    font-size: 12px;
+    width: 24px;
+    height: 24px;
+    font-size: 13px;
   }
 
   &.activo {
-    color: #ff0000;
-    background: rgba(255, 98, 0, 0.232);
+    background: #ffffff;
+    color: #ff3b30;
+    box-shadow: 0 3px 8px rgba(255, 69, 58, 0.35);
+    transform: translateY(-0.5px);
+  }
+
+  &:active {
+    transform: translateY(0.5px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 }
 
-
+/* ===== Ordenador: mini field iOS ===== */
 .ordenador {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: #fff;
-  border-radius: 5px;
-  padding: 0.25rem 0.75rem;
+  gap: 6px;
+
+  padding: 4px 10px;
+  border-radius: 999px;
+
+  background: #ffffff;
+  border: 1px solid rgba(60, 60, 67, 0.16);
+  box-shadow:
+    0 8px 18px rgba(15, 23, 42, 0.16),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+
   font-size: 13px;
   white-space: nowrap;
 
   @media (max-width: 768px) {
-    padding: 2px 1px;
+    padding: 3px 8px;
     font-size: 11px;
   }
 
   ion-label {
-    font-weight: 500;
-    font-size: 13px;
-    color: #444;
     margin: 0;
-    white-space: nowrap;
+    font-weight: 500;
+    font-size: 12px;
+    color: #4b5563;
 
     @media (max-width: 768px) {
       font-size: 11px;
@@ -98,45 +178,27 @@
   ion-select {
     min-width: 130px;
     font-size: 13px;
+
     --padding-start: 8px;
-    --padding-end: 8px;
+    --padding-end: 4px;
+    --min-height: 28px;
 
-    --placeholder-color: #999;
-    --color: #c10000;
+    --background: transparent;
+    --color: #111827;
+    --placeholder-color: #9ca3af;
     --placeholder-opacity: 1;
-
-    --highlight-color-focused: #c10000;
-    --highlight-color: #c10000;
     --placeholder-font-weight: 400;
 
-    --indicator-color: #c10000;
+    --highlight-color-focused: transparent;
+    --highlight-color: transparent;
+
+    --icon-color: #9ca3af;
+    --indicator-color: transparent;
     --border-color: transparent;
 
-    --icon-color: #c10000;
-
     @media (max-width: 768px) {
+      min-width: 110px;
       font-size: 11px;
     }
-  }
-}
-
-
-
-.acomodo_titulo {
-  font-family: 'Poppins', sans-serif;
-  font-size: 25px;
-  font-weight: 900;
-  color: #a2a2a2bb;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  text-transform: uppercase;
-
-
-  @media (max-width: 820px) {
-    font-size: 14px;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 10px;
   }
 }

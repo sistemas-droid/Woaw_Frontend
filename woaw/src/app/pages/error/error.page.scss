@@ -1,59 +1,106 @@
 .error-page {
-  /* opcional: fondo del ion-content */
   --background: #0b0b0e;
   text-align: center;
-  /* deja el host tranquilo; el truco va en el hijo */
 }
 
+/* Contenedor general: centra todo en la pantalla */
 .error-page .error-wrap {
-  /* 🔥 asegura altura de viewport y centra en móvil y desktop */
   min-block-size: 100dvh;
   display: grid;
-  place-content: center;   /* centra vertical + horizontal */
+  place-content: center;
   justify-items: center;
-  gap: clamp(16px, 4vh, 28px);
-  padding: clamp(12px, 4vw, 28px);
+  padding: clamp(16px, 4vw, 32px);
   width: 100%;
 }
 
-/* lo demás igual que ya tienes */
+/* Sección interior */
+.error-page .error-section {
+  display: grid;
+  gap: clamp(12px, 3vh, 20px);
+  justify-items: center;
+  max-width: 520px;
+  width: 100%;
+}
+
+/* Logo */
 .error-page .logo {
   width: clamp(120px, 22vw, 180px);
   margin-bottom: clamp(8px, 2vh, 14px);
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,.4));
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
 }
 
+/* Título */
 .error-page .headline {
-  font-size: clamp(1.1rem, 3vw, 1.6rem);
-  color: #f0f0f0;
-  margin: 0 0 clamp(10px, 2vh, 14px);
+  font-size: clamp(1.3rem, 4vw, 1.7rem);
+  color: #f9fafb;
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.2px;
 }
 
-/* Contenedor e imagen centrados */
-.error-page .car {
-  position: relative;   /* referencia para lo absoluto */
+/* Subtítulo */
+.error-page .subhead {
+  margin: 0;
+  color: #9ca3af;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 32rem;
+}
+
+/* Contenedor de la imagen del coche */
+.error-page .car-wrap {
+  position: relative;
   display: grid;
   place-items: center;
   width: 100%;
-  min-height: clamp(200px, 50vh, 400px); /* espacio reservado para la imagen */
+  min-height: clamp(220px, 45vh, 360px);
 }
-.error-page .car img {
-  position: absolute;   
-  top: 50%;             
-  left: 50%;            
-  transform: translate(-50%, -50%);
-  width: clamp(280px, 75vw, 480px); /* 🔥 ahora más grande */
+
+/* Imagen del coche */
+.error-page .car-img {
+  width: clamp(260px, 70vw, 440px);
   height: auto;
   object-fit: contain;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.85));
 }
 
-
-/* Botón */
+/* Botón “Volver a WOAW” */
 .error-page .back-btn {
   width: min(420px, 90vw);
+  margin-top: clamp(4px, 1vh, 8px);
   font-weight: 800;
-  letter-spacing: .3px;
-  border-radius: clamp(10px, 2vw, 14px);
-  color: #dc143c !important;
-  box-shadow: 0 10px 28px rgba(220, 20, 60, .45);
+  letter-spacing: 0.3px;
+  --border-radius: 999px;
+  --box-shadow: 0 12px 26px rgba(239, 68, 68, 0.55);
+  text-transform: none;
+}
+
+/* Ajustes en pantallas muy chicas */
+@media (max-width: 380px) {
+  .error-page .headline {
+    font-size: 1.1rem;
+  }
+
+  .error-page .subhead {
+    font-size: 0.8rem;
+  }
+
+  .error-page .car-img {
+    width: 80vw;
+  }
+}
+
+/* Respeta modo claro/oscuro del sistema (opcional) */
+@media (prefers-color-scheme: light) {
+  .error-page {
+    --background: #f3f4f6;
+  }
+
+  .error-page .headline {
+    color: #111827;
+  }
+
+  .error-page .subhead {
+    color: #4b5563;
+  }
 }

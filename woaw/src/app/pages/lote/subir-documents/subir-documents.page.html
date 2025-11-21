@@ -1,15 +1,15 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true">
+<ion-content mode="ios" [fullscreen]="true" class="docs-content-ios">
   <div class="ion-padding-content">
     
     <!-- Header Section -->
-    <div class="header-section">
+    <div class="header-section-ios">
       <h1>Documentación Requerida</h1>
       <p class="subtitle">Para completar tu solicitud, necesitamos los siguientes documentos</p>
       
       <!-- Progress Indicator -->
-      <div class="progress-container">
+      <div class="progress-container-ios">
         <div class="progress-info">
           <span class="progress-text">Progreso: {{getUploadedCount()}}/{{documents.length}}</span>
           <span class="progress-percentage">{{getProgressPercentage()}}%</span>
@@ -24,10 +24,10 @@
     <div class="documents-grid">
       
       <!-- Constancia de Situación Fiscal -->
-      <div class="document-card" [class.uploaded]="documents[0].uploaded">
+      <div class="document-card-ios" [class.uploaded]="documents[0].uploaded">
         <div class="document-header">
           <div class="document-icon">
-            <ion-icon name="document"></ion-icon>
+            <ion-icon name="document-text-outline"></ion-icon>
           </div>
           <div class="document-info">
             <h3>Constancia de Situación Fiscal</h3>
@@ -37,48 +37,48 @@
           </div>
         </div>
         <div class="document-actions">
-          <button class="btn-upload" (click)="uploadDocument(0)" *ngIf="!documents[0].uploaded">
+          <button class="btn-ios btn-upload" (click)="uploadDocument(0)" *ngIf="!documents[0].uploaded">
             <i class="fas fa-cloud-upload-alt"></i>
-            Subir Documento
+            Subir documento
           </button>
-          <button class="btn-view" (click)="viewDocument(0)" *ngIf="documents[0].uploaded">
+          <button class="btn-ios btn-view" (click)="viewDocument(0)" *ngIf="documents[0].uploaded">
             <i class="fas fa-eye"></i>
-            Ver Documento
+            Ver documento
           </button>
         </div>
       </div>
 
       <!-- Identificación del Apoderado -->
-      <div class="document-card" [class.uploaded]="documents[1].uploaded">
+      <div class="document-card-ios" [class.uploaded]="documents[1].uploaded">
         <div class="document-header">
           <div class="document-icon">
-            <ion-icon name="card"></ion-icon>
+            <ion-icon name="card-outline"></ion-icon>
           </div>
           <div class="document-info">
             <h3>Identificación del Apoderado</h3>
-            <p class="document-subtitle">INE o Pasaporte Vigente</p>
+            <p class="document-subtitle">INE o Pasaporte vigente</p>
             <p class="document-status" [class.status-completed]="documents[1].uploaded">
               {{documents[1].uploaded ? 'Completado' : 'Pendiente'}}
             </p>
           </div>
         </div>
         <div class="document-actions">
-          <button class="btn-upload" (click)="uploadDocument(1)" *ngIf="!documents[1].uploaded">
+          <button class="btn-ios btn-upload" (click)="uploadDocument(1)" *ngIf="!documents[1].uploaded">
             <i class="fas fa-cloud-upload-alt"></i>
-            Subir Documento
+            Subir documento
           </button>
-          <button class="btn-view" (click)="viewDocument(1)" *ngIf="documents[1].uploaded">
+          <button class="btn-ios btn-view" (click)="viewDocument(1)" *ngIf="documents[1].uploaded">
             <i class="fas fa-eye"></i>
-            Ver Documento
+            Ver documento
           </button>
         </div>
       </div>
 
       <!-- Estado de Cuenta Lote -->
-      <div class="document-card" [class.uploaded]="documents[2].uploaded">
+      <div class="document-card-ios" [class.uploaded]="documents[2].uploaded">
         <div class="document-header">
           <div class="document-icon">
-            <ion-icon name="wallet"></ion-icon>
+            <ion-icon name="wallet-outline"></ion-icon>
           </div>
           <div class="document-info">
             <h3>Estado de Cuenta Lote</h3>
@@ -89,48 +89,48 @@
           </div>
         </div>
         <div class="document-actions">
-          <button class="btn-upload" (click)="uploadDocument(2)" *ngIf="!documents[2].uploaded">
+          <button class="btn-ios btn-upload" (click)="uploadDocument(2)" *ngIf="!documents[2].uploaded">
             <i class="fas fa-cloud-upload-alt"></i>
-            Subir Documento
+            Subir documento
           </button>
-          <button class="btn-view" (click)="viewDocument(2)" *ngIf="documents[2].uploaded">
+          <button class="btn-ios btn-view" (click)="viewDocument(2)" *ngIf="documents[2].uploaded">
             <i class="fas fa-eye"></i>
-            Ver Documento
+            Ver documento
           </button>
         </div>
       </div>
 
       <!-- Acta Constitutiva (Solo Persona Moral) -->
-      <div class="document-card" [class.uploaded]="documents[3].uploaded">
+      <div class="document-card-ios" [class.uploaded]="documents[3].uploaded">
         <div class="document-header">
           <div class="document-icon">
-            <ion-icon name="document"></ion-icon>
+            <ion-icon name="document-attach-outline"></ion-icon>
           </div>
           <div class="document-info">
             <h3>Acta Constitutiva / Asamblea</h3>
-            <p class="document-subtitle">Solo para persona Moral</p>
+            <p class="document-subtitle">Solo para persona moral</p>
             <p class="document-status" [class.status-completed]="documents[3].uploaded">
               {{documents[3].uploaded ? 'Completado' : 'Pendiente'}}
             </p>
           </div>
         </div>
         <div class="document-actions">
-          <button class="btn-upload" (click)="uploadDocument(3)" *ngIf="!documents[3].uploaded">
+          <button class="btn-ios btn-upload" (click)="uploadDocument(3)" *ngIf="!documents[3].uploaded">
             <i class="fas fa-cloud-upload-alt"></i>
-            Subir Documento
+            Subir documento
           </button>
-          <button class="btn-view" (click)="viewDocument(3)" *ngIf="documents[3].uploaded">
+          <button class="btn-ios btn-view" (click)="viewDocument(3)" *ngIf="documents[3].uploaded">
             <i class="fas fa-eye"></i>
-            Ver Documento
+            Ver documento
           </button>
         </div>
       </div>
 
       <!-- Fotos del Lote -->
-      <div class="document-card" [class.uploaded]="documents[4].uploaded">
+      <div class="document-card-ios" [class.uploaded]="documents[4].uploaded">
         <div class="document-header">
           <div class="document-icon">
-            <ion-icon name="camera"></ion-icon>
+            <ion-icon name="camera-outline"></ion-icon>
           </div>
           <div class="document-info">
             <h3>Fotos del Lote</h3>
@@ -141,22 +141,22 @@
           </div>
         </div>
         <div class="document-actions">
-          <button class="btn-upload" (click)="uploadDocument(4)" *ngIf="!documents[4].uploaded">
+          <button class="btn-ios btn-upload" (click)="uploadDocument(4)" *ngIf="!documents[4].uploaded">
             <i class="fas fa-cloud-upload-alt"></i>
-            Subir Fotos
+            Subir fotos
           </button>
-          <button class="btn-view" (click)="viewDocument(4)" *ngIf="documents[4].uploaded">
+          <button class="btn-ios btn-view" (click)="viewDocument(4)" *ngIf="documents[4].uploaded">
             <i class="fas fa-eye"></i>
-            Ver Fotos
+            Ver fotos
           </button>
         </div>
       </div>
 
       <!-- Formatos de Autorización -->
-      <div class="document-card" [class.uploaded]="documents[5].uploaded">
+      <div class="document-card-ios" [class.uploaded]="documents[5].uploaded">
         <div class="document-header">
           <div class="document-icon">
-            <ion-icon name="hammer"></ion-icon>
+            <ion-icon name="hammer-outline"></ion-icon>
           </div>
           <div class="document-info">
             <h3>Formatos de Autorización</h3>
@@ -167,13 +167,13 @@
           </div>
         </div>
         <div class="document-actions">
-          <button class="btn-upload" (click)="uploadDocument(5)" *ngIf="!documents[5].uploaded">
+          <button class="btn-ios btn-upload" (click)="uploadDocument(5)" *ngIf="!documents[5].uploaded">
             <i class="fas fa-cloud-upload-alt"></i>
-            Subir Formatos
+            Subir formatos
           </button>
-          <button class="btn-view" (click)="viewDocument(5)" *ngIf="documents[5].uploaded">
+          <button class="btn-ios btn-view" (click)="viewDocument(5)" *ngIf="documents[5].uploaded">
             <i class="fas fa-eye"></i>
-            Ver Formatos
+            Ver formatos
           </button>
         </div>
       </div>
@@ -181,12 +181,12 @@
     </div>
 
     <!-- Nota Informativa -->
-    <div class="info-note">
+    <div class="info-note-ios">
       <div class="note-icon">
         <i class="fas fa-info-circle"></i>
       </div>
       <div class="note-content">
-        <p><strong>Nota:</strong> Si el Lote está registrado como persona física con actividad sólo se llena la autorización de reportes de crédito personas físicas, si está registrado como persona moral se llenan ambos formatos adjuntos.</p>
+        <p><strong>Nota:</strong> Si el lote está registrado como persona física con actividad sólo se llena la autorización de reportes de crédito personas físicas; si está registrado como persona moral se llenan ambos formatos adjuntos.</p>
       </div>
     </div>
 
