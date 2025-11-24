@@ -126,6 +126,7 @@ export class PrincipalComponent implements OnInit {
       },
     });
   }
+  
   verMas(url: string) {
     this.router.navigate([url]);
   }
