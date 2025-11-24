@@ -1,7 +1,7 @@
 /* FONDO GENERAL (BLANCO LIMPIO) */
 .bg-asesores {
-    /* Fondo blanco limpio */
-    --background: #ffffff;
+  /* Fondo blanco limpio */
+  --background: #ffffff;
 }
 
 
@@ -10,10 +10,10 @@
 
 /* CONTENEDOR GENERAL */
 .contenedor-asesores {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 18px 14px 90px;
-    box-sizing: border-box;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 18px 14px 90px;
+  box-sizing: border-box;
 }
 
 /* ENCABEZADO */
@@ -75,246 +75,248 @@
   ion-row {
     row-gap: 26px;
   }
-}
 
-/* 📱 MÓVIL - quitar ese espacio enorme debajo */
-@media (max-width: 720px) {
-  .grid-asesores {
-    margin-bottom: 40px;   /* antes 280px, ahora limpio */
+  /* 🧨 Si solo hay UN asesor, se centra solito */
+  ion-col:only-child {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Evita que se haga gigante en pantallas grandes */
+  ion-col:only-child .tarjeta-asesor {
+    max-width: 420px;
+    width: 100%;
   }
 }
 
-/* 📱📉 Pantallas muy chicas */
+/* 📱 MÓVIL */
+@media (max-width: 720px) {
+  .grid-asesores {
+    margin-bottom: 40px;
+  }
+
+  .grid-asesores ion-col:only-child .tarjeta-asesor {
+    max-width: 100%;
+  }
+}
+
+/* 📱 EXTRA CHICO */
 @media (max-width: 420px) {
   .grid-asesores {
     margin-bottom: 20px;
   }
 }
-.grid-asesores {
-  margin-bottom: 280px;
 
-  ion-row {
-    row-gap: 26px;
-  }
-}
-
-/* 📱 MÓVIL - quitar ese espacio enorme debajo */
-@media (max-width: 720px) {
-  .grid-asesores {
-    margin-bottom: 40px;   /* antes 280px, ahora limpio */
-  }
-}
-/* 📲 TABLET - que no choque con el footer */
+/* 📲 TABLET */
 @media (max-width: 1024px) and (min-width: 721px) {
   .grid-asesores {
-    margin-bottom: 330px;  /* sube el footer sin romper todo */
+    margin-bottom: 330px;
   }
-}
-/* 📱📉 Pantallas muy chicas */
-@media (max-width: 420px) {
-  .grid-asesores {
-    margin-bottom: 20px;
+
+  .grid-asesores ion-col:only-child .tarjeta-asesor {
+    max-width: 460px;
   }
 }
 
 /* TARJETA DE ASESOR */
 .tarjeta-asesor {
-    position: relative;
-    display: flex;
-    align-items: stretch;
-    gap: 14px;
-    padding: 16px 14px;
-    border-radius: 16px;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+  padding: 16px 14px;
+  border-radius: 16px;
 
-    /* Fondo blanco limpio */
-    background: #ffffff;
+  /* Fondo blanco limpio */
+  background: #ffffff;
 
-    /* Borde rojo sutil */
-    border: #0e0e0e51;
+  /* Borde rojo sutil */
+  border: #0e0e0e51;
 
-    /* Sombra ligera, nada tosco */
+  /* Sombra ligera, nada tosco */
+  box-shadow:
+    0 8px 22px rgba(15, 23, 42, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+
+  overflow: hidden;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+
+
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: #2d2d2d;
     box-shadow:
-        0 8px 22px rgba(15, 23, 42, 0.06),
-        0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+      0 12px 28px rgba(15, 23, 42, 0.12);
+  }
 
-    overflow: hidden;
-    transition:
-        transform 0.18s ease,
-        box-shadow 0.18s ease,
-        border-color 0.18s ease;
-
-
-
-    &:hover {
-        transform: translateY(-3px);
-        border-color: #2d2d2d;
-        box-shadow:
-            0 12px 28px rgba(15, 23, 42, 0.12);
-    }
-
-    >* {
-        position: relative;
-        z-index: 1;
-    }
+  >* {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 /* AVATAR CON INICIALES */
 .asesor-avatar {
-    flex: 0 0 54px;
-    height: 54px;
-    border-radius: 999px;
+  flex: 0 0 54px;
+  height: 54px;
+  border-radius: 999px;
 
-    /* Rojo serio, sin neón ni rosa */
-    background: linear-gradient(145deg, #000000);
+  /* Rojo serio, sin neón ni rosa */
+  background: linear-gradient(145deg, #000000);
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
 
 
-    span {
-        color: #ffffff;
-        font-weight: 800;
-        font-size: 18px;
-        letter-spacing: 0.06em;
-    }
+  span {
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.06em;
+  }
 }
 
 /* INFO DEL ASESOR */
 .asesor-info {
-    flex: 1 1 auto;
-    min-width: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #111827;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+
+  h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
     color: #111827;
+
+
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    word-break: break-word;
+    line-height: 1.2;
+  }
+
+  .rol {
+    margin: 0;
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  .dato {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 3px;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 12px;
+    color: #374151;
 
-    h2 {
-        margin: 0;
-        font-size: 15px;
-        font-weight: 600;
-        color: #111827;
-
-
-        white-space: normal;
-        overflow: visible;
-        text-overflow: unset;
-        word-break: break-word;
-        line-height: 1.2;
+    ion-icon {
+      font-size: 14px;
+      opacity: 0.9;
+      color: #b91c1c;
     }
-
-    .rol {
-        margin: 0;
-        font-size: 12px;
-        color: #6b7280;
-    }
-
-    .dato {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        margin: 0;
-        font-size: 12px;
-        color: #374151;
-
-        ion-icon {
-            font-size: 14px;
-            opacity: 0.9;
-            color: #b91c1c;
-        }
-    }
+  }
 }
 
 /* ZONA QR / LINK */
 .asesor-qr {
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    min-width: 92px;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 92px;
 }
 
 .qr-wrapper {
-    width: 86px;
-    height: 86px;
-    border-radius: 12px;
+  width: 86px;
+  height: 86px;
+  border-radius: 12px;
 
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.35);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.35);
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 }
 
 /* BOTÓN LINK/QR */
 .btn-link-qr {
-    margin-top: 2px;
-    padding: 6px 12px;
-    border-radius: 999px;
-    border: none;
-    outline: none;
-    cursor: pointer;
+  margin-top: 2px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: none;
+  outline: none;
+  cursor: pointer;
 
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 
-    background: #b91c1c;
-    color: #ffffff;
+  background: #b91c1c;
+  color: #ffffff;
 
-    box-shadow: 0 4px 12px rgba(185, 28, 28, 0.3);
+  box-shadow: 0 4px 12px rgba(185, 28, 28, 0.3);
 
-    transition:
-        transform 0.12s ease,
-        box-shadow 0.12s ease,
-        background 0.12s ease;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background 0.12s ease;
 
-    ion-icon {
-        font-size: 14px;
-    }
+  ion-icon {
+    font-size: 14px;
+  }
 
-    &:hover {
-        transform: translateY(-1px);
-        background: #991b1b;
-    }
+  &:hover {
+    transform: translateY(-1px);
+    background: #991b1b;
+  }
 
-    &:active {
-        transform: translateY(1px);
-        background: #7f1d1d;
-        box-shadow: 0 2px 6px rgba(185, 28, 28, 0.25);
-    }
+  &:active {
+    transform: translateY(1px);
+    background: #7f1d1d;
+    box-shadow: 0 2px 6px rgba(185, 28, 28, 0.25);
+  }
 }
 
 /* OPCIONAL: UN POQUITO DE RESPONSIVE EN MÓVIL */
 @media (max-width: 720px) {
-    .tarjeta-asesor {
-        align-items: flex-start;
-    }
+  .tarjeta-asesor {
+    align-items: flex-start;
+  }
 
-    .asesor-qr {
-        min-width: 80px;
-    }
+  .asesor-qr {
+    min-width: 80px;
+  }
 
-    .qr-wrapper {
-        width: 78px;
-        height: 78px;
-    }
+  .qr-wrapper {
+    width: 78px;
+    height: 78px;
+  }
 }

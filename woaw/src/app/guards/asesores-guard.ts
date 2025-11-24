@@ -1,6 +1,17 @@
-import { CanActivateFn } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 import { GeneralService } from '../services/general.service';
 
 export const asesoresGuard: CanActivateFn = (route, state) => {
-  return true;
+
+  const generalService = inject(GeneralService);
+  const router = inject(Router);
+
+  if (generalService.tokenPresente()) {
+    return true;
+  } else {
+    router.navigate(['asesores']);
+    return false;
+  }
+
 };

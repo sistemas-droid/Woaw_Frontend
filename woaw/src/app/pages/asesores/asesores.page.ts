@@ -26,23 +26,21 @@ export class AsesoresPage implements OnInit {
       link: 'https://wa.me/525598765432',
       qrUrl: '/assets/autos/QR.png',
     },
-    {
+    /*{
       nombreCompleto: 'Herctor Cervantes',
       rol: 'Asesora leasing',
       telefono: '55 4455 8899',
       correo: 'maria@woaw.mx',
       link: 'https://wa.me/525544558899',
       qrUrl: '/assets/autos/QR.png',
-    }
+    } */
   ];
 
   constructor() { }
 
   ngOnInit() { }
 
-  /**
-   * Saca las iniciales del nombre para el avatar
-   */
+  /**/
   getIniciales(nombre: string = ''): string {
     if (!nombre) return '';
     const partes = nombre.trim().split(' ');
@@ -50,8 +48,7 @@ export class AsesoresPage implements OnInit {
     return primeras.join('');
   }
 
-  /**
-   * Abre el link del QR / WhatsApp / lo que le pongas*/
+  /**/
   abrirLink(url?: string) {
     if (!url) return;
     window.open(url, '_blank');
