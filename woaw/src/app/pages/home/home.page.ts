@@ -50,9 +50,9 @@ export class HomePage implements OnInit, OnDestroy {
   // Array de imágenes para rotación
   imagenesPrincipales: string[] = [
     // '/assets/home/P6.png',
-    '/assets/home/P1.png',
-    '/assets/home/P3.png',
-    '/assets/home/P4.png',
+    '/assets/home/P1.webp',
+    '/assets/home/P3.webp',
+    '/assets/home/P4.webp',
     '/assets/home/P2.webp',
   ];
 
@@ -114,7 +114,7 @@ export class HomePage implements OnInit, OnDestroy {
       if (!this.isTransitioning) {
         this.realizarTransicion();
       }
-    }, 8000); // 10 segundos
+    }, 5000); // --- Cambiado a 5000 ms para pruebas más rápidas
   }
 
   private async preloadAllImages(): Promise<void> {
