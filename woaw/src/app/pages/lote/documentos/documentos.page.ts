@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-subir-documents',
-  templateUrl: './subir-documents.page.html',
-  styleUrls: ['./subir-documents.page.scss'],
+  selector: 'app-documentos',
+  templateUrl: './documentos.page.html',
+  styleUrls: ['./documentos.page.scss'],
   standalone: false
 })
-export class SubirDocumentsPage implements OnInit {
+export class DocumentosPage implements OnInit {
 
   documents = [
     { name: 'Constancia de Situación Fiscal', uploaded: false },
