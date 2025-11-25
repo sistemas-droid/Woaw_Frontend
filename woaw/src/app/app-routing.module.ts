@@ -3,7 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "./guards/auth.guard";
 import { NotAuthGuard } from "./guards/notauth.guard";
 import { AuthPhoneGuard } from "./guards/auth-phone.guard";
-
+/* import { asesoresGuard } from './guards/asesores-guard'; */
 const routes: Routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
   {
@@ -13,6 +13,15 @@ const routes: Routes = [
     canActivate: [NotAuthGuard],
     data: { title: "Iniciar sesión | woaw" },
   },
+  /* {
+  path: "asesores",
+  loadChildren: () =>
+    import("./pages/asesores/asesores.module").then(
+      (m) => m.AsesoresPageModule
+    ),
+  canActivate: [asesoresGuard],
+  data: { title: "Asesores | woaw" },
+}, */
   {
     path: "autenticacion-user",
     loadChildren: () =>
@@ -295,14 +304,18 @@ const routes: Routes = [
         loadChildren: () =>
           import("./pages/lote/lote/lote.module").then((m) => m.LotePageModule),
         data: { title: "lotes | woaw" },
-      },    
-      {
-        path: 'lote/welcome-lote',
-        loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then( m => m.WelcomeLotePageModule)
       },
       {
-        path: 'lote/subir-documents',
-        loadChildren: () => import('./pages/lote/subir-documents/subir-documents.module').then(m => m.SubirDocumentsPageModule)
+        path: 'lote/welcome-lote',
+        loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then(m => m.WelcomeLotePageModule)
+      },
+      {
+        path: 'lote/upload-document',
+        loadChildren: () => import('./pages/lote/upload-document/upload-document.module').then(m => m.UploadDocumentPageModule)
+      },
+      {
+        path: 'lote/documentos',
+        loadChildren: () => import('./pages/lote/documentos/documentos.module').then(m => m.DocumentosPageModule)
       },
       // ---------------------
       // ---------------------

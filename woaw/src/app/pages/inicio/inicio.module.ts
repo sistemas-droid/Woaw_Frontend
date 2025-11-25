@@ -13,6 +13,7 @@ import { LoginComponent } from '../../components/login/login.component';
 import { RegistroComponent } from '../../components/registro/registro.component';
 // importamos el componente de registro
 import { ResetpasswordComponent } from '../../components/resetpassword/resetpassword.component';
+import { SplashComponent } from '../../components/splash/splash.component';
 
 import { InicioPage } from './inicio.page';
 
@@ -25,8 +26,8 @@ import { InicioPage } from './inicio.page';
     LoginComponent,
     NavbarComponent,
     RegistroComponent,
-    ResetpasswordComponent
+    ResetpasswordComponent, SplashComponent
   ],
   declarations: [InicioPage]
 })
-export class InicioPageModule {}
+export class InicioPageModule { }

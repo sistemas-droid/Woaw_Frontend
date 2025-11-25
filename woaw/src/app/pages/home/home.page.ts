@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -19,7 +19,7 @@ import { HistorealSearchComponent } from '../../components/historeal-search/hist
   styleUrls: ['./home.page.scss'],
   standalone: false,
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   textoCompleto: string = 'Compra y acelera';
   textoAnimado: string = '';
   textoIndex = 0;
@@ -47,8 +47,21 @@ export class HomePage implements OnInit {
 
   overlayLoaded = false;
 
+  // Array de imágenes para rotación
+  imagenesPrincipales: string[] = [
+    // '/assets/home/P6.png',
+    '/assets/home/P1.webp',
+    '/assets/home/P3.webp',
+    '/assets/home/P4.webp',
+    '/assets/home/P2.webp',
+  ];
+
   imgenPrincipal: string = '';
+  siguienteImagen: string = '';
   videoSrc: string = '';
+  private imageRotationInterval: any;
+  currentImageIndex: number = 0;
+  private isTransitioning: boolean = false;
 
   @ViewChild('videoEl', { static: false })
   private videoRef!: ElementRef<HTMLVideoElement>;
@@ -62,7 +75,10 @@ export class HomePage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.cargaimagen();
+    // Iniciar con la primera imagen
+    this.imgenPrincipal = this.imagenesPrincipales[0];
+    this.siguienteImagen = this.imagenesPrincipales[1];
+    this.iniciarRotacionImagenes();
     this.cargavideo();
 
     // Refleja estado de login y verifica teléfono cuando haya sesión
@@ -79,7 +95,54 @@ export class HomePage implements OnInit {
     }, 10000);
     this.gatTiposVeiculos();
   }
-  
+
+  ngOnDestroy() {
+    // Limpiar el intervalo cuando el componente se destruya
+    if (this.imageRotationInterval) {
+      clearInterval(this.imageRotationInterval);
+    }
+  }
+
+  private iniciarRotacionImagenes() {
+    // Precargar todas las imágenes
+    this.preloadAllImages().then(() => {
+      this.overlayLoaded = true;
+    });
+
+    // Configurar intervalo para rotar imágenes cada 10 segundos
+    this.imageRotationInterval = setInterval(() => {
+      if (!this.isTransitioning) {
+        this.realizarTransicion();
+      }
+    }, 5000); // --- Cambiado a 5000 ms para pruebas más rápidas
+  }
+
+  private async preloadAllImages(): Promise<void> {
+    const preloadPromises = this.imagenesPrincipales.map(imagen => {
+      return this.generalService.preloadHero(imagen, 2000);
+    });
+
+    await Promise.all(preloadPromises);
+  }
+
+  private realizarTransicion(): void {
+    this.isTransitioning = true;
+
+    // Calcular siguiente índice
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.imagenesPrincipales.length;
+    const nextIndex = (this.currentImageIndex + 1) % this.imagenesPrincipales.length;
+
+    // Actualizar imágenes
+    setTimeout(() => {
+      this.imgenPrincipal = this.imagenesPrincipales[this.currentImageIndex];
+      this.siguienteImagen = this.imagenesPrincipales[nextIndex];
+
+      // Restablecer bandera de transición
+      setTimeout(() => {
+        this.isTransitioning = false;
+      }, 1000);
+    }, 600); // Tiempo que coincide con la duración de la animación CSS
+  }
 
   ngAfterViewInit(): void {
     this.generalService.aplicarAnimacionPorScroll(
@@ -87,6 +150,7 @@ export class HomePage implements OnInit {
       '.banner-img img'
     );
   }
+
   // ----- -----
   escribirTexto() {
     let index = 0;
@@ -140,7 +204,6 @@ export class HomePage implements OnInit {
   onInputChange(ev: any) {
     const value = ev.detail.value;
     this.terminoBusqueda = value;
-    
   }
 
   irABusqueda(sugerencia: string) {
@@ -149,7 +212,7 @@ export class HomePage implements OnInit {
     this.terminoBusqueda = termino;
     this.guardarStorage(termino);
     this.generalService.setTerminoBusqueda('search');
-   
+
     this.router.navigate(['/search/vehiculos', termino]);
   }
 
@@ -169,19 +232,8 @@ export class HomePage implements OnInit {
     historial.unshift(termino);
     historial = historial.slice(0, 10);
     localStorage.setItem('historialBusqueda', JSON.stringify(historial));
-  } 
-  async cargaimagen() {
-    this.imgenPrincipal = '/assets/autos/publicidad/angel.webp';
-    this.generalService.addPreload(this.imgenPrincipal, 'image');
-    this.overlayLoaded = false;
-    try {
-      await Promise.all([
-        this.generalService.preloadHero(this.imgenPrincipal, 4500),
-      ]);
-    } finally {
-      this.overlayLoaded = true;
-    }
   }
+
   async cargavideo() {
     this.videoSrc = 'assets/home/vp1.mp4';
     this.generalService.addPreload(this.videoSrc, 'video');
@@ -191,6 +243,7 @@ export class HomePage implements OnInit {
       this.forzarMuteAutoplay();
     }
   }
+
   private forzarMuteAutoplay(): void {
     const video = this.videoRef?.nativeElement;
     if (!video) return;
@@ -200,14 +253,64 @@ export class HomePage implements OnInit {
       console.warn('Autoplay bloqueado por el navegador');
     });
   }
+
   toggleMute(video: HTMLVideoElement) {
     video.muted = !video.muted;
   }
-}
 
-/**
- *
-    this.router.navigate(['/search/vehiculos', termino], {
-      queryParams: { origen: 'search' },
-    });
- */
+  // Método para cambiar imagen manualmente
+  cambiarImagenManual(index: number): void {
+    if (this.isTransitioning || index === this.currentImageIndex) {
+      return;
+    }
+
+    // Reiniciar el intervalo cuando se cambia manualmente
+    if (this.imageRotationInterval) {
+      clearInterval(this.imageRotationInterval);
+    }
+
+    this.isTransitioning = true;
+
+    // Calcular siguiente índice
+    this.currentImageIndex = index;
+    const nextIndex = (index + 1) % this.imagenesPrincipales.length;
+
+    // Agregar clase de transición al contenedor
+    const container = document.querySelector('.overlay-container');
+    if (container) {
+      container.classList.add('transitioning');
+    }
+
+    // Actualizar imágenes después de un breve delay
+    setTimeout(() => {
+      this.imgenPrincipal = this.imagenesPrincipales[this.currentImageIndex];
+      this.siguienteImagen = this.imagenesPrincipales[nextIndex];
+
+      // Remover clase de transición
+      if (container) {
+        container.classList.remove('transitioning');
+      }
+
+      // Restablecer bandera de transición y reiniciar intervalo
+      setTimeout(() => {
+        this.isTransitioning = false;
+        this.reiniciarIntervalo();
+      }, 100);
+    }, 600);
+  }
+
+  private reiniciarIntervalo(): void {
+    // Limpiar intervalo existente
+    if (this.imageRotationInterval) {
+      clearInterval(this.imageRotationInterval);
+    }
+
+    // Crear nuevo intervalo
+    this.imageRotationInterval = setInterval(() => {
+      if (!this.isTransitioning) {
+        this.realizarTransicion();
+      }
+    }, 10000);
+  }
+
+}

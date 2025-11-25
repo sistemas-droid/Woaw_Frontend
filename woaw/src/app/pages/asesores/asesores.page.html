@@ -1,7 +1,59 @@
 <app-navbar></app-navbar>
 
+<ion-content [fullscreen]="true" class="bg-asesores">
 
-<ion-content [fullscreen]="true">
-    
+  <div class="contenedor-asesores">
+    <!-- ENCABEZADO -->
+   <div class="encabezado-asesores">
+  <div class="heading-left">
+    <span class="eyebrow">Atención personalizada</span>
+    <h1>Nuestros asesores</h1>
+    <p>Selecciona al asesor que se encargará de brindarte la mejor atención.</p>
+  </div>
+</div>
+
+    <!-- GRID DE ASESORES -->
+    <ion-grid class="grid-asesores">
+      <ion-row>
+        <ion-col size="12" sizeMd="6" sizeLg="4" *ngFor="let asesor of asesores">
+          <div class="tarjeta-asesor">
+            <!-- AVATAR / INICIALES -->
+            <div class="asesor-avatar">
+              <span>{{ getIniciales(asesor.nombreCompleto) }}</span>
+            </div>
+
+            <!-- INFO -->
+            <div class="asesor-info">
+              <h2>{{ asesor.nombreCompleto }}</h2>
+              <p class="rol">{{ asesor.rol || 'Asesor Comercial' }}</p>
+
+              <p class="dato" *ngIf="asesor.telefono">
+                <ion-icon name="call-outline"></ion-icon>
+                {{ asesor.telefono }}
+              </p>
+
+              <p class="dato" *ngIf="asesor.correo">
+                <ion-icon name="mail-outline"></ion-icon>
+                {{ asesor.correo }}
+              </p>
+            </div>
+
+            <!-- QR / LINK -->
+            <div class="asesor-qr">
+              <div class="qr-wrapper" *ngIf="asesor.qrUrl">
+                <img [src]="asesor.qrUrl" alt="Código QR de {{ asesor.nombreCompleto }}" />
+              </div>
+
+              <button type="button" class="btn-link-qr" (click)="abrirLink(asesor.link)">
+                <ion-icon name="link-outline"></ion-icon>
+                <span>Ver enlace</span>
+              </button>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
   <app-footer></app-footer>
 </ion-content>

@@ -1,9 +1,10 @@
 <!-- home.page.html -->
 <app-navbar></app-navbar>
+<ion-content  [fullscreen]="false" class="home-bg" mode="ios">
 
-<ion-content [fullscreen]="true" class="home-bg" mode="ios">
-  <!-- SPLASH -->
-  <ng-container *ngIf="splash">
+ <app-splash *ngIf="showSplashScreen && esDispositivoMovil && isNative"></app-splash>
+  
+  <ng-container *ngIf="!showSplashScreen && splash">
     <video autoplay muted loop playsinline class="video-fondo2">
       <source [src]="videoSrc" type="video/mp4" />
       Tu navegador no soporta el video HTML5.
@@ -73,6 +74,7 @@
         <div class="container_vidrio">
           <app-login
             *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro"
+            [imagenHero]="imgenPrincipal"
           ></app-login>
 
           <app-registro
@@ -133,6 +135,8 @@
               Aviso de Privacidad
             </a>.
           </p>
+
+          
 
         </div>
       </div>

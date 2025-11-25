@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-import { SubirDocumentsPageRoutingModule } from './subir-documents-routing.module'
-import { SubirDocumentsPage } from './subir-documents.page';
 
+import { DocumentosPageRoutingModule } from './documentos-routing.module';
+
+import { DocumentosPage } from './documentos.page';
 
 import { NavbarComponent } from '../../../components/navbar/navbar.component';
 import { MenuComponent } from '../../../components/filtos/menu/menu.component';
@@ -19,7 +20,7 @@ import { FooterComponent } from '../../../components/footer/footer.component';
     CommonModule,
     FormsModule,
     IonicModule,
-    SubirDocumentsPageRoutingModule,
+    DocumentosPageRoutingModule,
     NavbarComponent,
     MenuComponent,
     CartasComponent,
@@ -27,6 +28,6 @@ import { FooterComponent } from '../../../components/footer/footer.component';
     FooterComponent,
     AddComponent,
   ],
-  declarations: [SubirDocumentsPage]
+  declarations: [DocumentosPage]
 })
-export class SubirDocumentsPageModule {}
+export class DocumentosPageModule {}

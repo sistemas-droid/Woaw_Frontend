@@ -24,25 +24,86 @@
 
 .goautos-bg {
   --background: transparent;
-  display: block;
-}
-
-/* Ojo: cambié .overlay → .hero-overlay para no chocar con otras overlays */
-.hero-overlay {
-  transition: opacity 0.6s ease-in-out;
-  width: 100%;
-  height: 420px;
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  background-repeat: no-repeat;
-  opacity: 0; /* default */
+  display: block;
+  min-height: 420px;
 
   @media (max-width: 768px) {
-    height: 360px;
+    min-height: 360px;
+  }
+}
+
+/* Fondo con imágenes que van pasando */
+.overlay-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  /* vidrio general sobre la imagen */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    z-index: 2;
+    pointer-events: none;
+  }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: 50% 85%;
+  background-repeat: no-repeat;
+  transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+  opacity: 0;
+  z-index: 1;
+
+  &.loaded {
+    opacity: 1;
+  }
+}
+
+.next-overlay {
+  transform: translateX(100%);
+  opacity: 0;
+  z-index: 1;
+}
+
+/* Clase que se activa cuando haces transición entre imágenes */
+.overlay-container.transitioning {
+  .overlay:first-child {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  .next-overlay {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Contenedor del vidrio + contenido (encima del fondo) */
+.buscador-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 3; /* encima del overlay */
+
+  @media (max-width: 768px) {
+    min-height: 360px;
     align-items: center;
-    background-position: 50% 90% !important;
   }
 
   &.loaded {
@@ -58,7 +119,7 @@
     right: 0;
     height: 70px;
     background: linear-gradient(to bottom, rgba(242, 242, 247, 0), #f2f2f7);
-    z-index: 1;
+    z-index: -1;
     pointer-events: none;
   }
 
@@ -70,7 +131,7 @@
     width: 100%;
     padding-inline: 16px;
     position: relative;
-    z-index: 2;
+    z-index: 3;
   }
 
   .bloque-contenido {
@@ -79,9 +140,9 @@
     margin: 0 auto 18px;
     padding: 16px 18px;
 
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.78);
     border-radius: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.9);
     box-shadow:
       0 18px 40px rgba(15, 23, 42, 0.26),
       0 0 0 0.4px rgba(255, 255, 255, 0.9);
@@ -94,10 +155,20 @@
     text-align: center;
     gap: 10px;
 
+    /* 💻 Desktop grande: vidrio más ancho */
     @media (min-width: 1200px) {
+      width: min(70%, 560px);
       margin-bottom: 26px;
     }
 
+    /* 📱💊 Tablet: que el vidrio se estire más */
+    @media (min-width: 768px) and (max-width: 1199px) {
+      width: min(80%, 520px);
+      padding: 18px 22px;
+      margin-bottom: 22px;
+    }
+
+    /* 📱 Móvil */
     @media (max-width: 767px) {
       width: 94%;
       padding: 14px 14px;
@@ -124,6 +195,32 @@
   }
 }
 
+/* ===================== TABLET FIX (iPad, Galaxy Tab, etc.) ===================== */
+@media (min-width: 768px) and (max-width: 1199px) {
+
+  /* Hero más alto */
+  .goautos-bg {
+    min-height: 520px !important;
+  }
+
+  .buscador-container {
+    min-height: 520px !important;
+  }
+
+  /* El vidrio se estira más y queda más centrado */
+  .buscador-container .bloque-contenido {
+    width: min(80%, 560px) !important;
+    padding: 22px 26px !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Buscador un poquito más grande en tablet */
+  .buscador-box {
+    max-width: 560px !important;
+  }
+}
+
+
 @keyframes blink-caret {
   from,
   to {
@@ -136,7 +233,7 @@
 
 /* ========== BUSCADOR ========== */
 
-.buscador-container {
+.buscador-box {
   position: relative;
   width: 100%;
   max-width: 480px;
@@ -386,7 +483,7 @@
   padding: 16px 26px;
   width: min(80vw, 360px);
 
-  margin: 8px auto 0;
+  margin: 8px auto 24px;
   box-shadow: 0 10px 22px rgba(255, 59, 48, 0.32);
   transition: transform 0.15s ease, box-shadow 0.18s ease, filter 0.18s ease;
 
@@ -401,7 +498,3 @@
     box-shadow: 0 8px 18px rgba(255, 59, 48, 0.3);
   }
 }
-
-/* Extra por si usas otras secciones (las dejé limpias) */
-/* .banner-img, .arr-overlay, etc. ya los tenías, si aquí no van puedes borrarlos
-   o dejarlos si se comparten con otras pages */

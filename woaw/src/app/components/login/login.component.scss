@@ -70,7 +70,7 @@
 /* ====== CARD / FORM TIPO iOS ====== */
 .login-form {
   width: 100%;
-  max-width: 320px;
+  max-width: 360px;          /* base más ancho que antes */
   margin-top: 14px;
 
   background: #ffffff;
@@ -189,6 +189,21 @@
   }
 }
 
+/* ===== Imagen hero dentro de la tarjeta ===== */
+.login-hero-img {
+  width: 100%;
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    max-width: 280px;
+    border-radius: 14px;
+    object-fit: cover;
+  }
+}
+
 /* ===== BOTÓN GOOGLE NATIVO ===== */
 .google-btn {
   margin-top: 8px;
@@ -276,4 +291,43 @@
   }
 }
 
+/* ========== RESPONSIVE ========== */
 
+/* 📱 Móvil chico */
+@media (max-width: 480px) {
+  .login-form {
+    max-width: 100%;
+    padding: 14px 12px 16px;
+  }
+
+  .login-hero-img img {
+    max-width: 230px;
+  }
+}
+
+/* 💊 Tablet / iPad: carta más grande para que no se vea enana */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .login-form {
+    max-width: 640px;          /* aquí se hace más ancha en tablet */
+    padding: 18px 18px 22px;
+  }
+
+  .overlay .titulo {
+    font-size: 24px;
+  }
+
+  .login-hero-img img {
+    max-width: 330px;
+  }
+}
+
+/* 💻 Desktop grande */
+@media (min-width: 1200px) {
+  .login-form {
+    max-width: 420px;          /* desktop un poco más estrecho que tablet */
+  }
+
+  .login-hero-img img {
+    max-width: 320px;
+  }
+}

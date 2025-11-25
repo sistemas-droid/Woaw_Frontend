@@ -1,30 +1,47 @@
 <app-navbar></app-navbar>
 
 <ion-content [fullscreen]="true" class="ios-content">
-
   <div class="home-shell">
     <!-- HERO / BUSCADOR -->
     <div class="goautos-bg">
-      <div
-        class="hero-overlay"
-        [class.loaded]="overlayLoaded"
-        [ngStyle]="overlayLoaded ? {
-          'background-image':
-          'linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff00 100%), url(' + imgenPrincipal + ')',
-          'background-size': 'cover',
-          'opacity': '1',
-          'background-position': '50% 95%',
-          'background-repeat': 'no-repeat'
-        } : {}"
-      >
+      <!-- Fondo con imágenes que van pasando -->
+      <div class="overlay-container" >
+        <!-- Imagen actual -->
+        <div
+          class="overlay"
+          [class.loaded]="overlayLoaded"
+          [ngStyle]="overlayLoaded ? {
+            'background-image':
+            'linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff00 100%), url(' + imgenPrincipal + ')',
+            'background-size': 'cover',
+            'background-position': '50% 85%',
+            'background-repeat': 'no-repeat'
+          } : {}">
+        </div>
+
+        <!-- Siguiente imagen para el slide -->
+        <div
+          class="overlay next-overlay"
+          *ngIf="siguienteImagen"
+          [ngStyle]="{
+            'background-image':
+            'linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff00 100%), url(' + siguienteImagen + ')',
+            'background-size': 'cover',
+            'background-position': '50% 85%',
+            'background-repeat': 'no-repeat'
+          }">
+        </div>
+      </div>
+
+      <!-- Contenido encima del fondo (vidrio + buscador + chips + marcas) -->
+      <div class="buscador-container" [class.loaded]="overlayLoaded">
         <div class="contenido-principal">
           <div class="bloque-contenido">
-
             <h1 class="titulo typing">
               {{ textoAnimado }}
             </h1>
 
-            <div class="buscador-container">
+            <div class="buscador-box">
               <ion-searchbar
                 mode="ios"
                 [(ngModel)]="terminoBusqueda"
@@ -49,21 +66,20 @@
 
             <div class="top-marcas">
               <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/nissan-1752250741191.png"
-                   (click)="irABusqueda('nissan')" alt="Nissan" loading="lazy" />
+                  (click)="irABusqueda('nissan')" alt="Nissan" loading="lazy" />
               <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/chevrolet-1752250726132.png"
-                   (click)="irABusqueda('Chevrolet')" alt="Chevrolet" loading="lazy" />
+                  (click)="irABusqueda('Chevrolet')" alt="Chevrolet" loading="lazy" />
               <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/honda-1752250731294.png"
-                   (click)="irABusqueda('Honda')" alt="Honda" loading="lazy" />
+                  (click)="irABusqueda('Honda')" alt="Honda" loading="lazy" />
               <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/volkswagen-1752250719366.png"
-                   (click)="irABusqueda('Volkswagen')" alt="Volkswagen" loading="lazy" />
+                  (click)="irABusqueda('Volkswagen')" alt="Volkswagen" loading="lazy" />
               <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/kia-1752250740506.png"
-                   (click)="irABusqueda('Kia')" alt="Kia" loading="lazy" />
+                  (click)="irABusqueda('Kia')" alt="Kia" loading="lazy" />
               <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/hyundai-1752250721333.png"
-                   (click)="irABusqueda('Hyundai')" alt="Hyundai" loading="lazy" />
+                  (click)="irABusqueda('Hyundai')" alt="Hyundai" loading="lazy" />
               <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/bmw-1752250746130.png"
-                   (click)="irABusqueda('bmw')" alt="BMW" loading="lazy" />
+                  (click)="irABusqueda('bmw')" alt="BMW" loading="lazy" />
             </div>
-
           </div>
         </div>
       </div>

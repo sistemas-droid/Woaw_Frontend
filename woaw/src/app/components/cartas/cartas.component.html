@@ -1,5 +1,9 @@
 <div class="card-ios" (click)="onCardClick(auto, $event)">
 
+  <div class="badge-tipo" *ngIf="auto?.tipoVenta">
+    {{ auto.tipoVenta }}
+  </div>
+  
   <!-- Botón de favorito iOS -->
   <button class="fav-btn" *ngIf="ubicacion !== 'favoritos'" 
           (click)="agregarAFavoritos(auto._id); $event.stopPropagation()">

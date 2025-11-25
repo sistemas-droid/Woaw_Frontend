@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgZone, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, ViewChild, ElementRef, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -28,6 +28,8 @@ declare const google: any;
 })
 export class LoginComponent implements OnInit, AfterViewInit {
   @ViewChild('googleBtn', { static: false }) googleBtnRef?: ElementRef<HTMLDivElement>;
+@Input() imagenHero: string | null = null;
+
 
   showPassword = false;
   loginForm: FormGroup;

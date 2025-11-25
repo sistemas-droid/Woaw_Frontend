@@ -1,6 +1,5 @@
 <!-- app-login.component.html -->
 <div class="overlay">
-
   <h1 class="titulo">Inicia sesión</h1>
 
   <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -15,14 +14,10 @@
     <ion-note
       *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
     >
-      <ng-container
-        *ngIf="loginForm.get('email')?.errors?.['required']"
-      >
+      <ng-container *ngIf="loginForm.get('email')?.errors?.['required']">
         El email es obligatorio.
       </ng-container>
-      <ng-container
-        *ngIf="loginForm.get('email')?.errors?.['email']"
-      >
+      <ng-container *ngIf="loginForm.get('email')?.errors?.['email']">
         Email inválido
       </ng-container>
     </ion-note>
@@ -81,6 +76,11 @@
         class="apple-icon"
       />
       <span>Continuar con Apple</span>
+    </div>
+
+    <!-- Imagen hero dentro de la tarjeta -->
+    <div class="login-hero-img" *ngIf="imagenHero">
+      <img [src]="imagenHero" alt="Imagen hero" />
     </div>
   </form>
 </div>
