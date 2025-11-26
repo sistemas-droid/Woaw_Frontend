@@ -127,7 +127,7 @@ export class SegurosPage implements OnInit {
     public carsService: CarsService,
     private fb: FormBuilder,
     private seguros: SeguroService,
-    private pdfService: PdfService, 
+    private pdfService: PdfService,
     private reloadService: ReloadService,
   ) {
     this.form = this.fb.group({
@@ -1249,29 +1249,30 @@ export class SegurosPage implements OnInit {
 
     return dto;
   }
-  descargarCotizacionPDF(): void {
+  async descargarCotizacionPDF(): Promise<void> {
     if (!this.quote) {
       this.generalService.alert('Error', 'No hay cotización para descargar', 'warning');
       return;
     }
 
     this.show_spinner(true, 2, 'Descargar PDF...', 'Espere un momento');
-    setTimeout(() => {
-      try {
-        const datosCocheStorage = localStorage.getItem('datosCoche');
-        const datosCoche = datosCocheStorage ? JSON.parse(datosCocheStorage) : {};
 
-        const coberturas = this.activePlan ? this.getPlanCoverages(this.activePlan) : [];
+    try {
+      const datosCocheStorage = localStorage.getItem('datosCoche');
+      const datosCoche = datosCocheStorage ? JSON.parse(datosCocheStorage) : {};
 
-        this.pdfService.descargarPDF(this.quote, datosCoche, coberturas);
-        this.hide_spinner();
-      } catch (error) {
-        console.error('Error al generar PDF:', error);
-        this.generalService.alert('Error', 'No se pudo generar el PDF', 'danger');
-      } finally {
-        this.hide_spinner();
-      }
-    }, 1000);
+      const coberturas = this.activePlan ? this.getPlanCoverages(this.activePlan) : [];
+
+      // ESPERAR a que la descarga termine completamente
+      await this.pdfService.descargarPDF(this.quote, datosCoche, coberturas);
+
+    } catch (error) {
+      console.error('Error al generar PDF:', error);
+      this.generalService.alert('Error', 'No se pudo generar el PDF', 'danger');
+    } finally {
+      // Esto se ejecutará siempre, tanto en éxito como en error
+      this.hide_spinner();
+    }
   }
   previsualizarPDF(): void {
     if (!this.quote) {
