@@ -1,4 +1,3 @@
-
 <ion-header [translucent]="true">
   <!-- Header principal tipo iOS -->
   <ion-toolbar class="header-ios">
@@ -85,20 +84,36 @@
       <!-- Columna catálogo -->
       <ion-col size="12" size-md="9">
         <!-- VENTA -->
-        <div class="catalogo-autos-ios" *ngIf="vistaActiva === 'venta'">
-          <div *ngIf="autosVentaPaginados?.length === 0" class="mensaje-vacio-ios">
+        <div
+          class="catalogo-autos-ios"
+          *ngIf="vistaActiva === 'venta'"
+          [class.sin-autos]="!autosVentaPaginados || autosVentaPaginados.length === 0"
+        >
+          <div
+            *ngIf="!autosVentaPaginados || autosVentaPaginados.length === 0"
+            class="mensaje-vacio-ios"
+          >
             <ion-icon name="car-sport-outline"></ion-icon>
             <p>No se encontraron autos de venta.</p>
           </div>
 
-          <ng-container *ngFor="let auto of autosVentaPaginados; trackBy: trackById">
-            <app-cartas
-              [auto]="auto"
-              [autosFavoritosIds]="autosFavoritosIds"
-              [ubicacion]="'mis_autos'"
-              [esMio]="idsMisAutos.includes(auto._id)"
+          <ng-container
+            *ngIf="
+              autosVentaPaginados &&
+              autosVentaPaginados.length > 0
+            "
+          >
+            <ng-container
+              *ngFor="let auto of autosVentaPaginados; trackBy: trackById"
             >
-            </app-cartas>
+              <app-cartas
+                [auto]="auto"
+                [autosFavoritosIds]="autosFavoritosIds"
+                [ubicacion]="'mis_autos'"
+                [esMio]="idsMisAutos.includes(auto._id)"
+              >
+              </app-cartas>
+            </ng-container>
           </ng-container>
         </div>
 
@@ -142,20 +157,36 @@
         </div>
 
         <!-- RENTA -->
-        <div class="catalogo-autos-ios" *ngIf="vistaActiva === 'renta'">
-          <div *ngIf="autosRentaPaginados?.length === 0" class="mensaje-vacio-ios">
+        <div
+          class="catalogo-autos-ios"
+          *ngIf="vistaActiva === 'renta'"
+          [class.sin-autos]="!autosRentaPaginados || autosRentaPaginados.length === 0"
+        >
+          <div
+            *ngIf="!autosRentaPaginados || autosRentaPaginados.length === 0"
+            class="mensaje-vacio-ios"
+          >
             <ion-icon name="car-sport-outline"></ion-icon>
             <p>No se encontraron autos de renta.</p>
           </div>
 
-          <ng-container *ngFor="let auto of autosRentaPaginados; trackBy: trackById">
-            <app-cartas
-              [auto]="auto"
-              [autosFavoritosIds]="autosFavoritosIds"
-              [ubicacion]="'mis_autos_renta'"
-              [esMio]="idsMisAutos.includes(auto._id)"
+          <ng-container
+            *ngIf="
+              autosRentaPaginados &&
+              autosRentaPaginados.length > 0
+            "
+          >
+            <ng-container
+              *ngFor="let auto of autosRentaPaginados; trackBy: trackById"
             >
-            </app-cartas>
+              <app-cartas
+                [auto]="auto"
+                [autosFavoritosIds]="autosFavoritosIds"
+                [ubicacion]="'mis_autos_renta'"
+                [esMio]="idsMisAutos.includes(auto._id)"
+              >
+              </app-cartas>
+            </ng-container>
           </ng-container>
         </div>
 
@@ -200,5 +231,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

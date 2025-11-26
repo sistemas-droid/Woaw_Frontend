@@ -1,7 +1,5 @@
 <app-navbar></app-navbar>
 
-
-
 <ion-content #pageContent [fullscreen]="true" class="contenido-ios">
   <ion-refresher
     slot="fixed"
@@ -48,21 +46,32 @@
 
       <!-- Columna de catálogo -->
       <ion-col size="12" size-md="9">
-        <div class="catalogo-autos-ios">
-          <div *ngIf="autosPaginados?.length === 0" class="mensaje-vacio-ios">
+        <!-- 👇 clase condicional para centrar vacío -->
+        <div
+          class="catalogo-autos-ios"
+          [class.sin-autos]="!autosPaginados || autosPaginados.length === 0"
+        >
+          <!-- Estado vacío -->
+          <div
+            *ngIf="!autosPaginados || autosPaginados.length === 0"
+            class="mensaje-vacio-ios"
+          >
             <ion-icon name="car-sport-outline" class="icono-mensaje"></ion-icon>
             <p>No se encontraron autos para esta sección.</p>
           </div>
 
-          <ng-container *ngFor="let auto of autosPaginados">
-            <app-cartas
-              [auto]="auto"
-              [autosFavoritosIds]="autosFavoritosIds"
-              [ubicacion]="'nuevos'"
-              (refrescarAutos)="handleRefrescarAutos($event)"
-              [esMio]="idsMisAutos.includes(auto._id)"
-            >
-            </app-cartas>
+          <!-- Listado de autos -->
+          <ng-container *ngIf="autosPaginados && autosPaginados.length > 0">
+            <ng-container *ngFor="let auto of autosPaginados">
+              <app-cartas
+                [auto]="auto"
+                [autosFavoritosIds]="autosFavoritosIds"
+                [ubicacion]="'nuevos'"
+                (refrescarAutos)="handleRefrescarAutos($event)"
+                [esMio]="idsMisAutos.includes(auto._id)"
+              >
+              </app-cartas>
+            </ng-container>
           </ng-container>
         </div>
 
@@ -106,5 +115,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

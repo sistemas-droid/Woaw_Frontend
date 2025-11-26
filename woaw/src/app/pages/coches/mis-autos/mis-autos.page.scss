@@ -50,7 +50,9 @@
   width: auto;
 }
 
-/* Searchbar */
+/* ============================= */
+/*   SEARCHBAR iOS               */
+/* ============================= */
 .search-toolbar-ios {
   --background: rgba(249, 249, 249, 0.94);
   border-bottom: 0.33px solid rgba(0, 0, 0, 0.04);
@@ -136,24 +138,42 @@
   }
 }
 
+/* 💡 Cuando NO hay autos (venta o renta): centrado total */
+.catalogo-autos-ios.sin-autos {
+  display: flex; /* sobreescribe el grid */
+  align-items: center;
+  justify-content: center;
+  margin-top: 0;
+  margin-bottom: 0;
+  /* restamos header + search + segment + acomodo aprox */
+  min-height: calc(100vh - 240px);
+}
+
+@media (max-width: 768px) {
+  .catalogo-autos-ios.sin-autos {
+    min-height: calc(100vh - 220px);
+  }
+}
+
 /* ============================= */
 /*   EMPTY STATE – iOS           */
 /* ============================= */
 .mensaje-vacio-ios {
-  text-align: center;
-  margin-top: 18vh;
-  color: #6b7280;
-  font-size: 0.95rem;
-  padding: 0 24px 32px;
-
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.95rem;
+  padding: 0 24px 32px;
+  margin-top: 0;
 
   ion-icon {
     font-size: 52px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     color: #d1d5db;
   }
 
@@ -236,7 +256,9 @@
     color 0.18s ease,
     transform 0.16s ease;
 
-  &:disabled { opacity: 0.35; }
+  &:disabled {
+    opacity: 0.35;
+  }
 
   &:not(.activa):hover:not(:disabled) {
     background: rgba(148, 163, 184, 0.16);

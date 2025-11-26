@@ -84,12 +84,29 @@
   }
 }
 
+/* 💡 Cuando NO hay autos: centrar mensaje a la mitad de la pantalla */
+.catalogo-autos-ios.sin-autos {
+  display: flex; /* sobreescribe el grid cuando está vacío */
+  align-items: center;
+  justify-content: center;
+  margin-top: 0;
+  margin-bottom: 0;
+  /* resta navbar + acomodo aprox, ajusta fino si hace falta */
+  min-height: calc(100vh - 200px);
+}
+
+@media (max-width: 768px) {
+  .catalogo-autos-ios.sin-autos {
+    min-height: calc(100vh - 180px);
+  }
+}
+
 /* ============================= */
 /*   MENSAJE VACÍO iOS           */
 /* ============================= */
 .mensaje-vacio-ios {
   width: 100%;
-  min-height: 55vh;
+  /* ya no usamos min-height, lo controla .sin-autos */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -171,7 +188,7 @@
     0 0 0 0.5px rgba(255, 255, 255, 0.9);
 }
 
-/* Botones redondos rojos, igual que Mis autos / Nuevos / Seminuevos */
+/* Botones redondos rojos, igual que en las otras vistas */
 .pagina-ios {
   min-width: 32px;
   height: 32px;
