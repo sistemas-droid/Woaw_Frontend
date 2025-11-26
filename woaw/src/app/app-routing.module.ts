@@ -298,6 +298,10 @@ const routes: Routes = [
           import("./pages/lote/lote/lote.module").then((m) => m.LotePageModule),
         data: { title: "lotes | woaw" },
       },
+      {
+        path: 'lote/welcome-lote/:nombre/:id',
+        loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then((m) => m.WelcomeLotePageModule)
+      },
       // ---------------------
       // ---------------------
 
@@ -370,12 +374,6 @@ const routes: Routes = [
       },
       // ---------------------
       // ---------------------
-
-
-  {
-    path: 'welcome-lote',
-    loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then( m => m.WelcomeLotePageModule)
-  },
     ],
   },
   {
