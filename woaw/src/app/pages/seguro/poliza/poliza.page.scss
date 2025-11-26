@@ -1,3 +1,5 @@
+/* poliza-detalle.page.scss */
+
 /* 🌫 Fondo general tipo iOS */
 ion-content.ios-poliza-detalle {
   --background: #f2f2f7;
@@ -5,7 +7,7 @@ ion-content.ios-poliza-detalle {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
 }
 
-/* HERO de fondo (mismo estilo que las otras de seguros) */
+/* HERO */
 .fondo-seguros {
   position: fixed;
   top: 0;
@@ -38,7 +40,7 @@ ion-content.ios-poliza-detalle {
   }
 }
 
-/* Split layout general */
+/* Split layout */
 .split-woaw-seguros {
   position: relative;
   z-index: 1;
@@ -60,10 +62,7 @@ ion-content.ios-poliza-detalle {
   min-width: 0;
 }
 
-/* ===========================
-   TOKENS
-   =========================== */
-
+/* TOKENS */
 :host {
   --ink: #0b0b0e;
   --muted: #6b7280;
@@ -73,10 +72,7 @@ ion-content.ios-poliza-detalle {
   --card: #ffffff;
 }
 
-/* ===========================
-   CARD PRINCIPAL – POLIZA
-   =========================== */
-
+/* CARD POLIZA */
 .poliza {
   background: transparent;
   display: flex;
@@ -139,8 +135,9 @@ ion-content.ios-poliza-detalle {
         background-size: 200% 100%;
         transform: scaleX(0);
         transform-origin: left;
-        animation: header-reveal .7s ease-out forwards,
-        header-shimmer 2.4s ease-in-out .7s infinite alternate;
+        animation:
+          header-reveal .7s ease-out forwards,
+          header-shimmer 2.4s ease-in-out .7s infinite alternate;
       }
     }
   }
@@ -153,18 +150,11 @@ ion-content.ios-poliza-detalle {
 }
 
 @keyframes header-shimmer {
-  from {
-    background-position: 0% 0;
-  }
-  to {
-    background-position: 100% 0;
-  }
+  from { background-position: 0% 0; }
+  to   { background-position: 100% 0; }
 }
 
-/* ===========================
-   CAMPOS – GRID + LABELS
-   =========================== */
-
+/* CAMPOS */
 .field {
   &.field-grid {
     min-width: 0;
@@ -219,38 +209,86 @@ ion-content.ios-poliza-detalle {
   }
 }
 
-/* Inputs base tipo iOS */
+/* ==============
+   .control: solo wrapper, SIN estilo de carta
+   ============== */
+.control {
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+
+/* ==============
+   INPUT – ÚNICA “cajita”
+   ============== */
 .form-input,
 input[type="text"],
 input[type="email"],
-input[type="number"],
-select {
+input[type="number"] {
   width: 100%;
   box-sizing: border-box;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
-  padding: 8px 10px;
-  font-size: 13px;
+  padding: 10px 12px;
+  font-size: 14px;
   background: #f9fafb;
   color: #111827;
   outline: none;
-  transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
-
-  &:focus {
-    border-color: #fb7185;
-    background: #ffffff;
-    box-shadow: 0 0 0 1.5px rgba(248, 113, 113, 0.55);
-  }
-
-  &::placeholder {
-    color: #9ca3af;
-  }
+  transition:
+    border-color 0.16s ease,
+    box-shadow 0.16s ease,
+    background 0.16s ease;
 }
 
-/* ===========================
-   CTA DESKTOP (botones)
-   =========================== */
+.form-input::placeholder,
+input::placeholder {
+  color: #9ca3af;
+}
 
+.form-input:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus {
+  border-color: #fb7185;
+  background: #ffffff;
+  box-shadow: 0 0 0 1.5px rgba(248, 113, 113, 0.55);
+}
+
+/* ion-select como input normal (plan + color) */
+.control ion-select {
+  width: 100%;
+  --background: #f9fafb;
+  --border-radius: 12px;
+  --border-color: #e5e7eb;
+  --border-width: 1px;
+  --border-style: solid;
+  --min-height: 44px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --color: #111827;
+  --placeholder-color: #9ca3af;
+  --placeholder-opacity: 1;
+  --box-shadow: none;
+}
+
+/* extra por si quieres controlar alguno en específico */
+.woaw-select {
+  width: 100%;
+  --min-height: 44px;
+}
+
+.control ion-select:focus-within {
+  --border-color: #fb7185;
+  --background: #ffffff;
+  --box-shadow: 0 0 0 1.5px rgba(248, 113, 113, 0.55);
+}
+
+/* CTA DESKTOP */
 .paybox__cta {
   width: 60%;
   margin: 18px auto 4px;
@@ -273,7 +311,10 @@ select {
     font-weight: 700;
     font-size: 13px;
     cursor: pointer;
-    transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+    transition:
+      transform 0.16s ease,
+      box-shadow 0.16s ease,
+      filter 0.16s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -313,10 +354,7 @@ select {
   }
 }
 
-/* ===========================
-   CALENDARIO – estilo iOS
-   =========================== */
-
+/* CALENDARIO – igual */
 .cal {
   width: 100%;
   border: 1px solid #e5e7eb;
@@ -352,7 +390,10 @@ select {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+    transition:
+      background 0.16s ease,
+      box-shadow 0.16s ease,
+      transform 0.16s ease;
 
     ion-icon {
       font-size: 16px;
@@ -437,9 +478,10 @@ select {
   }
 }
 
-/* ===========================
-   CORREOS DINÁMICOS
-   =========================== */
+/* CORREOS */
+.correos-block {
+  margin-top: 12px;
+}
 
 .correos-actions {
   display: flex;
@@ -490,10 +532,6 @@ select {
   align-items: center;
   margin-top: 6px;
 
-  .control {
-    width: 100%;
-  }
-
   .btn-ghost.danger {
     background: #fee2e2;
     border-radius: 999px;
@@ -524,10 +562,7 @@ select {
   }
 }
 
-/* ===========================
-   POLIZA CREADA – CARD
-   =========================== */
-
+/* POLIZA CREADA */
 .poliza_creada {
   display: grid;
   gap: 18px;
@@ -698,10 +733,7 @@ select {
   }
 }
 
-/* ===========================
-   BLOQUE LOGIN (cuando no está logueado)
-   =========================== */
-
+/* BLOQUE LOGIN */
 .carta-login {
   display: grid;
   grid-template-columns: 1.2fr min(420px, 40vw);
@@ -804,10 +836,7 @@ select {
   }
 }
 
-/* ===========================
-   FOOTER iOS
-   =========================== */
-
+/* FOOTER iOS */
 .footer_css_seguros.safe-footer {
   ion-toolbar {
     --background: #000;
@@ -827,7 +856,60 @@ select {
   }
 }
 
-/* Que no se tape el contenido en móvil */
+/* Que no se tape el contenido */
 ion-content::part(scroll) {
   padding-bottom: 88px;
+}
+
+/* ===========================
+   AJUSTE MOBILE iPHONE
+   =========================== */
+
+@media (max-width: 820px) {
+  ion-content.ios-poliza-detalle .split-woaw-seguros {
+    padding: 8px 8px 24px;
+  }
+
+  ion-content.ios-poliza-detalle .poliza {
+    padding-top: 4px;
+  }
+
+  ion-content.ios-poliza-detalle .poliza .poliza__card {
+    max-width: none;
+    margin: 0;
+    border-radius: 18px 18px 0 0;
+    padding: 14px 12px 18px;
+  }
+
+  ion-content.ios-poliza-detalle .poliza .header {
+    padding: 2px 0 10px;
+  }
+
+  .poliza__card ion-grid {
+    --ion-grid-column-padding: 4px;
+  }
+
+  .field.field-grid {
+    grid-template-columns: 1fr;
+    gap: 8px 0;
+  }
+
+  .field.field-grid > div {
+    width: 100%;
+  }
+
+  .form-input,
+  input[type="text"],
+  input[type="email"] {
+    font-size: 15px;
+  }
+
+  ion-content.ios-poliza-detalle .cal {
+    margin-top: 10px;
+    padding: 10px 8px 8px;
+  }
+
+  ion-content.ios-poliza-detalle::part(scroll) {
+    padding-bottom: 120px;
+  }
 }

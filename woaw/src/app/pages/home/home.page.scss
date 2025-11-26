@@ -118,7 +118,7 @@
     left: 0;
     right: 0;
     height: 70px;
-    background: linear-gradient(to bottom, rgba(242, 242, 247, 0), #f2f2f7);
+    // background: linear-gradient(to bottom, rgba(242, 242, 247, 0), #f2f2f7);
     z-index: -1;
     pointer-events: none;
   }
@@ -127,27 +127,27 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 0px;
     width: 100%;
-    padding-inline: 16px;
+    // padding-inline: 16px;
     position: relative;
     z-index: 3;
   }
 
   .bloque-contenido {
     /* “card” tipo widget iOS sobre la imagen */
-    width: min(90%, 380px);
+    width: min(100%, 380px);
     margin: 0 auto 18px;
-    padding: 16px 18px;
+    // padding: 16px 18px;
 
-    background: rgba(255, 255, 255, 0.78);
-    border-radius: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    box-shadow:
-      0 18px 40px rgba(15, 23, 42, 0.26),
-      0 0 0 0.4px rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
+    // background: rgba(255, 255, 255, 0.78);
+      // border-radius: 28px;
+      // border: 1px solid rgba(255, 255, 255, 0.9);
+      // box-shadow:
+      //   0 18px 40px rgba(15, 23, 42, 0.26),
+      //   0 0 0 0.4px rgba(255, 255, 255, 0.9);
+      // backdrop-filter: blur(22px);
+      // -webkit-backdrop-filter: blur(22px);
 
     display: flex;
     flex-direction: column;
@@ -177,22 +177,23 @@
   }
 
   .titulo {
-    font-size: clamp(18px, 3.3vw, 24px);
-    font-weight: 800;
-    margin-top: 6px;
-    margin-bottom: 8px;
-    color: var(--text-main);
-  }
+  font-size: clamp(22px, 4vw, 30px); 
+  font-weight: 800;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  color: #ffffff; 
+}
 
-  .typing {
-    color: var(--text-main);
-    font-weight: 700;
-    border-right: 2px solid var(--woaw-red);
-    white-space: nowrap;
-    overflow: hidden;
-    width: fit-content;
-    animation: blink-caret 0.75s step-end infinite;
-  }
+.typing {
+  color: #ffffff; 
+  font-weight: 700;
+  border-right: 2px solid var(--woaw-red);
+  white-space: nowrap;
+  overflow: hidden;
+  width: fit-content;
+  animation: blink-caret 0.75s step-end infinite;
+}
+
 }
 
 /* ===================== TABLET FIX (iPad, Galaxy Tab, etc.) ===================== */
@@ -237,7 +238,7 @@
   position: relative;
   width: 100%;
   max-width: 480px;
-  margin: 6px auto 4px;
+  margin: 3px auto 2px;
   z-index: 10;
 
   .buscador {
@@ -265,7 +266,7 @@
 
 .tipos-vehiculos {
   max-width: 480px;
-  margin: 4px auto 0;
+  margin: 2px auto 0;
   text-align: center;
 
   .lista-tipos {
@@ -273,41 +274,41 @@
     flex-wrap: wrap;
     gap: 6px;
     justify-content: center;
-    margin-top: 4px;
+    margin-top: 2px;
   }
 
   .tipo-card {
-    background-color: #ffffff;
-    color: var(--woaw-red);
-    padding: 7px 14px;
-    border-radius: 999px;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1.5px solid rgba(255, 59, 48, 0.85);
-    transition:
-      transform 0.16s ease,
-      box-shadow 0.16s ease,
-      background-color 0.16s ease,
-      color 0.16s ease;
+  background-color: #ffffff;
+  color: var(--woaw-red);
+  padding: 10px 20px; // 🔥 MÁS GRANDE
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid rgba(255, 59, 48, 0.85);
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    background-color 0.16s ease,
+    color 0.16s ease;
+  font-size: 14px; // 🔥 MÁS GRANDE
+
+  @media (max-width: 809px) {
+    padding: 8px 8px; // 🔥 igual más grande en móvil
     font-size: 12px;
-
-    @media (max-width: 809px) {
-      padding: 7px 12px;
-      font-size: 11px;
-    }
-
-    &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(224, 43, 34, 0.24);
-    }
-
-    &:active {
-      background-color: var(--woaw-red);
-      color: #ffffff;
-      box-shadow: 0 2px 7px rgba(224, 43, 34, 0.3);
-      transform: translateY(0);
-    }
   }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(224, 43, 34, 0.24);
+  }
+
+  &:active {
+    background-color: var(--woaw-red);
+    color: #ffffff;
+    box-shadow: 0 2px 7px rgba(224, 43, 34, 0.3);
+    transform: translateY(0);
+  }
+}
 }
 
 /* ========== MARCAS TOP ========== */
@@ -317,7 +318,7 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 10px;
   flex-wrap: wrap;
 
   @media (max-width: 820px) {
@@ -326,11 +327,11 @@
   }
 
   img {
-    width: 46px;
-    height: 46px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background-color: #ffffff;
-    padding: 6px;
+    padding: 8px;
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.14);
     object-fit: contain;
     transition: transform 0.16s ease, box-shadow 0.16s ease;
@@ -342,8 +343,8 @@
     }
 
     @media (max-width: 820px) {
-      width: 34px;
-      height: 34px;
+      width: 39px;
+      height: 39px;
     }
   }
 }
