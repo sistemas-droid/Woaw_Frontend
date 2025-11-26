@@ -10,6 +10,8 @@ import imageCompression from 'browser-image-compression';
 import { GeneralService } from '../../../services/general.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { forkJoin, of, firstValueFrom } from 'rxjs';
+
 @Component({
   selector: 'app-lotes',
   templateUrl: './lotes.page.html',
@@ -31,6 +33,12 @@ export class LotesPage implements OnInit {
   ranking: number[] = []; // ranking competitivo 1,2,2,3,...
   mostrarAuto: boolean = false;
   loteSelect: any[] = [];
+
+
+  public mostrar_spinner: boolean = false;
+  public tipo_spinner: number = 0;
+  public texto_spinner: string = 'Cargando...';
+  public textoSub_spinner: string = 'Espere un momento';
 
   constructor(
     private registroService: RegistroService,
@@ -79,7 +87,7 @@ export class LotesPage implements OnInit {
         ?? b?.conteoCoches?.total
         ?? 0;
 
-        if (totalB !== totalA) return totalB - totalA;
+      if (totalB !== totalA) return totalB - totalA;
 
       const fechaA = new Date(a?.creadoEn || 0).getTime();
       const fechaB = new Date(b?.creadoEn || 0).getTime();
@@ -138,81 +146,67 @@ export class LotesPage implements OnInit {
   }
 
 
-  getLotes() {
-    this.loteservice.getlotes('all').subscribe({
-      next: async (res) => {
-        this.lotesAll = this.ordenarDesc(res?.lotes || []);
-        if (this.MyRole === 'admin' || this.MyRole === 'lotero') {
 
-          this.loteservice.getlotes('mios').subscribe({
-            next: async (res2) => {
-              this.lotesMine = this.ordenarDesc(res2?.lotes || []);
-              this.loteservice.getResumenVendidos().subscribe({
-                next: (resVendidos) => {
+  async getLotes() {
+    try {
+      this.mostrar_spinner = true;
+      const requests = [];
 
-                  const vendidosMap = new Map(
-                    resVendidos.lotes.map((l: any) => [
-                      l._id,
-                      l.conteo?.totalVendidos ?? 0
-                    ])
-                  );
+      requests.push(this.loteservice.getlotes('all'));
 
-                  this.lotesAll = this.lotesAll.map(lote => ({
-                    ...lote,
-                    vendidos: vendidosMap.get(lote._id) ?? 0
-                  }));
+      if (this.MyRole === 'admin' || this.MyRole === 'lotero') {
+        requests.push(this.loteservice.getlotes('mios'));
+      } else {
+        requests.push(of({ lotes: [] }));
+      }
 
-                  this.lotesMine = this.lotesMine.map(lote => ({
-                    ...lote,
-                    vendidos: vendidosMap.get(lote._id) ?? 0
-                  }));
+      requests.push(this.loteservice.getResumenVendidos());
 
-                  this.applyTab(this.activeTab);
-                }
-              });
-            },
+      const [resAll, resMine, resVendidos] = await firstValueFrom(
+        forkJoin(requests)
+      );
 
-            error: async () => {
-              this.lotesMine = [];
-              this.applyTab('todos');
-            }
-          });
+      this.lotesAll = this.ordenarDesc(resAll?.lotes || []);
 
-        } else {
+      if (this.MyRole === 'admin' || this.MyRole === 'lotero') {
+        this.lotesMine = this.ordenarDesc(resMine?.lotes || []);
+      } else {
+        this.lotesMine = [];
+      }
 
-          this.lotesMine = [];
+      const vendidosMap = new Map(
+        resVendidos.lotes.map((l: any) => [
+          l._id,
+          l.conteo?.totalVendidos ?? 0
+        ])
+      );
 
-          this.loteservice.getResumenVendidos().subscribe({
-            next: (resVendidos) => {
+      this.lotesAll = this.lotesAll.map(lote => ({
+        ...lote,
+        vendidos: vendidosMap.get(lote._id) ?? 0
+      }));
 
-              const vendidosMap = new Map(
-                resVendidos.lotes.map((l: any) => [
-                  l._id,
-                  l.conteo?.totalVendidos ?? 0
-                ])
-              );
+      this.lotesMine = this.lotesMine.map(lote => ({
+        ...lote,
+        vendidos: vendidosMap.get(lote._id) ?? 0
+      }));
 
-              this.lotesAll = this.lotesAll.map(lote => ({
-                ...lote,
-                vendidos: vendidosMap.get(lote._id) ?? 0
-              }));
+      this.applyTab(this.activeTab);
+      this.mostrar_spinner = false;
 
-              this.applyTab('todos');
-            }
-          });
-        }
-      },
-
-      error: async () => {
-        await this.generalService.loadingDismiss();
-        await this.generalService.alert(
-          'Verifica tu red',
-          'Error de red. Intenta más tarde.',
-          'danger'
-        );
-      },
-    });
+    } catch (error) {
+      this.mostrar_spinner = false;
+      await this.generalService.alert(
+        'Verifica tu red',
+        'Error de red. Intenta más tarde.',
+        'danger'
+      );
+    }
   }
+
+
+
+
 
   applyTab(tab: 'todos' | 'mios') {
     this.activeTab = tab;

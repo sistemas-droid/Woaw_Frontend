@@ -1,194 +1,189 @@
 <app-navbar></app-navbar>
 
-<ion-content mode="ios" [fullscreen]="true" class="docs-content-ios">
-  <div class="ion-padding-content">
-    
+<ion-content [fullscreen]="true">
+  <div class="ion-padding">
+
     <!-- Header Section -->
-    <div class="header-section-ios">
-      <h1>Documentación Requerida</h1>
-      <p class="subtitle">Para completar tu solicitud, necesitamos los siguientes documentos</p>
-      
+    <div class="ion-text-center ion-margin-bottom">
+      <ion-text>
+        <h1 class="ion-text-bold">Documentación Requerida</h1>
+      </ion-text>
+      <ion-text color="medium">
+        <p>Para completar tu solicitud, necesitamos los siguientes documentos</p>
+      </ion-text>
+
       <!-- Progress Indicator -->
-      <div class="progress-container-ios">
-        <div class="progress-info">
-          <span class="progress-text">Progreso: {{getUploadedCount()}}/{{documents.length}}</span>
-          <span class="progress-percentage">{{getProgressPercentage()}}%</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" [style.width.%]="getProgressPercentage()"></div>
-        </div>
-      </div>
+      <ion-card class="ion-margin-vertical">
+        <ion-card-content>
+          <div class="ion-text-center ion-margin-bottom">
+            <div class="ion-justify-content-between ion-align-items-center">
+              <ion-text>
+                <p class="ion-text-bold">Progreso: {{getUploadedCount()}}/{{documents.length}}</p>
+              </ion-text>
+              <ion-text color="danger">
+                <p class="ion-text-bold">{{getProgressPercentage()}}%</p>
+              </ion-text>
+            </div>
+          </div>
+          <ion-progress-bar [value]="getProgressPercentage() / 100" color="danger">
+          </ion-progress-bar>
+        </ion-card-content>
+      </ion-card>
     </div>
 
     <!-- Documents Grid -->
-    <div class="documents-grid">
-      
-      <!-- Constancia de Situación Fiscal -->
-      <div class="document-card-ios" [class.uploaded]="documents[0].uploaded">
-        <div class="document-header">
-          <div class="document-icon">
-            <ion-icon name="document-text-outline"></ion-icon>
-          </div>
-          <div class="document-info">
-            <h3>Constancia de Situación Fiscal</h3>
-            <p class="document-status" [class.status-completed]="documents[0].uploaded">
-              {{documents[0].uploaded ? 'Completado' : 'Pendiente'}}
-            </p>
-          </div>
-        </div>
-        <div class="document-actions">
-          <button class="btn-ios btn-upload" (click)="uploadDocument(0)" *ngIf="!documents[0].uploaded">
-            <i class="fas fa-cloud-upload-alt"></i>
-            Subir documento
-          </button>
-          <button class="btn-ios btn-view" (click)="viewDocument(0)" *ngIf="documents[0].uploaded">
-            <i class="fas fa-eye"></i>
-            Ver documento
-          </button>
-        </div>
-      </div>
+    <ion-grid class="ion-margin-bottom">
+      <ion-row>
 
-      <!-- Identificación del Apoderado -->
-      <div class="document-card-ios" [class.uploaded]="documents[1].uploaded">
-        <div class="document-header">
-          <div class="document-icon">
-            <ion-icon name="card-outline"></ion-icon>
-          </div>
-          <div class="document-info">
-            <h3>Identificación del Apoderado</h3>
-            <p class="document-subtitle">INE o Pasaporte vigente</p>
-            <p class="document-status" [class.status-completed]="documents[1].uploaded">
-              {{documents[1].uploaded ? 'Completado' : 'Pendiente'}}
-            </p>
-          </div>
-        </div>
-        <div class="document-actions">
-          <button class="btn-ios btn-upload" (click)="uploadDocument(1)" *ngIf="!documents[1].uploaded">
-            <i class="fas fa-cloud-upload-alt"></i>
-            Subir documento
-          </button>
-          <button class="btn-ios btn-view" (click)="viewDocument(1)" *ngIf="documents[1].uploaded">
-            <i class="fas fa-eye"></i>
-            Ver documento
-          </button>
-        </div>
-      </div>
+        <!-- Constancia de Situación Fiscal -->
+        <ion-col size="12" size-md="3">
+          <ion-card [class.ion-card-uploaded]="documents[0].uploaded" (click)="uploadDocument()"
+            class="ion-card-document">
+            <ion-card-header>
+              <ion-card-title class="ion-align-items-center">
+                <ion-icon name="document" slot="start" class="ion-icon-document"></ion-icon>
+                <ion-text>
+                  <h2 class="ion-text-bold">Constancia de Situación Fiscal</h2>
+                </ion-text>
+              </ion-card-title>
+              <ion-card-subtitle>Constancia</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge [color]="documents[0].uploaded ? 'success' : 'warning'" class="ion-margin-top">
+                {{documents[0].uploaded ? 'Completado' : 'Pendiente'}}
+              </ion-badge>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
 
-      <!-- Estado de Cuenta Lote -->
-      <div class="document-card-ios" [class.uploaded]="documents[2].uploaded">
-        <div class="document-header">
-          <div class="document-icon">
-            <ion-icon name="wallet-outline"></ion-icon>
-          </div>
-          <div class="document-info">
-            <h3>Estado de Cuenta Lote</h3>
-            <p class="document-subtitle">Con CLABE interbancaria</p>
-            <p class="document-status" [class.status-completed]="documents[2].uploaded">
-              {{documents[2].uploaded ? 'Completado' : 'Pendiente'}}
-            </p>
-          </div>
-        </div>
-        <div class="document-actions">
-          <button class="btn-ios btn-upload" (click)="uploadDocument(2)" *ngIf="!documents[2].uploaded">
-            <i class="fas fa-cloud-upload-alt"></i>
-            Subir documento
-          </button>
-          <button class="btn-ios btn-view" (click)="viewDocument(2)" *ngIf="documents[2].uploaded">
-            <i class="fas fa-eye"></i>
-            Ver documento
-          </button>
-        </div>
-      </div>
+        <!-- Identificación del Apoderado -->
+        <ion-col size="12" size-md="3">
+          <ion-card [class.ion-card-uploaded]="documents[1].uploaded" (click)="uploadDocument()"
+            class="ion-card-document">
+            <ion-card-header>
+              <ion-card-title class="ion-align-items-center">
+                <ion-icon name="card" slot="start" class="ion-icon-document"></ion-icon>
+                <ion-text>
+                  <h2 class="ion-text-bold">Identificación del Apoderado</h2>
+                </ion-text>
+              </ion-card-title>
+              <ion-card-subtitle>INE o Pasaporte Vigente</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge [color]="documents[1].uploaded ? 'success' : 'warning'" class="ion-margin-top">
+                {{documents[1].uploaded ? 'Completado' : 'Pendiente'}}
+              </ion-badge>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
 
-      <!-- Acta Constitutiva (Solo Persona Moral) -->
-      <div class="document-card-ios" [class.uploaded]="documents[3].uploaded">
-        <div class="document-header">
-          <div class="document-icon">
-            <ion-icon name="document-attach-outline"></ion-icon>
-          </div>
-          <div class="document-info">
-            <h3>Acta Constitutiva / Asamblea</h3>
-            <p class="document-subtitle">Solo para persona moral</p>
-            <p class="document-status" [class.status-completed]="documents[3].uploaded">
-              {{documents[3].uploaded ? 'Completado' : 'Pendiente'}}
-            </p>
-          </div>
-        </div>
-        <div class="document-actions">
-          <button class="btn-ios btn-upload" (click)="uploadDocument(3)" *ngIf="!documents[3].uploaded">
-            <i class="fas fa-cloud-upload-alt"></i>
-            Subir documento
-          </button>
-          <button class="btn-ios btn-view" (click)="viewDocument(3)" *ngIf="documents[3].uploaded">
-            <i class="fas fa-eye"></i>
-            Ver documento
-          </button>
-        </div>
-      </div>
+        <!-- Estado de Cuenta Lote -->
+        <ion-col size="12" size-md="3">
+          <ion-card [class.ion-card-uploaded]="documents[2].uploaded" (click)="uploadDocument()"
+            class="ion-card-document">
+            <ion-card-header>
+              <ion-card-title class="ion-align-items-center">
+                <ion-icon name="wallet" slot="start" class="ion-icon-document"></ion-icon>
+                <ion-text>
+                  <h2 class="ion-text-bold">Estado de Cuenta Lote</h2>
+                </ion-text>
+              </ion-card-title>
+              <ion-card-subtitle>Con CLABE interbancaria</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge [color]="documents[2].uploaded ? 'success' : 'warning'" class="ion-margin-top">
+                {{documents[2].uploaded ? 'Completado' : 'Pendiente'}}
+              </ion-badge>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
 
-      <!-- Fotos del Lote -->
-      <div class="document-card-ios" [class.uploaded]="documents[4].uploaded">
-        <div class="document-header">
-          <div class="document-icon">
-            <ion-icon name="camera-outline"></ion-icon>
-          </div>
-          <div class="document-info">
-            <h3>Fotos del Lote</h3>
-            <p class="document-subtitle">Interior y exterior que demuestren ubicación clara e inventarios</p>
-            <p class="document-status" [class.status-completed]="documents[4].uploaded">
-              {{documents[4].uploaded ? 'Completado' : 'Pendiente'}}
-            </p>
-          </div>
-        </div>
-        <div class="document-actions">
-          <button class="btn-ios btn-upload" (click)="uploadDocument(4)" *ngIf="!documents[4].uploaded">
-            <i class="fas fa-cloud-upload-alt"></i>
-            Subir fotos
-          </button>
-          <button class="btn-ios btn-view" (click)="viewDocument(4)" *ngIf="documents[4].uploaded">
-            <i class="fas fa-eye"></i>
-            Ver fotos
-          </button>
-        </div>
-      </div>
+        <!-- Acta Constitutiva (Solo Persona Moral) -->
+        <ion-col size="12" size-md="3">
+          <ion-card [class.ion-card-uploaded]="documents[3].uploaded" (click)="uploadDocument()"
+            class="ion-card-document">
+            <ion-card-header>
+              <ion-card-title class="ion-align-items-center">
+                <ion-icon name="document" slot="start" class="ion-icon-document"></ion-icon>
+                <ion-text>
+                  <h2 class="ion-text-bold">Acta Constitutiva / Asamblea</h2>
+                </ion-text>
+              </ion-card-title>
+              <ion-card-subtitle>Solo para persona Moral</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge [color]="documents[3].uploaded ? 'success' : 'warning'" class="ion-margin-top">
+                {{documents[3].uploaded ? 'Completado' : 'Pendiente'}}
+              </ion-badge>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
 
-      <!-- Formatos de Autorización -->
-      <div class="document-card-ios" [class.uploaded]="documents[5].uploaded">
-        <div class="document-header">
-          <div class="document-icon">
-            <ion-icon name="hammer-outline"></ion-icon>
-          </div>
-          <div class="document-info">
-            <h3>Formatos de Autorización</h3>
-            <p class="document-subtitle">HEY COL-008-2 (Personas Físicas) / HEY-COL-009-2 (Personas Morales)</p>
-            <p class="document-status" [class.status-completed]="documents[5].uploaded">
-              {{documents[5].uploaded ? 'Completado' : 'Pendiente'}}
-            </p>
-          </div>
-        </div>
-        <div class="document-actions">
-          <button class="btn-ios btn-upload" (click)="uploadDocument(5)" *ngIf="!documents[5].uploaded">
-            <i class="fas fa-cloud-upload-alt"></i>
-            Subir formatos
-          </button>
-          <button class="btn-ios btn-view" (click)="viewDocument(5)" *ngIf="documents[5].uploaded">
-            <i class="fas fa-eye"></i>
-            Ver formatos
-          </button>
-        </div>
-      </div>
+        <!-- Fotos del Lote -->
+        <ion-col size="12" size-md="3">
+          <ion-card [class.ion-card-uploaded]="documents[4].uploaded" (click)="uploadDocument()"
+            class="ion-card-document">
+            <ion-card-header>
+              <ion-card-title class="ion-align-items-center">
+                <ion-icon name="camera" slot="start" class="ion-icon-document"></ion-icon>
+                <ion-text>
+                  <h2 class="ion-text-bold">Fotos del Lote</h2>
+                </ion-text>
+              </ion-card-title>
+              <ion-card-subtitle>Interior y exterior que demuestren ubicación clara e inventarios</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge [color]="documents[4].uploaded ? 'success' : 'warning'" class="ion-margin-top">
+                {{documents[4].uploaded ? 'Completado' : 'Pendiente'}}
+              </ion-badge>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
 
-    </div>
+        <!-- Formatos de Autorización -->
+        <ion-col size="12" size-md="3">
+          <ion-card [class.ion-card-uploaded]="documents[5].uploaded" (click)="uploadDocument()"
+            class="ion-card-document">
+            <ion-card-header>
+              <ion-card-title class="ion-align-items-center">
+                <ion-icon name="hammer" slot="start" class="ion-icon-document"></ion-icon>
+                <ion-text>
+                  <h2 class="ion-text-bold">Formatos de Autorización</h2>
+                </ion-text>
+              </ion-card-title>
+              <ion-card-subtitle>Personas Físicas - Personas Morales</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge [color]="documents[5].uploaded ? 'success' : 'warning'" class="ion-margin-top">
+                {{documents[5].uploaded ? 'Completado' : 'Pendiente'}}
+              </ion-badge>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
 
     <!-- Nota Informativa -->
-    <div class="info-note-ios">
-      <div class="note-icon">
-        <i class="fas fa-info-circle"></i>
-      </div>
-      <div class="note-content">
-        <p><strong>Nota:</strong> Si el lote está registrado como persona física con actividad sólo se llena la autorización de reportes de crédito personas físicas; si está registrado como persona moral se llenan ambos formatos adjuntos.</p>
-      </div>
-    </div>
+    <ion-card color="light" class="ion-margin-bottom">
+      <ion-card-header>
+        <ion-card-title class="ion-align-items-center">
+          <ion-icon name="information-circle" color="warning" slot="start"></ion-icon>
+          <ion-text>
+            <h2 class="ion-text-bold">Nota Informativa</h2>
+          </ion-text>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-text>
+          <p>
+            <strong>Nota:</strong> Si el Lote está registrado como persona física con actividad sólo se llena la
+            autorización de reportes de crédito personas físicas, si está registrado como persona moral se llenan ambos
+            formatos adjuntos.
+          </p>
+        </ion-text>
+      </ion-card-content>
+    </ion-card>
 
   </div>
 
