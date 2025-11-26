@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-documentos',
@@ -7,6 +9,9 @@ import { Component, OnInit } from '@angular/core';
   standalone: false
 })
 export class DocumentosPage implements OnInit {
+
+  nombreLote: string = 'NOSE';
+  idLote: number = 2345;
 
   documents = [
     { name: 'Constancia de Situación Fiscal', uploaded: false },
@@ -17,26 +22,17 @@ export class DocumentosPage implements OnInit {
     { name: 'Formatos de Autorización', uploaded: false }
   ];
 
-  constructor() { }
+  constructor(private navCtrl: NavController, private router: Router) { }
 
   ngOnInit() {
   }
 
-  uploadDocument(index: number) {
-    // Simular subida de documento
-    console.log('Subiendo documento:', this.documents[index].name);
-    
-    // En una implementación real, aquí iría la lógica para seleccionar y subir archivos
-    // Por ahora simulamos que se subió correctamente
-    this.documents[index].uploaded = true;
-    
-    // Mostrar mensaje de éxito
-    this.showUploadSuccess(this.documents[index].name);
+  uploadDocument() {
+    this.router.navigate(['/lote/upload-document/',this.nombreLote,'/'+this.idLote]);
   }
 
   viewDocument(index: number) {
     console.log('Viendo documento:', this.documents[index].name);
-    // Lógica para visualizar el documento subido
   }
 
   getUploadedCount(): number {

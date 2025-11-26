@@ -310,7 +310,7 @@ const routes: Routes = [
         loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then(m => m.WelcomeLotePageModule)
       },
       {
-        path: 'lote/upload-document',
+        path: 'lote/upload-document/:nombreLote/:idLote',
         loadChildren: () => import('./pages/lote/upload-document/upload-document.module').then(m => m.UploadDocumentPageModule)
       },
       {

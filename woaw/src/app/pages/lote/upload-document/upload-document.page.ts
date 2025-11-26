@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-upload-document',
@@ -8,9 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UploadDocumentPage implements OnInit {
 
-  constructor() { }
+  documentIndex: number = 0;
+  documentName: string = '';
+
+  constructor(private navCtrl: NavController, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.documentIndex = params['documentIndex'] || 0;
+      this.documentName = params['documentName'] || '';
+    });
+    console.log('Cargando página de subida para:', this.documentName, 'Índice:', this.documentIndex);
   }
 
 }

@@ -114,7 +114,7 @@ export class HomePage implements OnInit, OnDestroy {
       if (!this.isTransitioning) {
         this.realizarTransicion();
       }
-    }, 5000); // --- Cambiado a 5000 ms para pruebas más rápidas
+    }, 3000); // --- Cambiado a 5000 ms para pruebas más rápidas
   }
 
   private async preloadAllImages(): Promise<void> {
