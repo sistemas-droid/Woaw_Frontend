@@ -1,0 +1,245 @@
+.welcome-section {
+    padding: 40px 20px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+    animation: fadeInUp 0.6s ease both;
+    min-height: calc(100vh - 220px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 0;
+}
+
+.titulo-welcome {
+    font-size: 60px;
+    font-weight: 900;
+    margin: 10px auto 4px;
+    text-transform: uppercase;
+    letter-spacing: -1.5px;
+    background: linear-gradient(135deg, #000000 0%, #000000 10%, #ff0000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.chip-bienvenida {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    margin-top: 4px;
+    margin-bottom: 6px;
+    border-radius: 999px;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #b91c1c;
+}
+
+.chip-bienvenida span {
+    font-weight: 800;
+}
+
+.subtitulo-welcome {
+    color: #444;
+    font-size: 20px;
+    margin-top: 4px;
+    margin-bottom: 20px;
+}
+
+/* ===== CARD DE BOTONES ===== */
+.acciones-wrapper {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.acciones-card {
+    width: 100%;
+    max-width: 900px;
+    border-radius: 26px;
+
+    /* contenedor “transparente” para que resalte la línea */
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    position: relative;
+    overflow: visible;
+}
+
+/* glow / línea inferior */
+.acciones-card::after {
+    content: "";
+    position: absolute;
+    inset-inline: 12%;
+    bottom: 0;
+    height: 4px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #000, #ff1b1b, #000);
+    opacity: 0.95;
+}
+
+.acciones-card ion-card-content {
+    padding: 0 0 18px;
+}
+
+/* ===== BOTONES EN FILA ===== */
+.acciones-principales {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 14px;
+    flex-wrap: nowrap;
+}
+
+.acciones-principales ion-button {
+    flex: 1;
+    min-width: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 800;
+    --border-radius: 999px;
+    height: 56px;
+    transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+
+.acciones-principales ion-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.acciones-principales ion-button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* ===== BOTONES ===== */
+
+/* Botón negro con borde rojo */
+.btn-docs {
+    --background: #000000;
+    --background-hover: #151515;
+    --background-activated: #151515;
+    --border-width: 2px;
+    --border-color: #ff1b1b;
+    --box-shadow: none;
+    border: none;
+    color: #ffffff;
+    font-size: 17px;
+}
+
+/* Botón rojo con borde negro */
+.btn-auto {
+    --background: #ff1b1b;
+    --background-hover: #c80000;
+    --background-activated: #c80000;
+    --border-width: 2px;
+    --border-color: #000000;
+    --box-shadow: none;
+    border: none;
+    color: #ffffff;
+    font-size: 17px;
+}
+
+/* Botón “Leer documentación del lote” */
+.btn-omitir {
+    --background: #ffffff;
+    --background-hover: #f9fafb;
+    --background-activated: #f3f4f6;
+    --border-color: #9ca3af;
+    --color: #374151;
+    --border-radius: 999px;
+    --box-shadow: none;
+    border: none;
+    font-weight: 700;
+    font-size: 17px;
+}
+
+/* Iconos un poco más grandes */
+.btn-docs ion-icon,
+.btn-auto ion-icon,
+.btn-omitir ion-icon {
+    font-size: 20px;
+}
+
+/* TEXTO DE AYUDA + LINK OMITIR */
+.texto-ayuda {
+    margin-top: 28px;
+    font-size: 15px;
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+/* “Omitir por ahora” más vistoso pero discreto */
+.link-omitir {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    padding: 6px 18px;
+    border-radius: 999px;
+    border: 1px dashed #9ca3af;
+    background: #f9fafb;
+    font-size: 14px;
+    font-weight: 600;
+    color: #b91c1c;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background 0.16s ease,
+        transform 0.1s ease,
+        box-shadow 0.16s ease,
+        border-color 0.16s ease;
+}
+
+.link-omitir:hover {
+    background: #fff1f2;
+    border-color: #fb7185;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+}
+
+.link-omitir:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 780px) {
+    .acciones-principales {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .acciones-card ion-card-content {
+        padding-inline: 0;
+    }
+
+    .titulo-welcome {
+        font-size: 40px;
+    }
+
+    .welcome-section {
+        min-height: calc(100vh - 180px);
+        padding-top: 20px;
+        padding-bottom: 30px;
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -7,14 +7,18 @@ import { IonicModule } from '@ionic/angular';
 import { WelcomeLotePageRoutingModule } from './welcome-lote-routing.module';
 
 import { WelcomeLotePage } from './welcome-lote.page';
+import { FooterComponent } from 'src/app/components/footer/footer.component';
+import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    WelcomeLotePageRoutingModule
+    WelcomeLotePageRoutingModule,
+    FooterComponent,
+    NavbarComponent,
   ],
   declarations: [WelcomeLotePage]
 })
-export class WelcomeLotePageModule {}
+export class WelcomeLotePageModule { }
