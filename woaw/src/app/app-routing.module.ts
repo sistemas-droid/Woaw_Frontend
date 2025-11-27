@@ -1,10 +1,9 @@
-
 import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "./guards/auth.guard";
 import { NotAuthGuard } from "./guards/notauth.guard";
 import { AuthPhoneGuard } from "./guards/auth-phone.guard";
-
+/* import { asesoresGuard } from './guards/asesores-guard'; */
 const routes: Routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
   {
@@ -14,6 +13,15 @@ const routes: Routes = [
     canActivate: [NotAuthGuard],
     data: { title: "Iniciar sesión | woaw" },
   },
+  /* {
+  path: "asesores",
+  loadChildren: () =>
+    import("./pages/asesores/asesores.module").then(
+      (m) => m.AsesoresPageModule
+    ),
+  canActivate: [asesoresGuard],
+  data: { title: "Asesores | woaw" },
+}, */
   {
     path: "autenticacion-user",
     loadChildren: () =>
@@ -107,9 +115,8 @@ const routes: Routes = [
         path: "new-car",
         loadChildren: () =>
           import("./pages/new-car/new-car.module").then(
-            (m) => m.NewCarPageModule,
+            (m) => m.NewCarPageModule
           ),
-        canActivate: [AuthPhoneGuard],
         data: { title: "Publicar nuevo vehículo | woaw" }
       },
       {
@@ -299,6 +306,18 @@ const routes: Routes = [
         data: { title: "lotes | woaw" },
       },
       {
+        path: 'lote/welcome-lote',
+        loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then(m => m.WelcomeLotePageModule)
+      },
+      {
+        path: 'lote/upload-document/:nombreLote/:idLote',
+        loadChildren: () => import('./pages/lote/upload-document/upload-document.module').then(m => m.UploadDocumentPageModule)
+      },
+      {
+        path: 'lote/documentos',
+        loadChildren: () => import('./pages/lote/documentos/documentos.module').then(m => m.DocumentosPageModule)
+      },
+      {
         path: 'lote/welcome-lote/:nombre/:id',
         loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then((m) => m.WelcomeLotePageModule)
       },
@@ -374,6 +393,11 @@ const routes: Routes = [
       },
       // ---------------------
       // ---------------------
+
+      {
+        path: 'asesores',
+        loadChildren: () => import('./pages/asesores/asesores.module').then(m => m.AsesoresPageModule)
+      },
     ],
   },
   {

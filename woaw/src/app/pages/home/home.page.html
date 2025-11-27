@@ -2,65 +2,84 @@
 
 <ion-content [fullscreen]="true">
 
+
   <div class="goautos-bg">
+    <div class="overlay-container">
+      <!-- Overlay principal -->
+      <div class="overlay" [class.loaded]="overlayLoaded" [ngStyle]="overlayLoaded ? {
+         'background-image': 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff00 100%), url(' + imgenPrincipal + ')',
+         'background-size': 'cover',
+         'opacity': '1',
+         'background-position': '50% 85%',
+         'background-repeat': 'no-repeat'
+       } : {}">
+      </div>
 
-    <div class="overlay" [class.loaded]="overlayLoaded" [ngStyle]="overlayLoaded ? {
-      'background-image':
-      'linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff00 100%), url(' + imgenPrincipal + ')',
-      'background-size': 'cover',
-      'opacity': '1',
-      'background-position': '50% 95%',
-      'background-repeat': 'no-repeat'
-    } : {}">
+      <!-- Overlay siguiente -->
+      <div class="overlay next-overlay" *ngIf="siguienteImagen"
+        [style.background-image]="'linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff00 100%), url(' + siguienteImagen + ')'">
+      </div>
+    </div>
 
+    <!-- CONTENIDO FUERA DEL OVERLAY-CONTAINER -->
+    <div class="contenido-principal">
+      <div class="bloque-contenido">
+        <!-- <img src="/assets/icon/logo4.png" alt="Logo WOAW" class="logo-goautos2" loading="lazy" /> -->
+        <h1 class="titulo typing">{{ textoAnimado }}</h1>
 
-      <div class="contenido-principal">
-        <div class="bloque-contenido">
+        <div class="buscador-container">
+          <ion-searchbar [(ngModel)]="terminoBusqueda" (ionInput)="onInputChange($event)"
+            (keyup.enter)="irABusqueda(terminoBusqueda)" placeholder="Escribe lo que buscas ..." animated="true"
+            class="buscador">
+          </ion-searchbar>
+        </div>
 
-          <img src="/assets/icon/logo4.png" alt="Logo WOAW" class="logo-goautos2" loading="lazy" />
-
-          <h1 class="titulo typing">{{ textoAnimado }}</h1>
-
-          <div class="buscador-container">
-            <ion-searchbar [(ngModel)]="terminoBusqueda" (ionInput)="onInputChange($event)"
-              (keyup.enter)="irABusqueda(terminoBusqueda)" placeholder="Escribe lo que buscas ..." animated="true"
-              class="buscador">
-            </ion-searchbar>
-          </div>
-
-          <div class="tipos-vehiculos">
-            <div class="lista-tipos">
-              <div class="tipo-card" *ngFor="let tipo of TiposVeiculo" (click)="buscarPorTipo(tipo)">
-                {{ tipo }}
-              </div>
+        <div class="tipos-vehiculos">
+          <div class="lista-tipos">
+            <div class="tipo-card" *ngFor="let tipo of TiposVeiculo" (click)="buscarPorTipo(tipo)">
+              {{ tipo }}
             </div>
           </div>
-
-          <div class="top-marcas">
-            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/nissan-1752250741191.png"
-              (click)="irABusqueda('nissan')" alt="Nissan" loading="lazy" />
-            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/chevrolet-1752250726132.png"
-              (click)="irABusqueda('Chevrolet')" alt="Chevrolet" loading="lazy" />
-            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/honda-1752250731294.png"
-              (click)="irABusqueda('Honda')" alt="Honda" loading="lazy" />
-            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/volkswagen-1752250719366.png"
-              (click)="irABusqueda('Volkswagen')" alt="Volkswagen" loading="lazy" />
-            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/kia-1752250740506.png"
-              (click)="irABusqueda('Kia')" alt="Kia" loading="lazy" />
-            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/hyundai-1752250721333.png"
-              (click)="irABusqueda('Hyundai')" alt="Hyundai" loading="lazy" />
-            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/bmw-1752250746130.png"
-              (click)="irABusqueda('bmw')" alt="Hyundai" loading="lazy" />
-          </div>
-
         </div>
+
+        <div class="top-marcas">
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/nissan-1752250741191.png"
+            (click)="irABusqueda('nissan')" alt="Nissan" loading="lazy" />
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/chevrolet-1752250726132.png"
+            (click)="irABusqueda('Chevrolet')" alt="Chevrolet" loading="lazy" />
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/honda-1752250731294.png"
+            (click)="irABusqueda('Honda')" alt="Honda" loading="lazy" />
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/volkswagen-1752250719366.png"
+            (click)="irABusqueda('Volkswagen')" alt="Volkswagen" loading="lazy" />
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/kia-1752250740506.png"
+            (click)="irABusqueda('Kia')" alt="Kia" loading="lazy" />
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/hyundai-1752250721333.png"
+            (click)="irABusqueda('Hyundai')" alt="Hyundai" loading="lazy" />
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/bmw-1752250746130.png"
+            (click)="irABusqueda('bmw')" alt="BMW" loading="lazy" />
+        </div>
+      </div>
+
+      <div class="indicadores-container" *ngIf="!esDispositivoMovil">
+        <div class="indicadores">
+          <div *ngFor="let imagen of imagenesPrincipales; let i = index" class="indicador-linea"
+            [class.active]="i === currentImageIndex">
+          </div>
+        </div>
+      </div>
+
+
+      <div>
+
       </div>
 
     </div>
   </div>
 
+
   <app-principal></app-principal>
   <br><br>
+
   <section class="video-wrap">
     <video #videoEl class="video" [src]="videoSrc" autoplay muted loop playsinline preload="auto"
       poster="assets/img/poster.jpg">

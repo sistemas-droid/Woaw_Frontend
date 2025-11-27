@@ -1,3 +1,22 @@
-<p>
-  splash works!
-</p>
+<div class="splash-container" *ngIf="showSplash">
+  <div class="splash-content">
+    <!-- Letras WOAW ANA con animaciones diferentes -->
+    <div class="letters-container">
+      <span class="letter letter-w" [class.animate]="animate">W</span>
+      <span class="letter letter-o" [class.animate]="animate">O</span>
+      <span class="letter letter-a" [class.animate]="animate">A</span>
+      <span class="letter letter-w2" [class.animate]="animate">W</span>
+    </div>
+
+    <!-- Mensaje de bienvenida -->
+    <div class="welcome-message" [class.show]="showWelcome">
+      <h2>¡Bienvenida a tu experiencia única!</h2>
+    </div>
+
+    <!-- Efectos decorativos -->
+    <div class="splash-effects">
+      <div class="particle" *ngFor="let particle of particles" [style.left.px]="particle.x" [style.top.px]="particle.y"
+        [style.animation-delay.ms]="particle.delay"></div>
+    </div>
+  </div>
+</div>

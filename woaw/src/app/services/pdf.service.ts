@@ -2,6 +2,12 @@ import { Injectable } from '@angular/core';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
+import { Capacitor } from '@capacitor/core';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Browser } from '@capacitor/browser';
+
+import { Share } from '@capacitor/share';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -339,20 +345,60 @@ export class PdfService {
     async descargarPDF(quote: any, datosCoche: any, coberturas: any[]): Promise<void> {
         try {
             const pdfBlob = await this.crearPDF(quote, datosCoche, coberturas);
-            const pdfUrl = URL.createObjectURL(pdfBlob);
+            const isNative = Capacitor.isNativePlatform();
 
-            // Crear enlace de descarga
-            const link = document.createElement('a');
-            link.href = pdfUrl;
-            link.download = `Cotizacion_Woaw_${quote.vehicle?.brand?.name || 'Auto'}_${new Date().getTime()}.pdf`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            if (isNative) {
+                // Convertir a base64
+                const base64Data = await new Promise<string>((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        const base64 = reader.result as string;
+                        resolve(base64.split(',')[1]);
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(pdfBlob);
+                });
 
-            // Limpiar la URL
-            setTimeout(() => {
-                URL.revokeObjectURL(pdfUrl);
-            }, 1000);
+                const fileName = `Cotizacion_Woaw_${quote.vehicle?.brand?.name || 'Auto'}_${new Date().getTime()}.pdf`;
+
+                // Guardar el archivo
+                const result = await Filesystem.writeFile({
+                    path: fileName,
+                    data: base64Data,
+                    directory: Directory.Documents,
+                    recursive: true
+                });
+
+                // Intentar abrir con Share (más confiable que Browser)
+                try {
+                    await Share.share({
+                        title: 'Cotización Woaw Seguros',
+                        text: 'Aquí tienes tu cotización de seguro',
+                        url: result.uri,
+                        dialogTitle: 'Abrir o compartir cotización PDF'
+                    });
+                } catch (shareError) {
+                    console.log('Share no disponible, mostrando mensaje:', shareError);
+                    // Fallback: solo mostrar mensaje
+                    if (typeof alert !== 'undefined') {
+                        alert('📄 PDF guardado exitosamente\n\nEncuéntralo en tu carpeta de Documentos');
+                    }
+                }
+
+            } else {
+                // Para navegador web
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+                const link = document.createElement('a');
+                link.href = pdfUrl;
+                link.download = `Cotizacion_Woaw_${quote.vehicle?.brand?.name || 'Auto'}_${new Date().getTime()}.pdf`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                setTimeout(() => {
+                    URL.revokeObjectURL(pdfUrl);
+                }, 1000);
+            }
 
         } catch (error) {
             console.error('Error al descargar PDF:', error);
@@ -360,36 +406,37 @@ export class PdfService {
         }
     }
 
+
     // NUEVO: Función para formatear fechas de manera formal con meses abreviados
     private formatFechaFormal(fecha: Date): string {
         const meses = [
             'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
             'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
         ];
-        
+
         const dia = fecha.getDate();
         const mes = meses[fecha.getMonth()];
         const anio = fecha.getFullYear();
-        
+
         return `${dia} ${mes} ${anio}`;
     }
 
     // NUEVO: Función para formatear fecha de nacimiento
     private formatFechaNacimiento(nacimiento: any): string {
         if (!nacimiento) return 'No especificado';
-        
+
         const meses = [
             'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
             'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
         ];
-        
+
         // Si ya es un objeto con día, mes, año
         if (nacimiento.dia && nacimiento.mes && nacimiento.anio) {
             const mesIndex = parseInt(nacimiento.mes) - 1;
             const mesAbrev = meses[mesIndex] || nacimiento.mes;
             return `${nacimiento.dia} ${mesAbrev} ${nacimiento.anio}`;
         }
-        
+
         // Si es una fecha string o Date
         try {
             const fecha = new Date(nacimiento);
@@ -399,7 +446,7 @@ export class PdfService {
         } catch (error) {
             console.error('Error formateando fecha de nacimiento:', error);
         }
-        
+
         return 'No especificado';
     }
 

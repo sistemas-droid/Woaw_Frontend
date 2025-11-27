@@ -39,8 +39,8 @@ registerLocaleData(localeEsMX);
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     // 👇 registra el interceptor
-    { provide: HTTP_INTERCEPTORS, useClass: AuthExpiryInterceptor, multi: true },
-    { provide: LOCALE_ID, useValue: 'es-MX' }
+    // { provide: HTTP_INTERCEPTORS, useClass: AuthExpiryInterceptor, multi: true },
+    // { provide: LOCALE_ID, useValue: 'es-MX' }
   ],
   bootstrap: [AppComponent],
 })

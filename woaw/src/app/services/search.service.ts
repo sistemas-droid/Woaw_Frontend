@@ -222,13 +222,6 @@ export class SearchService {
       tipo: 'servicio',
       icono: 'heart'
     },
-    {
-      titulo: 'Mensajes',
-      descripcion: 'Mis conversaciones',
-      ruta: '/mensajes',
-      tipo: 'servicio',
-      icono: 'chatbubbles'
-    }
   ];
 
   buscarServicios(termino: string): SearchResult[] {
