@@ -46,15 +46,13 @@
     <div id="top-seccion-arrendamiento-marcas" class="contenedor-arrendamiento">
       <p class="titulo_seccion">{{ tipoSeleccionado }}</p>
 
-      <div class="encabezado-arrendamiento">
+      <div class="encabezado-arrendamiento"> 
         <!-- Botón regresar -->
-        <button class="btn-regresar" *ngIf="!mostrarModelos" (click)="regresarAntes()">
+        <button class="btn-regresar" *ngIf="!mostrarModelos && tipoDispocitivo !== 'telefono'" (click)="regresarAntes()">
           <ion-icon name="arrow-back-outline"></ion-icon>
-          Regresar
         </button>
-        <button class="btn-regresar" *ngIf="mostrarModelos" (click)="regresar()">
+        <button class="btn-regresar" *ngIf="mostrarModelos && tipoDispocitivo !== 'telefono'" (click)="regresar()">
           <ion-icon name="arrow-back-outline"></ion-icon>
-          Regresar
         </button>
 
         <img *ngIf="mostrarModelos" class="img_logo" [src]="marcaSeleccionada?.imageUrl"
@@ -120,6 +118,7 @@
           </div> -->
 
           <!-- FORMULARIO NUEVO  -->
+
           <form [formGroup]="formArrendamiento" (ngSubmit)="enviarSolicitud('Email')">
             <ion-grid>
               <ion-row>
@@ -129,14 +128,22 @@
                   <div class="wo-control">
                     <ion-input formControlName="nombre" placeholder="Ej. Juan Perez"></ion-input>
                   </div>
+                  <ion-note *ngIf="formArrendamiento.get('nombre')?.touched && formArrendamiento.get('nombre')?.errors"
+                    color="danger">
+                    <span *ngIf="formArrendamiento.get('nombre')?.errors?.['required']">El nombre es requerido</span>
+                    <span *ngIf="formArrendamiento.get('nombre')?.errors?.['minlength']">Mínimo 3 caracteres</span>
+                  </ion-note>
                 </ion-col>
 
                 <ion-col size="12" size-md="4">
                   <label class="wo-label">Tipo de persona: <strong>*</strong></label>
                   <div class="wo-control">
-                    <ion-select formControlName="tipoPersona" interface="popover" placeholder="Selecciona">
-                      <ion-select-option value="Persona Física Actividad Empresarial">Persona Física Actividad
-                        Empresarial</ion-select-option>
+                    <!-- CAMBIO: agregué class y mode, cambié el interface -->
+                    <ion-select class="wo-select" formControlName="tipoPersona" mode="ios" interface="alert"
+                      placeholder="Selecciona">
+                      <ion-select-option value="Persona Física Actividad Empresarial">
+                        Persona Física Actividad Empresarial
+                      </ion-select-option>
                       <ion-select-option value="Moral">Persona Moral</ion-select-option>
                     </ion-select>
                   </div>
@@ -166,7 +173,9 @@
                 <ion-col size="12" size-md="4">
                   <label class="wo-label">Plazo: <strong>*</strong></label>
                   <div class="wo-control">
-                    <ion-select formControlName="plazo" interface="popover" placeholder="Selecciona plazo">
+                    <!-- CAMBIO: mismo rollo, nuevo interface y clase -->
+                    <ion-select class="wo-select" formControlName="plazo" mode="ios" interface="alert"
+                      placeholder="Selecciona plazo">
                       <ion-select-option value="12">12 meses</ion-select-option>
                       <ion-select-option value="24">24 meses</ion-select-option>
                       <ion-select-option value="36">36 meses</ion-select-option>
@@ -178,8 +187,9 @@
 
               <ion-col size="12" size-md="6">
                 <ion-label class="wo-label">Modelos: <strong>*</strong></ion-label>
-                <ion-select placeholder="Selecciona modelos" multiple="true" interface="popover"
-                  [value]="modelosSeleccionados" (ionChange)="onModelosChange($event)">
+                <!-- CAMBIO: interface="alert" + clase + mode ios -->
+                <ion-select class="wo-select" placeholder="Selecciona modelos" multiple="true" interface="alert"
+                  mode="ios" [value]="modelosSeleccionados" (ionChange)="onModelosChange($event)">
                   <ion-select-option *ngFor="let modelo of modelos" [value]="modelo">
                     {{ modelo.modelo }}
                   </ion-select-option>
@@ -209,8 +219,9 @@
                             <!-- Select versiones -->
                             <ion-col size="8">
                               <div class="wo-control wo-compact">
-                                <ion-select [name]="'version-' + i" multiple="true" interface="popover"
-                                  placeholder="Selecciona versión"
+                                <!-- CAMBIO: interface="alert" + clase + mode -->
+                                <ion-select class="wo-select" [name]="'version-' + i" multiple="true" interface="alert"
+                                  mode="ios" placeholder="Selecciona versión"
                                   [(ngModel)]="modelosConVersiones[i].versionSeleccionada"
                                   [ngModelOptions]="{ standalone: true }">
                                   <ion-select-option *ngFor="let version of item.versiones" [value]="version">
@@ -227,7 +238,7 @@
                 </ion-row>
               </ng-container>
 
-              <ion-row class="ion-justify-content-center" style="gap: 12px;">
+              <ion-row *ngIf="tipoDispocitivo !== 'telefono'" class="ion-justify-content-center" style="gap: 12px;">
                 <!-- Botón rojo -->
                 <button type="submit" class="button-native custom-btn danger">
                   <ion-icon name="mail-open-outline"></ion-icon>
@@ -240,12 +251,13 @@
                   WhatsApp
                 </button>
               </ion-row>
-              
             </ion-grid>
           </form>
-         <!-- JUSTO DEBAJO DEL </form> -->
- 
- 
+
+
+          <!-- JUSTO DEBAJO DEL </form> -->
+
+
         </div>
       </ng-container>
     </div>
@@ -334,3 +346,31 @@
 
   <app-footer></app-footer>
 </ion-content>
+
+
+
+<ion-footer class="safe-footer footer_css_seguros" *ngIf="tipoDispocitivo === 'telefono'">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" *ngIf="!mostrarModelos"  (click)="regresarAntes()">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+        Atrás
+      </ion-button>
+      <ion-button fill="clear" *ngIf="mostrarModelos"  (click)="regresar()">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+        Atrás
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button color="danger" type="button" (click)="enviarSolicitud('Email')">
+        Email
+        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+      </ion-button>
+      <ion-button color="success" type="button" (click)="enviarSolicitud('Wh')">
+        WhatsApp
+        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

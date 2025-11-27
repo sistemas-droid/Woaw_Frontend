@@ -554,3 +554,37 @@ ion-popover.select-popover[class*="pop-"] {
     letter-spacing: 0.5px;
   }
 }
+
+
+
+
+
+
+
+/* SOLO el popup del ion-select (interface="alert") */
+ion-alert {
+  /* Cambiamos el "tema" interno del alert a rojo */
+  --ion-color-primary: #dc2626;
+  --ion-color-primary-rgb: 220, 38, 38;
+
+  /* Por si el botón usa esta var */
+  --button-color: #dc2626;
+  --button-background-activated: rgba(220, 38, 38, 0.12);
+}
+
+/* Texto de los botones (Cancel / OK) */
+ion-alert::part(button) {
+  color: #dc2626;
+}
+
+/* Checks azules → rojos (checkbox de múltiples) */
+ion-alert::part(checkbox) {
+  border-color: #dc2626;
+  background: #dc2626;
+}
+
+/* Radios (por si en algún select usas single) */
+ion-alert::part(radio) {
+  border-color: #dc2626;
+  color: #dc2626;
+}
