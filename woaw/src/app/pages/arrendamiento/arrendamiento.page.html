@@ -46,13 +46,15 @@
     <div id="top-seccion-arrendamiento-marcas" class="contenedor-arrendamiento">
       <p class="titulo_seccion">{{ tipoSeleccionado }}</p>
 
-      <div class="encabezado-arrendamiento"> 
+      <div class="encabezado-arrendamiento">
         <!-- Botón regresar -->
-        <button class="btn-regresar" *ngIf="!mostrarModelos && tipoDispocitivo !== 'telefono'" (click)="regresarAntes()">
+        <button class="btn-regresar" *ngIf="!mostrarModelos" (click)="regresarAntes()">
           <ion-icon name="arrow-back-outline"></ion-icon>
+          Regresar
         </button>
-        <button class="btn-regresar" *ngIf="mostrarModelos && tipoDispocitivo !== 'telefono'" (click)="regresar()">
+        <button class="btn-regresar" *ngIf="mostrarModelos" (click)="regresar()">
           <ion-icon name="arrow-back-outline"></ion-icon>
+          Regresar
         </button>
 
         <img *ngIf="mostrarModelos" class="img_logo" [src]="marcaSeleccionada?.imageUrl"
@@ -128,11 +130,6 @@
                   <div class="wo-control">
                     <ion-input formControlName="nombre" placeholder="Ej. Juan Perez"></ion-input>
                   </div>
-                  <ion-note *ngIf="formArrendamiento.get('nombre')?.touched && formArrendamiento.get('nombre')?.errors"
-                    color="danger">
-                    <span *ngIf="formArrendamiento.get('nombre')?.errors?.['required']">El nombre es requerido</span>
-                    <span *ngIf="formArrendamiento.get('nombre')?.errors?.['minlength']">Mínimo 3 caracteres</span>
-                  </ion-note>
                 </ion-col>
 
                 <ion-col size="12" size-md="4">
@@ -238,7 +235,7 @@
                 </ion-row>
               </ng-container>
 
-              <ion-row *ngIf="tipoDispocitivo !== 'telefono'" class="ion-justify-content-center" style="gap: 12px;">
+              <ion-row class="ion-justify-content-center" style="gap: 12px;">
                 <!-- Botón rojo -->
                 <button type="submit" class="button-native custom-btn danger">
                   <ion-icon name="mail-open-outline"></ion-icon>
@@ -346,31 +343,3 @@
 
   <app-footer></app-footer>
 </ion-content>
-
-
-
-<ion-footer class="safe-footer footer_css_seguros" *ngIf="tipoDispocitivo === 'telefono'">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button fill="clear" *ngIf="!mostrarModelos"  (click)="regresarAntes()">
-        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
-        Atrás
-      </ion-button>
-      <ion-button fill="clear" *ngIf="mostrarModelos"  (click)="regresar()">
-        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
-        Atrás
-      </ion-button>
-    </ion-buttons>
-
-    <ion-buttons slot="end">
-      <ion-button color="danger" type="button" (click)="enviarSolicitud('Email')">
-        Email
-        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
-      </ion-button>
-      <ion-button color="success" type="button" (click)="enviarSolicitud('Wh')">
-        WhatsApp
-        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer>
