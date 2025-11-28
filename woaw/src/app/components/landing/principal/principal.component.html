@@ -96,32 +96,40 @@
   </div>
 </section>
 
-
+<br>
 <div class="band-cards">
+
+  <!-- RENTA DESTACADA -->
   <article class="mini-card mini-arrendamiento">
-    <!-- (click)="redirecion('/renta-coches')" -->
-    <div class="proximamente-badge">Próximamente</div>
-    <img [src]="'/assets/home/F5.png'" alt="Auto en arrendamiento" class="bg-card-min">
-    <h4>Renta</h4>
-    <p>Muévete cuando quieras.</p>
-    <!-- <button class="mini-btn">Cotizar ahora</button> -->
+    <!-- <div class="mini-tag">Nuevo</div> -->
+    <img [src]="'/assets/home/F5.png'" alt="Auto en renta" class="bg-card-min">
+    <h4>Renta de autos</h4>
+    <p>Muévete cuando quieras ...</p>
+
+    <div class="mini-foot">
+      <span class="mini-foot__label">Próximamente</span>
+      <!-- <button class="mini-btn">Quiero rentar</button> -->
+    </div>
   </article>
 
+  <!-- CAMIONES DESTACADOS -->
   <article class="mini-card mini-seguros" (click)="redirecion('/camiones/todos')">
-    <img [src]="img3" alt="Auto nuevo" class="bg-card-min">
-    <h4>Camiones</h4>
-    <p></p>
-    <button class="mini-btn">Carga y flotillas</button>
+    <!-- <div class="mini-tag mini-tag--empresas">Empresas & flotillas</div> -->
+    <img [src]="img3" alt="Camiones de carga" class="bg-card-min">
+    <h4>Camiones & carga</h4>
+    <p>Soluciones de carga para tu negocio.</p>
+
+    <div class="mini-foot">
+      <button class="mini-btn">Ver camiones</button>
+    </div>
   </article>
+
 </div>
+
 
 <section class="anuncio-app" *ngIf="!isNative">
   <div class="contenido">
     <h2 class="titulo">¡Ya disponible! <br> <span>App Móvil</span></h2>
-    <p class="descripcion">
-      Ya puedes instalarla desde la
-      <span class="resaltado">Play Store</span>.
-    </p>
 
     <div class="row-cta">
 

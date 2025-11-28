@@ -601,78 +601,130 @@
   position: relative;
   z-index: 998;
   width: 100%;
-  max-width: 1200px;
-  margin: 3rem auto 0px;
-  padding: 0 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 5px;
+  max-width: 1800px;
+  margin: 2.5rem auto 0;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); // SIEMPRE 2 COLUMNAS
+  gap: 18px;
 
+  // en pantallas más chicas solo ajustamos padding y gap,
+  // PERO NO cambiamos a 1 columna
   @media (max-width: 980px) {
-    margin: 3rem auto 0px;
-    padding: 0 7px;
+    margin-top: 1.5rem;
+    padding: 0 10px;
+    gap: 12px;
+  }
+
+  @media (max-width: 720px) {
+    padding: 0 8px;
+    gap: 8px;
   }
 
   .mini-card {
     position: relative;
-    width: 380px;
-    height: 150px;
     cursor: pointer;
-    color: #000000;
-    border-radius: 16px;
-    padding: 18px 18px 16px;
-    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    border-radius: 20px;
+    padding: 18px 14px 14px;
     overflow: hidden;
+    isolation: isolate;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+
+    @media (max-width: 980px) {
+      border-radius: 14px;
+      padding: 14px 10px 10px;
+    }
+
+    @media (max-width: 720px) {
+      border-radius: 12px;
+      padding: 10px 8px 8px;
+    }
 
     @media (min-width: 980px) {
-
       &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.28);
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+        border-color: rgba(255, 0, 0, 0.35);
+      }
+
+      &:hover .bg-card-min {
+        opacity: 0.25;
+        transform: scale(1.05) translateY(4px);
       }
     }
 
-    @media (max-width: 980px) {
-      height: auto;
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(circle at top left,
+          rgba(255, 255, 255, 0.22) 0,
+          transparent 55%);
+      mix-blend-mode: screen;
+      opacity: 0.8;
+    }
+
+    .mini-tag {
+      position: relative;
+      z-index: 2;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      margin-bottom: 8px;
+
+      @media (max-width: 720px) {
+        font-size: 9px;
+        padding: 2px 8px;
+      }
+
+      &.mini-tag--empresas {
+        background: rgba(0, 0, 0, 0.55);
+      }
     }
 
     .bg-card-min {
       position: absolute;
-      width: 160px;
+      width: 170px;
       height: auto;
-      opacity: 0.7;
-      bottom: -1px;
-      right: 0px;
+      bottom: -8px;
+      right: -10px;
+      // opacity: 0.6;
       pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      // transition: opacity 0.3s ease, transform 0.3s ease;
       object-fit: contain;
-      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
 
       @media (max-width: 980px) {
-        width: 120px;
-        opacity: 0.8;
+        width: 140px;
       }
 
       @media (max-width: 720px) {
-        width: 100px;
-        opacity: 0.2;
-      }
-    }
-
-    @media (min-width: 980px) {
-      &:hover .bg-card-min {
-        opacity: 0.3;
-        transform: scale(1.05);
+        width: 115px;
+        // opacity: 0.5;
       }
     }
 
     h4 {
       position: relative;
       z-index: 1;
-      margin: 0 0 6px 0;
-      font-size: clamp(12px, 2vw, 22px);
+      margin: 0 0 4px 0;
+      font-size: clamp(14px, 2vw, 20px);
       font-weight: 800;
+      color: #ffffff;
 
       white-space: nowrap;
       overflow: hidden;
@@ -682,105 +734,89 @@
     p {
       position: relative;
       z-index: 1;
+      margin: 0 0 8px 0;
+      font-size: clamp(11px, 1.2vw, 13px);
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 240px;
 
-      margin: 0 0 10px 0;
-      font-size: 14px;
-      color: #000000;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-
-      @media (max-width: 980px) {
-        font-size: 11px;
-      }
-
-      @media (max-width: 720px) {
-        font-size: 9px;
-      }
     }
 
-    ul {
-      margin: 0 0 12px 18px;
+    .mini-list {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 10px 14px;
       padding: 0;
 
       li {
+        font-size: clamp(9px, 1.1vw, 12px);
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 3px;
         white-space: nowrap;
-        overflow: hidden;
         text-overflow: ellipsis;
+        overflow: hidden;
+        list-style: disc;
+      }
+    }
 
-        margin-bottom: 6px;
+    .mini-foot {
+      position: relative;
+      z-index: 1;
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .mini-foot__label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.85);
       }
     }
 
     .mini-btn {
       display: inline-block;
-      padding: 8px 16px;
+      padding: 6px 14px;
       border-radius: 999px;
       font-weight: 700;
       border: none;
       cursor: pointer;
-      font-size: 14px;
-      background: #ff0000;
-      color: #ffffff;
+      font-size: 12px;
+      background: #ffffff;
+      color: #b00000;
       transition: transform .2s ease, box-shadow .2s ease;
-      position: relative;
-      z-index: 1;
-
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
 
-      @media (max-width: 980px) {
-        font-size: 11px;
-        padding: 5px 8px;
-      }
-
       @media (max-width: 720px) {
-        font-size: 7px;
-        padding: 4px 6px;
+        font-size: 10px;
+        padding: 5px 10px;
       }
 
       @media (min-width: 980px) {
         &:hover {
           transform: scale(1.04);
-          box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+          box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
         }
-      }
-    }
-
-    /* Etiqueta "Próximamente" */
-    .proximamente-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: transparent;
-      color: rgb(107, 11, 11);
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      z-index: 2;
-
-      @media (max-width: 980px) {
-        font-size: 10px;
-        padding: 3px 8px;
-      }
-
-      @media (max-width: 720px) {
-        font-size: 8px;
-        padding: 2px 6px;
       }
     }
   }
 
   .mini-arrendamiento {
-    background: linear-gradient(180deg, rgb(240, 240, 240) 0%, rgba(255, 255, 255, 0.96) 100%);
+    background: radial-gradient(circle at top left, #ff5555 0%, #7a0000 40%, #120000 100%);
   }
 
   .mini-seguros {
-    background: linear-gradient(180deg, rgb(240, 240, 240) 0%, rgba(255, 255, 255, 0.96) 100%);
+    background: radial-gradient(circle at top left, #1f2933 0%, #020617 45%, #000000 100%);
   }
 }
+
+
 
 
 
