@@ -38,7 +38,7 @@ export class SplashComponent implements OnInit {
     // Ocultar splash después de 3 segundos
     this.timer = setTimeout(() => {
       this.showSplash = false;
-    }, 3000);
+    }, 2000);
   }
 
   generateParticles() {

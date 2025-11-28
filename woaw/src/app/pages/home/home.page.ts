@@ -12,6 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CarsService } from '../../services/cars.service';
 import { GeneralService } from '../../services/general.service';
 import { HistorealSearchComponent } from '../../components/historeal-search/historeal-search.component';
+import { PrincipalComponent } from '../../components/landing/principal/principal.component';
+import { IonContent } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +22,11 @@ import { HistorealSearchComponent } from '../../components/historeal-search/hist
   standalone: false,
 })
 export class HomePage implements OnInit, OnDestroy {
+
+  @ViewChild(IonContent) ionContent!: IonContent;
+  @ViewChild('principalComponent') principalComponent!: PrincipalComponent;
+
+
   textoCompleto: string = 'Compra y acelera';
   textoAnimado: string = '';
   textoIndex = 0;
@@ -312,5 +319,6 @@ export class HomePage implements OnInit, OnDestroy {
       }
     }, 10000);
   }
+
 
 }

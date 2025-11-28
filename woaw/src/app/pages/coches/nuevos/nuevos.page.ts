@@ -65,6 +65,11 @@ export class NuevosPage implements OnInit {
 
   showSplash: boolean = true;
 
+    public mostrar_spinner: boolean = false;
+  public tipo_spinner: number = 0;
+  public texto_spinner: string = 'Cargando...';
+  public textoSub_spinner: string = 'Espere un momento';
+
   @ViewChild('pageContent') content!: IonContent;
 
   constructor(
@@ -103,6 +108,7 @@ export class NuevosPage implements OnInit {
   }
 
   getCarsNews() {
+    this.mostrar_spinner=true;
     this.carsService.getCarsNews().subscribe({
       next: (res: any) => {
         const autos = res?.coches || []
@@ -124,11 +130,15 @@ export class NuevosPage implements OnInit {
         // console.log(this.autosStorage);
         this.getCarsFavoritos();
         this.calcularPaginacion();
+
+        this.mostrar_spinner = false;
       },
       error: (err) => {
+        this.mostrar_spinner = false;
         const mensaje = err?.error?.message || 'Ocurrió un error inesperado';
         this.generalService.alert('Error al guardar los datos', mensaje);
       },
+
     });
   }
 

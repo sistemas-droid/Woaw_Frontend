@@ -452,9 +452,127 @@
   margin-top: 8px;
 }
 
+/* Para el section que envuelve todo (mantiene z-index) */
+.contenedor_arrendamiento {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+/* ============================= */
+/*   FORM / INPUTS iOS STYLE     */
+/* ============================= */
+
+form {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.wo-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #6b7280;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.wo-label strong {
+  color: #ef4444;
+}
+
+/* CONTENEDOR DEL INPUT / SELECT */
+.wo-control {
+  position: relative;
+  width: 100%;
+  border-radius: 16px;
+  padding: 8px 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 0 0 0 rgba(15, 23, 42, 0);
+  display: flex;
+  align-items: center;
+  transition:
+    border-color 0.16s ease,
+    box-shadow 0.18s ease,
+    background 0.16s ease,
+    transform 0.12s ease;
+
+  &.wo-compact {
+    padding: 6px 10px;
+    border-radius: 14px;
+  }
+}
+
+.wo-control ion-input,
+.wo-control ion-select {
+  width: 100%;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  background: transparent;
+  border: none;
+}
+
+/* TEXTO INPUT */
+.wo-control ion-input::part(native) {
+  font-size: 15px;
+  color: #0f172a;
+  font-weight: 500;
+}
+
+.wo-control ion-input::part(placeholder) {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+/* TEXTO SELECT */
+.wo-control ion-select::part(text) {
+  font-size: 15px;
+  color: #0f172a;
+  font-weight: 500;
+}
+
+.wo-control ion-select::part(placeholder) {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+.wo-control ion-select::part(icon) {
+  margin-inline-start: auto;
+}
+
+/* FOCUS */
+.wo-control:focus-within {
+  border-color: #2563eb;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgba(37, 99, 235, 0.18),
+    0 12px 24px rgba(15, 23, 42, 0.18);
+  transform: translateY(-1px);
+}
+
+/* ion-item neutro dentro del form si lo usas */
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --highlight-height: 0;
+  --background: transparent;
+  border: none;
+}
+
+/* GRID COMPACTA VERSIONES */
+.grid-compacta ion-col {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
 /* ===================== */
 /* SECCIÓN ABAJO (INFO)  */
 /* ===================== */
+
 .grid-arrendamiento-ios {
   max-width: 1000px;
   margin: 10px auto 24px;
@@ -545,4 +663,28 @@
       font-size: 12px;
     }
   }
+}
+
+/* Botones de enviar (ya los puedes ajustar según tus utilidades) */
+.custom-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.custom-btn.danger {
+  background: linear-gradient(135deg, #ff3b30, #ff453a);
+  color: #fff;
+}
+
+.custom-btn.success {
+  background: #22c55e;
+  color: #fff;
 }

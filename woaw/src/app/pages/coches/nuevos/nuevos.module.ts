@@ -14,6 +14,9 @@ import { AcomodoComponent } from '../../../components/filtos/acomodo/acomodo.com
 import { FooterComponent } from '../../../components/footer/footer.component';
 
 import { NuevosPage } from './nuevos.page';
+import { SpinnerComponent } from '../../../components/spinner/spinner.component';
+
+
 
 @NgModule({
   imports: [
@@ -25,7 +28,8 @@ import { NuevosPage } from './nuevos.page';
     MenuComponent,
     CartasComponent,
     AcomodoComponent,
-    FooterComponent
+    FooterComponent,
+    SpinnerComponent
   ],
   declarations: [NuevosPage],
 })

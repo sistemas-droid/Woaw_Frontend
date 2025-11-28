@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -8,6 +8,7 @@ import { GeneralService } from '../../../services/general.service';
 import { CarsService } from '../../../services/cars.service';
 import { MotosService } from '../../../services/motos.service';
 import { Capacitor } from '@capacitor/core';
+import { IonContent } from '@ionic/angular';
 
 @Component({
   selector: 'app-principal',
@@ -21,6 +22,9 @@ import { Capacitor } from '@capacitor/core';
 export class PrincipalComponent implements OnInit {
   @Input() tipo: string = 'all';
   @Input() status: boolean = true;
+
+
+
   autosNuevos: any[] = [];
   autosSeminuevos: any[] = [];
   autosUsados: any[] = [];
@@ -56,14 +60,11 @@ export class PrincipalComponent implements OnInit {
     // this.getCarsSeminuevos();
     // this.getCarsUsados();
     // this.getMotos();
-    this.cargaimagen(); 
+    this.cargaimagen();
+
+
   }
 
-  ngAfterViewInit(): void {
-    this.generalService.aplicarAnimacionPorScroll(
-      '.carrusel-autos_minicartas'
-    );
-  }
   getCarsNews() {
     this.carsService.getCarsNews().subscribe({
       next: (res: any) => {
@@ -126,7 +127,7 @@ export class PrincipalComponent implements OnInit {
       },
     });
   }
-  
+
   verMas(url: string) {
     this.router.navigate([url]);
   }
@@ -153,7 +154,26 @@ export class PrincipalComponent implements OnInit {
       // this.overlayLoaded = true;
     }
   }
-  public redirecion(url: string){
+  public redirecion(url: string) {
     this.router.navigate([url]);
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

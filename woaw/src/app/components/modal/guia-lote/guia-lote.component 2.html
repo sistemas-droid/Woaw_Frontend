@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar class="header-toolbar">
+    <ion-buttons slot="start">
+      <div class="logo-titulo">
+        <img src="assets/icon/logo2.png" alt="WOAW" />
+      </div>
+      <ion-title>Guía del Lote</ion-title>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="cancelar()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" scrollEvents="true" (ionScroll)="verificarScroll()" #contenidoGuia>
+  <div class="pdf-wrap">
+    <iframe *ngIf="iframeVisible" class="pdf-frame" [src]="pdfUrlSafe" title="Guía del Lote" allowfullscreen></iframe>
+  </div>
+</ion-content>
+
+<ion-footer *ngIf="!mostrarFooter">
+  <ion-toolbar class="footer-toolbar">
+    <span class="footer-leyenda">
+      Desliza hacia abajo para habilitar el botón "Aceptar".
+    </span>
+
+    <br />
+
+    <div class="footer-actions">
+      <div class="footer-botones">
+        <button class="btn-cancelar" (click)="cancelar()">
+          <ion-icon name="close-outline"></ion-icon>
+          Cancelar
+        </button>
+
+        <button class="btn-aceptar" [disabled]="!scrollAlFinal" (click)="aceptar()">
+          <ion-icon name="checkmark-outline"></ion-icon>
+          Aceptar
+        </button>
+      </div>
+    </div>
+
+    <br />
+  </ion-toolbar>
+</ion-footer>

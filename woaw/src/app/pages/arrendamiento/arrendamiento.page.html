@@ -31,20 +31,20 @@
     </div>
 
     <div class="columna-derecha">
-      <div class="card-opcion-ios">
+      <div class="card-opcion-ios" (click)="cambiarTipo('coches')">
         <img class="img_coche" src="/assets/autos/arre1.webp" alt="Coche" />
         <h3>COCHES</h3>
         <p>Vehículos ideales para uso personal o corporativo.</p>
-        <button class="btn-card-ios" (click)="cambiarTipo('coches')">
+        <button class="btn-card-ios">
           Arrendar Coche
         </button>
       </div>
 
-      <div class="card-opcion-ios">
+      <div class="card-opcion-ios" (click)="cambiarTipo('camiones')">
         <img class="img_camion" src="/assets/autos/arre2.webp" alt="Camión" />
         <h3>CAMIONES</h3>
         <p>Soluciones de transporte para empresas y logística.</p>
-        <button class="btn-card-ios" (click)="cambiarTipo('camiones')">
+        <button class="btn-card-ios">
           Arrendar Camión
         </button>
       </div>
@@ -90,6 +90,7 @@
       <!-- LISTA DE MARCAS -->
       <ng-container *ngIf="!mostrarModelos">
         <div class="contenedor-marcas-ios">
+          <!-- Coches -->
           <ng-container *ngIf="tipoSeleccionado === 'coches'">
             <ng-container *ngFor="let marca of filteredOpciones">
               <div
@@ -110,6 +111,7 @@
             </ng-container>
           </ng-container>
 
+          <!-- Camiones -->
           <ng-container *ngIf="tipoSeleccionado === 'camiones'">
             <ng-container *ngFor="let marca of filteredOpcionesCamiones">
               <div
@@ -166,19 +168,193 @@
         </div>
       </ng-container>
 
-      <!-- FORMULARIO (igual, solo se apoya en estilos iOS ya hechos) -->
+      <!-- FORMULARIO (MODELOS + DATOS) -->
       <ng-container *ngIf="mostrarModelos">
         <div class="contenedor-modelos-ios">
           <form [formGroup]="formArrendamiento" (ngSubmit)="enviarSolicitud('Email')">
-            <!-- ⚠️ Tu ion-grid y todo el form van igual →
-                 no los toco para no chingar tu lógica  -->
-            <!-- ... DEJAS AQUÍ TAL CUAL TU <ion-grid> Y DEMÁS ... -->
-            <!-- solo usará los estilos .wo-control, etc., que ya están bonitos -->
+            <ion-grid>
+              <!-- DATOS GENERALES -->
+              <ion-row>
+                <ion-col size="12" size-md="4">
+                  <label class="wo-label">Nombre completo: <strong>*</strong></label>
+                  <div class="wo-control">
+                    <ion-input
+                      formControlName="nombre"
+                      placeholder="Ej. Juan Pérez"
+                    ></ion-input>
+                  </div>
+                </ion-col>
 
-            <!-- pegaste todo el ion-grid completo aquí sin cambios -->
-            <!--  🔻🔻🔻 -->
-            <!-- (mantén tu ion-grid, ion-row, ion-col y botones como los tienes) -->
-            <!--  🔺🔺🔺 -->
+                <ion-col size="12" size-md="4">
+                  <label class="wo-label">Tipo de persona: <strong>*</strong></label>
+                  <div class="wo-control">
+                    <ion-select
+                      class="wo-select"
+                      formControlName="tipoPersona"
+                      mode="ios"
+                      interface="alert"
+                      placeholder="Selecciona"
+                    >
+                      <ion-select-option value="Persona Física Actividad Empresarial">
+                        Persona Física Actividad Empresarial
+                      </ion-select-option>
+                      <ion-select-option value="Moral">
+                        Persona Moral
+                      </ion-select-option>
+                    </ion-select>
+                  </div>
+                </ion-col>
+
+                <ion-col size="12" size-md="4">
+                  <label class="wo-label">Código Postal: <strong>*</strong></label>
+                  <div class="wo-control">
+                    <ion-input
+                      type="number"
+                      formControlName="cp"
+                      placeholder="-----"
+                    ></ion-input>
+                  </div>
+                </ion-col>
+
+                <ion-col size="12" size-md="4">
+                  <label class="wo-label">RFC: <strong>*</strong></label>
+                  <div class="wo-control">
+                    <ion-input
+                      type="text"
+                      formControlName="rfc"
+                      placeholder="*********"
+                    ></ion-input>
+                  </div>
+                </ion-col>
+
+                <ion-col size="12" size-md="4">
+                  <label class="wo-label">Correo electrónico: <strong>*</strong></label>
+                  <div class="wo-control">
+                    <ion-input
+                      type="email"
+                      formControlName="correo"
+                      placeholder="Ej. juan@mail.com"
+                    ></ion-input>
+                  </div>
+                </ion-col>
+
+                <ion-col size="12" size-md="4">
+                  <label class="wo-label">Plazo: <strong>*</strong></label>
+                  <div class="wo-control">
+                    <ion-select
+                      class="wo-select"
+                      formControlName="plazo"
+                      mode="ios"
+                      interface="alert"
+                      placeholder="Selecciona plazo"
+                    >
+                      <ion-select-option value="12">12 meses</ion-select-option>
+                      <ion-select-option value="24">24 meses</ion-select-option>
+                      <ion-select-option value="36">36 meses</ion-select-option>
+                      <ion-select-option value="48">48 meses</ion-select-option>
+                    </ion-select>
+                  </div>
+                </ion-col>
+              </ion-row>
+
+              <!-- SELECT DE MODELOS -->
+              <ion-row>
+                <ion-col size="12" size-md="6">
+                  <ion-label class="wo-label">Modelos: <strong>*</strong></ion-label>
+                  <div class="wo-control">
+                    <ion-select
+                      class="wo-select"
+                      placeholder="Selecciona modelos"
+                      multiple="true"
+                      interface="alert"
+                      mode="ios"
+                      [value]="modelosSeleccionados"
+                      (ionChange)="onModelosChange($event)"
+                    >
+                      <ion-select-option
+                        *ngFor="let modelo of modelos"
+                        [value]="modelo"
+                      >
+                        {{ modelo.modelo }}
+                      </ion-select-option>
+                    </ion-select>
+                  </div>
+                </ion-col>
+              </ion-row>
+
+              <!-- TABLA VERSIONES (SOLO COCHES) -->
+              <ng-container *ngIf="tipoSeleccionado !== 'camiones'">
+                <ion-row *ngIf="modelosConVersiones.length > 0">
+                  <ion-col size="12">
+                    <ion-card class="tabla-versiones">
+                      <ion-card-header>
+                        <ion-card-title>Modelos seleccionados y versiones</ion-card-title>
+                      </ion-card-header>
+                      <ion-card-content>
+                        <ion-grid class="grid-compacta">
+                          <ion-row class="ion-text-center encabezado-tabla">
+                            <ion-col size="4"><strong>Modelo</strong></ion-col>
+                            <ion-col size="8"><strong>Versión</strong></ion-col>
+                          </ion-row>
+
+                          <ion-row
+                            *ngFor="let item of modelosConVersiones; let i = index"
+                            class="fila-version"
+                          >
+                            <!-- Modelo -->
+                            <ion-col size="4" class="ellipsis">
+                              {{ item.modelo.modelo }}
+                            </ion-col>
+
+                            <!-- Select versiones -->
+                            <ion-col size="8">
+                              <div class="wo-control wo-compact">
+                                <ion-select
+                                  class="wo-select"
+                                  [name]="'version-' + i"
+                                  multiple="true"
+                                  interface="alert"
+                                  mode="ios"
+                                  placeholder="Selecciona versión"
+                                  [(ngModel)]="modelosConVersiones[i].versionSeleccionada"
+                                  [ngModelOptions]="{ standalone: true }"
+                                >
+                                  <ion-select-option
+                                    *ngFor="let version of item.versiones"
+                                    [value]="version"
+                                  >
+                                    {{ version }}
+                                  </ion-select-option>
+                                </ion-select>
+                              </div>
+                            </ion-col>
+                          </ion-row>
+                        </ion-grid>
+                      </ion-card-content>
+                    </ion-card>
+                  </ion-col>
+                </ion-row>
+              </ng-container>
+
+              <!-- BOTONES DE ENVÍO -->
+              <ion-row class="ion-justify-content-center" style="gap: 12px;">
+                <!-- Botón rojo -->
+                <button type="submit" class="button-native custom-btn danger">
+                  <ion-icon name="mail-open-outline"></ion-icon>
+                  Enviar Gmail
+                </button>
+
+                <!-- Botón verde (WhatsApp) -->
+                <button
+                  type="button"
+                  class="button-native custom-btn success"
+                  (click)="enviarSolicitud('Wh')"
+                >
+                  <ion-icon name="logo-whatsapp" slot="start"></ion-icon>
+                  WhatsApp
+                </button>
+              </ion-row>
+            </ion-grid>
           </form>
         </div>
       </ng-container>
@@ -187,7 +363,7 @@
     <div #infoArrendamiento></div>
   </section>
 
-  <!-- SECCIÓN ABAJO (GRID INFO) – esta ya casi era iOS, solo la limpiamos en CSS -->
+  <!-- SECCIÓN ABAJO (GRID INFO) -->
   <section class="grid-arrendamiento-ios despues_de_imagen">
     <ion-grid>
       <ion-row>

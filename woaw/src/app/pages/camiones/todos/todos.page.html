@@ -29,22 +29,24 @@
     <ion-row>
       <!-- Columna lateral de filtros -->
       <ion-col size="12" size-md="3">
+
         <app-menu
           [filtros]="filtros"
           [filtrosAplicados]="filtrosAplicados"
           (mostrarOpciones)="mostrarOpciones($event.event, $event.tipo)"
           (limpiarFiltros)="resetearFiltros()"
         ></app-menu>
-      </ion-col>
+ </ion-col>
 
       <!-- Columna de catálogo -->
       <ion-col size="12" size-md="9">
+
         <div class="catalogo-autos-ios">
           <!-- Estado vacío iOS -->
           <div *ngIf="camionesPaginados?.length === 0" class="mensaje-vacio-ios">
             <ion-icon name="trail-sign-outline"></ion-icon>
             <p>No se encontraron camiones para esta sección.</p>
-          </div>
+     </div>
 
           <!-- Cards -->
           <ng-container *ngFor="let camion of camionesPaginados">
@@ -70,29 +72,31 @@
                 (click)="cambiarPagina(paginaActual - 1)"
                 [disabled]="paginaActual === 1"
               >
-                ‹
+      ‹
               </button>
 
               <!-- Botones dinámicos -->
               <ng-container *ngFor="let i of paginasReducidas">
+
                 <button
                   *ngIf="esNumero(i)"
                   class="pagina-ios"
                   [class.activa]="paginaActual === i"
                   (click)="cambiarPagina(i)"
                 >
-                  {{ i }}
+        {{ i }}
                 </button>
                 <span *ngIf="!esNumero(i)" class="ellipsis-ios">...</span>
               </ng-container>
 
               <!-- Flecha siguiente -->
+
               <button
                 class="pagina-ios"
                 (click)="cambiarPagina(paginaActual + 1)"
                 [disabled]="paginaActual === totalPaginas"
               >
-                ›
+           ›
               </button>
             </div>
           </div>
@@ -100,6 +104,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
 
 
  <br><br><br>

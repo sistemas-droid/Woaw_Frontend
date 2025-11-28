@@ -48,6 +48,11 @@ export class NuevosPage implements OnInit {
   @ViewChild('pageContent', { static: false }) pageContent!: IonContent;
   // ------
 
+
+    public mostrar_spinner: boolean = false;
+  public tipo_spinner: number = 0;
+  public texto_spinner: string = 'Cargando...';
+  public textoSub_spinner: string = 'Espere un momento';
   constructor(
     private menu: MenuController,
     public generalService: GeneralService,
@@ -69,6 +74,7 @@ export class NuevosPage implements OnInit {
     });
   }
   async misMotos() {
+    this.mostrar_spinner= true;
     this.motosService.getMotos().subscribe({
       next: (res: any) => {
          const moto = res?.motos || []
@@ -79,8 +85,10 @@ export class NuevosPage implements OnInit {
         this.calcularPaginacion();
         this.getCarsFavoritos();
         this.misAutosid();
+        this.mostrar_spinner= false;
       },
       error: (err) => {
+        this.mostrar_spinner= false;
         const mensaje =
           err?.error?.message || 'Error al obtener tus vehículos.';
         if (mensaje === 'No se encontraron vehículos para este usuario') {

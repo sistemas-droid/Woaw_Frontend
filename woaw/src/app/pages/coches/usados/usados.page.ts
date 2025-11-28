@@ -68,6 +68,11 @@ export class UsadosPage implements OnInit {
 
   ordenActivo: string | null = null;
 
+    public mostrar_spinner: boolean = false;
+  public tipo_spinner: number = 0;
+  public texto_spinner: string = 'Cargando...';
+  public textoSub_spinner: string = 'Espere un momento';
+
   constructor(
     private menu: MenuController,
     public generalService: GeneralService,
@@ -107,6 +112,7 @@ export class UsadosPage implements OnInit {
       return;
       // public idsMisAutos: string[] = [];
     }
+this.mostrar_spinner= true;
     this.carsService.misAutosId().subscribe({
       next: (res: any) => {
         if (res && Array.isArray(res.vehicleIds) && res.vehicleIds.length > 0) {
@@ -114,8 +120,11 @@ export class UsadosPage implements OnInit {
         } else {
           this.idsMisAutos = [];
         }
+
+        this.mostrar_spinner= false;
       },
       error: (err) => {
+        this.mostrar_spinner= false;
         const mensaje =
           err?.error?.message || 'Error al obtener tus vehículos.';
         if (mensaje === 'No se encontraron vehículos para este usuario') {
@@ -127,6 +136,7 @@ export class UsadosPage implements OnInit {
     });
   }
   getCarsUsados() {
+    this.mostrar_spinner= true;
     this.carsService.getCarsUsados().subscribe({
       next: (res: any) => {
         const autos = res?.coches || []
@@ -151,8 +161,11 @@ export class UsadosPage implements OnInit {
         // console.log(this.autosStorage);
         this.getCarsFavoritos();
         this.calcularPaginacion();
+
+        this.mostrar_spinner= false;
       },
       error: (err) => {
+        this.mostrar_spinner= false;
         const mensaje = err?.error?.message || 'Ocurrió un error inesperado';
         this.generalService.alert('Error al guardar los datos', mensaje);
       },

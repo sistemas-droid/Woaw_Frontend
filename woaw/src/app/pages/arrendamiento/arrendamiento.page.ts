@@ -12,7 +12,7 @@ import { MotosService } from '../../services/motos.service';
 import { ModalController } from '@ionic/angular';
 import { PasosArrendamientoComponent } from '../../components/modal/pasos-arrendamiento/pasos-arrendamiento.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
+import { Location } from '@angular/common';
 
 interface Marca {
   key: string;
@@ -61,13 +61,16 @@ export class ArrendamientoPage implements OnInit {
   imgenArre1: string = '';
   imgenArre2: string = '';
 
+  public tipoDispocitivo: 'computadora' | 'telefono' | 'tablet' = 'computadora';
+
   constructor(
     private generalService: GeneralService,
     private carsService: CarsService,
     public contactosService: ContactosService,
     private modalCtrl: ModalController,
     private menuCtrl: MenuController,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private location: Location
   ) { }
   ngOnInit() {
     this.cargaimagen();
@@ -78,12 +81,16 @@ export class ArrendamientoPage implements OnInit {
       this.dispositivo = tipo;
     });
     this.formArrendamiento = this.fb.group({
-      nombre: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
       tipoPersona: ['', Validators.required],
-      plazo: ['', Validators.required],
-      rfc: ['', Validators.required],
-      cp: ['', Validators.required]
+      cp: ['', [Validators.required, Validators.pattern('^[0-9]{5}$')]],
+      rfc: ['', [Validators.required, Validators.pattern('^[A-Z&Ñ]{3,4}[0-9]{6}[A-Z0-9]{3}$')]],
+      correo: ['', [Validators.required, Validators.email]],
+      plazo: ['', Validators.required]
+    });
+
+    this.generalService.dispositivo$.subscribe((tipo) => {
+      this.tipoDispocitivo = tipo;
     });
   }
   seleccionarMarca(marca: Marca): void {
@@ -146,22 +153,6 @@ export class ArrendamientoPage implements OnInit {
       },
       error: () => { },
     });
-  }
-  regresar() {
-    this.mostrarModelos = false;
-    this.seleccionarMarcaForm = false;
-    this.mostrarMarcas = true;
-    this.modeloSeleccionado = null;
-    this.pasoActual = 1;
-    this.formArrendamiento.reset();
-    this.modelosSeleccionados = [];
-    this.modelosConVersiones = [];
-    setTimeout(() => {
-      const anchor = document.getElementById('anchor-modelos');
-      if (anchor) {
-        anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 100);
   }
   async seleccionarModelo(modelo: any) {
     this.modeloSeleccionado = modelo;
@@ -345,8 +336,27 @@ export class ArrendamientoPage implements OnInit {
   selecionaMarca() {
     this.generalService.alert('Selecciona una marca', 'Para continuar selecciona una marca.', 'info');
   }
+  regresar() {
+    this.mostrarModelos = false;
+    this.seleccionarMarcaForm = false;
+    this.mostrarMarcas = true;
+    this.modeloSeleccionado = null;
+    this.pasoActual = 1;
+    this.formArrendamiento.reset();
+    this.modelosSeleccionados = [];
+    this.modelosConVersiones = [];
+    setTimeout(() => {
+      const anchor = document.getElementById('anchor-modelos');
+      if (anchor) {
+        anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }
   regresarAntes() {
     this.selecionaVehiculo = false;
+  }
+  goBack() {
+    this.location.back();
   }
   onBuscar(valor: string) {
     const q = this.normalize(valor);

@@ -46,12 +46,14 @@
     </ion-refresher-content>
   </ion-refresher>
 
+
   <!-- Acomodo / resumen -->
   <app-acomodo
     [totalAutos]="vistaActiva === 'venta' ? totalAutosVenta : totalAutosRenta"
     [titulo]="vistaActiva === 'venta' ? 'Mis autos en venta' : 'Mis autos en renta'"
     (ordenCambio)="ordenarAutos($event)"
   >
+
   </app-acomodo>
 
   <!-- Segment tipo iOS -->

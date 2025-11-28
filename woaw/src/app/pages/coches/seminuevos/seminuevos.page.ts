@@ -67,6 +67,11 @@ export class SeminuevosPage implements OnInit {
 
   public mostrarPendientes: boolean = false;
 
+    public mostrar_spinner: boolean = false;
+  public tipo_spinner: number = 0;
+  public texto_spinner: string = 'Cargando...';
+  public textoSub_spinner: string = 'Espere un momento';
+
   constructor(
     private menu: MenuController,
     public generalService: GeneralService,
@@ -124,6 +129,7 @@ export class SeminuevosPage implements OnInit {
   }
 
   getCarsSeminuevos() {
+    this.mostrar_spinner= true;
     this.carsService.getCarsSeminuevos().subscribe({
       next: (res: any) => {
         const autos = res?.coches || []
@@ -151,8 +157,10 @@ export class SeminuevosPage implements OnInit {
         this.getCarsFavoritos();
         this.calcularPaginacion();
         this.misAutos();
+        this.mostrar_spinner= false;
       },
       error: (err) => {
+        this.mostrar_spinner= false;
         const mensaje = err?.error?.message || 'Ocurrió un error inesperado';
         this.generalService.alert('Error al guardar los datos', mensaje);
       },

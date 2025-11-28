@@ -55,6 +55,11 @@ export class MisMotosPage implements OnInit {
   @ViewChild('pageContent', { static: false }) pageContent!: IonContent;
   public motosFiltradas: any[] = [];
 
+    public mostrar_spinner: boolean = false;
+  public tipo_spinner: number = 0;
+  public texto_spinner: string = 'Cargando...';
+  public textoSub_spinner: string = 'Espere un momento';
+
   constructor(
     public generalService: GeneralService,
     private popoverCtrl: PopoverController,
@@ -75,6 +80,7 @@ export class MisMotosPage implements OnInit {
   }
 
 async misMotos() {
+  this.mostrar_spinner= true;
   this.motosService.misMotosId().subscribe({
     next: (res: any) => {
       // Soporta ambas formas: { motos: [...] } o directamente [...]
@@ -90,8 +96,10 @@ async misMotos() {
       this.calcularPaginacion();
       this.getCarsFavoritos();
       this.misAutosid();
+      this.mostrar_spinner= false;
     },
     error: (err) => {
+      this.mostrar_spinner= false;
       const mensaje = err?.error?.message || 'Error al obtener tus vehículos.';
       if (mensaje === 'No se encontraron vehículos para este usuario') {
         this.MisMotos = [];

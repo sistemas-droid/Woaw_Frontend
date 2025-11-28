@@ -125,5 +125,18 @@
     </button>
   </div>
 
-  <app-footer></app-footer>
-</ion-content>
+
+  <app-principal></app-principal>
+  <br><br>
+
+  <section class="video-wrap">
+    <video #videoEl class="video" [src]="videoSrc" autoplay muted loop playsinline preload="auto"
+      poster="assets/img/poster.jpg">
+    </video>
+    <div class="overlay">
+      <img src="assets/icon/logo4.png" alt="Logo woaw" class="logo-goautos2" loading="lazy" />
+      <h1 class="headline ">Encuentra tu siguiente vehículo</h1>
+      <p class="subheadline">Coches, seminuevos y camiones.</p>
+    </div>
+  </section>
+
