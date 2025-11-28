@@ -18,7 +18,7 @@
 }
 
 /* ===== Título sección ===== */
-.contenedor_titulo {
+.home-servicios-ios .contenedor_titulo {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,7 +30,7 @@
 
   .titulo_principal {
     margin: 0;
-    font-size: clamp(19px, 2.6vw, 24px); /* ↑ un poco más grande */
+    font-size: clamp(19px, 2.6vw, 24px);
     font-weight: 700;
     letter-spacing: -0.02em;
     color: #111827;
@@ -47,120 +47,159 @@
   }
 }
 
-/* ===== BAND CARDS – estáticas, 2 columnas ===== */
-.band-cards {
+/* ===== BAND CARDS – Renta & Camiones con mismo estilo de autos ===== */
+.home-servicios-ios .band-cards {
   width: 100%;
   margin: 8px auto 14px;
   padding: 0 4px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
 
-  @media (max-width: 520px) {
+  @media (max-width: 640px) {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .mini-card {
+  /* Usamos el mismo look que las car-card de arriba */
+  .car-card {
     position: relative;
-    min-height: 112px;
-    padding: 12px 12px 12px 14px;
-    border-radius: 18px;
+    border-radius: 20px;
+    padding: 16px 16px 14px;
     background: #ffffff;
     border: 1px solid rgba(15, 23, 42, 0.06);
     box-shadow:
-      0 12px 24px rgba(15, 23, 42, 0.08),
+      0 14px 28px rgba(15, 23, 42, 0.08),
       0 0 0 0.5px rgba(255, 255, 255, 0.95);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    color: #0f172a;
     overflow: hidden;
     cursor: pointer;
     transition:
-      transform 0.18s ease,
+      transform 0.2s ease,
       box-shadow 0.2s ease,
       border-color 0.2s ease,
       background 0.2s ease;
+    min-height: 150px; // un pelín más alta para que respire
+
+    @media (max-width: 768px) {
+      border-radius: 18px;
+    }
 
     &:active {
-      transform: scale(0.97);
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
+      transform: scale(0.985);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1);
       background: #f9fafb;
     }
 
-    .bg-card-min {
+    .bg-card {
       position: absolute;
-      right: 4px;
-      bottom: -4px;
-      width: 115px;
+      right: 6px;
+      bottom: -6px;
+      width: 150px;
       height: auto;
-      opacity: 0.5;
+      // opacity: 0.5;
       object-fit: contain;
       pointer-events: none;
-      filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.22));
+      filter: drop-shadow(0 8px 18px rgba(15, 23, 42, 0.35));
 
-      @media (max-width: 520px) {
-        width: 100px;
-        opacity: 0.4;
+      @media (max-width: 960px) {
+        width: 180px;
+      }
+
+      @media (max-width: 640px) {
+        width: 150px;
+        // opacity: 0.38;
       }
     }
 
-    h4 {
+    .card-head {
       position: relative;
       z-index: 1;
-      margin: 0 0 2px;
-      font-size: 15px; /* ↑ */
-      font-weight: 700;
-      color: #111827;
+      margin-bottom: 10px;
+
+      h3 {
+        margin: 0 0 4px;
+        font-size: clamp(16px, 1.9vw, 20px);
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: #0f172a;
+      }
+
+      p {
+        margin: 0;
+        font-size: 13px;
+        color: #6b7280;
+        max-width: 75%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
 
-    p {
+    .card-list {
       position: relative;
       z-index: 1;
-      margin: 0 0 10px;
-      font-size: 13px; /* ↑ */
-      color: #6b7280;
-      max-width: 75%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      margin: 8px 0 14px;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 8px;
+
+      li {
+        font-size: 12px;
+        color: #4b5563;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: #f3f4f6;
+      }
     }
 
-    .mini-btn {
+    .card-foot {
       position: relative;
       z-index: 1;
+    }
+
+    .btn-card {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 7px 14px;
+      gap: 6px;
+      padding: 8px 16px;
       border-radius: 999px;
       border: none;
-      font-size: 13px; /* ↑ */
+      font-size: 13px;
       font-weight: 600;
-      background: linear-gradient(135deg, #ff3b30, #ff453a);
-      color: #ffffff;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(255, 69, 58, 0.35);
+      background: #111827;
+      color: #f9fafb;
+      box-shadow: 0 10px 18px rgba(15, 23, 42, 0.35);
       transition:
-        transform 0.16s ease,
-        box-shadow 0.16s ease,
-        filter 0.16s ease;
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        filter 0.18s ease;
 
       &:active {
-        transform: scale(0.96);
-        box-shadow: 0 4px 10px rgba(255, 69, 58, 0.35);
-        filter: brightness(0.97);
+        transform: scale(0.97);
+        box-shadow: 0 6px 14px rgba(15, 23, 42, 0.32);
+        filter: brightness(0.98);
       }
     }
-  }
 
-  .mini-arrendamiento,
-  .mini-seguros {
-    background: radial-gradient(circle at top left, #fef2f2 0, #ffffff 55%);
+    /* Variantes de botón para que se vean coherentes */
+    &.car-card-renta .btn-card {
+      background: linear-gradient(135deg, #ff3b30, #ff453a);
+      box-shadow: 0 10px 22px rgba(255, 69, 58, 0.38);
+    }
+
+    &.car-card-camiones .btn-card {
+      background: #111827;
+    }
   }
 }
 
+
 /* ===== GRID PRINCIPAL AUTOS ===== */
-.contenedor_cratas_home {
+.home-servicios-ios .contenedor_cratas_home {
   width: 100%;
   margin: 4px auto 12px;
   padding: 0 4px;
@@ -183,7 +222,7 @@
   .car-card {
     position: relative;
     border-radius: 20px;
-    padding: 16px 16px 14px; /* un pelín más aire para texto grande */
+    padding: 16px 16px 14px;
     background: #ffffff;
     border: 1px solid rgba(15, 23, 42, 0.06);
     box-shadow:
@@ -208,25 +247,24 @@
       background: #f9fafb;
     }
 
-    /* 🔥 IMAGEN DE LOS AUTOS MÁS GRANDE (nuevos/seminuevos/usados) */
     .bg-card {
       position: absolute;
       right: 6px;
       bottom: -6px;
-      width: 165px;            /* ↑ antes 150 */
+      width: 165px;
       height: auto;
-      opacity: 0.5;
+      // opacity: 0.5;
       object-fit: contain;
       pointer-events: none;
       filter: drop-shadow(0 8px 18px rgba(15, 23, 42, 0.35));
 
       @media (max-width: 960px) {
-        width: 145px;          /* ↑ antes 130 */
+        width: 145px;
       }
 
       @media (max-width: 640px) {
-        width: 120px;          /* ↑ antes 110 */
-        opacity: 0.38;
+        width: 120px;
+        // opacity: 0.38;
       }
     }
 
@@ -237,7 +275,7 @@
 
       h3 {
         margin: 0 0 4px;
-        font-size: clamp(16px, 1.9vw, 20px); /* ↑ */
+        font-size: clamp(16px, 1.9vw, 20px);
         font-weight: 700;
         letter-spacing: -0.01em;
         color: #0f172a;
@@ -254,7 +292,7 @@
 
       p {
         margin: 0;
-        font-size: 13px; /* ↑ */
+        font-size: 13px;
         color: #6b7280;
         max-width: 75%;
         white-space: nowrap;
@@ -274,7 +312,7 @@
       gap: 6px 8px;
 
       li {
-        font-size: 12px; /* ↑ */
+        font-size: 12px;
         color: #4b5563;
         padding: 4px 10px;
         border-radius: 999px;
@@ -292,10 +330,10 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 8px 16px;     /* ↑ */
+      padding: 8px 16px;
       border-radius: 999px;
       border: none;
-      font-size: 13px;       /* ↑ */
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       background: #111827;
@@ -329,7 +367,7 @@
 }
 
 /* ===== GRID CATEGORÍAS GRANDES ===== */
-.grid-categorias {
+.home-servicios-ios .grid-categorias {
   width: 100%;
   margin: 4px auto 12px;
   padding: 0 4px;
@@ -393,11 +431,10 @@
       text-align: center;
     }
 
-    /* Texto blanco dentro del pill rojo más grande */
     .cat-card__title {
       margin: 0;
       padding: 8px 22px;
-      font-size: clamp(15px, 1.8vw, 18px);  /* ↑ */
+      font-size: clamp(15px, 1.8vw, 18px);
       font-weight: 700;
       letter-spacing: 0.02em;
       color: #ffffff;
@@ -408,7 +445,7 @@
 
     .cat-card__subtitle {
       margin: 0;
-      font-size: 12px;  /* ↑ */
+      font-size: 12px;
       color: #e5e7eb;
       opacity: 0.9;
     }
@@ -416,7 +453,7 @@
 }
 
 /* ===== Anuncio App ===== */
-.anuncio-app {
+.home-servicios-ios .anuncio-app {
   margin: 6px auto 0;
   padding: 0 4px;
 
@@ -433,7 +470,7 @@
 
   .titulo {
     margin: 0 0 4px;
-    font-size: clamp(18px, 2.4vw, 23px); /* ↑ */
+    font-size: clamp(18px, 2.4vw, 23px);
     font-weight: 700;
     color: #111827;
 
@@ -445,7 +482,7 @@
 
   .descripcion {
     margin: 0 0 8px;
-    font-size: 13px; /* ↑ */
+    font-size: 13px;
     color: #4b5563;
 
     .resaltado {
@@ -476,7 +513,7 @@
 
   .msj_2 {
     margin: 0;
-    font-size: 12px; /* ↑ */
+    font-size: 12px;
     color: #9ca3af;
   }
 }

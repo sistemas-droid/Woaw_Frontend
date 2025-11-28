@@ -1,11 +1,12 @@
 <section class="home-servicios-ios">
+
+  <!-- TÍTULO -->
   <div class="contenedor_titulo">
     <h2 class="titulo_principal">Nuestros Servicios</h2>
   </div>
 
-  <!-- BAND CARDS: Motos / Camiones (SIN SCROLL) -->
-
-    <section class="contenedor_cratas_home">
+  <!-- CARDS AUTOS NUEVOS / SEMINUEVOS / USADOS -->
+  <section class="contenedor_cratas_home">
     <div class="cards-grid">
 
       <article class="car-card car-card-nuevos" (click)="redirecion('/nuevos')">
@@ -56,22 +57,21 @@
     </div>
   </section>
 
-  <!-- CARDS AUTOS -->
-
-
-  <!-- GRID CATEGORÍAS GRANDES -->
+  <!-- GRID CATEGORÍAS GRANDES (MISMAS QUE WEB: MOTOS / ARRENDAMIENTO / SEGUROS) -->
   <section class="grid-categorias">
     <div class="grid-categorias__wrap">
 
-      <a class="cat-card" href="/renta-coches"
-         style="background-image: url('/assets/home/F5.png')">
+      <a class="cat-card"
+         href="/m-nuevos"
+         [style]="'background-image: url('+img2+')'">
         <span class="cat-card__overlay">
-          <h3 class="cat-card__title">Renta</h3>
-          <p class="cat-card__subtitle">Muévete cuando quieras.</p>
+          <h3 class="cat-card__title">Motos</h3>
+          <p class="cat-card__subtitle">De calle, touring y más </p>
         </span>
       </a>
 
-      <a class="cat-card" href="/arrendamiento"
+      <a class="cat-card"
+         href="/arrendamiento"
          style="background-image: url('/assets/home/F6.png')">
         <span class="cat-card__overlay">
           <h3 class="cat-card__title">Arrendamiento</h3>
@@ -79,14 +79,53 @@
         </span>
       </a>
 
-      <a class="cat-card" href="/seguros/disponibles"
+      <a class="cat-card"
+         href="/seguros/disponibles"
          style="background-image: url('/assets/home/F7.png')">
         <span class="cat-card__overlay">
           <h3 class="cat-card__title">Seguros</h3>
           <p class="cat-card__subtitle">Cotiza y asegura en minutos.</p>
         </span>
       </a>
+
     </div>
   </section>
+
+<section class="band-cards">
+
+  <!-- RENTA (misma estructura que autos) -->
+  <article class="car-card car-card-renta">
+    <img [src]="'/assets/home/F8.png'" alt="Renta de autos" class="bg-card" />
+    <header class="card-head">
+      <h3>Renta de autos</h3>
+      <p>Muévete cuando quieras ...</p>
+    </header>
+    <ul class="card-list">
+      <li>Renta flexible</li>
+    </ul>
+    <footer class="card-foot">
+      <button class="btn-card btn-renta" disabled>Próximamente</button>
+    </footer>
+  </article>
+
+  <!-- CAMIONES (misma estructura que autos) -->
+  <article class="car-card car-card-camiones" (click)="redirecion('/camiones/todos')">
+    <img [src]="img3" alt="Camiones de carga" class="bg-card" />
+    <header class="card-head">
+      <h3>Camiones &amp; carga</h3>
+      <p>Soluciones de carga para tu negocio.</p>
+    </header>
+    <ul class="card-list">
+      <li>Flotillas y empresas</li>
+      <li>Financiamiento</li>
+    </ul>
+    <footer class="card-foot">
+      <button class="btn-card btn-camiones">Ver camiones</button>
+    </footer>
+  </article>
+
+</section>
+
+
 
 </section>
