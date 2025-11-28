@@ -12,6 +12,9 @@ PODS:
   - CapacitorCordova (7.4.3)
   - CapacitorDevice (7.0.2):
     - Capacitor
+  - CapacitorFilesystem (7.1.5):
+    - Capacitor
+    - IONFilesystemLib (~> 1.0.1)
   - CapacitorFirebaseMessaging (7.3.1):
     - Capacitor
     - FirebaseMessaging (~> 11.7.0)
@@ -75,6 +78,7 @@ PODS:
   - GoogleUtilities/UserDefaults (8.1.0):
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
+  - IONFilesystemLib (1.0.1)
   - IONGeolocationLib (1.0.1)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
@@ -91,6 +95,7 @@ DEPENDENCIES:
   - "CapacitorCommunityAppleSignIn (from `../../node_modules/@capacitor-community/apple-sign-in`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorDevice (from `../../node_modules/@capacitor/device`)"
+  - "CapacitorFilesystem (from `../../node_modules/@capacitor/filesystem`)"
   - "CapacitorFirebaseMessaging (from `../../node_modules/@capacitor-firebase/messaging`)"
   - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
@@ -107,6 +112,7 @@ SPEC REPOS:
     - FirebaseMessaging
     - GoogleDataTransport
     - GoogleUtilities
+    - IONFilesystemLib
     - IONGeolocationLib
     - nanopb
     - PromisesObjC
@@ -126,6 +132,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorDevice:
     :path: "../../node_modules/@capacitor/device"
+  CapacitorFilesystem:
+    :path: "../../node_modules/@capacitor/filesystem"
   CapacitorFirebaseMessaging:
     :path: "../../node_modules/@capacitor-firebase/messaging"
   CapacitorGeolocation:
@@ -149,6 +157,7 @@ SPEC CHECKSUMS:
   CapacitorCommunityAppleSignIn: 271cb2860576fd2961508bbfa7a82117d93eadca
   CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
   CapacitorDevice: 81ae78d5d1942707caad79276badd458bf6ec603
+  CapacitorFilesystem: 609d5cceca1ed93d7f25839dbfdfd224bfe78209
   CapacitorFirebaseMessaging: 71ea2cde4484e172de29e4b4e68100c2f84fb441
   CapacitorGeolocation: 84f868bea4c2499aebc3bb3a88fd0a508f87ab87
   CapacitorHaptics: 1f1e17041f435d8ead9ff2a34edd592c6aa6a8d6
@@ -162,10 +171,11 @@ SPEC CHECKSUMS:
   FirebaseMessaging: 00ece041b71ddb52a2862ffdee73fb6e9824bd0c
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
+  IONFilesystemLib: 89258b8e3e85465da93127d25d7ce37f977e8a6f
   IONGeolocationLib: 20f9d0248a0b5264511fb57a37e25dd2badf797a
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
 
-PODFILE CHECKSUM: 11a3f49b83fae283d9deed06ea5723935593f86c
+PODFILE CHECKSUM: b1e2d50496a3a8191cbcc73aa28cb5675a99554c
 
 COCOAPODS: 1.16.2
