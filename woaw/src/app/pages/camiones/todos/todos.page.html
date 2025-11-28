@@ -8,6 +8,9 @@
     </ion-refresher-content>
   </ion-refresher>
 
+    <app-spinner *ngIf="mostrar_spinner" [tipo]="tipo_spinner" [text]="texto_spinner" [sub_text]="textoSub_spinner"></app-spinner>
+
+
   <app-acomodo [totalAutos]="totalCamiones" (ordenCambio)="ordenarCamiones($event)" [titulo]="'Camiones'"></app-acomodo>
 
 

@@ -55,6 +55,11 @@ export class TodosPage implements OnInit {
   // Ordenamiento
   ordenActivo: string | null = null;
 
+  public mostrar_spinner: boolean = false;
+  public tipo_spinner: number = 0;
+  public texto_spinner: string = 'Cargando...';
+  public textoSub_spinner: string = 'Espere un momento';
+
   @ViewChild('pageContent') content!: IonContent;
 
   constructor(
@@ -111,6 +116,7 @@ export class TodosPage implements OnInit {
     });
   }
  getCamionesAll() {
+  this.mostrar_spinner = true;
   this.camionesService.getAllCamiones().subscribe({
     next: (res: any) => {
       this.camionesStorage = res.camiones.map((camion: any) => {
@@ -140,8 +146,10 @@ export class TodosPage implements OnInit {
       this.totalCamiones = this.camionesStorage.length;
       this.getCamionesFavoritos();
       this.calcularPaginacion();
+      this.mostrar_spinner = false;
     },
     error: (err) => {
+      this.mostrar_spinner = false;
       const mensaje = err?.error?.message || 'Ocurrió un error inesperado';
       console.error('Error al cargar camiones:', mensaje);
     }

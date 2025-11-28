@@ -44,6 +44,11 @@ export class MisAutosPage implements OnInit {
   itemsPorPagina: number = 12;
   idsMisAutos: string[] = []; // IDs de venta (para [esMio])
 
+    public mostrar_spinner: boolean = false;
+  public tipo_spinner: number = 0;
+  public texto_spinner: string = 'Cargando...';
+  public textoSub_spinner: string = 'Espere un momento';
+
   constructor(
     public generalService: GeneralService,
     private popoverCtrl: PopoverController,
