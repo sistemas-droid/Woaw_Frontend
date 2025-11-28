@@ -221,7 +221,7 @@ export class InicioPage implements OnInit {
     if (this.esDispositivoMovil == true) {
       setTimeout(() => {
         this.showSplashScreen = false;
-      }, 3000);
+      }, 2000);
     } else {
       setInterval(() => {
         this.indexContenido = (this.indexContenido + 1) % this.contenidos.length;
