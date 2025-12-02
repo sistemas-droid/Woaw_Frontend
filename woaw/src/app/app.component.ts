@@ -20,7 +20,6 @@ import { PushService } from './services/push.service';
 
 declare let gtag: Function;
 
-// Helper: reemplazo de Object.fromEntries para TS < ES2019
 function paramsToObject(sp: URLSearchParams): Record<string, string> {
   const out: Record<string, string> = {};
   sp.forEach((v, k) => { out[k] = v; });
@@ -105,9 +104,7 @@ export class AppComponent {
       if (this.isLoggedIn) { try { await this.push.init(); } catch {} }
     });
 
-    // Deep links (Siri/custom scheme + universal links)
     this.platform.ready().then(() => this.registerDeepLinks());
-
 
     this.platform.ready().then(() => {
       if (this.platform.is('hybrid') || this.platform.is('android') || this.platform.is('ios')) {
@@ -116,7 +113,6 @@ export class AppComponent {
         document.body.classList.add('is-web');
       }
     });
-  
   }
 
   get mostrarTabs(): boolean {
@@ -206,16 +202,12 @@ export class AppComponent {
     await toast.present();
   }
 
-  // ===== Deep Links (custom scheme + universal links) =====
-
   private async registerDeepLinks() {
-    // Cold start
     try {
       const launch = await App.getLaunchUrl();
       if (launch?.url) this.handleOpenUrl(launch.url);
     } catch {}
 
-    // Warm / foreground
     App.addListener('appUrlOpen', ({ url }) => this.handleOpenUrl(url));
   }
 
@@ -223,7 +215,6 @@ export class AppComponent {
     let url: URL;
     try { url = new URL(urlString); } catch { return; }
 
-    // 1) Custom scheme: woaw://search?...  |  woaw://ficha/<id>
     if (url.protocol === 'woaw:') {
       if (url.host === 'search/vehiculos') {
         const qp = paramsToObject(url.searchParams as any);
@@ -232,30 +223,31 @@ export class AppComponent {
         });
         return;
       }
+
       if (url.host === 'ficha') {
-        const id = url.pathname.replace('/', '');
-        if (id) {
-          this.zone.run(() => this.router.navigate(['/ficha', id]));
+        const segments = url.pathname.split('/').filter(s => !!s); 
+        const tipo = segments[0];
+        const id   = segments[1];
+
+        if (tipo && id) {
+          this.zone.run(() => this.router.navigate(['/ficha', tipo, id]));
         }
         return;
       }
-      return; // otros hosts -> ignora
+
+      return; 
     }
 
-    // 2) Universal links (https): wo-aw.com / woaw.mx (ajusta hosts si aplica)
     const allowedHosts = new Set([
       'wo-aw.com',
       'www.wo-aw.com',
       'woaw.mx',
       'www.woaw.mx',
-      // si añadiste dominios de Firebase a Associated Domains, agrégalos aquí también:
       'peppy-aileron-468716-e5.web.app',
       'peppy-aileron-468716-e5.firebaseapp.com',
     ]);
     if (!allowedHosts.has(url.host)) return;
 
-    // Mapear rutas externas a rutas internas
-    // /search?keywords=...&tipoVenta=...&transmision=...&sort=...
     if (url.pathname === '/search/vehiculos') {
       const qp = paramsToObject(url.searchParams as any);
       this.zone.run(() => {
@@ -264,11 +256,13 @@ export class AppComponent {
       return;
     }
 
-    // /ficha/:id  → abre detalle
-    const fichaMatch = url.pathname.match(/^\/ficha\/([^/]+)$/);
+    const fichaMatch = url.pathname.match(/^\/ficha\/([^/]+)\/([^/]+)$/);
     if (fichaMatch) {
-      const id = decodeURIComponent(fichaMatch[1]);
-      this.zone.run(() => this.router.navigate(['/ficha', id]));
+      const tipo = decodeURIComponent(fichaMatch[1]);
+      const id   = decodeURIComponent(fichaMatch[2]);
+      this.zone.run(() => {
+        this.router.navigate(['/ficha', tipo, id]);
+      });
       return;
     }
   }
