@@ -147,25 +147,44 @@ export class LotesPage implements OnInit {
 
 
 
+
+
   async getLotes() {
     try {
       this.mostrar_spinner = true;
-      const requests = [];
 
-      requests.push(this.loteservice.getlotes('all'));
+      // Crear promesas para cada petición
+      const promesaAll = firstValueFrom(this.loteservice.getlotes('all'))
+        .catch(error => {
+          console.warn('Error en lotes all:', error);
+          return { lotes: [] };
+        });
 
+      let promesaMine: Promise<any>;
       if (this.MyRole === 'admin' || this.MyRole === 'lotero') {
-        requests.push(this.loteservice.getlotes('mios'));
+        promesaMine = firstValueFrom(this.loteservice.getlotes('mios'))
+          .catch(error => {
+            console.warn('Error en lotes mios:', error);
+            return { lotes: [] };
+          });
       } else {
-        requests.push(of({ lotes: [] }));
+        promesaMine = Promise.resolve({ lotes: [] });
       }
 
-      requests.push(this.loteservice.getResumenVendidos());
+      const promesaVendidos = firstValueFrom(this.loteservice.getResumenVendidos())
+        .catch(error => {
+          console.warn('Error en resumen vendidos:', error);
+          return { lotes: [] };
+        });
 
-      const [resAll, resMine, resVendidos] = await firstValueFrom(
-        forkJoin(requests)
-      );
+      // Usar Promise.all (más compatible) con manejo individual
+      const [resAll, resMine, resVendidos] = await Promise.all([
+        promesaAll,
+        promesaMine,
+        promesaVendidos
+      ]);
 
+      // Resto del código igual...
       this.lotesAll = this.ordenarDesc(resAll?.lotes || []);
 
       if (this.MyRole === 'admin' || this.MyRole === 'lotero') {
@@ -175,7 +194,7 @@ export class LotesPage implements OnInit {
       }
 
       const vendidosMap = new Map(
-        resVendidos.lotes.map((l: any) => [
+        (resVendidos.lotes || []).map((l: any) => [
           l._id,
           l.conteo?.totalVendidos ?? 0
         ])
@@ -196,13 +215,14 @@ export class LotesPage implements OnInit {
 
     } catch (error) {
       this.mostrar_spinner = false;
-      await this.generalService.alert(
-        'Verifica tu red',
-        'Error de red. Intenta más tarde.',
-        'danger'
-      );
+      console.error('Error inesperado:', error);
+
+      // Mostrar lo que haya cargado
+      this.applyTab(this.activeTab);
     }
   }
+
+
 
 
 

@@ -1058,7 +1058,7 @@ ion-item {
       font-weight: 700;
       color: #f21212;
       line-height: 1.1;
-      margin-bottom: 1rem;
+      margin-bottom: 0rem;
       opacity: 0;
       transform: translateX(-40px);
       animation: slideInLeft 0.8s ease forwards;
@@ -1127,123 +1127,99 @@ ion-item {
     }
   }
 
+
+
+
+
+.columna-derecha {
+  display: grid;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  justify-items: stretch;
+  grid-auto-rows: 1fr; // en desktop sí queremos que midan igual
+}
+
+.columna-derecha .card-opcion {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.columna-derecha .card-opcion .img_coche,
+.columna-derecha .card-opcion .img_camion {
+  flex: 0 0 120px;
+  max-height: 120px;
+  max-width: 100%;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.columna-derecha .card-opcion h3 {
+  font-size: clamp(1.05rem, 2.8vw, 1.3rem);
+  margin: 0;
+  color: #222;
+}
+
+.columna-derecha .card-opcion p {
+  font-size: clamp(10px, 2.4vw, 12px);
+  color: #666;
+  margin: 0 0 0.4rem 0;
+}
+
+.columna-derecha .card-opcion .btn-card {
+  background: #ff2d2d;
+  color: #fff;
+  border: none;
+  padding: 0.55rem 1.1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 100%;
+}
+
+.columna-derecha .card-opcion .btn-card:hover {
+  background: #be0700;
+}
+
+/* 🔥 AJUSTE PARA MÓVIL 🔥 */
+@media (max-width: 768px) {
   .columna-derecha {
-    display: grid;
-    gap: clamp(0.75rem, 2vw, 1.5rem);
-    grid-template-columns: repeat(2, minmax(0, 1fr)); // SIEMPRE 2 columnas
-    align-items: stretch;
-    justify-items: stretch;
-
-    .card-opcion {
-      flex: 1 1 280px;
-      max-width: unset;
-      width: 100%;
-      background: #ffffff;
-      border-radius: 12px;
-      padding: clamp(1rem, 3vw, 2rem) clamp(0.75rem, 2vw, 1.5rem);
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.6s ease forwards;
-
-      &:nth-child(1) {
-        animation-delay: 0.5s;
-      }
-
-      &:nth-child(2) {
-        animation-delay: 0.8s;
-      }
-
-      &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
-      }
-
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @media (max-width: 768px) {
-        flex: 1 1 100%;
-      }
-
-      @media (max-width: 480px) {
-        padding: 0.85rem;
-      }
-
-      .img_coche {
-        width: auto;
-        max-width: 100%;
-        max-height: 160px;
-        height: auto;
-        object-fit: contain;
-
-        @media (max-width: 768px) {
-          max-width: 125px;
-        }
-      }
-
-      .img_camion {
-        width: auto;
-        max-width: 100%;
-        max-height: 95px;
-        height: auto;
-        object-fit: contain;
-
-        @media (max-width: 768px) {
-          max-height: 43px;
-        }
-      }
-
-      h3 {
-        font-size: clamp(1.05rem, 2.8vw, 1.3rem);
-        margin-bottom: 0.5rem;
-        color: #222;
-      }
-
-      p {
-        font-size: clamp(10px, 2.4vw, 12px);
-        color: #666;
-        margin-bottom: 1rem;
-      }
-
-      .btn-card {
-        background: #ff2d2d;
-        color: #fff;
-        border: none;
-        padding: 0.7rem 1.5rem;
-        border-radius: 6px;
-        font-weight: 500;
-        font-size: 14px;
-        cursor: pointer;
-        transition: 0.3s ease;
-
-        @media (max-width: 768px) {
-          width: 100%;
-          font-size: 10px;
-        }
-
-        &:hover {
-          background: #be0700;
-        }
-      }
-
-      &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
-      }
-    }
+    grid-template-columns: 1fr;   /* una carta por fila */
+    grid-auto-rows: auto;         /* cada card su propia altura, sin huecos */
+    max-width: 380px;
+    margin: 0 auto;
   }
+
+  .columna-derecha .card-opcion {
+    height: auto;                 /* que no se estire de más */
+    padding: 0.9rem 1rem;
+  }
+
+  .columna-derecha .card-opcion .img_coche,
+  .columna-derecha .card-opcion .img_camion {
+    flex: 0 0 110px;              /* un poquito más compactas en alto */
+    max-height: 110px;
+  }
+}
+
+
+
+
+  
 }
 
 .titulo_seccion {
