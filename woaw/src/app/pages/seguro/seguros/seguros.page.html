@@ -100,16 +100,9 @@
                 <div class="field">
                   <label for="modelo">Selecciona el modelo <span>*</span> </label>
                   <div class="control control--select">
-                    <ion-select #lista
-                                class="sync-pop"
-                                formControlName="modelo"
-                                interface="popover"
-                                aria-label="Modelo"
-                                [interfaceOptions]="{ cssClass: 'select-popover pop-modelo', side: 'bottom', alignment: 'start' }"
-                                placeholder="Elige un modelo..."
-                                data-key="modelo"
-                                (ionFocus)="syncPopoverWidths()"
-                                (ionChange)="onModeloSeleccionado($event)">
+                    <ion-select class="sync-pop" formControlName="modelo" ria-label="Modelo"
+                      placeholder="Elige un modelo..." data-key="modelo" mode="ios" interface="alert"
+                      (ionChange)="onModeloSeleccionado($event)">
                       <ion-select-option [value]="null" disabled>Elige un modelo...</ion-select-option>
                       <ion-select-option *ngFor="let mo of modelos" [value]="mo.id">
                         {{ mo.name | titlecase }}
@@ -121,16 +114,10 @@
                 <div class="field">
                   <label for="anio">Selecciona el año <span>*</span></label>
                   <div class="control control--select">
-                    <ion-select #lista
-                                class="sync-pop"
-                                formControlName="anio"
-                                interface="popover"
-                                placeholder="Elige un año..."
-                                aria-label="anio"
-                                [interfaceOptions]="{ cssClass: 'select-popover pop-anio', side: 'bottom', alignment: 'start' }"
-                                data-key="anio"
-                                (ionFocus)="syncPopoverWidths()"
-                                (ionChange)="onAnioSeleccionado($event)">
+
+                    <ion-select #lista class="sync-pop" formControlName="anio" 
+                      placeholder="Elige un año..." aria-label="anio" (ionChange)="onAnioSeleccionado($event)" mode="ios" interface="alert">
+
                       <ion-select-option [value]="null" disabled>Elige un año...</ion-select-option>
                       <ion-select-option *ngFor="let y of anios" [value]="y">
                         {{ y }}
@@ -142,15 +129,11 @@
                 <div class="field">
                   <label for="version">Selecciona la versión <span>*</span></label>
                   <div class="control control--select">
-                    <ion-select #lista
-                                class="sync-pop"
-                                formControlName="version"
-                                interface="popover"
-                                placeholder="Elige una versión..."
-                                aria-label="Versión"
-                                [interfaceOptions]="{ cssClass: 'select-popover pop-version', side: 'bottom', alignment: 'start' }"
-                                data-key="version"
-                                (ionFocus)="syncPopoverWidths()">
+
+                    <ion-select #lista class="sync-pop" formControlName="version" interface="popover"
+                      placeholder="Elige una versión..." mode="ios" interface="alert"
+                      data-key="version" >
+
                       <ion-select-option [value]="null" disabled>Elige una versión...</ion-select-option>
                       <ion-select-option *ngFor="let v of versions" [value]="v.id">
                         {{ v.parts | titlecase }}
@@ -167,15 +150,9 @@
 
                 <div class="fecha-flex">
                   <div class="control control--select">
-                    <ion-select #lista
-                                class="sync-pop"
-                                formControlName="nacDia"
-                                interface="popover"
-                                placeholder="Día"
-                                aria-label="Día"
-                                [interfaceOptions]="{ cssClass: 'select-popover pop-nacDia', side: 'bottom', alignment: 'start' }"
-                                data-key="nacDia"
-                                (ionFocus)="syncPopoverWidths()">
+
+                    <ion-select #lista class="sync-pop" formControlName="nacDia"  placeholder="Día" mode="ios" interface="alert" >
+
                       <ion-select-option [value]="null" disabled>Día</ion-select-option>
                       <ion-select-option *ngFor="let d of dias" [value]="d">
                         {{ d }}
@@ -184,15 +161,8 @@
                   </div>
 
                   <div class="control control--select">
-                    <ion-select #lista
-                                class="sync-pop"
-                                formControlName="nacMes"
-                                interface="popover"
-                                placeholder="Mes"
-                                aria-label="Mes"
-                                [interfaceOptions]="{ cssClass: 'select-popover pop-nacMes', side: 'bottom', alignment: 'start' }"
-                                data-key="nacMes"
-                                (ionFocus)="syncPopoverWidths()">
+
+                    <ion-select #lista class="sync-pop" formControlName="nacMes" placeholder="Mes" mode="ios" interface="alert">
                       <ion-select-option [value]="null" disabled>Mes</ion-select-option>
                       <ion-select-option *ngFor="let m of meses" [value]="m.v">
                         {{ m.l }}
@@ -201,15 +171,9 @@
                   </div>
 
                   <div class="control control--select">
-                    <ion-select #lista
-                                class="sync-pop"
-                                formControlName="nacAnio"
-                                interface="popover"
-                                placeholder="Año"
-                                aria-label="Año"
-                                [interfaceOptions]="{ cssClass: 'select-popover pop-nacAnio', side: 'bottom', alignment: 'start' }"
-                                data-key="nacAnio"
-                                (ionFocus)="syncPopoverWidths()">
+
+                    <ion-select #lista class="sync-pop" formControlName="nacAnio" placeholder="Año" mode="ios" interface="alert">
+
                       <ion-select-option [value]="null" disabled>Año</ion-select-option>
                       <ion-select-option *ngFor="let y of aniosNacimiento" [value]="y">
                         {{ y }}
@@ -224,16 +188,10 @@
 
                 <label for="genero" style="margin-top:12px;">Género <span>*</span></label>
                 <div class="control control--select">
-                  <ion-select #lista
-                              class="sync-pop"
-                              formControlName="genero"
-                              interface="popover"
-                              placeholder="Selecciona..."
-                              aria-label="Género"
-                              [interfaceOptions]="{ cssClass: 'select-popover pop-genero', side: 'bottom', alignment: 'start' }"
-                              data-key="genero"
-                              (ionFocus)="syncPopoverWidths()"
-                              (ionChange)="checkEnableCP($event)">
+
+                  <ion-select #lista class="sync-pop" formControlName="genero" 
+                    placeholder="Selecciona..." (ionChange)="checkEnableCP($event)" mode="ios" interface="alert">
+
                     <ion-select-option [value]="null" disabled>Selecciona...</ion-select-option>
                     <ion-select-option *ngFor="let g of generoOpts" [value]="g.value">
                       {{ g.label }}
@@ -243,14 +201,7 @@
 
                 <label for="estadoCivil" style="margin-top:12px;">Estado civil <span>*</span></label>
                 <div class="control control--select">
-                  <ion-select formControlName="estadoCivil"
-                              interface="popover"
-                              placeholder="Selecciona..."
-                              aria-label="Estado civil"
-                              [interfaceOptions]="{ cssClass: 'select-popover pop-estadoCivil', side: 'bottom', alignment: 'start' }"
-                              data-key="estadoCivil"
-                              (ionFocus)="syncPopoverWidths()"
-                              (ionChange)="checkEnableCP($event)">
+                  <ion-select formControlName="estadoCivil"  placeholder="Selecciona..." (ionChange)="checkEnableCP($event)" mode="ios" interface="alert">
                     <ion-select-option [value]="null" disabled>Selecciona...</ion-select-option>
                     <ion-select-option *ngFor="let e of estadoCivilOpts" [value]="e.value">
                       {{ e.label }}

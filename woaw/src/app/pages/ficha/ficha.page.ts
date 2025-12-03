@@ -108,10 +108,10 @@ export class FichaPage implements OnInit {
 
   async seo() {
     if (this.auto?.marca && this.auto?.modelo && this.auto?.anio) {
-      const titulo = `${this.auto.marca} ${this.auto.modelo} ${this.auto.anio} en venta | Go Autos`;
+      const titulo = `${this.auto.marca} ${this.auto.modelo} ${this.auto.anio} en venta | WOAW`;
       this.title.setTitle(titulo);
       this.seoService.updateDescription(
-        `Descubre este ${this.auto.marca} ${this.auto.modelo} del año ${this.auto.anio}, disponible ahora en Go Autos. Haz clic para más información.`
+        `Descubre este ${this.auto.marca} ${this.auto.modelo} del año ${this.auto.anio}, disponible ahora en WOAW. Haz clic para más información.`
       );
     }
   }
