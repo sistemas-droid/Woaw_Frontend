@@ -39,7 +39,7 @@ export class MotosComponent implements OnInit {
   ubicacionSeleccionada: [string, string, number, number] | null = null;
   direccionCompleta: string = 'Obteniendo ubicación...';
   imagenesIntentadas = false;
-
+  mostrar_spinnet: boolean = false;
   // Color: siempre un único valor desde <select>
   colorSeleccionadoUnico: string = '';
 
@@ -130,7 +130,27 @@ export class MotosComponent implements OnInit {
   });
 }
 
+public onTipoChange(event: any) {
+  const valor = event.detail?.value as 'Nuevo' | 'Seminuevo' | 'Usado';
 
+  this.estadoVehiculo = valor;
+
+  // Ajustamos el lógico para que sigan funcionando tus validaciones
+  if (valor === 'Nuevo') {
+    this.estadoVehiculo_logico = 'nuevo';
+    // como en definirEstadoVehiculo: km en 0 y sin placas
+    this.kilometraje = 0;
+    this.placas = '';
+  } else if (valor === 'Seminuevo') {
+    this.estadoVehiculo_logico = 'seminuevo';
+  } else if (valor === 'Usado') {
+    // si es viejita la moto, lo marcas como "viejito" igual que en autos
+    if (this.anio < 2008 && this.anio >= 1800) { 
+    } else {
+      this.estadoVehiculo_logico = 'usado';
+    }
+  }
+}
   // ====== Estado por año/rol ======
   definirEstadoVehiculo() {
     const anioActual = new Date().getFullYear();

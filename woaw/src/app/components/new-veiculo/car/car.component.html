@@ -277,9 +277,9 @@
       </div>
     </div>
 
-    <!-- 📍 📄 -->
+    <!-- -->
     <div class="grid-info">
-      <!-- Ficha técnica 📄 -->
+      <!-- Ficha técnica -->
       <div class="columna-ficha"
         *ngIf="versionesDisponibles && (estadoVehiculo_logico === 'seminuevo' || estadoVehiculo_logico === 'usado')">
         <div class="card-especificaciones" *ngIf="especificacionesVersion">
@@ -314,7 +314,7 @@
       </div>
     </div>
 
-    <!-- Ficha técnica 📄 VIEJITO-->
+    <!-- Ficha técnica VIEJITO-->
     <div class="grid-form" *ngIf="estadoVehiculo_logico === 'viejito' || !versionesDisponibles">
       <!-- <h4>Ficha técnica (editable)</h4> -->
       <div class="campo" *ngFor="let campo of camposEspecificaciones">
