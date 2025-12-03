@@ -242,7 +242,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   async cargavideo() {
-    this.videoSrc = 'assets/home/vp1.mp4';
+    this.videoSrc = 'assets/home/vp2.mp4';
     this.generalService.addPreload(this.videoSrc, 'video');
     try {
       await this.generalService.preloadVideo(this.videoSrc, 7000);

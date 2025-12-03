@@ -96,25 +96,23 @@
   </div>
 </section>
 
+
+
+
+
 <br>
 <div class="band-cards">
-
-  <!-- RENTA DESTACADA -->
   <article class="mini-card mini-arrendamiento">
-    <!-- <div class="mini-tag">Nuevo</div> -->
     <img [src]="'/assets/home/F5.png'" alt="Auto en renta" class="bg-card-min">
     <h4>Renta de autos</h4>
     <p>Muévete cuando quieras ...</p>
 
     <div class="mini-foot">
       <span class="mini-foot__label">Próximamente</span>
-      <!-- <button class="mini-btn">Quiero rentar</button> -->
     </div>
   </article>
 
-  <!-- CAMIONES DESTACADOS -->
   <article class="mini-card mini-seguros" (click)="redirecion('/camiones/todos')">
-    <!-- <div class="mini-tag mini-tag--empresas">Empresas & flotillas</div> -->
     <img [src]="img3" alt="Camiones de carga" class="bg-card-min">
     <h4>Camiones & carga</h4>
     <p>Soluciones de carga para tu negocio.</p>
@@ -123,36 +121,38 @@
       <button class="mini-btn">Ver camiones</button>
     </div>
   </article>
-
 </div>
 
 
-<section class="anuncio-app" *ngIf="!isNative">
-  <div class="contenido">
-    <h2 class="titulo">¡Ya disponible! <br> <span>App Móvil</span></h2>
 
-    <div class="row-cta">
 
-      <div class="stores">
-        <a href="https://play.google.com/store/apps/details?id=com.helscode.woaw" target="_blank" rel="noopener">
-          <img src="/assets/autos/google play.png" alt="Play Store" />
+
+<section class="promo-app" *ngIf="!isNative">
+  <div class="promo-content">
+
+    <h2 class="headline">
+      🚀 <span class="highlight">¡YA DISPONIBLE!</span>
+    </h2>
+
+    <p class="subtext">Tu nueva experiencia en compra y venta de vehículos</p>
+
+    <div class="cta-fadein">
+      <p class="download-text">DESCARGA LA APP AQUÍ</p>
+
+      <div class="cta-row">
+        <a href="https://play.google.com/store/apps/details?id=com.helscode.woaw" target="_blank" rel="noopener"
+          class="store-btn">
+          <img src="/assets/autos/google play.png" alt="Google Play" />
+        </a>
+
+        <a href="https://apps.apple.com/mx/app/woaw/id6754116732" target="_blank" rel="noopener" class="store-btn">
+          <img src="/assets/autos/app store.png" alt="App Store" />
         </a>
       </div>
-      <div class="play">
-        <a href="https://apps.apple.com/mx/app/woaw/id6754116732" target="_blank" rel="noopener">
-          <img src="/assets/autos/app store.png" alt="Play Store" />
-        </a>
-      </div>
-
-      <!-- <div class="play">
-        <img src="/assets/icon/QR2.png" alt="QR Play Store" />
-      </div> -->
     </div>
-    <p class="msj_2">Prepárate para una experiencia única en compra, venta y gestión de vehículos.</p>
+
   </div>
 </section>
-
-
 
 
 
