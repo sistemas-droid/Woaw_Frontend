@@ -395,6 +395,11 @@ const routes: Routes = [
       // ---------------------
 
       {
+        path: 'soporte',
+        loadChildren: () => import('./pages/soporte/soporte.module').then(m => m.SoportePageModule)
+      },
+
+      {
         path: 'asesores',
         loadChildren: () => import('./pages/asesores/asesores.module').then(m => m.AsesoresPageModule)
       },
@@ -406,7 +411,6 @@ const routes: Routes = [
       import("./pages/error/error.module").then((m) => m.ErrorPageModule),
     data: { title: "Página no encontrada | woaw" },
   },
-
 ];
 
 @NgModule({

@@ -1,0 +1,14 @@
+<!-- Woalf con diálogo -->
+<div *ngIf="showWoalf" class="woalf-container" (click)="onBubbleClick()">
+  <img src="assets/woalft/A1.png" class="woalf-img" />
+
+  <div class="speech-bubble">
+    <span>{{ displayedText }}</span>
+    <span class="cursor" *ngIf="isTyping">|</span>
+  </div>
+</div>
+
+<!-- Botón flotante con la cara de Woalft -->
+<button *ngIf="showFab" class="woalf-fab" (click)="onFabClick()">
+  <img src="assets/woalft/call_center.png" alt="Woalft" />
+</button>

@@ -54,3 +54,9 @@ firebase hosting:channel:deploy mi-feature
 
              "optimization": false,
             "buildOptimizer": false,
+
+
+
+
+--- INASTALACIONES ---
+npm install @capawesome/capacitor-app-update

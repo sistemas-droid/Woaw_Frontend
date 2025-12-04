@@ -5,7 +5,6 @@ import { ContactosService } from './services/contactos.service';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { SeoService } from './services/seo.service';
 import { filter, map, mergeMap } from 'rxjs/operators';
-
 import {
   IonRouterOutlet,
   Platform,
@@ -17,6 +16,7 @@ import {
 } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { PushService } from './services/push.service';
+import { AppUpdate, AppUpdateAvailability } from '@capawesome/capacitor-app-update';
 
 declare let gtag: Function;
 
@@ -102,7 +102,7 @@ export class AppComponent {
 
     App.addListener('appStateChange', async ({ isActive }) => {
       if (!isActive) return;
-      if (this.isLoggedIn) { try { await this.push.init(); } catch {} }
+      if (this.isLoggedIn) { try { await this.push.init(); } catch { } }
     });
 
     // Deep links (Siri/custom scheme + universal links)
@@ -116,7 +116,7 @@ export class AppComponent {
         document.body.classList.add('is-web');
       }
     });
-  
+
   }
 
   get mostrarTabs(): boolean {
@@ -134,6 +134,12 @@ export class AppComponent {
     const rutaActual = this.router.url;
     return !rutasSinTabs.some(ruta => rutaActual.startsWith(ruta));
   }
+
+  get mostrarWoalft(): boolean {
+    const rutasSinWoalft = ['/soporte'];
+    return !rutasSinWoalft.some(r => this.currentUrl.startsWith(r));
+  }
+
 
   setDynamicTitle() {
     this.router.events
@@ -167,6 +173,9 @@ export class AppComponent {
       await StatusBar.setOverlaysWebView({ overlay: false });
       await StatusBar.setStyle({ style: Style.Dark });
     }
+
+    //  Checar actualización al arrancar
+    this.checkForAppUpdateNative();
   }
 
   private registerHardwareBack() {
@@ -213,7 +222,7 @@ export class AppComponent {
     try {
       const launch = await App.getLaunchUrl();
       if (launch?.url) this.handleOpenUrl(launch.url);
-    } catch {}
+    } catch { }
 
     // Warm / foreground
     App.addListener('appUrlOpen', ({ url }) => this.handleOpenUrl(url));
@@ -272,4 +281,54 @@ export class AppComponent {
       return;
     }
   }
+
+
+  private async checkForAppUpdateNative() {
+    // Solo aplica a app nativa
+    if (!this.platform.is('android')) return;
+
+    try {
+      const info = await AppUpdate.getAppUpdateInfo();
+
+      // Si no hay update disponible, salimos
+      if (info.updateAvailability !== AppUpdateAvailability.UPDATE_AVAILABLE) {
+        return;
+      }
+
+      // Aquí ya sabemos que en Play Store hay una versión más nueva que la instalada
+      const alert = await this.alertCtrl.create({
+        header: 'Nueva versión de WOAW 🚀',
+        message: `
+        Hay una nueva versión disponible en la Play Store.<br>
+        Actualiza para disfrutar las últimas mejoras y correcciones.
+      `,
+        backdropDismiss: false, // para que realmente tenga que decidir
+        buttons: [
+          {
+            text: 'Más tarde',
+            role: 'cancel'
+          },
+          {
+            text: 'Actualizar ahora',
+            handler: async () => {
+              // Opción 1: abrir ficha de la app en la Play Store
+              await AppUpdate.openAppStore({
+                androidPackageName: 'com.helscode.woaw'
+              });
+
+              // Opción 2 (si quieres UPDATE NATIVO dentro de la app):
+              // if (info.immediateUpdateAllowed) {
+              //   await AppUpdate.performImmediateUpdate();
+              // }
+            }
+          }
+        ]
+      });
+
+      await alert.present();
+    } catch (err) {
+      console.error('[App] Error al comprobar actualización nativa', err);
+    }
+  }
+
 }
