@@ -55,7 +55,7 @@ export class WelcomeLotePage implements OnInit {
   irASubirDocumentos() {
     this.clearAccessFlag();
     this.router.navigateByUrl(
-      `/lote/subir-documentos/${this.nombreLote}/${this.idLote}`
+      `/lote/documentos/${this.nombreLote}/${this.idLote}`
     );
   }
 
