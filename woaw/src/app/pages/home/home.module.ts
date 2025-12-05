@@ -14,7 +14,7 @@ import { HistorealSearchComponent } from '../../components/historeal-search/hist
 import { PrecentacionComponent } from '../../components/landing/precentacion/precentacion.component';
 import { JoliComponent } from '../../components/landing/joli/joli.component';
 import { FooterComponent } from '../../components/footer/footer.component';
-
+import { HomeComponent } from '../../components/woalft/home/home.component'
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { HomePage } from './home.page';
@@ -32,7 +32,8 @@ import { HomePage } from './home.page';
     PrincipalComponent,
     HistorealSearchComponent,
     PrecentacionComponent,
-    JoliComponent
+    JoliComponent,
+    HomeComponent
   ],
   declarations: [HomePage],
 })

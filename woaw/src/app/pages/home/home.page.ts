@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+
 import { MenuController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 import { AlertController } from '@ionic/angular';
 import { Router, NavigationEnd } from '@angular/router';
-import { AfterViewInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { PopUpComponent } from '../../components/modal/pop-up/pop-up.component';
 import { ActivatedRoute } from '@angular/router';
@@ -14,6 +14,9 @@ import { GeneralService } from '../../services/general.service';
 import { HistorealSearchComponent } from '../../components/historeal-search/historeal-search.component';
 import { PrincipalComponent } from '../../components/landing/principal/principal.component';
 import { IonContent } from '@ionic/angular';
+import { AfterViewInit } from '@angular/core';
+import { Capacitor } from '@capacitor/core';
+
 
 @Component({
   selector: 'app-home',
@@ -26,6 +29,12 @@ export class HomePage implements OnInit, OnDestroy {
   @ViewChild(IonContent) ionContent!: IonContent;
   @ViewChild('principalComponent') principalComponent!: PrincipalComponent;
 
+  @ViewChild('principal', { read: ElementRef }) principal!: ElementRef;
+
+  mostrarBotonFlotante = false;
+  botonFlotanteTexto: string = 'Ver más ↓';
+
+  public isNative = Capacitor.isNativePlatform();
 
   textoCompleto: string = 'Compra y acelera';
   textoAnimado: string = '';
@@ -103,6 +112,8 @@ export class HomePage implements OnInit, OnDestroy {
     this.gatTiposVeiculos();
   }
 
+
+
   ngOnDestroy() {
     // Limpiar el intervalo cuando el componente se destruya
     if (this.imageRotationInterval) {
@@ -151,12 +162,62 @@ export class HomePage implements OnInit, OnDestroy {
     }, 600); // Tiempo que coincide con la duración de la animación CSS
   }
 
+
+  cambiarTextoBoton() {
+    if (!this.principal?.nativeElement) return;
+
+    const rect = this.principal.nativeElement.getBoundingClientRect();
+
+    if (rect.top > 0) {
+      this.botonFlotanteTexto = 'Ver más ↓';
+    } else {
+      this.botonFlotanteTexto = 'Regresar ↑';
+    }
+  }
+
+
   ngAfterViewInit(): void {
     this.generalService.aplicarAnimacionPorScroll(
       '.titulo-arrendamiento',
       '.banner-img img'
     );
+
+    const principalElement = this.principal?.nativeElement;
+
+    if (!principalElement) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          this.mostrarBotonFlotante = !entry.isIntersecting;
+        });
+      },
+      {
+        threshold: 0.5
+      }
+    );
+
+    observer.observe(principalElement);
+
+    this.cambiarTextoBoton();
+
+    this.ionContent.ionScroll.subscribe(() => {
+      this.cambiarTextoBoton();
+    });
   }
+
+
+
+  scrollAPrincipal() {
+    const principalElement = document.querySelector('app-principal');
+    if (principalElement) {
+      principalElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+
 
   // ----- -----
   escribirTexto() {
@@ -242,7 +303,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   async cargavideo() {
-    this.videoSrc = 'assets/home/vp1.mp4';
+    this.videoSrc = 'assets/home/vp2.mp4';
     this.generalService.addPreload(this.videoSrc, 'video');
     try {
       await this.generalService.preloadVideo(this.videoSrc, 7000);

@@ -444,7 +444,7 @@ async compartirAuto(auto: any, tipo: string) {
 
     this.carsService.envio_notificacion_arrendmiento();
 
-    const url = `https://api.whatsapp.com/send?phone=${this.telefonojoli}&text=${mensaje}`;
+    const url = `https://api.whatsapp.com/send?phone=${this.telefonoFijo}&text=${mensaje}`;
 
     window.open(url, '_blank');
   }

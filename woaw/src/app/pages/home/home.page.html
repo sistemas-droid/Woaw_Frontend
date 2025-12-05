@@ -1,7 +1,8 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" [scrollEvents]="true">
 
+  <!-- <app-home-woalft></app-home-woalft> -->
 
   <div class="goautos-bg">
     <div class="overlay-container">
@@ -10,7 +11,7 @@
          'background-image': 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff00 100%), url(' + imgenPrincipal + ')',
          'background-size': 'cover',
          'opacity': '1',
-         'background-position': '50% 85%',
+         'background-position': '50% 95%',
          'background-repeat': 'no-repeat'
        } : {}">
       </div>
@@ -68,7 +69,6 @@
         </div>
       </div>
 
-
       <div>
 
       </div>
@@ -76,9 +76,10 @@
     </div>
   </div>
 
-  <app-principal></app-principal>
-  <br><br>
+  <app-principal #principal></app-principal>
 
+  <!-- <app-precentacion></app-precentacion> -->
+  <br *ngIf="isNative"><br *ngIf="isNative">
   <section class="video-wrap">
     <video #videoEl class="video" [src]="videoSrc" autoplay muted loop playsinline preload="auto"
       poster="assets/img/poster.jpg">
@@ -88,18 +89,42 @@
       <h1 class="headline ">Encuentra tu siguiente vehículo</h1>
       <p class="subheadline">Coches, seminuevos y camiones.</p>
     </div>
+    <!-- <div class="overlay" *ngIf="!isNative">
+
+      <section class="promo-app">
+        <div class="promo-content">
+
+          <h2 class="headline">
+            🚀 <span class="highlight">¡YA DISPONIBLE!</span>
+          </h2>
+
+          <p class="subtext">Tu nueva experiencia en compra y venta de vehículos</p>
+
+          <div class="cta-fadein">
+            <p class="download-text">DESCARGA LA APP AQUÍ</p>
+
+            <div class="cta-row">
+              <a href="https://play.google.com/store/apps/details?id=com.helscode.woaw" target="_blank" rel="noopener"
+                class="store-btn">
+                <img src="/assets/autos/google play.png" alt="Google Play" />
+              </a>
+
+              <a href="https://apps.apple.com/mx/app/woaw/id6754116732" target="_blank" rel="noopener"
+                class="store-btn">
+                <img src="/assets/autos/app store.png" alt="App Store" />
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div> -->
   </section>
 
-  <br><br>
+  <!-- <app-precentacion></app-precentacion> -->
 
-  <!-- <section class="tipos-vehiculos">
-    <h2>Tipos de Vehículos</h2>
-    <div class="lista-tipos">
-      <div class="tipo-card" *ngFor="let tipo of TiposVeiculo" (click)="buscarPorTipo(tipo)">
-        {{ tipo }}
-      </div>
-    </div>
-  </section> -->
+  <br><br>
 
   <section class="seccion-app-mensaje">
     <div class="contenedor-app-mensaje">
@@ -114,21 +139,11 @@
 
   <button class="btn_conocenos" routerLink="/conocenos" type="button">Conócenos</button>
 
+  <button class="btn-flotante" *ngIf="mostrarBotonFlotante && !esDispositivoMovil" (click)="scrollAPrincipal()">
+    {{ botonFlotanteTexto }}
+  </button>
 
 
-  <!-- <br><br><br><br>
-  
-  <app-joli></app-joli> -->
 
   <app-footer></app-footer>
 </ion-content>
-
-
-
-<!-- 
-
-     <button class="mute-btn" (click)="toggleMute(videoEl)">
-      {{ videoEl?.muted ? '🔇' : '🔊' }}
-    </button> 
-
-  -->

@@ -16,6 +16,7 @@ import { AuthExpiryInterceptor } from './interceptors/auth-expiry-interceptor';
 
 
 import { registerLocaleData } from '@angular/common';
+import { HomeComponent } from './components/woalft/home/home.component'
 import localeEsMX from '@angular/common/locales/es-MX';
 
 
@@ -31,6 +32,7 @@ registerLocaleData(localeEsMX);
     MenulateralComponent,
     NavbarComponent,
     TabsComponent,
+    HomeComponent,
     IonicModule.forRoot({
       scrollAssist: true,
       scrollPadding: true

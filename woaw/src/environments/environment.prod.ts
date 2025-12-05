@@ -14,8 +14,8 @@ export const environment = {
   crabi_branchId: 'ded09658-50cd-4637-8390-31a8f39fe9a1',
   crabi_status: 'production',
 
-  telefonoFijo: '+524427706776',
+  telefonoFijo: '+524427706776', //woaw arrendamiento
   telefonoJefe: '+524424736940',
-  telefonoJoli: '+524428688669',
+  telefonoJoli: '+524428688669', 
   telefonoArrendamiento: '+524427706776'
 };

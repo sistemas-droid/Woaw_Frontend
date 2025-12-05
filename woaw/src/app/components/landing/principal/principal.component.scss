@@ -246,20 +246,14 @@
           font-size: 8px;
         }
 
-        @media (min-width: 980px) {
-          &:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-          }
-        }
 
         &.btn-nuevos {
-          background: #ffffff;
+          background: #ffffffbb;
           color: #b00000;
         }
 
         &.btn-seminuevos {
-          background: #ffffff;
+          background: #ffffff99;
           color: #000000;
         }
 
@@ -284,20 +278,19 @@
   }
 }
 
-
 .band-cards {
   position: relative;
   z-index: 998;
   width: 100%;
   max-width: 1800px;
-  margin: 2.5rem auto 0;
+  margin-top: 40px;
   padding: 0 20px;
+
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)); // SIEMPRE 2 COLUMNAS
+  grid-template-columns: 1fr; // SOLO UNA COLUMNA
+  place-items: center; // CENTRA LA CARTA
   gap: 18px;
 
-  // en pantallas más chicas solo ajustamos padding y gap,
-  // PERO NO cambiamos a 1 columna
   @media (max-width: 980px) {
     margin-top: 1.5rem;
     padding: 0 10px;
@@ -310,6 +303,9 @@
   }
 
   .mini-card {
+    width: 100%;
+    max-width: 520px; // la centramos y evitamos que se haga enorme
+    height: 150px;
     position: relative;
     cursor: pointer;
     border-radius: 20px;
@@ -322,7 +318,7 @@
     align-items: flex-start;
     justify-content: flex-start;
 
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.35);
     border: 1px solid rgba(255, 255, 255, 0.05);
     transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 
@@ -334,12 +330,13 @@
     @media (max-width: 720px) {
       border-radius: 12px;
       padding: 10px 8px 8px;
+      max-width: 280px;
+      height: 80px;
     }
 
     @media (min-width: 980px) {
       &:hover {
         transform: translateY(-6px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
         border-color: rgba(255, 0, 0, 0.35);
       }
 
@@ -374,11 +371,6 @@
       color: #ffffff;
       margin-bottom: 8px;
 
-      @media (max-width: 720px) {
-        font-size: 9px;
-        padding: 2px 8px;
-      }
-
       &.mini-tag--empresas {
         background: rgba(0, 0, 0, 0.55);
       }
@@ -387,12 +379,9 @@
     .bg-card-min {
       position: absolute;
       width: 170px;
-      height: auto;
       bottom: -8px;
       right: -10px;
-      // opacity: 0.6;
       pointer-events: none;
-      // transition: opacity 0.3s ease, transform 0.3s ease;
       object-fit: contain;
       filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
 
@@ -402,39 +391,32 @@
 
       @media (max-width: 720px) {
         width: 115px;
-        // opacity: 0.5;
       }
     }
 
     h4 {
-      position: relative;
       z-index: 1;
       margin: 0 0 4px 0;
       font-size: clamp(14px, 2vw, 20px);
       font-weight: 800;
       color: #ffffff;
-
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     p {
-      position: relative;
       z-index: 1;
       margin: 0 0 8px 0;
       font-size: clamp(11px, 1.2vw, 13px);
       color: rgba(255, 255, 255, 0.85);
       max-width: 240px;
-
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .mini-list {
-      position: relative;
-      z-index: 1;
       margin: 0 0 10px 14px;
       padding: 0;
 
@@ -450,8 +432,6 @@
     }
 
     .mini-foot {
-      position: relative;
-      z-index: 1;
       margin-top: auto;
       display: flex;
       align-items: center;
@@ -467,7 +447,6 @@
     }
 
     .mini-btn {
-      display: inline-block;
       padding: 6px 14px;
       border-radius: 999px;
       font-weight: 700;
@@ -477,9 +456,6 @@
       background: #ffffff;
       color: #b00000;
       transition: transform .2s ease, box-shadow .2s ease;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
 
       @media (max-width: 720px) {
         font-size: 10px;
@@ -507,7 +483,6 @@
 
 
 
-
 // CASTAS CON IMAGENES GRANDES 
 .grid-categorias {
   display: flex;
@@ -515,7 +490,7 @@
   margin-bottom: 0;
   width: 100%;
   max-width: 1800px;
-  margin: -2rem auto;
+  margin: 0rem auto;
 
   @media (max-width: 820px) {
     margin-top: 20px;
@@ -603,81 +578,133 @@
   }
 }
 
-.anuncio-app {
-  background-color: transparent;
+
+
+
+
+
+
+
+.promo-app {
+  background: transparent;
+  padding: 0.5rem 0.5rem;
+  border-radius: 20px;
   text-align: center;
-  padding: 10px 10px;
-  margin: 0px auto;
-  max-width: 100%;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0);
-  overflow: hidden;
-  animation: fadeInUp 1.3s ease;
-  margin-bottom: 1rem;
-  margin-top: 2rem;
-  position: relative;
-  z-index: 999;
+  animation: fadeUp 1s ease forwards;
+  margin: 80px auto;
+  max-width: 900px;
 
   @media (max-width: 820px) {
-    margin-bottom: 5px;
+    margin: 2rem auto;
+  }
+
+
+  .promo-content {
+    animation: popIn 1.3s ease forwards;
+  }
+
+  .headline {
+    font-size: clamp(25px, 4vw, 50px);
+    color: white;
+    font-weight: 900;
+    margin-bottom: 10px;
+  }
+
+  .highlight {
+    color: #ff0000;
+  }
+
+  .subtext {
+    color: #7c7c7c;
+    font-size: clamp(12px, 1.5vw, 20px);
+    margin-bottom: 1.5rem;
+  }
+
+  .download-text {
+    font-size: clamp(16px, 2vw, 26px);
+    font-weight: 700;
+    color: #ff2f2f;
+    margin-bottom: 0.8rem;
+    text-shadow: 0 0 10px rgba(255, 50, 50, 0.407);
+    animation: pulseText 1.8s infinite;
+  }
+
+  .cta-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
     margin-top: 5px;
   }
 
-  .msj_2 {
-    color: #aaaaaa;
-    font-size: clamp(8px, 1vw, 13px);
-  }
+  .store-btn img {
+    height: 75px;
+    width: auto !important;
+    transition: transform 0.3s ease, filter 0.3s ease;
 
-  .titulo {
-    color: #ff0000;
-    font-size: clamp(15px, 3vw, 42px);
-    font-weight: 800;
-    margin-bottom: 15px;
-
-    span {
-      font-size: clamp(10px, 2vw, 42px);
-      color: var(--ion-color-joli);
+    @media(max-width: 920px) {
+      height: 55px;
     }
   }
 
-  .descripcion {
-    font-size: clamp(10px, 1vw, 42px);
-    line-height: 1.6;
-    max-width: 800px;
-    margin: 0 auto 5px;
-    opacity: 0.9;
-    color: #000000;
 
-    .resaltado {
-      font-weight: 700;
-      color: #ff4747;
+  @media (min-width: 920px) {
+    .store-btn img:hover {
+      transform: scale(1.08);
+    }
+
+  }
+
+
+  /* ANIMACIONES */
+  @keyframes fadeUp {
+    0% {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0);
+      opacity: 1;
     }
   }
 
-  .row-cta {
-    text-align: center;
-    margin: 8px 0;
-
-    >.stores,
-    >.play {
-      display: inline-block;
-      vertical-align: middle;
-      margin: 0 1px;
-      text-align: center;
+  @keyframes popIn {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
     }
 
-    .stores img {
-      display: block;
-      width: clamp(110px, 10vw, 150px);
-      height: auto;
-    }
-
-    .play img {
-      display: block;
-      width: clamp(105px, 10vw, 135px);
-      height: auto;
+    100% {
+      transform: scale(1);
+      opacity: 1;
     }
   }
+
+  @keyframes pulseText {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.4;
+    }
+  }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 .link_carta {

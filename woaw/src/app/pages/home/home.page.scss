@@ -78,7 +78,7 @@ ion-content {
   .overlay-container {
     position: relative;
     width: 100%;
-    height: 420px;
+    height: 520px;
     overflow: hidden;
 
     @media (max-width: 768px) {
@@ -140,7 +140,7 @@ ion-content {
 
   .bloque-contenido {
     padding: 1rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
     width: 100%;
     max-width: 1200px; // Ancho máximo para contenido
 
@@ -206,15 +206,22 @@ ion-content {
 
   // Estilos para los indicadores
   .indicadores-container {
-    margin-top: 3rem;
+    position: absolute;
+    bottom: 15px; // distancia desde abajo
+    left: 50%;
+    transform: translateX(-50%);
+
     display: flex;
     justify-content: center;
-    width: 100%;
+    align-items: center;
+    width: auto;
+    z-index: 10;
 
     @media (max-width: 768px) {
-      margin-top: 12px; 
+      bottom: 10px;
     }
   }
+
 
   .indicadores {
     display: flex;
@@ -643,6 +650,118 @@ ion-content {
     text-align: center;
     padding: clamp(12px, 4vw, 32px);
     pointer-events: none;
+
+
+
+    .promo-app {
+      background-color: #e6e6e6db;
+      padding: 2rem 1rem;
+      border-radius: 20px;
+      text-align: center;
+      animation: fadeUp 1s ease forwards;
+      margin: 10rem auto;
+      max-width: 900px;
+
+      @media (max-width: 820px) {
+        margin: 3rem auto;
+      }
+
+
+      .promo-content {
+        animation: popIn 1.3s ease forwards;
+      }
+
+      .headline {
+        font-size: clamp(25px, 4vw, 50px);
+        color: white;
+        font-weight: 900;
+        margin-bottom: 10px;
+      }
+
+      .highlight {
+        color: #ff0000;
+      }
+
+      .subtext {
+        color: #7c7c7c;
+        font-size: clamp(12px, 1.5vw, 20px);
+        margin-bottom: 1.5rem;
+      }
+
+      .download-text {
+        font-size: clamp(16px, 2vw, 26px);
+        font-weight: 700;
+        color: #ff2f2f;
+        margin-bottom: 0.8rem;
+        text-shadow: 0 0 10px rgba(255, 50, 50, 0.407);
+        animation: pulseText 1.8s infinite;
+      }
+
+      .cta-row {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 5px;
+      }
+
+      .store-btn img {
+        height: 75px;
+        width: auto !important;
+        transition: transform 0.3s ease, filter 0.3s ease;
+
+        @media(max-width: 920px) {
+          height: 55px;
+        }
+      }
+
+
+      @media (min-width: 920px) {
+        .store-btn img:hover {
+          transform: scale(1.08);
+        }
+
+      }
+
+
+      /* ANIMACIONES */
+      @keyframes fadeUp {
+        0% {
+          transform: translateY(40px);
+          opacity: 0;
+        }
+
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes popIn {
+        0% {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes pulseText {
+
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0.4;
+        }
+      }
+
+
+    }
   }
 
   .logo-goautos2 {
@@ -791,4 +910,33 @@ ion-content {
       height: 35px;
     }
   }
+}
+
+
+
+
+
+
+
+
+.btn-flotante {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: #dc0202;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  font-size: 12px;
+  border-radius: 50px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.btn-flotante:active {
+  transform: translateX(-50%) scale(0.95);
 }
