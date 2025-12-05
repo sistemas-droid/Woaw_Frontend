@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
   standalone: false
 })
 export class AddLotePage implements OnInit {
+
   formLote!: FormGroup;
   imagenLote!: File | null;
   constanciaPDF!: File | null;
@@ -84,15 +85,14 @@ export class AddLotePage implements OnInit {
       "¿Crear lote/agencia?",
       "¿Estás seguro de que deseas continuar?",
       async () => {
-        const faltantes = this.obtenerCamposInvalidos(1);
 
+        const faltantes = this.obtenerCamposInvalidos(1);
         if (faltantes.length > 0) {
           const mensaje = 'Faltan por llenar: ' + faltantes.join(', ');
           await this.generalService.alert('Formulario incorrecto', mensaje, 'warning');
           return;
         }
 
-        // Punto 4: Normalizar nombre antes de enviar (MAYÚSCULAS y máx. 25)
         const nombreNormalizado = (this.formLote?.value?.nombre ?? '')
           .toString()
           .toLocaleUpperCase('es-MX')
@@ -101,7 +101,6 @@ export class AddLotePage implements OnInit {
 
         const formData = new FormData();
 
-        // Campos básicos
         formData.append('nombre', nombreNormalizado);
         formData.append('telefonoContacto', this.formLote.value.telefono);
         formData.append('correoContacto', this.formLote.value.email);
@@ -116,20 +115,20 @@ export class AddLotePage implements OnInit {
           formData.append('direcciones', JSON.stringify(ubicacionesFormateadas));
         }
 
-        // Imagen principal
         if (this.imagenPrincipal) {
           formData.append('imagenPrincipal', this.imagenPrincipal);
         }
 
-        // PDF opcional
         if (this.constanciaPDF) {
           formData.append('constancia', this.constanciaPDF);
         }
 
         this.generalService.loading('Creando Lote...');
+
         try {
           this.registroService.registroLote(formData).subscribe({
             next: async (res) => {
+
               this.generalService.loadingDismiss();
               this.cambioRol(res);
 
@@ -139,13 +138,23 @@ export class AddLotePage implements OnInit {
               this.imagenPrincipal = null;
               this.constanciaPDF = null;
               this.ubicacionesSeleccionadas = [];
-              this.router.navigateByUrl('/lotes');
-              await this.generalService.alert(
-                'Lote creado',
-                '¡Listo! Su lote fue creado correctamente',
-                'success'
-              );
+
+              localStorage.setItem('canAccessWelcomeLote', 'true');
+
+              // 👉 DATOS DEL LOTE
+              const idLote = res?.lote?._id;
+              const nombreLote = res?.lote?.nombre ?? '';
+
+              const nombreURL = nombreLote.replace(/\s+/g, '-').toUpperCase();
+
+              // 🔀 Redirección CON parámetros
+              this.router.navigate([
+                '/lote/welcome-lote',
+                nombreURL,
+                idLote
+              ]);
             },
+
             error: async () => {
               this.generalService.loadingDismiss();
               await this.generalService.alert(
@@ -155,6 +164,7 @@ export class AddLotePage implements OnInit {
               );
             },
           });
+
         } catch (error) {
           this.generalService.loadingDismiss();
           console.error('❌ Error al registrar lote:', error);
@@ -163,7 +173,6 @@ export class AddLotePage implements OnInit {
       }
     );
   }
-
 
   onNombreInput(ev: any) {
     const value: string = (ev?.detail?.value ?? '').toString();

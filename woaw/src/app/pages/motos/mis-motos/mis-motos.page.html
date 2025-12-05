@@ -20,6 +20,9 @@
 </ion-header>
 
 <ion-content #pageContent  [fullscreen]="true">
+    <app-spinner *ngIf="mostrar_spinner" [tipo]="tipo_spinner" [text]="texto_spinner" [sub_text]="textoSub_spinner"></app-spinner>
+
+    
   <app-acomodo [totalAutos]="totalMotos" [titulo]="'Motos'" (ordenCambio)="ordenarAutos($event)">
   </app-acomodo>
 

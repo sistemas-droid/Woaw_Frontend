@@ -10,6 +10,8 @@ import imageCompression from 'browser-image-compression';
 import { GeneralService } from '../../../services/general.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { forkJoin, of, firstValueFrom } from 'rxjs';
+
 @Component({
   selector: 'app-lotes',
   templateUrl: './lotes.page.html',
@@ -31,6 +33,12 @@ export class LotesPage implements OnInit {
   ranking: number[] = []; // ranking competitivo 1,2,2,3,...
   mostrarAuto: boolean = false;
   loteSelect: any[] = [];
+
+
+  public mostrar_spinner: boolean = false;
+  public tipo_spinner: number = 0;
+  public texto_spinner: string = 'Cargando...';
+  public textoSub_spinner: string = 'Espere un momento';
 
   constructor(
     private registroService: RegistroService,
@@ -79,7 +87,7 @@ export class LotesPage implements OnInit {
         ?? b?.conteoCoches?.total
         ?? 0;
 
-        if (totalB !== totalA) return totalB - totalA;
+      if (totalB !== totalA) return totalB - totalA;
 
       const fechaA = new Date(a?.creadoEn || 0).getTime();
       const fechaB = new Date(b?.creadoEn || 0).getTime();
@@ -138,81 +146,87 @@ export class LotesPage implements OnInit {
   }
 
 
-  getLotes() {
-    this.loteservice.getlotes('all').subscribe({
-      next: async (res) => {
-        this.lotesAll = this.ordenarDesc(res?.lotes || []);
-        if (this.MyRole === 'admin' || this.MyRole === 'lotero') {
 
-          this.loteservice.getlotes('mios').subscribe({
-            next: async (res2) => {
-              this.lotesMine = this.ordenarDesc(res2?.lotes || []);
-              this.loteservice.getResumenVendidos().subscribe({
-                next: (resVendidos) => {
 
-                  const vendidosMap = new Map(
-                    resVendidos.lotes.map((l: any) => [
-                      l._id,
-                      l.conteo?.totalVendidos ?? 0
-                    ])
-                  );
 
-                  this.lotesAll = this.lotesAll.map(lote => ({
-                    ...lote,
-                    vendidos: vendidosMap.get(lote._id) ?? 0
-                  }));
+  async getLotes() {
+    try {
+      this.mostrar_spinner = true;
 
-                  this.lotesMine = this.lotesMine.map(lote => ({
-                    ...lote,
-                    vendidos: vendidosMap.get(lote._id) ?? 0
-                  }));
+      // Crear promesas para cada petición
+      const promesaAll = firstValueFrom(this.loteservice.getlotes('all'))
+        .catch(error => {
+          console.warn('Error en lotes all:', error);
+          return { lotes: [] };
+        });
 
-                  this.applyTab(this.activeTab);
-                }
-              });
-            },
-
-            error: async () => {
-              this.lotesMine = [];
-              this.applyTab('todos');
-            }
+      let promesaMine: Promise<any>;
+      if (this.MyRole === 'admin' || this.MyRole === 'lotero') {
+        promesaMine = firstValueFrom(this.loteservice.getlotes('mios'))
+          .catch(error => {
+            console.warn('Error en lotes mios:', error);
+            return { lotes: [] };
           });
+      } else {
+        promesaMine = Promise.resolve({ lotes: [] });
+      }
 
-        } else {
+      const promesaVendidos = firstValueFrom(this.loteservice.getResumenVendidos())
+        .catch(error => {
+          console.warn('Error en resumen vendidos:', error);
+          return { lotes: [] };
+        });
 
-          this.lotesMine = [];
+      // Usar Promise.all (más compatible) con manejo individual
+      const [resAll, resMine, resVendidos] = await Promise.all([
+        promesaAll,
+        promesaMine,
+        promesaVendidos
+      ]);
 
-          this.loteservice.getResumenVendidos().subscribe({
-            next: (resVendidos) => {
+      // Resto del código igual...
+      this.lotesAll = this.ordenarDesc(resAll?.lotes || []);
 
-              const vendidosMap = new Map(
-                resVendidos.lotes.map((l: any) => [
-                  l._id,
-                  l.conteo?.totalVendidos ?? 0
-                ])
-              );
+      if (this.MyRole === 'admin' || this.MyRole === 'lotero') {
+        this.lotesMine = this.ordenarDesc(resMine?.lotes || []);
+      } else {
+        this.lotesMine = [];
+      }
 
-              this.lotesAll = this.lotesAll.map(lote => ({
-                ...lote,
-                vendidos: vendidosMap.get(lote._id) ?? 0
-              }));
+      const vendidosMap = new Map(
+        (resVendidos.lotes || []).map((l: any) => [
+          l._id,
+          l.conteo?.totalVendidos ?? 0
+        ])
+      );
 
-              this.applyTab('todos');
-            }
-          });
-        }
-      },
+      this.lotesAll = this.lotesAll.map(lote => ({
+        ...lote,
+        vendidos: vendidosMap.get(lote._id) ?? 0
+      }));
 
-      error: async () => {
-        await this.generalService.loadingDismiss();
-        await this.generalService.alert(
-          'Verifica tu red',
-          'Error de red. Intenta más tarde.',
-          'danger'
-        );
-      },
-    });
+      this.lotesMine = this.lotesMine.map(lote => ({
+        ...lote,
+        vendidos: vendidosMap.get(lote._id) ?? 0
+      }));
+
+      this.applyTab(this.activeTab);
+      this.mostrar_spinner = false;
+
+    } catch (error) {
+      this.mostrar_spinner = false;
+      console.error('Error inesperado:', error);
+
+      // Mostrar lo que haya cargado
+      this.applyTab(this.activeTab);
+    }
   }
+
+
+
+
+
+
 
   applyTab(tab: 'todos' | 'mios') {
     this.activeTab = tab;

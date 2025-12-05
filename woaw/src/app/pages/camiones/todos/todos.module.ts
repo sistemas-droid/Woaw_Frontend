@@ -12,6 +12,9 @@ import { MenuComponent } from "src/app/components/filtos/menu/menu.component";
 import { CartasComponent } from "src/app/components/cartas/cartas.component";
 import { FooterComponent } from "src/app/components/footer/footer.component";
 import { NavbarComponent } from '../../../components/navbar/navbar.component';
+import { SpinnerComponent } from '../../../components/spinner/spinner.component';
+
+
 
 @NgModule({
   imports: [
@@ -23,7 +26,8 @@ import { NavbarComponent } from '../../../components/navbar/navbar.component';
     MenuComponent,
     CartasComponent,
     FooterComponent,
-    NavbarComponent
+    NavbarComponent,
+    SpinnerComponent
 ],
   declarations: [TodosPage]
 })

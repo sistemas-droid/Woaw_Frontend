@@ -1,0 +1,327 @@
+<app-navbar></app-navbar>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="8">
+        <div class="support-wrapper">
+
+          <!-- HERO / ENCABEZADO -->
+          <section class="support-hero">
+            <div class="hero-text">
+              <h1>Centro de ayuda WOAW</h1>
+              <p>
+                Encuentra respuestas rápidas a las dudas más comunes sobre la app, publicación de vehículos,
+                arrendamiento, seguros y soporte técnico.
+              </p>
+            </div>
+
+            <div class="hero-card">
+              <ion-icon name="chatbubbles-outline"></ion-icon>
+              <div>
+                <h2>¿Tienes alguna duda?</h2>
+                <p>Revisa las preguntas frecuentes o contáctanos directamente.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- BUSCADOR (solo UI, puedes conectar lógica después) -->
+          <section class="support-search">
+            <ion-searchbar placeholder="Buscar en las preguntas frecuentes (ej. arrendamiento, publicar auto, app)…"
+              mode="ios">
+            </ion-searchbar>
+          </section>
+
+          <!-- PREGUNTAS FRECUENTES -->
+          <section class="faq-section">
+
+            <!-- Cuenta y acceso -->
+            <div class="faq-block">
+              <div class="faq-block-header">
+                <ion-icon name="person-circle-outline"></ion-icon>
+                <div>
+                  <h3>Cuenta y acceso</h3>
+                  <p>Registro, inicio de sesión y seguridad de tu cuenta.</p>
+                </div>
+              </div>
+
+              <ion-accordion-group expand="inset">
+                <ion-accordion value="cuenta-1">
+                  <ion-item slot="header">
+                    <ion-label>¿Cómo creo mi cuenta en WOAW?</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    Para crear tu cuenta:
+                    <ol>
+                      <li>Descarga la app desde App Store o Google Play, o entra a <strong>woaw.mx</strong>.</li>
+                      <li>Da clic en <strong>“Crear cuenta”</strong>.</li>
+                      <li>Ingresa tu nombre, correo y número celular.</li>
+                      <li>Verifica el código que enviamos a tu correo o SMS.</li>
+                    </ol>
+                    Listo, con eso ya puedes iniciar sesión y empezar a usar WOAW.
+                  </div>
+                </ion-accordion>
+
+                <ion-accordion value="cuenta-2">
+                  <ion-item slot="header">
+                    <ion-label>No puedo iniciar sesión, ¿qué hago?</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    Verifica lo siguiente:
+                    <ul>
+                      <li>Que tu correo o número estén escritos correctamente.</li>
+                      <li>Que tengas buena conexión a internet.</li>
+                      <li>Si olvidaste tu contraseña, usa la opción <strong>“Recuperar contraseña”</strong>.</li>
+                    </ul>
+                    Si el problema continúa, escríbenos por soporte desde la app o en nuestro WhatsApp oficial.
+                  </div>
+                </ion-accordion>
+
+                <ion-accordion value="cuenta-3">
+                  <ion-item slot="header">
+                    <ion-label>¿Puedo usar la misma cuenta en varios dispositivos?</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    Sí, puedes iniciar sesión con la misma cuenta en varios dispositivos.
+                    Te recomendamos cerrar sesión en equipos que no sean tuyos para mantener tu cuenta segura.
+                  </div>
+                </ion-accordion>
+              </ion-accordion-group>
+            </div>
+
+            <!-- Vehículos y publicaciones -->
+            <div class="faq-block">
+              <div class="faq-block-header">
+                <ion-icon name="car-sport-outline"></ion-icon>
+                <div>
+                  <h3>Vehículos y publicaciones</h3>
+                  <p>Cómo buscar, filtrar y publicar autos dentro de WOAW.</p>
+                </div>
+              </div>
+
+              <ion-accordion-group expand="inset">
+                <ion-accordion value="vehiculo-1">
+                  <ion-item slot="header">
+                    <ion-label>¿Cómo busco un vehículo dentro de WOAW?</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    Puedes buscar desde el menú principal:
+                    <ul>
+                      <li>Entra a <strong>“Vehículos”</strong> o <strong>“Autos”</strong>.</li>
+                      <li>Utiliza los filtros por marca, modelo, año, precio, ciudad, etc.</li>
+                      <li>Guarda tus búsquedas favoritas para revisarlas después.</li>
+                    </ul>
+                  </div>
+                </ion-accordion>
+
+                <ion-accordion value="vehiculo-2">
+                  <ion-item slot="header">
+                    <ion-label>Quiero publicar un auto, ¿qué necesito?</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    Para publicar un vehículo:
+                    <ol>
+                      <li>Inicia sesión en la app o web.</li>
+                      <li>Ve a <strong>“Publicar vehículo”</strong>.</li>
+                      <li>Llena los datos básicos: marca, modelo, año, km, precio y ciudad.</li>
+                      <li>Sube fotos claras y bien iluminadas del auto.</li>
+                      <li>Confirma la publicación y espera la validación del equipo WOAW (si aplica).</li>
+                    </ol>
+                  </div>
+                </ion-accordion>
+
+                <ion-accordion value="vehiculo-3">
+                  <ion-item slot="header">
+                    <ion-label>No veo mi publicación, ¿por qué?</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    Puede deberse a:
+                    <ul>
+                      <li>La publicación está en revisión por el equipo WOAW.</li>
+                      <li>Faltan datos obligatorios o una fotografía fue rechazada.</li>
+                      <li>La publicación fue pausada o eliminada por incumplir políticas.</li>
+                    </ul>
+                    Si tienes dudas, contáctanos con el ID del vehículo desde la sección de soporte.
+                  </div>
+                </ion-accordion>
+              </ion-accordion-group>
+            </div>
+
+            <!-- Arrendamiento y financiamiento -->
+            <div class="faq-block">
+              <div class="faq-block-header">
+                <ion-icon name="card-outline"></ion-icon>
+                <div>
+                  <h3>Arrendamiento y financiamiento</h3>
+                  <p>Cómo funcionan las opciones de arrendamiento y crédito dentro de WOAW.</p>
+                </div>
+              </div>
+
+              <ion-accordion-group expand="inset">
+                <ion-accordion value="arr-1">
+                  <ion-item slot="header">
+                    <ion-label>¿Qué es el arrendamiento automotriz en WOAW?</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    El arrendamiento automotriz te permite usar un vehículo a cambio de una renta mensual,
+                    con beneficios fiscales para personas morales o físicas con actividad empresarial.
+                    En WOAW te conectamos con aliados especializados para cotizar y gestionar tu arrendamiento.
+                  </div>
+                </ion-accordion>
+
+                <ion-accordion value="arr-2">
+                  <ion-item slot="header">
+                    <ion-label>¿Cómo solicito una cotización de arrendamiento?</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    <ol>
+                      <li>Selecciona el vehículo que te interesa.</li>
+                      <li>Elige la opción <strong>“Quiero arrendar”</strong> o similar.</li>
+                      <li>Completa los datos fiscales y de contacto.</li>
+                      <li>Uno de nuestros aliados se comunicará contigo para validar información y enviarte la
+                        propuesta.</li>
+                    </ol>
+                  </div>
+                </ion-accordion>
+
+                <ion-accordion value="arr-3">
+                  <ion-item slot="header">
+                    <ion-label>¿Puedo también solicitar un crédito tradicional?</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    Sí, además del arrendamiento, WOAW te puede conectar con instituciones financieras
+                    para cotizar créditos automotrices tradicionales.
+                    Dependiendo de tu perfil, podremos sugerirte la opción que más te convenga.
+                  </div>
+                </ion-accordion>
+              </ion-accordion-group>
+            </div>
+
+            <!-- Soporte técnico -->
+            <div class="faq-block">
+              <div class="faq-block-header">
+                <ion-icon name="construct-outline"></ion-icon>
+                <div>
+                  <h3>Soporte técnico</h3>
+                  <p>Errores en la app, fallas de carga, notificaciones y desempeño.</p>
+                </div>
+              </div>
+
+              <ion-accordion-group expand="inset">
+                <ion-accordion value="tec-1">
+                  <ion-item slot="header">
+                    <ion-label>La app se cierra o no carga correctamente</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    Prueba lo siguiente:
+                    <ul>
+                      <li>Cierra la app por completo y ábrela de nuevo.</li>
+                      <li>Verifica tu conexión a internet (Wi-Fi o datos móviles).</li>
+                      <li>Asegúrate de tener la última versión instalada desde la tienda.</li>
+                      <li>Si sigue fallando, envíanos captura de pantalla y modelo de tu dispositivo.</li>
+                    </ul>
+                  </div>
+                </ion-accordion>
+
+                <ion-accordion value="tec-2">
+                  <ion-item slot="header">
+                    <ion-label>No me llegan notificaciones</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    Revisa:
+                    <ul>
+                      <li>Que las notificaciones estén activadas para WOAW en la configuración de tu celular.</li>
+                      <li>Que dentro de la app tengas habilitadas las notificaciones importantes.</li>
+                      <li>Que no tengas el modo “No molestar” o modo ahorro extremo de batería activo.</li>
+                    </ul>
+                  </div>
+                </ion-accordion>
+
+                <ion-accordion value="tec-3">
+                  <ion-item slot="header">
+                    <ion-label>¿Cómo contacto al soporte técnico directamente?</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content">
+                    Puedes contactarnos desde:
+                    <ul>
+                      <li>La sección <strong>“Soporte”</strong> dentro de la app.</li>
+                      <li>Nuestro correo de soporte oficial.</li>
+                      <li>Nuestro WhatsApp de atención (si está disponible en tu región).</li>
+                    </ul>
+                    Usualmente respondemos en un tiempo razonable dentro del horario laboral.
+                  </div>
+                </ion-accordion>
+              </ion-accordion-group>
+            </div>
+
+          </section>
+
+
+        </div>
+      </ion-col>
+
+      <ion-col size="12" size-md="4" *ngIf="tipoDispocitivo !== 'telefono'">
+        <!-- CONTACTO DIRECTO -->
+        <section class="contact-section">
+          <div class="contact-card">
+            <div class="contact-text">
+              <h3>¿No encontraste la respuesta?</h3>
+              <p>Escríbenos y un asesor de WOAW te ayudará personalmente.</p>
+            </div>
+            <div class="contact-actions">
+              <!-- Botón de WhatsApp -->
+              <ion-button color="success" expand="block" fill="solid" href="https://wa.me/524427706776" target="_blank">
+                <ion-icon name="logo-whatsapp" slot="start"></ion-icon>
+                WhatsApp soporte
+              </ion-button>
+
+              <!-- Botón de Correo -->
+              <ion-button color="primary" expand="block" fill="solid" href="mailto:soporte@woaw.com" target="_blank">
+                <ion-icon name="mail" slot="start"></ion-icon>
+                Enviar correo
+              </ion-button>
+
+            </div>
+          </div>
+        </section>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+  <app-footer></app-footer>
+</ion-content>
+
+<ion-footer class="safe-footer footer_css_seguros" *ngIf="tipoDispocitivo === 'telefono'">
+  <ion-toolbar>
+    <ion-grid class="ion-no-padding">
+      <ion-row class="ion-align-items-center ion-justify-content-between">
+        
+        <!-- WhatsApp -->
+        <ion-col size="4" class="ion-text-center ion-no-padding">
+          <ion-button color="success" fill="solid" expand="block" href="https://wa.me/524427706776" target="_blank">
+            <ion-icon name="logo-whatsapp" slot="start"></ion-icon>
+            WhatsApp
+          </ion-button>
+        </ion-col>
+
+        <!-- Teléfono -->
+        <ion-col size="4" class="ion-text-center ion-no-padding">
+          <ion-button color="primary" fill="solid" expand="block" href="tel:+524427706776">
+            <ion-icon name="call" slot="start"></ion-icon>
+            Llamar
+          </ion-button>
+        </ion-col>
+
+        <!-- Email -->
+        <ion-col size="4" class="ion-text-center ion-no-padding">
+          <ion-button color="danger" fill="solid" expand="block" href="mailto:soporte@woaw.com" target="_blank">
+            <ion-icon name="mail" slot="start"></ion-icon>
+            Email
+          </ion-button>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

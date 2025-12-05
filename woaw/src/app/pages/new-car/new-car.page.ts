@@ -55,7 +55,7 @@ export class NewCarPage implements OnInit {
     // },
     {
       tipo: "lote",
-      label: "Lote",
+      label: "Agencia seminuevos / Lote",
       icono: "assets/img/icon-lote.png",
       proximamente: false,
     },

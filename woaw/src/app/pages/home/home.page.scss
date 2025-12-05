@@ -68,137 +68,257 @@ ion-content {
   }
 }
 
+
+
 .goautos-bg {
   --background: transparent;
   display: block;
+  position: relative;
 
-  .overlay {
-    transition: opacity 0.6s ease-in-out;
-    width: 100%;
-    height: 450px;
+  .overlay-container {
     position: relative;
-    display: flex;
-    justify-content: center;
-    background-repeat: no-repeat;
+    width: 100%;
+    height: 520px;
+    overflow: hidden;
 
     @media (max-width: 768px) {
-      height: 380px;
+      height: 340px;
     }
 
-    .loaded {
+    // EFECTO DE VIDRIO QUE ABARCA TODA LA IMAGEN
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.303);
+      backdrop-filter: blur(1px);
+      -webkit-backdrop-filter: blur(3px);
+      z-index: 2;
+      pointer-events: none; // Permite interactuar con el contenido
+    }
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+    background-size: cover;
+    background-position: 50% 85%;
+    background-repeat: no-repeat;
+    z-index: 1;
+
+    &.loaded {
       opacity: 1;
     }
+  }
 
-    .contenido-principal {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
+  .next-overlay {
+    transform: translateX(100%);
+    opacity: 0;
+    z-index: 1;
+  }
+
+  // Contenido principal
+  .contenido-principal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start; // Centrado vertical
+    z-index: 10; // Asegura que esté por encima del efecto de vidrio
+  }
+
+  .bloque-contenido {
+    padding: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 1200px; // Ancho máximo para contenido
+
+    // QUITAMOS EL EFECTO DE VIDRIO DEL BLOQUE-CONTENIDO
+    // ya que ahora está en el contenedor principal
+    background: transparent;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    // ✅ Escritorio (pantallas grandes)
+    @media (min-width: 1200px) {
+      padding: 2.5rem;
     }
 
-    .bloque-contenido {
+    // ✅ Tablet (pantallas medianas)
+    @media (min-width: 768px) and (max-width: 1199px) {
+      padding: 1.5rem;
+      max-width: 90%;
+    }
+
+    // ✅ Móvil (pantallas pequeñas)
+    @media (max-width: 767px) {
       padding: 1rem;
-      margin-top: 3rem;
-
-      /* From https://css.glass */
-      background: rgba(0, 0, 0, 0.303);
-      border-radius: 16px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-
-      // ✅ Escritorio (pantallas grandes)
-      @media (min-width: 1200px) {
-        width: 120%;
-      }
-
-      // ✅ Tablet (pantallas medianas)
-      @media (min-width: 768px) and (max-width: 1199px) {
-        width: 90%;
-        padding: 1.2rem;
-        margin-top: 1rem;
-      }
-
-      // ✅ Móvil (pantallas pequeñas)
-      @media (max-width: 767px) {
-        width: 90%;
-        padding: 1rem;
-        margin-top: 0.5rem;
-      }
-
-      .logo-goautos2 {
-        width: 120px;
-        height: auto;
-        z-index: 10;
-
-        @media (max-width: 768px) {
-          top: 15px;
-          width: 55px;
-        }
-      }
-
+      max-width: 95%;
     }
 
-    .titulo {
-      font-size: 36px;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-      color: white;
-
-      // ✅ Escritorio (pantallas grandes)
-      @media (min-width: 1200px) {
-        font-size: 29px;
-      }
-
-      // ✅ Tablet (pantallas medianas)
-      @media (min-width: 768px) and (max-width: 1199px) {
-        font-size: 20px;
-      }
-
-      // ✅ Móvil (pantallas pequeñas)
-      @media (max-width: 767px) {
-        font-size: 16px;
-      }
-    }
-
-    .descripcion {
-      font-size: 1rem;
-      color: #ffffff;
-      margin-bottom: 1.5rem;
+    .logo-goautos2 {
+      width: 120px;
+      height: auto;
+      margin-bottom: 1rem;
 
       @media (max-width: 768px) {
-        font-size: 12px;
-      }
-    }
-
-    .typing {
-      color: white;
-      font-weight: bold;
-      border-right: 2px solid #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      width: fit-content;
-      animation: blink-caret 0.75s step-end infinite;
-    }
-
-    @keyframes blink-caret {
-
-      from,
-      to {
-        border-color: transparent
-      }
-
-      50% {
-        border-color: white
+        width: 55px;
+        margin-bottom: 0.5rem;
       }
     }
   }
+
+  .titulo {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: white;
+
+    // ✅ Escritorio (pantallas grandes)
+    @media (min-width: 1200px) {
+      font-size: 29px;
+    }
+
+    // ✅ Tablet (pantallas medianas)
+    @media (min-width: 768px) and (max-width: 1199px) {
+      font-size: 20px;
+    }
+
+    // ✅ Móvil (pantallas pequeñas)
+    @media (max-width: 767px) {
+      font-size: 16px;
+    }
+  }
+
+  // Estilos para los indicadores
+  .indicadores-container {
+    position: absolute;
+    bottom: 15px; // distancia desde abajo
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    z-index: 10;
+
+    @media (max-width: 768px) {
+      bottom: 10px;
+    }
+  }
+
+
+  .indicadores {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .indicador-linea {
+    width: 30px;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.165);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+
+    &.active {
+      background-color: #ff0000;
+      width: 40px;
+      height: 4px;
+    }
+  }
+
+  // Para móviles
+  @media (max-width: 768px) {
+    .indicador-linea {
+      width: 20px;
+      height: 2px;
+
+      &.active {
+        width: 25px;
+        height: 3px;
+      }
+    }
+
+    .indicadores {
+      gap: 5px;
+    }
+  }
+
+  .typing {
+    color: white;
+    font-weight: bold;
+    border-right: 2px solid #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    width: fit-content;
+    animation: blink-caret 0.75s step-end infinite;
+  }
+
+  @keyframes blink-caret {
+
+    from,
+    to {
+      border-color: transparent
+    }
+
+    50% {
+      border-color: white
+    }
+  }
 }
+
+// Clase para cuando hay transición activa
+.overlay-container.transitioning {
+  .overlay:first-child {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  .next-overlay {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
+
+
+
+
+
+// Clase para cuando hay transición activa
+.overlay-container.transitioning {
+  .overlay:first-child {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  .next-overlay {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
+
+
+
 
 .cartas-sobre-imagen {
   position: relative;
@@ -530,6 +650,118 @@ ion-content {
     text-align: center;
     padding: clamp(12px, 4vw, 32px);
     pointer-events: none;
+
+
+
+    .promo-app {
+      background-color: #e6e6e6db;
+      padding: 2rem 1rem;
+      border-radius: 20px;
+      text-align: center;
+      animation: fadeUp 1s ease forwards;
+      margin: 10rem auto;
+      max-width: 900px;
+
+      @media (max-width: 820px) {
+        margin: 3rem auto;
+      }
+
+
+      .promo-content {
+        animation: popIn 1.3s ease forwards;
+      }
+
+      .headline {
+        font-size: clamp(25px, 4vw, 50px);
+        color: white;
+        font-weight: 900;
+        margin-bottom: 10px;
+      }
+
+      .highlight {
+        color: #ff0000;
+      }
+
+      .subtext {
+        color: #7c7c7c;
+        font-size: clamp(12px, 1.5vw, 20px);
+        margin-bottom: 1.5rem;
+      }
+
+      .download-text {
+        font-size: clamp(16px, 2vw, 26px);
+        font-weight: 700;
+        color: #ff2f2f;
+        margin-bottom: 0.8rem;
+        text-shadow: 0 0 10px rgba(255, 50, 50, 0.407);
+        animation: pulseText 1.8s infinite;
+      }
+
+      .cta-row {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 5px;
+      }
+
+      .store-btn img {
+        height: 75px;
+        width: auto !important;
+        transition: transform 0.3s ease, filter 0.3s ease;
+
+        @media(max-width: 920px) {
+          height: 55px;
+        }
+      }
+
+
+      @media (min-width: 920px) {
+        .store-btn img:hover {
+          transform: scale(1.08);
+        }
+
+      }
+
+
+      /* ANIMACIONES */
+      @keyframes fadeUp {
+        0% {
+          transform: translateY(40px);
+          opacity: 0;
+        }
+
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes popIn {
+        0% {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes pulseText {
+
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0.4;
+        }
+      }
+
+
+    }
   }
 
   .logo-goautos2 {
@@ -600,7 +832,7 @@ ion-content {
 
 
 /* Botón Conócenos centrado y más grande */
-.btn_conocenos{
+.btn_conocenos {
   border: 2px solid #ca1515ea;
   color: #ca1515ea;
   background: transparent;
@@ -614,21 +846,27 @@ ion-content {
   font-weight: 800;
   font-size: clamp(15px, 1.6vw, 18px);
   padding: 20px 36px;
-  width: min(90vw, 520px);      /* ⬅️ controla el “estirado” horizontal */
+  width: min(90vw, 520px);
+  /* ⬅️ controla el “estirado” horizontal */
   min-width: 50px;
 
 
   /* centrado robusto */
-  margin: 24px auto 28px;       /* centra en flujo normal */
-  justify-self: center;         /* si el padre es grid */
-  align-self: center;           /* si el padre es flex/grid */
-  position: relative;           /* centra incluso en contenedores flex con wrap */
+  margin: 24px auto 28px;
+  /* centra en flujo normal */
+  justify-self: center;
+  /* si el padre es grid */
+  align-self: center;
+  /* si el padre es flex/grid */
+  position: relative;
+  /* centra incluso en contenedores flex con wrap */
   left: 50%;
   transform: translateX(-50%);
 
   transition: background .2s ease, color .2s ease, border-color .2s ease;
 }
-.btn_conocenos:hover{
+
+.btn_conocenos:hover {
   border-color: transparent;
   color: #fff;
   background-color: #d83737;
@@ -648,7 +886,7 @@ ion-content {
   flex-wrap: wrap;
 
   @media (max-width: 820px) {
-    gap:5px;
+    gap: 5px;
     margin-top: 18px;
   }
 
@@ -672,4 +910,33 @@ ion-content {
       height: 35px;
     }
   }
+}
+
+
+
+
+
+
+
+
+.btn-flotante {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: #dc0202;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  font-size: 12px;
+  border-radius: 50px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.btn-flotante:active {
+  transform: translateX(-50%) scale(0.95);
 }

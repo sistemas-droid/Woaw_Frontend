@@ -1,0 +1,30 @@
+.ion-card-document {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.ion-card-uploaded {
+  border: 2px solid var(--ion-color-success);
+  background: rgba(var(--ion-color-success-rgb), 0.05);
+}
+
+.ion-icon-document {
+  font-size: 24px;
+  margin-right: 8px;
+  color: var(--ion-color-primary);
+}
+
+.ion-text-bold {
+  font-weight: 600;
+}
+
+.ion-padding{
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+}

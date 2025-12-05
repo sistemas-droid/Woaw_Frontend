@@ -1,13 +1,65 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>welcome_lote</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-navbar></app-navbar>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">welcome_lote</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  <ng-container *ngIf="canAccess">
+
+    <section class="welcome-section">
+
+      <!-- TITULO -->
+      <h1 class="titulo-welcome">
+        ¡Felicidades por registrar tu lote!
+      </h1>
+
+      <!-- CHIP / ETIQUETA DE FELICITACIÓN -->
+      <p class="chip-bienvenida">
+        Agencia seminuevos/lote creada en <span>WOAW</span>
+      </p>
+
+      <!-- SUBTITULO -->
+      <p class="subtitulo-welcome">
+        Ahora puedes verificar tu lote, subir documentos o cargar tu primer auto.
+      </p>
+
+      <!-- CONTENEDOR / CARD DE BOTONES -->
+      <div class="acciones-wrapper">
+        <ion-card class="acciones-card">
+          <ion-card-content>
+
+            <div class="acciones-principales">
+
+              <ion-button expand="block" class="btn-docs" (click)="irASubirDocumentos()">
+                <ion-icon name="document-text-outline" slot="start"></ion-icon>
+                Subir documentos
+              </ion-button>
+
+              <ion-button expand="block" class="btn-auto" (click)="irASubirCarro()">
+                <ion-icon name="car-sport-outline" slot="start"></ion-icon>
+                Subir mi primer auto
+              </ion-button>
+
+              <ion-button expand="block" fill="outline" class="btn-omitir" (click)="abrirGuia()">
+                Leer documentación del lote
+              </ion-button>
+
+            </div>
+
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- TEXTO DE APOYO / OMITIR -->
+      <p class="texto-ayuda">
+        ¿Aún no quieres configurar nada?
+        <strong>Puedes continuar con WOAW y hacerlo más tarde.</strong>
+        <br>
+        <a href="#" class="link-omitir" (click)="omitir()">Omitir por ahora</a>
+      </p>
+
+    </section>
+
+  </ng-container>
+
+  <app-footer></app-footer>
+
 </ion-content>

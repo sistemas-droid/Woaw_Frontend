@@ -1,0 +1,191 @@
+<app-navbar></app-navbar>
+
+<ion-content [fullscreen]="true">
+  <div class="ion-padding">
+
+    <!-- Header Section -->
+    <div class="ion-text-center ion-margin-bottom">
+      <ion-text>
+        <h1 class="ion-text-bold">Documentación Requerida</h1>
+      </ion-text>
+      <ion-text color="medium">
+        <p>Para completar tu solicitud, necesitamos los siguientes documentos</p>
+      </ion-text>
+
+      <!-- Progress Indicator -->
+      <ion-card class="ion-margin-vertical">
+        <ion-card-content>
+          <div class="ion-text-center ion-margin-bottom">
+            <div class="ion-justify-content-between ion-align-items-center">
+              <ion-text>
+                <p class="ion-text-bold">Progreso: {{getUploadedCount()}}/{{documents.length}}</p>
+              </ion-text>
+              <ion-text color="danger">
+                <p class="ion-text-bold">{{getProgressPercentage()}}%</p>
+              </ion-text>
+            </div>
+          </div>
+          <ion-progress-bar [value]="getProgressPercentage() / 100" color="danger">
+          </ion-progress-bar>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Documents Grid -->
+    <ion-grid class="ion-margin-bottom">
+      <ion-row>
+
+        <!-- Constancia de Situación Fiscal -->
+        <ion-col size="12" size-md="3">
+          <ion-card [class.ion-card-uploaded]="documents[0].uploaded" (click)="uploadDocument()"
+            class="ion-card-document">
+            <ion-card-header>
+              <ion-card-title class="ion-align-items-center">
+                <ion-icon name="document" slot="start" class="ion-icon-document"></ion-icon>
+                <ion-text>
+                  <h2 class="ion-text-bold">Constancia de Situación Fiscal</h2>
+                </ion-text>
+              </ion-card-title>
+              <ion-card-subtitle>Constancia</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge [color]="documents[0].uploaded ? 'success' : 'warning'" class="ion-margin-top">
+                {{documents[0].uploaded ? 'Completado' : 'Pendiente'}}
+              </ion-badge>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Identificación del Apoderado -->
+        <ion-col size="12" size-md="3">
+          <ion-card [class.ion-card-uploaded]="documents[1].uploaded" (click)="uploadDocument()"
+            class="ion-card-document">
+            <ion-card-header>
+              <ion-card-title class="ion-align-items-center">
+                <ion-icon name="card" slot="start" class="ion-icon-document"></ion-icon>
+                <ion-text>
+                  <h2 class="ion-text-bold">Identificación del Apoderado</h2>
+                </ion-text>
+              </ion-card-title>
+              <ion-card-subtitle>INE o Pasaporte Vigente</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge [color]="documents[1].uploaded ? 'success' : 'warning'" class="ion-margin-top">
+                {{documents[1].uploaded ? 'Completado' : 'Pendiente'}}
+              </ion-badge>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Estado de Cuenta Lote -->
+        <ion-col size="12" size-md="3">
+          <ion-card [class.ion-card-uploaded]="documents[2].uploaded" (click)="uploadDocument()"
+            class="ion-card-document">
+            <ion-card-header>
+              <ion-card-title class="ion-align-items-center">
+                <ion-icon name="wallet" slot="start" class="ion-icon-document"></ion-icon>
+                <ion-text>
+                  <h2 class="ion-text-bold">Estado de Cuenta Lote</h2>
+                </ion-text>
+              </ion-card-title>
+              <ion-card-subtitle>Con CLABE interbancaria</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge [color]="documents[2].uploaded ? 'success' : 'warning'" class="ion-margin-top">
+                {{documents[2].uploaded ? 'Completado' : 'Pendiente'}}
+              </ion-badge>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Acta Constitutiva (Solo Persona Moral) -->
+        <ion-col size="12" size-md="3">
+          <ion-card [class.ion-card-uploaded]="documents[3].uploaded" (click)="uploadDocument()"
+            class="ion-card-document">
+            <ion-card-header>
+              <ion-card-title class="ion-align-items-center">
+                <ion-icon name="document" slot="start" class="ion-icon-document"></ion-icon>
+                <ion-text>
+                  <h2 class="ion-text-bold">Acta Constitutiva / Asamblea</h2>
+                </ion-text>
+              </ion-card-title>
+              <ion-card-subtitle>Solo para persona Moral</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge [color]="documents[3].uploaded ? 'success' : 'warning'" class="ion-margin-top">
+                {{documents[3].uploaded ? 'Completado' : 'Pendiente'}}
+              </ion-badge>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Fotos del Lote -->
+        <ion-col size="12" size-md="3">
+          <ion-card [class.ion-card-uploaded]="documents[4].uploaded" (click)="uploadDocument()"
+            class="ion-card-document">
+            <ion-card-header>
+              <ion-card-title class="ion-align-items-center">
+                <ion-icon name="camera" slot="start" class="ion-icon-document"></ion-icon>
+                <ion-text>
+                  <h2 class="ion-text-bold">Fotos del Lote</h2>
+                </ion-text>
+              </ion-card-title>
+              <ion-card-subtitle>Interior y exterior que demuestren ubicación clara e inventarios</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge [color]="documents[4].uploaded ? 'success' : 'warning'" class="ion-margin-top">
+                {{documents[4].uploaded ? 'Completado' : 'Pendiente'}}
+              </ion-badge>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Formatos de Autorización -->
+        <ion-col size="12" size-md="3">
+          <ion-card [class.ion-card-uploaded]="documents[5].uploaded" (click)="uploadDocument()"
+            class="ion-card-document">
+            <ion-card-header>
+              <ion-card-title class="ion-align-items-center">
+                <ion-icon name="hammer" slot="start" class="ion-icon-document"></ion-icon>
+                <ion-text>
+                  <h2 class="ion-text-bold">Formatos de Autorización</h2>
+                </ion-text>
+              </ion-card-title>
+              <ion-card-subtitle>Personas Físicas - Personas Morales</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge [color]="documents[5].uploaded ? 'success' : 'warning'" class="ion-margin-top">
+                {{documents[5].uploaded ? 'Completado' : 'Pendiente'}}
+              </ion-badge>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+
+    <!-- Nota Informativa -->
+    <ion-card color="light" class="ion-margin-bottom">
+      <ion-card-header>
+        <ion-card-title class="ion-align-items-center">
+          <ion-icon name="information-circle" color="warning" slot="start"></ion-icon>
+          <ion-text>
+            <h2 class="ion-text-bold">Nota Informativa</h2>
+          </ion-text>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-text>
+          <p>
+            <strong>Nota:</strong> Si el Lote está registrado como persona física con actividad sólo se llena la
+            autorización de reportes de crédito personas físicas, si está registrado como persona moral se llenan ambos
+            formatos adjuntos.
+          </p>
+        </ion-text>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+  <app-footer></app-footer>
+</ion-content>
