@@ -416,4 +416,13 @@ export class LotePage implements OnInit, OnDestroy {
     this.imagenModal = null;
   }
 
+  irADocumentos() {
+    if (!this.lote) return;
+
+    const nombre = encodeURIComponent(this.lote.nombre || '');
+    const id = this.lote._id;
+
+    this.router.navigateByUrl(`/lote/documentos/${nombre}/${id}`);
+  }
+
 }

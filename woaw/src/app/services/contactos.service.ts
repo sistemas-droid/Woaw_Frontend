@@ -334,8 +334,8 @@ async compartirAuto(auto: any, tipo: string) {
       window.open(url, '_blank');
     }
   } catch (err) {
-    console.error('[Share] compartirAuto error', err);
-    this.generalService?.alert?.('Error', 'No se pudo abrir el panel de compartir.', 'danger');
+   // console.error('[Share] compartirAuto error', err);
+   // this.generalService?.alert?.('Error', 'No se pudo abrir el panel de compartir.', 'danger');
   }
 }
 
