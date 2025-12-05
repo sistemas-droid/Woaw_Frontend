@@ -63,11 +63,19 @@
           </p>
 
           <div class="ficha-lote__actions" *ngIf="isOwner">
+
+            <ion-button color="dark" size="small" (click)="irADocumentos()">
+              <ion-icon name="document-text-outline" slot="start"></ion-icon>
+              Documentos
+            </ion-button>
+
             <ion-button color="danger" size="small" fill="solid" class="ios-edit-btn" (click)="editarLote()">
               <ion-icon name="create-outline" slot="start"></ion-icon>
               Editar
             </ion-button>
+
           </div>
+
         </div>
       </div>
     </div>

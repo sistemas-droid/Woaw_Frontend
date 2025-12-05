@@ -1,26 +1,73 @@
+/* === GRID CENTRADO === */
+.docs-grid {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.docs-row {
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Todas las columnas con mismo ancho visual */
+.docs-col {
+  display: flex;
+}
+
+/* === CARTAS === */
 .ion-card-document {
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  transition: .25s ease-in-out;
+  background: #fff;
+
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .15);
+    border-color: var(--ion-color-danger);
   }
 }
 
+/* Carta cuando está completada */
 .ion-card-uploaded {
   border: 2px solid var(--ion-color-success);
-  background: rgba(var(--ion-color-success-rgb), 0.05);
+  background: rgba(46, 204, 113, .08);
 }
 
+/* Ícono + Título */
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 18px;
+  color: #111;
+}
+
+/* Ícono de documento */
 .ion-icon-document {
-  font-size: 24px;
-  margin-right: 8px;
-  color: var(--ion-color-primary);
+  font-size: 26px;
+  color: var(--ion-color-danger);
 }
 
-.ion-text-bold {
+/* === BOTÓN VOLVER === */
+.volver-container {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.btn-volver {
+  --border-radius: 10px;
+  --background: var(--ion-color-danger);
   font-weight: 600;
+<<<<<<< HEAD
 }
 
 .ion-padding{
@@ -28,3 +75,7 @@
     max-width: 1500px;
     margin: 0 auto;
 }
+=======
+  letter-spacing: 0.5px;
+}
+>>>>>>> main

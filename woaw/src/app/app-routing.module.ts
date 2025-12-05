@@ -310,11 +310,11 @@ const routes: Routes = [
         loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then(m => m.WelcomeLotePageModule)
       },
       {
-        path: 'lote/upload-document/:nombreLote/:idLote',
+        path: 'lote/upload-document/:nombre/:id/:tipoDoc',
         loadChildren: () => import('./pages/lote/upload-document/upload-document.module').then(m => m.UploadDocumentPageModule)
       },
       {
-        path: 'lote/documentos',
+        path: 'lote/documentos/:nombre/:id',
         loadChildren: () => import('./pages/lote/documentos/documentos.module').then(m => m.DocumentosPageModule)
       },
       {
@@ -395,6 +395,11 @@ const routes: Routes = [
       // ---------------------
 
       {
+        path: 'soporte',
+        loadChildren: () => import('./pages/soporte/soporte.module').then(m => m.SoportePageModule)
+      },
+
+      {
         path: 'asesores',
         loadChildren: () => import('./pages/asesores/asesores.module').then(m => m.AsesoresPageModule)
       },
@@ -406,7 +411,6 @@ const routes: Routes = [
       import("./pages/error/error.module").then((m) => m.ErrorPageModule),
     data: { title: "Página no encontrada | woaw" },
   },
-
 ];
 
 @NgModule({

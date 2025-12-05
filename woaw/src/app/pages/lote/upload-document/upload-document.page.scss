@@ -1,0 +1,108 @@
+/* --- CONTENEDOR GENERAL --- */
+.ion-padding {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* --- TITULO DE LA PÁGINA --- */
+h1 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+}
+
+.ion-text-muted {
+    color: #6b7280;
+    font-size: 15px;
+}
+
+/* --- TARJETA PRINCIPAL --- */
+ion-card {
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+    padding: 6px;
+    transition: 0.25s ease-in-out;
+
+    &:hover {
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+        transform: translateY(-1px);
+    }
+}
+
+/* --- INPUT DE ARCHIVO (Custom bonito) --- */
+ion-item {
+    --background: #fafafa;
+    --border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    margin-top: 10px;
+
+    input[type="file"] {
+        margin-left: 12px;
+        font-size: 14px;
+        color: #444;
+        padding: 10px 0;
+        cursor: pointer;
+
+        &::-webkit-file-upload-button {
+            background: var(--ion-color-danger);
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        &::-webkit-file-upload-button:hover {
+            background: #b40000;
+        }
+    }
+}
+
+/* --- TEXTO DEL ARCHIVO SELECCIONADO --- */
+.archivo {
+    font-size: 15px;
+    background: #f9fafb;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* --- BOTONES --- */
+ion-button {
+    --border-radius: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+ion-button[color="primary"] {
+    --background: var(--ion-color-danger);
+    --background-hover: #b30000;
+}
+
+ion-button[fill="outline"] {
+    --border-color: #111;
+    --color: #111;
+
+    &:hover {
+        --background: #f4f4f4;
+    }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 22px;
+    }
+
+    ion-card {
+        padding: 0;
+    }
+}

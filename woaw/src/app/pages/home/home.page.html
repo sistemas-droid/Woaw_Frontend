@@ -132,4 +132,7 @@
 
    </ion-content>
 
+  <button class="btn-flotante" *ngIf="mostrarBotonFlotante && !esDispositivoMovil" (click)="scrollAPrincipal()">
+    {{ botonFlotanteTexto }}
+  </button>
 

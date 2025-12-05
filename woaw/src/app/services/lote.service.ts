@@ -81,7 +81,7 @@ export class LoteService {
       catchError(error => this.headersService.handleError(error))
     );
   }
-  
+
   getResumenVendidos(): Observable<any> {
     return from(this.headersService.obtenerToken()).pipe(
       switchMap(token => {
@@ -92,6 +92,79 @@ export class LoteService {
         );
       })
     );
+  }
+
+  detectarRFC(idLote: string, rfc: string): Observable<any> {
+    return from(this.headersService.obtenerToken()).pipe(
+      switchMap(token => {
+        const headers = this.headersService.getFormDataHeaders(token);
+        return this.http.patch(
+          `${environment.api_key}/lotes/${idLote}/detectar-rfc`,
+          { rfc },
+          { headers }
+        );
+      }),
+      catchError(error => this.headersService.handleError(error))
+    );
+  }
+  // 👇 Helper genérico para subir documentos de un lote
+  private subirDocumentoLote(
+    idLote: string,
+    slug: string,          // constancia-fiscal, identificacion-apoderado, etc.
+    file: File
+  ): Observable<any> {
+    return from(this.headersService.obtenerToken()).pipe(
+      switchMap(token => {
+        const headers = this.headersService.getFormDataHeaders(token);
+        const formData = new FormData();
+        formData.append('archivo', file);
+
+        return this.http.post(
+          `${environment.api_key}/lotes/${idLote}/documentos/${slug}`,
+          formData,
+          { headers }
+        );
+      }),
+      catchError(error => this.headersService.handleError(error))
+    );
+  }
+  // =============================
+  //   DOCUMENTOS DEL LOTE
+  // =============================
+
+  // Constancia de Situación Fiscal
+  subirConstanciaFiscal(idLote: string, file: File): Observable<any> {
+    return this.subirDocumentoLote(idLote, 'constancia-fiscal', file);
+  }
+
+  // Identificación del Apoderado
+  subirIdentificacionApoderado(idLote: string, file: File): Observable<any> {
+    return this.subirDocumentoLote(idLote, 'identificacion-apoderado', file);
+  }
+
+  // Estado de Cuenta Lote
+  subirEstadoCuenta(idLote: string, file: File): Observable<any> {
+    return this.subirDocumentoLote(idLote, 'estado-cuenta', file);
+  }
+
+  // Acta Constitutiva (solo persona moral)
+  subirActaConstitutiva(idLote: string, file: File): Observable<any> {
+    return this.subirDocumentoLote(idLote, 'acta-constitutiva', file);
+  }
+
+  // Fotos del Lote
+  subirFotosLote(idLote: string, file: File): Observable<any> {
+    return this.subirDocumentoLote(idLote, 'fotos-lote', file);
+  }
+
+  // Formato autorización Persona Física
+  subirFormatoAutPF(idLote: string, file: File): Observable<any> {
+    return this.subirDocumentoLote(idLote, 'formato-aut-pf', file);
+  }
+
+  // Formato autorización Persona Moral
+  subirFormatoAutPM(idLote: string, file: File): Observable<any> {
+    return this.subirDocumentoLote(idLote, 'formato-aut-pm', file);
   }
 
 }

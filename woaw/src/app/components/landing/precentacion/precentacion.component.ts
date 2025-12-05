@@ -36,9 +36,9 @@ export class PrecentacionComponent implements OnInit {
   public conNuevos: number = 0;
   public conMotos: number = 0;
 
-  durUsados = '400s';
-  durSemis = '400s';
-  durNuevos = '400s';
+  durUsados = '5000s';
+  durSemis = '5000s';
+  durNuevos = '7000s';
 
 
   constructor(

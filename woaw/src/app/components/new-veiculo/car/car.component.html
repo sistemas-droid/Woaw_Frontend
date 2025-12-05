@@ -141,7 +141,7 @@
 
     <ion-item>
       <ion-label position="stacked">Tipo de factura (opcional)</ion-label>
-      <ion-select [(ngModel)]="tipoFactura" placeholder="Selecciona una opción">
+      <ion-select [(ngModel)]="tipoFactura" placeholder="Selecciona una opción" mode="ios" interface="alert">
         <ion-select-option value="original">Original</ion-select-option>
         <ion-select-option value="refacturada">Refacturada</ion-select-option>
         <ion-select-option value="sin factura">Sin factura</ion-select-option>
@@ -185,38 +185,24 @@
       <!-- Lote -->
       <div class="bloque-imagenes" *ngIf="tipoSeleccionado === 'lote'">
         <label for="loteSelect">Selecciona tu lote:</label>
-        <select
-          id="loteSelect"
-          [(ngModel)]="loteSeleccionado"
-          class="select-lote"
-          (change)="onLoteSeleccionado()"
-        >
-          <option [ngValue]="null" disabled selected>Selecciona un lote</option>
-          <option *ngFor="let lote of lotes" [ngValue]="lote._id">
+        <ion-select id="loteSelect" [(ngModel)]="loteSeleccionado" class="select-lote"
+          (ionChange)="onLoteSeleccionado()" placeholder="Selecciona un lote" mode="ios" interface="alert">
+          <ion-select-option *ngFor="let lote of lotes" [value]="lote._id">
             {{ lote.nombre }}
-          </option>
-        </select>
+          </ion-select-option>
+        </ion-select>
 
         <div
           *ngIf="ubicacionesLoteSeleccionado!.length > 1"
           class="bloque-direcciones"
         >
           <label for="direccionSelect">Selecciona una ubicación:</label>
-          <select
-            id="direccionSelect"
-            [(ngModel)]="direccionSeleccionada"
-            class="select-lote"
-          >
-            <option [ngValue]="null" disabled selected>
-              Selecciona una ubicación
-            </option>
-            <option
-              *ngFor="let dir of ubicacionesLoteSeleccionado; let i = index"
-              [ngValue]="dir"
-            >
+          <ion-select id="direccionSelect" [(ngModel)]="direccionSeleccionada" class="select-lote"
+            placeholder="Selecciona una ubicación" mode="ios" interface="alert">
+            <ion-select-option *ngFor="let dir of ubicacionesLoteSeleccionado; let i = index" [value]="dir">
               {{ ubicacionesLoteLegibles[i] || 'Obteniendo dirección...' }}
-            </option>
-          </select>
+            </ion-select-option>
+          </ion-select>
         </div>
 
         <div
@@ -274,15 +260,22 @@
           (ionChange)="toggleVersion(i, version)"
         ></ion-checkbox>
         <span>{{ version }}</span>
-
-        <input
+        <ion-input
           *ngIf="versionSeleccionada[i]"
           type="number"
           min="0"
           placeholder="Precio"
           [(ngModel)]="preciosVersiones[version]"
-          name="precio_{{ i }}"
-        />
+          name="precio_{{ i }}">
+        </ion-input>
+      </div>
+      <div class="grid-form">
+        <!-- Descripción (obligatorio) -->
+        <!-- <div class="campo" style="grid-column: span 2;">
+          <label>Descripción del vehículo: <span class="requerido">*</span></label>
+          <textarea rows="4" placeholder="Ej. Auto en excelente estado, único dueño..." required
+            [(ngModel)]="descripcion"></textarea>
+        </div> -->
       </div>
     </div>
 
@@ -298,67 +291,70 @@
       <div class="campo">
         <label>Versión: <span class="requerido">*</span></label>
 
-        <select
-          *ngIf="!esUsadoAntiguo && versionesDisponibles"
-          [(ngModel)]="versionSeleccionadaTexto"
-          (ngModelChange)="onSeleccionVersion($event)"
-        >
-          <option disabled selected value="">Selecciona una versión</option>
-          <option *ngFor="let version of versiones" [value]="version">
+        <!-- Mostrar <ion-select> si no es "Usado antiguo" -->
+        <ion-select *ngIf="!esUsadoAntiguo && versionesDisponibles" [(ngModel)]="versionSeleccionadaTexto"
+          (ngModelChange)="onSeleccionVersion($event)" placeholder="Selecciona una versión" mode="ios"
+          interface="alert">
+          <ion-select-option *ngFor="let version of versiones" [value]="version">
             {{ version }}
-          </option>
-        </select>
+          </ion-select-option>
+        </ion-select>
 
-        <input
+        <!-- Mostrar <ion-input> si es usado y año < 2008 -->
+        <ion-input
           *ngIf="esUsadoAntiguo || !versionesDisponibles"
           type="text"
           [(ngModel)]="versionSeleccionadaTexto"
-          placeholder="Escribe la versión manualmente"
-        />
+          placeholder="Escribe la versión manualmente">
+        </ion-input>
       </div>
 
       <div class="campo">
         <label>Precio: <span class="requerido">*</span></label>
-        <input
+        <ion-input
           type="number"
           min="0"
           placeholder="Precio del vehículo"
-          [(ngModel)]="precio"
-        />
+          [(ngModel)]="precio">
+        </ion-input>
       </div>
 
       <div class="campo">
         <label>Placas: <span class="opcional_css">(opcional)</span></label>
-        <input type="text" placeholder="Ej. UVY-123-A" [(ngModel)]="placas" />
+        <ion-input
+          type="text"
+          placeholder="Ej. UVY-123-A"
+          [(ngModel)]="placas">
+        </ion-input>
       </div>
 
       <div class="campo">
         <label>Kilometraje: <span class="requerido">*</span></label>
-        <input
+        <ion-input
           type="number"
           min="0"
           placeholder="Ej. 45000"
           required
-          [(ngModel)]="kilometraje"
-        />
+          [(ngModel)]="kilometraje">
+        </ion-input>
       </div>
 
       <div class="campo">
         <label>Color: <span class="requerido">*</span></label>
-        <select required [(ngModel)]="colorSeleccionado" name="color">
-          <option value="" disabled selected>Selecciona un color</option>
-          <option *ngFor="let opcion of opciones" [value]="opcion.label">
+        <ion-select required [(ngModel)]="colorSeleccionado" name="color" placeholder="Selecciona un color" mode="ios"
+          interface="alert">
+          <ion-select-option *ngFor="let opcion of opciones" [value]="opcion.label">
             {{ opcion.label }}
-          </option>
-        </select>
+          </ion-select-option>
+        </ion-select>
       </div>
 
       <div class="campo">
         <label>Moneda:</label>
-        <select [(ngModel)]="moneda" name="moneda">
-          <option value="MXN">MXN - Pesos mexicanos</option>
-          <option value="USD">USD - Dólares estadounidenses</option>
-        </select>
+        <ion-select [(ngModel)]="moneda" name="moneda" mode="ios" interface="alert">
+          <ion-select-option value="MXN">MXN - Pesos mexicanos</ion-select-option>
+          <ion-select-option value="USD">USD - Dólares estadounidenses</ion-select-option>
+        </ion-select>
       </div>
 
       <div class="campo campo-descripcion">
@@ -375,16 +371,11 @@
       </div>
     </div>
 
-    <!-- FICHA TÉCNICA VERSIÓN -->
+    <!-- -->
     <div class="grid-info">
-      <div
-        class="columna-ficha"
-        *ngIf="
-          versionesDisponibles &&
-          (estadoVehiculo_logico === 'seminuevo' ||
-            estadoVehiculo_logico === 'usado')
-        "
-      >
+      <!-- Ficha técnica -->
+      <div class="columna-ficha"
+        *ngIf="versionesDisponibles && (estadoVehiculo_logico === 'seminuevo' || estadoVehiculo_logico === 'usado')">
         <div class="card-especificaciones" *ngIf="especificacionesVersion">
           <h4>Ficha técnica</h4>
           <ul>
@@ -436,21 +427,16 @@
       </div>
     </div>
 
-    <!-- FICHA TÉCNICA VIEJITO / SIN VERSIÓN -->
-    <div
-      class="grid-form ficha-viejito"
-      *ngIf="estadoVehiculo_logico === 'viejito' || !versionesDisponibles"
-    >
+    <!-- Ficha técnica VIEJITO-->
+    <div class="grid-form" *ngIf="estadoVehiculo_logico === 'viejito' || !versionesDisponibles">
+      <!-- <h4>Ficha técnica (editable)</h4> -->
       <div class="campo" *ngFor="let campo of camposEspecificaciones">
-        <label>
-          {{ etiquetasCampos[campo] }}:
-          <span class="opcional_css">(opcional)</span>
-        </label>
-        <input
+        <label>{{ etiquetasCampos[campo] }}: <span class="opcional_css">(opcional)</span></label>
+        <ion-input
           type="text"
           [placeholder]="'Ej. ' + ejemplosCampos[campo]"
-          [(ngModel)]="camposViejito[campo]"
-        />
+          [(ngModel)]="camposViejito[campo]">
+        </ion-input>
       </div>
 
       <div class="campo campo-descripcion">
@@ -463,4 +449,6 @@
       </div>
     </div>
   </div>
+
+
 </section>

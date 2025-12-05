@@ -1,6 +1,40 @@
 <app-navbar></app-navbar>
 
 <ion-content [fullscreen]="true">
+  <div class="ion-padding">
+
+    <div class="ion-text-center ion-margin-bottom">
+      <h1 class="ion-text-bold">{{ nombreDocumentoMostrar }}</h1>
+      <p class="ion-text-muted">Subir documento para el lote: <strong>{{ nombreLote }}</strong></p>
+    </div>
+
+    <ion-card>
+      <ion-card-content>
+
+        <!-- Selector de archivo -->
+        <ion-item>
+          <ion-label>Seleccionar archivo</ion-label>
+          <input type="file" (change)="onFileSelected($event)" accept=".pdf,.jpg,.jpeg,.png" />
+        </ion-item>
+
+        <div class="ion-text-center ion-margin-top" *ngIf="archivoSeleccionado">
+          <p><strong>Archivo seleccionado:</strong> {{ archivoSeleccionado.name }}</p>
+        </div>
+
+        <ion-button expand="block" color="danger" class="ion-margin-top" [disabled]="!archivoSeleccionado"
+          (click)="subirArchivo()">
+          Subir Documento
+        </ion-button>
+
+        <ion-button expand="block" fill="outline" class="ion-margin-top"
+          (click)="router.navigateByUrl('/lote/documentos/' + nombreLote + '/' + idLote)">
+          Cancelar
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
 
   <app-footer></app-footer>
 </ion-content>
