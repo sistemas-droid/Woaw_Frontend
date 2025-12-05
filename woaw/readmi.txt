@@ -4,6 +4,7 @@ ionic generate page pages/updateCar
 ionic generate guard guards/auth
 ionic generate service services/motos
 
+    "allowSyntheticDefaultImports": true, EN LINEA 14 DE tsconfig.json PARA ANIMACION DE CONFETI
 
  ## ESTILOS DE MODAL
 
@@ -53,3 +54,9 @@ firebase hosting:channel:deploy mi-feature
 
              "optimization": false,
             "buildOptimizer": false,
+
+
+
+
+--- INASTALACIONES ---
+npm install @capawesome/capacitor-app-update
