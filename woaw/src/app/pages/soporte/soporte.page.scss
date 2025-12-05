@@ -160,12 +160,38 @@
   .contact-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 10px;
+
+    .btn-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
     ion-button {
+      width: 100%;                // 🔥 Simétricos como en el footer
+      max-width: 100%;
+
       --border-radius: 999px;
+
+      --background: transparent;
+      --background-hover: rgba(255,255,255,0.06);
+      --background-activated: rgba(255,255,255,0.08);
+
+      --border-width: 1px;
+      --border-color: rgba(255,255,255,0.18);
+
+      --color: #fff;
+
       font-size: 13px;
-      height: 40px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      height: 42px;
+
+      ion-icon {
+        font-size: 18px;
+        margin-right: 6px;
+      }
     }
   }
 }
@@ -187,6 +213,50 @@
 
     .hero-card {
       flex: 1.3;
+    }
+  }
+}
+
+
+
+.footer_css_seguros {
+  --border-width: 0;
+  border-top: 0 !important;
+  box-shadow: none !important;
+
+  ion-toolbar {
+    --border-width: 0;
+    --border-color: transparent;
+    --border-style: none;
+    --background: transparent;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  ion-row {
+    width: 100%;
+    padding: 8px 10px;
+  }
+
+  ion-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ion-button {
+    width: 100%;
+    max-width: 100%;
+    --border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    height: 42px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    ion-icon {
+      font-size: 18px;
+      margin-right: 8px;
     }
   }
 }
