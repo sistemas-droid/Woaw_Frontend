@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -13,26 +13,67 @@ import { Router } from '@angular/router';
   imports: [IonicModule, CommonModule, ReactiveFormsModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+
+  private readonly STORAGE_KEY = 'woalf_last_shown';
+  private readonly COOLDOWN_MINUTES = 2; //Minutos
 
   texts = [
-    // { text: "¡Bienvenido a WOAW!", route: null },
     { text: "Necesitas apoyo? Soy woalf estoy para ayudarte", route: "/soporte" },
   ];
 
   displayedText = "";
-  index = 0;         // letra actual
-  textIndex = 0;     // texto actual
-  typingSpeed = 40;  // velocidad de escritura
-  isTyping = true;   // desactiva click mientras escribe
+  index = 0;
+  textIndex = 0;
+  typingSpeed = 40;
+  isTyping = true;
 
-  showWoalf = true;  // diálogos visibles
-  showFab = false;   // botón flotante visible
+  showWoalf = false;
+  showFab = false;
+
+  private timer: any;
 
   constructor(private router: Router) { }
 
   ngOnInit() {
-    this.typeText();
+    this.checkAndShowWoalf();
+  }
+
+  ngOnDestroy() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+  }
+
+  private checkAndShowWoalf(): void {
+    const lastShown = this.getLastShownTime();
+    const now = new Date().getTime();
+
+    if (!lastShown || (now - lastShown) > (this.COOLDOWN_MINUTES * 60 * 1000)) {
+      this.showWoalf = true;
+      this.typeText();
+      this.updateLastShownTime();
+    } else {
+      this.showFab = true;
+    }
+  }
+
+  private getLastShownTime(): number | null {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY);
+      return stored ? parseInt(stored, 10) : null;
+    } catch (error) {
+      console.error('Error reading from localStorage:', error);
+      return null;
+    }
+  }
+
+  private updateLastShownTime(): void {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, new Date().getTime().toString());
+    } catch (error) {
+      console.error('Error writing to localStorage:', error);
+    }
   }
 
   typeText() {
@@ -47,12 +88,10 @@ export class HomeComponent implements OnInit {
         clearInterval(interval);
         this.isTyping = false;
 
-        // Si NO es el último texto, pasa al siguiente
         if (this.textIndex < this.texts.length - 1) {
           setTimeout(() => this.nextText(), 2000);
         } else {
-          // Es el último texto: esperar 2s y mostrar FAB
-          setTimeout(() => {
+          this.timer = setTimeout(() => {
             this.showWoalf = false;
             this.showFab = true;
           }, 4000);
@@ -75,20 +114,30 @@ export class HomeComponent implements OnInit {
   }
 
   onBubbleClick() {
-    if (this.isTyping) return;  // no click mientras escribe
+    if (this.isTyping) return;
 
     const route = this.texts[this.textIndex].route;
-    if (!route) return;         // bienvenida no navega
+    if (!route) return;
 
     this.router.navigate([route]);
   }
 
   onFabClick() {
-    // Aquí decides a dónde manda el botón flotante
     this.router.navigate(['/soporte']);
   }
 
+  forceShowWoalf(): void {
+    localStorage.removeItem(this.STORAGE_KEY);
+    this.showWoalf = true;
+    this.showFab = false;
+    this.displayedText = "";
+    this.index = 0;
+    this.textIndex = 0;
+    this.typeText();
+    this.updateLastShownTime();
+  }
+
   private fullSafeChar(char: string): string {
-    return char; // helper por si luego quieres filtrar caracteres especiales
+    return char;
   }
 }

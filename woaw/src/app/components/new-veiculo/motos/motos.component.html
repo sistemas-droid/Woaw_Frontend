@@ -1,6 +1,7 @@
 <section>
   <!-- Resumen + botón Publicar (solo cuando estás en el form principal) -->
   <div class="resumen-estado" *ngIf="seccionFormulario == 2 && Pregunta == 'no'">
+    
     <button type="button" class="btn-guardar" (click)="EnviarVeiculo()">
       <ion-icon name="save-outline" class="icono-guardar"></ion-icon>
       Publicar

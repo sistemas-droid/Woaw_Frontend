@@ -1,25 +1,26 @@
 .woalf-container {
     position: fixed;
-    right: 15px;
+    right: 0px;
     bottom: 0px;
-    animation: slideUp 2s ease-out forwards;
+    animation: slideUp 1s ease-out forwards;
     z-index: 50;
     cursor: pointer;
     display: flex;
-    align-items: flex-end; /* Esto alinea la imagen al fondo del contenedor */
-    height: 200px; /* Aumenta la altura del contenedor para dar espacio */
+    align-items: flex-end;
+    height: 200px;
 }
 
 @keyframes slideUp {
     from {
-        bottom: -300px;
+        right: -300px;
         opacity: 0;
-        transform: translateY(40px);
+        transform: translateX(40px);
     }
+
     to {
-        bottom: 0;
+        right: 10px;
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
     }
 }
 
@@ -27,14 +28,18 @@
     width: 120px;
     height: auto;
     user-select: none;
-    /* Eliminé margin-top y en su lugar: */
-    margin-bottom: -10px; /* Empuja la imagen un poco más abajo si es necesario */
+    margin-bottom: -10px;
+    transform: scaleX(-1);
+    transform-origin: center;
+
+    @media (max-width: 720px) {
+        margin-bottom: 20px;
+    }
 }
 
-/* Si necesitas ajustar la burbuja de diálogo para que quede mejor */
 .speech-bubble {
     position: absolute;
-    top: -60px; /* Ajusté esto para que esté más arriba ahora que la imagen está más abajo */
+    top: -30px;
     background: #ffffff;
     padding: 7px 11px;
     border-radius: 14px;
@@ -44,6 +49,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     opacity: 0;
     animation: fadeIn 0.6s ease forwards;
+
 }
 
 .speech-bubble::after {

@@ -101,56 +101,60 @@ export class MotosComponent implements OnInit {
     public ContactosService: ContactosService,
   ) { }
 
- ngOnInit() {
-  this.generalService.tipoRol$.subscribe((rol) => {
-    if (rol === 'admin' || rol === 'lotero' || rol === 'vendedor' || rol === 'cliente') {
-      this.MyRole = rol;
+  ngOnInit() {
+    this.generalService.tipoRol$.subscribe((rol) => {
+      if (rol === 'admin' || rol === 'lotero' || rol === 'vendedor' || rol === 'cliente') {
+        this.MyRole = rol;
 
-      // ✅ Siempre mostrar la pregunta "¿quién lo sube?"
-      this.Pregunta = 'si';
-      this.seccionFormulario = 2;
+        // ✅ Siempre mostrar la pregunta "¿quién lo sube?"
 
-      if (this.MyRole === 'lotero') {
-        // Preselecciona "lote" y PRE-CARGA mi(s) lote(s) del usuario
-        this.tipoSeleccionado = 'lote';
-        this.getLotes('mios'); // mantiene la precarga de lote y ubicación si hay uno solo
-      } else if (this.MyRole === 'admin') {
-        // Admin elige en la UI; si elige "lote" el hijo hará getLotes('all')
-        this.tipoSeleccionado = null as any;
+
+        if (this.MyRole === 'lotero') {
+          this.Pregunta = 'si';
+          this.seccionFormulario = 2;
+          // Preselecciona "lote" y PRE-CARGA mi(s) lote(s) del usuario
+          this.tipoSeleccionado = 'lote';
+          this.getLotes('mios'); // mantiene la precarga de lote y ubicación si hay uno solo
+        } else if (this.MyRole === 'admin') {
+          this.Pregunta = 'si';
+          this.seccionFormulario = 2;
+          // Admin elige en la UI; si elige "lote" el hijo hará getLotes('all')
+          this.tipoSeleccionado = null as any;
+        } else {
+          this.Pregunta = 'no';
+          // Vendedor / Cliente: sugerido "particular"
+          this.tipoSeleccionado = 'particular';
+        }
+
+        this.definirEstadoVehiculo();
       } else {
-        // Vendedor / Cliente: sugerido "particular"
-        this.tipoSeleccionado = 'particular';
+        this.generalService.eliminarToken();
+        this.generalService.alert('¡Saliste de tu sesión Error - 707!', '¡Hasta pronto!', 'info');
       }
+    });
+  }
 
-      this.definirEstadoVehiculo();
-    } else {
-      this.generalService.eliminarToken();
-      this.generalService.alert('¡Saliste de tu sesión Error - 707!', '¡Hasta pronto!', 'info');
-    }
-  });
-}
+  public onTipoChange(event: any) {
+    const valor = event.detail?.value as 'Nuevo' | 'Seminuevo' | 'Usado';
 
-public onTipoChange(event: any) {
-  const valor = event.detail?.value as 'Nuevo' | 'Seminuevo' | 'Usado';
+    this.estadoVehiculo = valor;
 
-  this.estadoVehiculo = valor;
-
-  // Ajustamos el lógico para que sigan funcionando tus validaciones
-  if (valor === 'Nuevo') {
-    this.estadoVehiculo_logico = 'nuevo';
-    // como en definirEstadoVehiculo: km en 0 y sin placas
-    this.kilometraje = 0;
-    this.placas = '';
-  } else if (valor === 'Seminuevo') {
-    this.estadoVehiculo_logico = 'seminuevo';
-  } else if (valor === 'Usado') {
-    // si es viejita la moto, lo marcas como "viejito" igual que en autos
-    if (this.anio < 2008 && this.anio >= 1800) { 
-    } else {
-      this.estadoVehiculo_logico = 'usado';
+    // Ajustamos el lógico para que sigan funcionando tus validaciones
+    if (valor === 'Nuevo') {
+      this.estadoVehiculo_logico = 'nuevo';
+      // como en definirEstadoVehiculo: km en 0 y sin placas
+      this.kilometraje = 0;
+      this.placas = '';
+    } else if (valor === 'Seminuevo') {
+      this.estadoVehiculo_logico = 'seminuevo';
+    } else if (valor === 'Usado') {
+      // si es viejita la moto, lo marcas como "viejito" igual que en autos
+      if (this.anio < 2008 && this.anio >= 1800) {
+      } else {
+        this.estadoVehiculo_logico = 'usado';
+      }
     }
   }
-}
   // ====== Estado por año/rol ======
   definirEstadoVehiculo() {
     const anioActual = new Date().getFullYear();

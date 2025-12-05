@@ -278,7 +278,6 @@
   }
 }
 
-
 .band-cards {
   position: relative;
   z-index: 998;
@@ -286,16 +285,16 @@
   max-width: 1800px;
   margin-top: 40px;
   padding: 0 20px;
+
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)); // SIEMPRE 2 COLUMNAS
+  grid-template-columns: 1fr; // SOLO UNA COLUMNA
+  place-items: center; // CENTRA LA CARTA
   gap: 18px;
 
-  // en pantallas más chicas solo ajustamos padding y gap,
-  // PERO NO cambiamos a 1 columna
   @media (max-width: 980px) {
     margin-top: 1.5rem;
     padding: 0 10px;
-    gap: 1px;
+    gap: 12px;
   }
 
   @media (max-width: 720px) {
@@ -304,6 +303,9 @@
   }
 
   .mini-card {
+    width: 100%;
+    max-width: 520px; // la centramos y evitamos que se haga enorme
+    height: 150px;
     position: relative;
     cursor: pointer;
     border-radius: 20px;
@@ -316,7 +318,7 @@
     align-items: flex-start;
     justify-content: flex-start;
 
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.35);
     border: 1px solid rgba(255, 255, 255, 0.05);
     transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 
@@ -328,12 +330,13 @@
     @media (max-width: 720px) {
       border-radius: 12px;
       padding: 10px 8px 8px;
+      max-width: 280px;
+      height: 80px;
     }
 
     @media (min-width: 980px) {
       &:hover {
         transform: translateY(-6px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
         border-color: rgba(255, 0, 0, 0.35);
       }
 
@@ -368,11 +371,6 @@
       color: #ffffff;
       margin-bottom: 8px;
 
-      @media (max-width: 720px) {
-        font-size: 9px;
-        padding: 2px 8px;
-      }
-
       &.mini-tag--empresas {
         background: rgba(0, 0, 0, 0.55);
       }
@@ -381,12 +379,9 @@
     .bg-card-min {
       position: absolute;
       width: 170px;
-      height: auto;
       bottom: -8px;
       right: -10px;
-      // opacity: 0.6;
       pointer-events: none;
-      // transition: opacity 0.3s ease, transform 0.3s ease;
       object-fit: contain;
       filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
 
@@ -396,39 +391,32 @@
 
       @media (max-width: 720px) {
         width: 115px;
-        // opacity: 0.5;
       }
     }
 
     h4 {
-      position: relative;
       z-index: 1;
       margin: 0 0 4px 0;
       font-size: clamp(14px, 2vw, 20px);
       font-weight: 800;
       color: #ffffff;
-
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     p {
-      position: relative;
       z-index: 1;
       margin: 0 0 8px 0;
       font-size: clamp(11px, 1.2vw, 13px);
       color: rgba(255, 255, 255, 0.85);
       max-width: 240px;
-
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .mini-list {
-      position: relative;
-      z-index: 1;
       margin: 0 0 10px 14px;
       padding: 0;
 
@@ -444,8 +432,6 @@
     }
 
     .mini-foot {
-      position: relative;
-      z-index: 1;
       margin-top: auto;
       display: flex;
       align-items: center;
@@ -461,7 +447,6 @@
     }
 
     .mini-btn {
-      display: inline-block;
       padding: 6px 14px;
       border-radius: 999px;
       font-weight: 700;
@@ -471,9 +456,6 @@
       background: #ffffff;
       color: #b00000;
       transition: transform .2s ease, box-shadow .2s ease;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
 
       @media (max-width: 720px) {
         font-size: 10px;
@@ -497,7 +479,6 @@
     background: radial-gradient(circle at top left, #1f2933 0%, #020617 45%, #000000 100%);
   }
 }
-
 
 
 
