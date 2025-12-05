@@ -5,7 +5,9 @@
     animation: slideUp 2s ease-out forwards;
     z-index: 50;
     cursor: pointer;
-
+    display: flex;
+    align-items: flex-end; /* Esto alinea la imagen al fondo del contenedor */
+    height: 200px; /* Aumenta la altura del contenedor para dar espacio */
 }
 
 @keyframes slideUp {
@@ -14,7 +16,6 @@
         opacity: 0;
         transform: translateY(40px);
     }
-
     to {
         bottom: 0;
         opacity: 1;
@@ -26,12 +27,14 @@
     width: 120px;
     height: auto;
     user-select: none;
-    margin-top: 20px;
+    /* Eliminé margin-top y en su lugar: */
+    margin-bottom: -10px; /* Empuja la imagen un poco más abajo si es necesario */
 }
 
+/* Si necesitas ajustar la burbuja de diálogo para que quede mejor */
 .speech-bubble {
     position: absolute;
-    top: -10px;
+    top: -60px; /* Ajusté esto para que esté más arriba ahora que la imagen está más abajo */
     background: #ffffff;
     padding: 7px 11px;
     border-radius: 14px;

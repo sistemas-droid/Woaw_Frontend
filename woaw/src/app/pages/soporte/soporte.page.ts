@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GeneralService } from '../../services/general.service';
 
 @Component({
   selector: 'app-soporte',
@@ -8,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SoportePage implements OnInit {
 
-  constructor() { }
+  public tipoDispocitivo: 'computadora' | 'telefono' | 'tablet' = 'computadora';
+
+  constructor(
+    private generalService: GeneralService) { }
 
   ngOnInit() {
+    this.generalService.dispositivo$.subscribe((tipo) => {
+      this.tipoDispocitivo = tipo;
+    });
   }
 
   sendMail() {

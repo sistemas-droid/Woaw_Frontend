@@ -260,7 +260,7 @@
         </div>
       </ion-col>
 
-      <ion-col size="12" size-md="4">
+      <ion-col size="12" size-md="4" *ngIf="tipoDispocitivo !== 'telefono'">
         <!-- CONTACTO DIRECTO -->
         <section class="contact-section">
           <div class="contact-card">
@@ -269,11 +269,17 @@
               <p>Escríbenos y un asesor de WOAW te ayudará personalmente.</p>
             </div>
             <div class="contact-actions">
+              <!-- Botón de WhatsApp -->
               <ion-button color="success" expand="block" fill="solid" href="https://wa.me/524427706776" target="_blank">
                 <ion-icon name="logo-whatsapp" slot="start"></ion-icon>
                 WhatsApp soporte
               </ion-button>
 
+              <!-- Botón de Correo -->
+              <ion-button color="primary" expand="block" fill="solid" href="mailto:soporte@woaw.com" target="_blank">
+                <ion-icon name="mail" slot="start"></ion-icon>
+                Enviar correo
+              </ion-button>
 
             </div>
           </div>
@@ -285,3 +291,37 @@
 
   <app-footer></app-footer>
 </ion-content>
+
+<ion-footer class="safe-footer footer_css_seguros" *ngIf="tipoDispocitivo === 'telefono'">
+  <ion-toolbar>
+    <ion-grid class="ion-no-padding">
+      <ion-row class="ion-align-items-center ion-justify-content-between">
+        
+        <!-- WhatsApp -->
+        <ion-col size="4" class="ion-text-center ion-no-padding">
+          <ion-button color="success" fill="solid" expand="block" href="https://wa.me/524427706776" target="_blank">
+            <ion-icon name="logo-whatsapp" slot="start"></ion-icon>
+            WhatsApp
+          </ion-button>
+        </ion-col>
+
+        <!-- Teléfono -->
+        <ion-col size="4" class="ion-text-center ion-no-padding">
+          <ion-button color="primary" fill="solid" expand="block" href="tel:+524427706776">
+            <ion-icon name="call" slot="start"></ion-icon>
+            Llamar
+          </ion-button>
+        </ion-col>
+
+        <!-- Email -->
+        <ion-col size="4" class="ion-text-center ion-no-padding">
+          <ion-button color="danger" fill="solid" expand="block" href="mailto:soporte@woaw.com" target="_blank">
+            <ion-icon name="mail" slot="start"></ion-icon>
+            Email
+          </ion-button>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

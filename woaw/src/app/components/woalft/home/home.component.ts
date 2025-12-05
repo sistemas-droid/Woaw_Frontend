@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
 
   texts = [
     // { text: "¡Bienvenido a WOAW!", route: null },
-    { text: "Necesitas apoyo? Soy walf estoy para ayudarte", route: "/soporte" },
+    { text: "Necesitas apoyo? Soy woalf estoy para ayudarte", route: "/soporte" },
   ];
 
   displayedText = "";
@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
           setTimeout(() => {
             this.showWoalf = false;
             this.showFab = true;
-          }, 2000);
+          }, 4000);
         }
       }
     }, this.typingSpeed);
