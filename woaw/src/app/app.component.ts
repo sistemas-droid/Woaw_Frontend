@@ -41,6 +41,8 @@ export class AppComponent {
 
   @ViewChild(IonRouterOutlet, { static: true }) routerOutlet!: IonRouterOutlet;
 
+  private updateCheckInterval: any = null;
+
   private lastBackTime = 0;
   private readonly ROOT_PATHS = ['/', '/home', '/inicio', '/autenticacion-user'];
 
@@ -174,8 +176,7 @@ export class AppComponent {
       await StatusBar.setStyle({ style: Style.Dark });
     }
 
-    //  Checar actualización al arrancar
-    this.checkForAppUpdateNative();
+    this.startUpdateCheckLoop();
   }
 
   private registerHardwareBack() {
@@ -282,27 +283,37 @@ export class AppComponent {
     }
   }
 
+  private startUpdateCheckLoop() {
+    // Cada 40 segundos revisa si hay actualización disponible
+    this.updateCheckInterval = setInterval(() => {
+      this.checkForAppUpdateNative();
+    }, 40000);
+  }
+
 
   private async checkForAppUpdateNative() {
-    // Solo aplica a app nativa
     if (!this.platform.is('android')) return;
 
     try {
       const info = await AppUpdate.getAppUpdateInfo();
 
-      // Si no hay update disponible, salimos
+      // Si NO hay actualización disponible, no mostramos nada
       if (info.updateAvailability !== AppUpdateAvailability.UPDATE_AVAILABLE) {
         return;
       }
 
-      // Aquí ya sabemos que en Play Store hay una versión más nueva que la instalada
+      // ⚠️ Evitar mostrar alertas duplicadas
+      if (document.querySelector('ion-alert')) {
+        return;
+      }
+
       const alert = await this.alertCtrl.create({
-        header: 'Nueva versión de WOAW 🚀',
+        header: 'Actualización disponible',
         message: `
-        Hay una nueva versión disponible en la Play Store.<br>
-        Actualiza para disfrutar las últimas mejoras y correcciones.
+        Hay una nueva versión de la app disponible en la Play Store.<br>
+        Actualiza para obtener mejoras y correcciones.
       `,
-        backdropDismiss: false, // para que realmente tenga que decidir
+        backdropDismiss: false,
         buttons: [
           {
             text: 'Más tarde',
@@ -311,21 +322,16 @@ export class AppComponent {
           {
             text: 'Actualizar ahora',
             handler: async () => {
-              // Opción 1: abrir ficha de la app en la Play Store
               await AppUpdate.openAppStore({
                 androidPackageName: 'com.helscode.woaw'
               });
-
-              // Opción 2 (si quieres UPDATE NATIVO dentro de la app):
-              // if (info.immediateUpdateAllowed) {
-              //   await AppUpdate.performImmediateUpdate();
-              // }
             }
           }
         ]
       });
 
       await alert.present();
+
     } catch (err) {
       console.error('[App] Error al comprobar actualización nativa', err);
     }

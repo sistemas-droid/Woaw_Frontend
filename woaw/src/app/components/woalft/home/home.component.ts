@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit, OnDestroy {
 
   private readonly STORAGE_KEY = 'woalf_last_shown';
-  private readonly COOLDOWN_MINUTES = 2; //Minutos
+  private readonly COOLDOWN_MINUTES = 0.2; //Minutos
 
   texts = [
     { text: "Necesitas apoyo? Soy woalf estoy para ayudarte", route: "/soporte" },
@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.timer = setTimeout(() => {
             this.showWoalf = false;
             this.showFab = true;
-          }, 4000);
+          }, 7000);
         }
       }
     }, this.typingSpeed);

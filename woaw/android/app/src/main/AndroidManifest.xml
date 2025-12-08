@@ -27,7 +27,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-@
+
             <!-- 🔹 Deep link: woaw://auth/google?otc=XYZ -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

@@ -1,14 +1,16 @@
 package com.helscode.woaw;
 
-import android.os.Bundle;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.webkit.WebView;
+import android.webkit.WebSettings;
 
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsCompat; 
 
 import com.getcapacitor.BridgeActivity;
 
@@ -19,23 +21,32 @@ public class MainActivity extends BridgeActivity {
 
     Window window = getWindow();
 
-    // 1) Edge-to-edge controlado por nosotros (clave para Samsung)
+    // 1) Edge-to-edge
     WindowCompat.setDecorFitsSystemWindows(window, false);
 
-    // 2) Colores (opcional, visual)
+    // 2) Colores de status / nav bar
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      window.setStatusBarColor(0xFFD62828);  // rojo
-      window.setNavigationBarColor(0xFF101010); // oscuro
+      window.setStatusBarColor(0xFFD62828);      // rojo
+      window.setNavigationBarColor(0xFF101010);  // oscuro
     }
 
-    // 3) APLICA INSETS AL ROOT VIEW (no solo al WebView)
+    // 3) Insets
     final View root = findViewById(android.R.id.content);
     ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
       Insets sysBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-      // Empuja TODO el contenido por debajo de la status bar y por encima de la nav bar
       v.setPadding(sysBars.left, sysBars.top, sysBars.right, sysBars.bottom);
-      return WindowInsetsCompat.CONSUMED; // consumimos para evitar doble aplicación en Samsung
+      return WindowInsetsCompat.CONSUMED;
     });
     ViewCompat.requestApplyInsets(root);
+
+    // 4) 🔥 Apagar dark mode automático del WebView (API 29+)
+    WebView webView = (WebView) this.bridge.getWebView();
+    if (webView != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      WebSettings settings = webView.getSettings();
+      settings.setForceDark(WebSettings.FORCE_DARK_OFF);
+    }
+
+
   }
 }
+
