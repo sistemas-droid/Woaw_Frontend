@@ -20,6 +20,8 @@ import { AppUpdate, AppUpdateAvailability } from '@capawesome/capacitor-app-upda
 
 declare let gtag: Function;
 
+const WOALF_STORAGE_KEY = 'woalf_last_shown';
+
 // Helper: reemplazo de Object.fromEntries para TS < ES2019
 function paramsToObject(sp: URLSearchParams): Record<string, string> {
   const out: Record<string, string> = {};
@@ -205,8 +207,24 @@ export class AppComponent {
 
   private async handleExitGesture() {
     if (!this.platform.is('android')) return;
+
     const now = Date.now();
-    if (now - this.lastBackTime < 1500) { App.exitApp(); return; }
+
+    // Segundo tap en menos de 1.5s → salir de la app
+    if (now - this.lastBackTime < 1500) {
+
+      // 🔁 limpiar cooldown de Woalf antes de cerrar la app
+      try {
+        localStorage.removeItem(WOALF_STORAGE_KEY);
+      } catch (e) {
+        console.warn('[App] No se pudo limpiar Woalf storage', e);
+      }
+
+      App.exitApp();
+      return;
+    }
+
+    // Primer tap → mostrar toast
     this.lastBackTime = now;
     const toast = await this.toastCtrl.create({
       message: 'Presiona atrás de nuevo para salir',
@@ -215,6 +233,7 @@ export class AppComponent {
     });
     await toast.present();
   }
+
 
   // ===== Deep Links (custom scheme + universal links) =====
 

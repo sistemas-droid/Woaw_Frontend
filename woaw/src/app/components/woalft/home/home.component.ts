@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-home-woalft',
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit, OnDestroy {
 
   private readonly STORAGE_KEY = 'woalf_last_shown';
-  private readonly COOLDOWN_MINUTES = 0.2; //Minutos
+  private readonly COOLDOWN_MINUTES = 1; // Minutos (solo NATIVO)
 
   texts = [
     { text: "¿Necesitas apoyo? Soy Woalf estoy para ayudarte", route: "/soporte" },
@@ -46,6 +46,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private checkAndShowWoalf(): void {
+    const platform = Capacitor.getPlatform(); // 'web', 'android', 'ios', etc.
+
+    // 👉 SI ES WEB: siempre mostrar Woalf sin restricciones
+    if (platform === 'web') {
+      this.showWoalf = true;
+      this.typeText();
+      return;
+    }
+
+    // 👉 SI ES NATIVO (android / ios): usar cooldown con localStorage
     const lastShown = this.getLastShownTime();
     const now = new Date().getTime();
 
