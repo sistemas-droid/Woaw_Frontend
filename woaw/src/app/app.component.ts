@@ -20,6 +20,9 @@ import { AppUpdate, AppUpdateAvailability } from '@capawesome/capacitor-app-upda
 
 declare let gtag: Function;
 
+const WOALF_STORAGE_KEY = 'woalf_last_shown';
+
+// Helper: reemplazo de Object.fromEntries para TS < ES2019
 function paramsToObject(sp: URLSearchParams): Record<string, string> {
   const out: Record<string, string> = {};
   sp.forEach((v, k) => { out[k] = v; });
@@ -39,6 +42,8 @@ export class AppComponent {
   public MyRole: string | null = null;
 
   @ViewChild(IonRouterOutlet, { static: true }) routerOutlet!: IonRouterOutlet;
+
+  private updateCheckInterval: any = null;
 
   private lastBackTime = 0;
   private readonly ROOT_PATHS = ['/', '/home', '/inicio', '/autenticacion-user'];
@@ -104,7 +109,9 @@ export class AppComponent {
       if (this.isLoggedIn) { try { await this.push.init(); } catch { } }
     });
 
+    // Deep links (Siri/custom scheme + universal links)
     this.platform.ready().then(() => this.registerDeepLinks());
+
 
     this.platform.ready().then(() => {
       if (this.platform.is('hybrid') || this.platform.is('android') || this.platform.is('ios')) {
@@ -113,6 +120,7 @@ export class AppComponent {
         document.body.classList.add('is-web');
       }
     });
+
   }
 
   get mostrarTabs(): boolean {
@@ -132,7 +140,11 @@ export class AppComponent {
   }
 
   get mostrarWoalft(): boolean {
-    const rutasSinWoalft = ['/soporte'];
+    const rutasSinWoalft = [
+      '/update-car/', '/new-car', '/usados', '/nuevos', '/seminuevos',
+      '/m-nuevos', '/mis-motos', '/seguros/poliza', '/mis-autos',
+      '/seguros/autos', '/seguros/cotiza/', '/seguros/cotizar-manual',
+      '/renta-coches', '/seguros/persona', '/search/vehiculos/', '/add-lote', '/renta/add-coche', '/camiones/todos','/soporte'];
     return !rutasSinWoalft.some(r => this.currentUrl.startsWith(r));
   }
 
@@ -170,8 +182,7 @@ export class AppComponent {
       await StatusBar.setStyle({ style: Style.Dark });
     }
 
-    //  Checar actualización al arrancar
-    this.checkForAppUpdateNative();
+    this.startUpdateCheckLoop();
   }
 
   private registerHardwareBack() {
@@ -200,8 +211,24 @@ export class AppComponent {
 
   private async handleExitGesture() {
     if (!this.platform.is('android')) return;
+
     const now = Date.now();
-    if (now - this.lastBackTime < 1500) { App.exitApp(); return; }
+
+    // Segundo tap en menos de 1.5s → salir de la app
+    if (now - this.lastBackTime < 1500) {
+
+      // 🔁 limpiar cooldown de Woalf antes de cerrar la app
+      try {
+        localStorage.removeItem(WOALF_STORAGE_KEY);
+      } catch (e) {
+        console.warn('[App] No se pudo limpiar Woalf storage', e);
+      }
+
+      App.exitApp();
+      return;
+    }
+
+    // Primer tap → mostrar toast
     this.lastBackTime = now;
     const toast = await this.toastCtrl.create({
       message: 'Presiona atrás de nuevo para salir',
@@ -211,12 +238,17 @@ export class AppComponent {
     await toast.present();
   }
 
+
+  // ===== Deep Links (custom scheme + universal links) =====
+
   private async registerDeepLinks() {
+    // Cold start
     try {
       const launch = await App.getLaunchUrl();
       if (launch?.url) this.handleOpenUrl(launch.url);
     } catch { }
 
+    // Warm / foreground
     App.addListener('appUrlOpen', ({ url }) => this.handleOpenUrl(url));
   }
 
@@ -224,6 +256,7 @@ export class AppComponent {
     let url: URL;
     try { url = new URL(urlString); } catch { return; }
 
+    // 1) Custom scheme: woaw://search?...  |  woaw://ficha/<id>
     if (url.protocol === 'woaw:') {
       if (url.host === 'search/vehiculos') {
         const qp = paramsToObject(url.searchParams as any);
@@ -232,31 +265,30 @@ export class AppComponent {
         });
         return;
       }
-
       if (url.host === 'ficha') {
-        const segments = url.pathname.split('/').filter(s => !!s); 
-        const tipo = segments[0];
-        const id   = segments[1];
-
-        if (tipo && id) {
-          this.zone.run(() => this.router.navigate(['/ficha', tipo, id]));
+        const id = url.pathname.replace('/', '');
+        if (id) {
+          this.zone.run(() => this.router.navigate(['/ficha', id]));
         }
         return;
       }
-
-      return; 
+      return; // otros hosts -> ignora
     }
 
+    // 2) Universal links (https): wo-aw.com / woaw.mx (ajusta hosts si aplica)
     const allowedHosts = new Set([
       'wo-aw.com',
       'www.wo-aw.com',
       'woaw.mx',
       'www.woaw.mx',
+      // si añadiste dominios de Firebase a Associated Domains, agrégalos aquí también:
       'peppy-aileron-468716-e5.web.app',
       'peppy-aileron-468716-e5.firebaseapp.com',
     ]);
     if (!allowedHosts.has(url.host)) return;
 
+    // Mapear rutas externas a rutas internas
+    // /search?keywords=...&tipoVenta=...&transmision=...&sort=...
     if (url.pathname === '/search/vehiculos') {
       const qp = paramsToObject(url.searchParams as any);
       this.zone.run(() => {
@@ -265,38 +297,46 @@ export class AppComponent {
       return;
     }
 
-    const fichaMatch = url.pathname.match(/^\/ficha\/([^/]+)\/([^/]+)$/);
+    // /ficha/:id  → abre detalle
+    const fichaMatch = url.pathname.match(/^\/ficha\/([^/]+)$/);
     if (fichaMatch) {
-      const tipo = decodeURIComponent(fichaMatch[1]);
-      const id   = decodeURIComponent(fichaMatch[2]);
-      this.zone.run(() => {
-        this.router.navigate(['/ficha', tipo, id]);
-      });
+      const id = decodeURIComponent(fichaMatch[1]);
+      this.zone.run(() => this.router.navigate(['/ficha', id]));
       return;
     }
   }
 
+  private startUpdateCheckLoop() {
+    // Cada 40 segundos revisa si hay actualización disponible
+    this.updateCheckInterval = setInterval(() => {
+      this.checkForAppUpdateNative();
+    }, 40000);
+  }
+
 
   private async checkForAppUpdateNative() {
-    // Solo aplica a app nativa
     if (!this.platform.is('android')) return;
 
     try {
       const info = await AppUpdate.getAppUpdateInfo();
 
-      // Si no hay update disponible, salimos
+      // Si NO hay actualización disponible, no mostramos nada
       if (info.updateAvailability !== AppUpdateAvailability.UPDATE_AVAILABLE) {
         return;
       }
 
-      // Aquí ya sabemos que en Play Store hay una versión más nueva que la instalada
+      // ⚠️ Evitar mostrar alertas duplicadas
+      if (document.querySelector('ion-alert')) {
+        return;
+      }
+
       const alert = await this.alertCtrl.create({
-        header: 'Nueva versión de WOAW 🚀',
+        header: 'Actualización disponible',
         message: `
-        Hay una nueva versión disponible en la Play Store.<br>
-        Actualiza para disfrutar las últimas mejoras y correcciones.
+        Hay una nueva versión de la app disponible en la Play Store.<br>
+        Actualiza para obtener mejoras y correcciones.
       `,
-        backdropDismiss: false, // para que realmente tenga que decidir
+        backdropDismiss: false,
         buttons: [
           {
             text: 'Más tarde',
@@ -305,21 +345,16 @@ export class AppComponent {
           {
             text: 'Actualizar ahora',
             handler: async () => {
-              // Opción 1: abrir ficha de la app en la Play Store
               await AppUpdate.openAppStore({
                 androidPackageName: 'com.helscode.woaw'
               });
-
-              // Opción 2 (si quieres UPDATE NATIVO dentro de la app):
-              // if (info.immediateUpdateAllowed) {
-              //   await AppUpdate.performImmediateUpdate();
-              // }
             }
           }
         ]
       });
 
       await alert.present();
+
     } catch (err) {
       console.error('[App] Error al comprobar actualización nativa', err);
     }

@@ -84,11 +84,7 @@
   background: radial-gradient(60% 60% at 80% 20%, rgba(72, 136, 255, .35), transparent 60%);
 }
 
-
-
-
-
-// Estilos para el botón flotante rectangular
+/* Estilos para el botón flotante rectangular */
 .rectangular-fab {
   --border-radius: 7px;
   width: 140px;
@@ -101,7 +97,7 @@
   }
 }
 
-// Asegurar que el FAB esté por encima de otros elementos
+/* Asegurar que el FAB esté por encima de otros elementos */
 ion-fab {
   z-index: 1000;
 }

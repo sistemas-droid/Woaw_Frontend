@@ -1,9 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  CUSTOM_ELEMENTS_SCHEMA,
+  NgZone,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
+import { Capacitor } from '@capacitor/core';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-home-woalft',
@@ -14,106 +21,201 @@ import { Router } from '@angular/router';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
-  private readonly STORAGE_KEY = 'woalf_last_shown';
-  private readonly COOLDOWN_MINUTES = 2; //Minutos
+  private readonly COOLDOWN_MINUTES = 1;  // Minutos para que vuelva a salir Woalf
+  private readonly HIDE_DELAY = 7000;     // ms que se queda Woalf visible tras terminar
 
   texts = [
-    { text: "Necesitas apoyo? Soy woalf estoy para ayudarte", route: "/soporte" },
+    { text: '¿Necesitas apoyo? Soy Woalf, estoy para ayudarte', route: '/soporte' },
   ];
 
-  displayedText = "";
-  index = 0;
+  displayedText = '';
   textIndex = 0;
-  typingSpeed = 40;
-  isTyping = true;
+  charIndex = 0;
+  isTyping = false;
 
   showWoalf = false;
   showFab = false;
 
-  private timer: any;
+  // Timers
+  private hideTimer: any = null;
+  private reappearTimeout: any = null;
+  private typingTimeout: any = null;
 
-  constructor(private router: Router) { }
+  // Para invalidar animaciones viejas
+  private typingSessionId = 0;
+
+  // Estado de app
+  private appStateListener: any = null;
+  private wasInBackground = false;
+
+  constructor(
+    private router: Router,
+    private ngZone: NgZone
+  ) {}
 
   ngOnInit() {
-    this.checkAndShowWoalf();
+    const platform = Capacitor.getPlatform();
+
+    // Siempre arrancamos Woalf al entrar
+    this.startWoalf();
+
+    // Solo en móvil nos interesa el estado de la app
+    if (platform !== 'web') {
+      App.addListener('appStateChange', ({ isActive }) => {
+        // Esto asegura que Angular se entere de los cambios
+        this.ngZone.run(() => {
+          if (!isActive) {
+            this.handleAppBackground();
+          } else {
+            this.handleAppForeground();
+          }
+        });
+      }).then((listener) => {
+        this.appStateListener = listener;
+      });
+    }
   }
 
   ngOnDestroy() {
-    if (this.timer) {
-      clearTimeout(this.timer);
+    this.cleanupAll();
+    if (this.appStateListener) {
+      this.appStateListener.remove();
+      this.appStateListener = null;
     }
   }
 
-  private checkAndShowWoalf(): void {
-    const lastShown = this.getLastShownTime();
-    const now = new Date().getTime();
+  // ========================
+  // ESTADO APP (FONDO / FRENTE)
+  // ========================
 
-    if (!lastShown || (now - lastShown) > (this.COOLDOWN_MINUTES * 60 * 1000)) {
-      this.showWoalf = true;
-      this.typeText();
-      this.updateLastShownTime();
-    } else {
-      this.showFab = true;
-    }
+  private handleAppBackground() {
+    this.wasInBackground = true;
+
+    // invalidar animación actual
+    this.typingSessionId++;
+
+    // limpiar todo
+    this.cleanupAll();
+
+    // reset visual
+    this.resetWoalfState();
   }
 
-  private getLastShownTime(): number | null {
-    try {
-      const stored = localStorage.getItem(this.STORAGE_KEY);
-      return stored ? parseInt(stored, 10) : null;
-    } catch (error) {
-      console.error('Error reading from localStorage:', error);
-      return null;
-    }
+  private handleAppForeground() {
+    if (!this.wasInBackground) return;
+    this.wasInBackground = false;
+
+    // arrancar desde cero, como si se montara otra vez
+    this.startWoalf();
   }
 
-  private updateLastShownTime(): void {
-    try {
-      localStorage.setItem(this.STORAGE_KEY, new Date().getTime().toString());
-    } catch (error) {
-      console.error('Error writing to localStorage:', error);
-    }
+  // ========================
+  // ESTADO WOALF
+  // ========================
+
+  private resetWoalfState() {
+    this.displayedText = '';
+    this.textIndex = 0;
+    this.charIndex = 0;
+    this.isTyping = false;
+    this.showWoalf = false;
+    this.showFab = false;
   }
 
-  typeText() {
+  private startWoalf() {
+    // Limpia todo lo que hubiera antes
+    this.cleanupAll();
+    this.resetWoalfState();
+
+    this.showWoalf = true;
+    this.showFab = false;
+
     this.isTyping = true;
-    const currentText = this.texts[this.textIndex].text;
+    this.displayedText = '';
+    this.charIndex = 0;
 
-    const interval = setInterval(() => {
-      if (this.index < currentText.length) {
-        this.displayedText += this.fullSafeChar(currentText[this.index]);
-        this.index++;
-      } else {
-        clearInterval(interval);
-        this.isTyping = false;
+    const fullText = this.texts[this.textIndex].text;
+    const sessionId = ++this.typingSessionId;
 
-        if (this.textIndex < this.texts.length - 1) {
-          setTimeout(() => this.nextText(), 2000);
-        } else {
-          this.timer = setTimeout(() => {
-            this.showWoalf = false;
-            this.showFab = true;
-          }, 4000);
-        }
-      }
-    }, this.typingSpeed);
+    this.typeNextChar(sessionId, fullText);
   }
 
-  nextText() {
-    this.index = 0;
-    this.displayedText = "";
-    this.textIndex++;
-
-    if (this.textIndex >= this.texts.length) {
-      this.textIndex = this.texts.length - 1;
+  /**
+   * Tipeo letra por letra con setTimeout
+   */
+  private typeNextChar(sessionId: number, fullText: string) {
+    // si la sesión ya no es la actual, abortamos
+    if (sessionId !== this.typingSessionId) {
       return;
     }
 
-    this.typeText();
+    if (!this.isTyping) return;
+
+    if (this.charIndex < fullText.length) {
+      this.displayedText += fullText[this.charIndex];
+      this.charIndex++;
+
+      // siguiente letra
+      this.typingTimeout = setTimeout(() => {
+        this.typeNextChar(sessionId, fullText);
+      }, 45); // Ajusta la velocidad si quieres más rápido/lento
+    } else {
+      // Terminó el texto
+      this.isTyping = false;
+      this.typingTimeout = null;
+
+      // Después de un rato, ocultamos Woalf y mostramos el FAB
+      this.hideTimer = setTimeout(() => {
+        this.showWoalf = false;
+        this.showFab = true;
+
+        this.scheduleWoalfReappearance();
+      }, this.HIDE_DELAY);
+    }
   }
 
+  /**
+   * Reaparición de Woalf cada minuto en móvil
+   */
+  private scheduleWoalfReappearance() {
+    const platform = Capacitor.getPlatform();
+    if (platform === 'web') return;
+
+    if (this.reappearTimeout) {
+      clearTimeout(this.reappearTimeout);
+    }
+
+    this.reappearTimeout = setTimeout(() => {
+      this.startWoalf();
+    }, this.COOLDOWN_MINUTES * 60 * 1000);
+  }
+
+  /**
+   * Limpia todos los timers
+   */
+  private cleanupAll() {
+    if (this.typingTimeout) {
+      clearTimeout(this.typingTimeout);
+      this.typingTimeout = null;
+    }
+
+    if (this.hideTimer) {
+      clearTimeout(this.hideTimer);
+      this.hideTimer = null;
+    }
+
+    if (this.reappearTimeout) {
+      clearTimeout(this.reappearTimeout);
+      this.reappearTimeout = null;
+    }
+  }
+
+  // ========================
+  //  CLICKS
+  // ========================
+
   onBubbleClick() {
+    // si todavía está escribiendo, no hacemos nada
     if (this.isTyping) return;
 
     const route = this.texts[this.textIndex].route;
@@ -124,20 +226,5 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onFabClick() {
     this.router.navigate(['/soporte']);
-  }
-
-  forceShowWoalf(): void {
-    localStorage.removeItem(this.STORAGE_KEY);
-    this.showWoalf = true;
-    this.showFab = false;
-    this.displayedText = "";
-    this.index = 0;
-    this.textIndex = 0;
-    this.typeText();
-    this.updateLastShownTime();
-  }
-
-  private fullSafeChar(char: string): string {
-    return char;
   }
 }
