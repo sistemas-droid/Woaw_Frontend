@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private readonly COOLDOWN_MINUTES = 0.2; //Minutos
 
   texts = [
-    { text: "Necesitas apoyo? Soy woalf estoy para ayudarte", route: "/soporte" },
+    { text: "¿Necesitas apoyo? Soy Woalf estoy para ayudarte", route: "/soporte" },
   ];
 
   displayedText = "";
