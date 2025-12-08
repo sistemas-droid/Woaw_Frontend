@@ -31,6 +31,8 @@ PODS:
     - Capacitor
   - CapacitorStatusBar (7.0.1):
     - Capacitor
+  - CapawesomeCapacitorAppUpdate (7.2.0):
+    - Capacitor
   - FirebaseCore (11.7.0):
     - FirebaseCoreInternal (~> 11.7.0)
     - GoogleUtilities/Environment (~> 8.0)
@@ -103,6 +105,7 @@ DEPENDENCIES:
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
   - "CapacitorShare (from `../../node_modules/@capacitor/share`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
+  - "CapawesomeCapacitorAppUpdate (from `../../node_modules/@capawesome/capacitor-app-update`)"
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -148,6 +151,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/share"
   CapacitorStatusBar:
     :path: "../../node_modules/@capacitor/status-bar"
+  CapawesomeCapacitorAppUpdate:
+    :path: "../../node_modules/@capawesome/capacitor-app-update"
 
 SPEC CHECKSUMS:
   Capacitor: 28d6c01026a9a3f7156529498ec1f389a2a28dbc
@@ -165,6 +170,7 @@ SPEC CHECKSUMS:
   CapacitorPushNotifications: bdd621fbd562be34a41f4a7b1750efa000447d5a
   CapacitorShare: be166411fa995ead2d39b104aa0aae56d8615c66
   CapacitorStatusBar: 6e7af040d8fc4dd655999819625cae9c2d74c36f
+  CapawesomeCapacitorAppUpdate: 9fb16b07faaa1c86468c794e39bfedb822a1a446
   FirebaseCore: 3227e35f4197a924206fbcdc0349325baf4f5de4
   FirebaseCoreInternal: d6c17dafc8dc33614733a8b52df78fcb4394c881
   FirebaseInstallations: 9347e719c3d52d8d7b9074b2c32407dd027305e9
@@ -176,6 +182,6 @@ SPEC CHECKSUMS:
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
 
-PODFILE CHECKSUM: b1e2d50496a3a8191cbcc73aa28cb5675a99554c
+PODFILE CHECKSUM: f2fea08ed1a3eb907d5541b23f6e00a022996f2a
 
 COCOAPODS: 1.16.2
