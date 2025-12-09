@@ -35,6 +35,7 @@ function paramsToObject(sp: URLSearchParams): Record<string, string> {
   styleUrls: ['app.component.scss'],
   standalone: false,
 })
+
 export class AppComponent {
   currentUrl: string = '';
   esDispositivoMovil: boolean = false;

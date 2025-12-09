@@ -157,13 +157,13 @@
   }
 
   .img_coche,
-  .img_camion {
-    width: 100%;
-    max-width: 140px;
-    height: 90px;
-    object-fit: contain;
-    margin-bottom: 6px;
-  }
+.img_camion {
+  width: 100%;
+  max-width: 200px;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
 
   h3 {
     margin: 0 0 4px;

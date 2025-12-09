@@ -40,6 +40,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   private hideTimer: any = null;
   private reappearTimeout: any = null;
   private typingTimeout: any = null;
+  private timer: any;
+  private cooldownTimer: any;
 
   // Para invalidar animaciones viejas
   private typingSessionId = 0;
@@ -81,6 +83,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.appStateListener) {
       this.appStateListener.remove();
       this.appStateListener = null;
+    }
+    if (this.cooldownTimer) {
+      clearTimeout(this.cooldownTimer);
     }
   }
 
