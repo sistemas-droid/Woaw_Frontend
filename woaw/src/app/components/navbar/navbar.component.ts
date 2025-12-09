@@ -246,4 +246,8 @@ throw new Error('Method not implemented.');
       await modal.present();
     }, 1000);
   }
+
+  regresar() {
+    window.history.back();
+  }
 }

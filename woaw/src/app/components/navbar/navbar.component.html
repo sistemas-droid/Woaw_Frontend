@@ -5,7 +5,11 @@
 
     <ion-buttons slot="start">
       <div class="logo_content">
-        <img src="/assets/icon/logo4.png" loading="lazy" alt="WOAW" class="logo" (click)="redirecion_logo()" />
+        <ion-button fill="clear"  (click)="regresar()" >
+          <ion-icon name="chevron-back-outline" *ngIf="!estaEnHome"></ion-icon>
+          <img src="/assets/icon/logo4.png" loading="lazy" alt="WOAW" class="logo"  />
+        </ion-button>
+
 
         <!-- <span class="titulo-movil" *ngIf="!mostrarBuscador && esDispositivoMovil">
           {{ getTituloSeccion() }}

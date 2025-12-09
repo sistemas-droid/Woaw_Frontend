@@ -16,10 +16,12 @@ import { Capacitor } from '@capacitor/core';
 export class HomeComponent implements OnInit, OnDestroy {
 
   private readonly STORAGE_KEY = 'woalf_last_shown';
-  private readonly COOLDOWN_MINUTES = 1; // Minutos (solo NATIVO)
+  private readonly COOLDOWN_MINUTES = 2; 
+  private readonly RESPAWN_MS = 120000;  
 
   texts = [
-    { text: "¿Necesitas apoyo? Soy Woalf estoy para ayudarte", route: "/soporte" },
+    { text: "¿Necesitas apoyo?", route: "/soporte" },
+    { text: "Soy Woalf estoy para ayudarte", route: "/soporte" },
   ];
 
   displayedText = "";
@@ -32,6 +34,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   showFab = false;
 
   private timer: any;
+  private cooldownTimer: any;
 
   constructor(private router: Router) { }
 
@@ -42,6 +45,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.timer) {
       clearTimeout(this.timer);
+    }
+    if (this.cooldownTimer) {
+      clearTimeout(this.cooldownTimer);
     }
   }
 
@@ -55,7 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // 👉 SI ES NATIVO (android / ios): usar cooldown con localStorage
+    // 👉 SI ES NATIVO (android / ios): usar cooldown con localStorage SOLO AL ENTRAR
     const lastShown = this.getLastShownTime();
     const now = new Date().getTime();
 
@@ -101,10 +107,24 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (this.textIndex < this.texts.length - 1) {
           setTimeout(() => this.nextText(), 2000);
         } else {
+          // 🧠 Cuando termina el ÚLTIMO texto
           this.timer = setTimeout(() => {
+            // Primero se esconde Woalf y se muestra el FAB
             this.showWoalf = false;
             this.showFab = true;
-          }, 7000);
+
+            // 🕒 Después de 10s, Woalf vuelve a aparecer solo
+            this.cooldownTimer = setTimeout(() => {
+              this.showWoalf = true;
+              this.showFab = false;
+              this.displayedText = "";
+              this.index = 0;
+              this.textIndex = 0;
+              this.typeText();
+              this.updateLastShownTime(); // opcional, para registrar que volvió a salir
+            }, this.RESPAWN_MS);
+
+          }, 7000); // tiempo que Woalf se queda visible antes de esconderse
         }
       }
     }, this.typingSpeed);

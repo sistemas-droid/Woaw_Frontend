@@ -35,6 +35,7 @@ function paramsToObject(sp: URLSearchParams): Record<string, string> {
   styleUrls: ['app.component.scss'],
   standalone: false,
 })
+
 export class AppComponent {
   currentUrl: string = '';
   esDispositivoMovil: boolean = false;
@@ -140,7 +141,8 @@ export class AppComponent {
   }
 
   get mostrarWoalft(): boolean {
-    const rutasSinWoalft = ['/soporte'];
+    const rutasSinWoalft = ['/soporte', '/new-car', '/usados', '/nuevos', '/seminuevos',
+      '/m-nuevos', '/mis-motos', '/mis-autos', '/camiones/todos'];
     return !rutasSinWoalft.some(r => this.currentUrl.startsWith(r));
   }
 
