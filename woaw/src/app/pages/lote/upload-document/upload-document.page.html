@@ -3,33 +3,68 @@
 <ion-content [fullscreen]="true">
   <div class="ion-padding">
 
-    <div class="ion-text-center ion-margin-bottom">
-      <h1 class="ion-text-bold">{{ nombreDocumentoMostrar }}</h1>
-      <p class="ion-text-muted">Subir documento para el lote: <strong>{{ nombreLote }}</strong></p>
+    <!-- Título -->
+    <div class="ion-text-center ion-margin-bottom page-title-box">
+      <h1 class="ion-text-bold titulo-woaw">{{ nombreDocumentoMostrar }}</h1>
+      <p class="ion-text-muted subtitulo-woaw">
+        Subir documento para el lote: <strong>{{ nombreLote }}</strong>
+      </p>
     </div>
 
-    <ion-card>
+    <ion-card class="upload-card">
       <ion-card-content>
 
-        <!-- Selector de archivo -->
-        <ion-item>
-          <ion-label>Seleccionar archivo</ion-label>
+        <!-- Campo de archivo con enlace al documento actual -->
+        <ion-item lines="none" class="file-item">
+
+          <ion-label class="file-label">Seleccionar archivo</ion-label>
+
+          <!-- 👉 Desktop: Link + Tachita dentro del item -->
+          <div *ngIf="documentoActualUrl && documentoActualNombre" class="file-link-wrapper">
+            <span class="file-link" (click)="abrirDocumento()">
+              {{ documentoActualNombre }}
+            </span>
+
+            <button type="button" class="file-delete-btn" (click)="eliminarDocumento($event)">
+              ✕
+            </button>
+          </div>
+
+          <!-- Input file -->
           <input type="file" (change)="onFileSelected($event)" accept=".pdf,.jpg,.jpeg,.png" />
+
         </ion-item>
 
-        <div class="ion-text-center ion-margin-top" *ngIf="archivoSeleccionado">
-          <p><strong>Archivo seleccionado:</strong> {{ archivoSeleccionado.name }}</p>
+        <!-- 👉 Mobile: Link + X ABAJO -->
+        <div *ngIf="documentoActualUrl && documentoActualNombre" class="file-link-mobile">
+          <span class="file-link" (click)="abrirDocumento()">
+            {{ documentoActualNombre }}
+          </span>
+
+          <button type="button" class="file-delete-btn" (click)="eliminarDocumento($event)">
+            ✕
+          </button>
         </div>
 
-        <ion-button expand="block" color="danger" class="ion-margin-top" [disabled]="!archivoSeleccionado"
-          (click)="subirArchivo()">
-          Subir Documento
-        </ion-button>
+        <!-- Mostrar archivo seleccionado -->
+        <div class="ion-text-center ion-margin-top" *ngIf="archivoSeleccionado">
+          <p class="archivo-info">
+            <strong>Archivo seleccionado:</strong> {{ archivoSeleccionado.name }}
+          </p>
+        </div>
 
-        <ion-button expand="block" fill="outline" class="ion-margin-top"
-          (click)="router.navigateByUrl('/lote/documentos/' + nombreLote + '/' + idLote)">
-          Cancelar
-        </ion-button>
+        <!-- Botón subir -->
+        <div class="botones-desktop">
+          <ion-button expand="block" class="btn-subir" [disabled]="!archivoSeleccionado" (click)="subirArchivo()">
+            SUBIR DOCUMENTO
+          </ion-button>
+
+          <ion-button expand="block" fill="outline" class="btn-cancelar"
+            (click)="router.navigateByUrl('/lote/documentos/' + nombreLote + '/' + idLote)">
+            CANCELAR
+          </ion-button>
+        </div>
+
 
       </ion-card-content>
     </ion-card>

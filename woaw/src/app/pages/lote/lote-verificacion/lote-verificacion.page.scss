@@ -1,0 +1,320 @@
+.verificacion-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.titulo {
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 4px;
+}
+
+.subtitulo {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* =======================================================
+   MEGA CARD DEL LOTE
+======================================================= */
+.lote-wrapper {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 22px 26px;
+    margin-bottom: 35px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    /* más suave */
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.lote-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.lote-header-main {
+    display: flex;
+    flex-direction: column;
+}
+
+.lote-nombre {
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 4px;
+}
+
+.tipo-persona {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.tipo-persona ion-icon {
+    font-size: 18px;
+}
+
+.tipo-persona.fisica {
+    color: #10b981;
+}
+
+.tipo-persona.moral {
+    color: #6366f1;
+}
+
+/* 🔘 Botón hamburguesa, sin neón */
+.btn-hamburguesa {
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #fdf2f4;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    /* suave */
+    color: #e60023;
+
+    transition:
+        background 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
+}
+
+.btn-hamburguesa ion-icon {
+    font-size: 18px;
+    transition: transform 0.18s ease;
+}
+
+/* estado abierto sin glow loco */
+.btn-hamburguesa.open {
+    background: #ffe5ea;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.10);
+}
+
+.btn-hamburguesa.open ion-icon {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 600px) {
+    .btn-hamburguesa {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+/* =======================================================
+   GRID DE DOCUMENTOS
+======================================================= */
+.lote-panel {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+@media (min-width: 768px) {
+    .lote-panel {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* =======================================================
+   TARJETA DE DOCUMENTO
+======================================================= */
+.doc-card {
+    border-radius: 16px;
+    padding: 16px 20px !important;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    /* menos glow */
+}
+
+.doc-card ion-card-header {
+    padding: 0 !important;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.doc-title {
+    font-size: 17px;
+    font-weight: 800;
+    margin: 0;
+    color: #1f1f1f;
+}
+
+/* =======================================================
+   BARRA DE ESTADO
+======================================================= */
+.barra-estado {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.barra-estado.warning {
+    background: #fff7e5;
+    color: #b58100;
+}
+
+.barra-estado.success {
+    background: #e6fff3;
+    color: #0d8f5a;
+}
+
+.barra-estado.danger {
+    background: #ffecec;
+    color: #d93025;
+}
+
+/* =======================================================
+   BOTONES – ESTILO WOAW ROJO/NEGRO (SIN NEÓN)
+======================================================= */
+.acciones {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Base para todos los botones dentro de acciones */
+.acciones ion-button {
+    --border-radius: 999px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    --padding-start: 18px;
+    --padding-end: 18px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition:
+        transform 0.15s ease-out,
+        box-shadow 0.15s ease-out,
+        background-color 0.15s ease-out,
+        color 0.15s ease-out;
+}
+
+/* APROBAR → Negro WOAW, sin glow */
+.acciones ion-button[color="success"] {
+    --background: #000000;
+    --background-hover: #111111;
+    --background-activated: #111111;
+    --color: #ffffff;
+    color: #ffffff;
+    --box-shadow: none;
+}
+
+.acciones ion-button[color="success"]::part(native) {
+    background: #000000;
+    color: #ffffff;
+}
+
+.acciones ion-button[color="success"]::part(native):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    /* discreto */
+}
+
+/* RECHAZAR → Rojo WOAW, sin glow */
+.acciones ion-button[color="danger"][fill="outline"] {
+    --background: #ff1e3c;
+    --background-hover: #e01430;
+    --background-activated: #e01430;
+    --border-color: transparent;
+    --color: #ffffff;
+    color: #ffffff;
+    --box-shadow: none;
+}
+
+.acciones ion-button[color="danger"][fill="outline"]::part(native) {
+    background: #ff1e3c;
+    color: #ffffff;
+}
+
+.acciones ion-button[color="danger"][fill="outline"]::part(native):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(255, 30, 60, 0.25);
+    /* suave */
+}
+
+/* VER DOCUMENTO → Link rojo WOAW */
+.acciones ion-button[fill="clear"] {
+    --background: transparent;
+    --background-hover: transparent;
+    --background-activated: transparent;
+    --box-shadow: none;
+    --padding-start: 4px;
+    --padding-end: 4px;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    margin-left: auto;
+    --color: #ff1e3c;
+    color: #ff1e3c;
+}
+
+.acciones ion-button[fill="clear"]::part(native) {
+    text-decoration: none;
+}
+
+.acciones ion-button[fill="clear"]::part(native):hover {
+    text-decoration: underline;
+}
+
+/* =======================================================
+   MODAL Y TEXTOS SIN LOTES
+======================================================= */
+.modal-box {
+    padding: 20px;
+}
+
+.modal-box h2 {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.sin-lotes {
+    margin-top: 20px;
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* ===== FIX: Estilo responsive de botones ===== */
+@media (max-width: 600px) {
+    .acciones {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .acciones ion-button[color="success"],
+    .acciones ion-button[color="danger"] {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .acciones ion-button[fill="clear"] {
+        margin-left: 0 !important;
+        align-self: center;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        font-size: 14px;
+    }
+}
