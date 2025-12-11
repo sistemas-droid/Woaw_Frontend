@@ -1,23 +1,4 @@
-<ion-header *ngIf="esDispositivoMovil">
-  <ion-toolbar color="dark">
-    <ion-buttons slot="start">
-      <div class="perfil-header">
-        <button class="btn-regresar" (click)="regresar()">
-          <ion-icon name="arrow-back-outline"></ion-icon>
-        </button>
-
-        <img src="/assets/icon/logo4.png" alt="Go Autos" class="logo" />
-      </div>
-    </ion-buttons>
-
-    <ion-buttons slot="end">
-      <ion-button (click)="regresar()">
-        <ion-icon name="close-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-<app-navbar *ngIf="!esDispositivoMovil"></app-navbar>
+<app-navbar></app-navbar>
 
 <ion-content [fullscreen]="true">
   <section class="contenedor_espacio">
@@ -176,7 +157,7 @@
       <!-- botón continuar incluye renta -->
       <button [disabled]="!formularioValido()"
         *ngIf="!mostrarCarComponent && isLoggedIn  && (seleccion === 'auto' || seleccion === 'moto' || seleccion === 'renta' || seleccion === 'camion')"
-        class="btn-guardar" (click)="mostrarComponente()">
+        class="btn-guardar" (click)="irAPublicar()">
         Continuar
         <ion-icon name="arrow-forward-outline"></ion-icon>
       </button>

@@ -67,7 +67,7 @@
               <article class="car-card" *ngFor="let a of autosUsados | slice:0:5; trackBy: trackById"
                 (click)="irAFichaAuto(a._id)">
                 <div class="card-media">
-                  <img [src]="a.imagenPrincipal || '/assets/img/no-image.webp'"
+                  <img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
                     [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'" />
                   <span class="ribbon ribbon--red">Usado</span>
                 </div>
@@ -97,8 +97,10 @@
               <article class="car-card" *ngFor="let a of autosSeminuevos | slice:0:5; trackBy: trackById"
                 (click)="irAFichaAuto(a._id)">
                 <div class="card-media">
-                  <img [src]="a.imagenPrincipal || '/assets/img/no-image.webp'"
-                    [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'" />
+
+                  <img [src]="getImagen(a)" [alt]="a.marca + ' ' + a.modelo" (error)="onImgError($event, a)" />
+
+
                   <span class="ribbon ribbon--amber">Seminuevo</span>
                 </div>
                 <div class="card-body">
@@ -127,7 +129,7 @@
               <article class="car-card" *ngFor="let a of autosNuevos | slice:0:5; trackBy: trackById"
                 (click)="irAFichaAuto(a._id)">
                 <div class="card-media">
-                  <img [src]="a.imagenPrincipal || '/assets/img/no-image.webp'"
+                  <img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
                     [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'" />
                   <span class="ribbon ribbon--green">Nuevo</span>
                 </div>

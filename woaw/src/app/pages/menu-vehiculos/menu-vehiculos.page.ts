@@ -24,6 +24,7 @@ interface AutoCard {
   anio: number;
   tipoVenta: "nuevo" | "seminuevo" | "usado";
   imagenPrincipal?: string;
+  imagenes?: string[];
   ubicacion?: Ubicacion;
   version?: Version[];
   precio?: number | string | null;
@@ -58,7 +59,7 @@ export class MenuVehiculosPage implements OnInit {
     private generalService: GeneralService,
     public carsService: CarsService,
     private sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.generalService.dispositivo$.subscribe((tipo) => {
@@ -115,7 +116,7 @@ export class MenuVehiculosPage implements OnInit {
   }
 
   getCarsUsados() {
-    this.carsService.getCarsUsados().subscribe({
+    this.carsService.getCarsUsados(5).subscribe({
       next: (res: any) => {
         //  console.log('📦 Objeto recibido del backend (usados):', res);
         this.conUsados = Number(res?.contador ?? 0);
@@ -129,10 +130,11 @@ export class MenuVehiculosPage implements OnInit {
       },
     });
   }
+
   getCarsSeminuevos() {
-    this.carsService.getCarsSeminuevos().subscribe({
+    this.carsService.getCarsSeminuevos(5).subscribe({
       next: (res: any) => {
-        //  console.log('📦 Objeto recibido del backend (seminuevos):', res);
+        // console.log('📦 Objeto recibido del backend (seminuevos):', res);
         this.conSeminuevos = Number(res?.contador ?? 0);
         const autos: AutoCard[] = res?.coches || [];
         const autosAleatorios = [...autos].sort(() => Math.random() - 0.5);
@@ -145,8 +147,36 @@ export class MenuVehiculosPage implements OnInit {
     });
   }
 
+  public getImagen(a: AutoCard): string {
+    if (a?.imagenPrincipal) {
+      return a.imagenPrincipal;
+    }
+    if (a?.imagenes && a.imagenes.length > 0) {
+      return a.imagenes[0];
+    }
+    return '/assets/home/no-image.jpeg';
+  }
+
+
+  public onImgError(event: Event, auto: AutoCard) {
+    const img = event.target as HTMLImageElement;
+
+    if (img.dataset['fallbackTried'] === '1') {
+      img.src = '/assets/home/no-image.jpeg';
+      return;
+    }
+    img.dataset['fallbackTried'] = '1';
+
+    if (auto.imagenes && auto.imagenes.length > 0) {
+      img.src = auto.imagenes[0];
+    } else {
+      img.src = '/assets/home/no-image.jpeg';
+    }
+  }
+
+
   getCarsNews() {
-    this.carsService.getCarsNews().subscribe({
+    this.carsService.getCarsNews(5).subscribe({
       next: (res: any) => {
         //  console.log('📦 Objeto recibido del backend (nuevos):', res);
         this.conNuevos = Number(res?.contador ?? 0);

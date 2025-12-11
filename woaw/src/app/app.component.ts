@@ -126,7 +126,7 @@ export class AppComponent {
 
   get mostrarTabs(): boolean {
     const rutasSinTabs = [
-      '/update-car/', '/new-car', '/usados', '/nuevos', '/seminuevos',
+      '/update-car/', '/usados', '/nuevos', '/seminuevos', '/publicar',
       '/m-nuevos', '/mis-motos', '/seguros/poliza', '/mis-autos',
       '/seguros/autos', '/seguros/cotiza/', '/seguros/cotizar-manual',
       '/renta-coches', '/seguros/persona', '/search/vehiculos/', '/add-lote', '/renta/add-coche', '/camiones/todos', '/soporte'
@@ -141,7 +141,7 @@ export class AppComponent {
   }
 
   get mostrarWoalft(): boolean {
-    const rutasSinWoalft = ['/soporte', '/new-car', '/usados', '/nuevos', '/seminuevos',
+    const rutasSinWoalft = ['/soporte', '/usados', '/nuevos', '/seminuevos',
       '/m-nuevos', '/mis-motos', '/mis-autos', '/camiones/todos'];
     return !rutasSinWoalft.some(r => this.currentUrl.startsWith(r));
   }

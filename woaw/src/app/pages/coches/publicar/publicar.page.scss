@@ -1,0 +1,311 @@
+/* Contenedor principal */
+.formulario-wrapper {
+  padding: 18px;
+  max-width: 1100px;
+  margin: 1px auto;
+
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  margin-bottom: 18px;
+}
+
+/* Cards base */
+.tipo-card,
+.publicacion-card,
+.form-card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  margin-bottom: 18px;
+}
+
+/* Tipo selection */
+.titulo-main {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+
+
+
+.contenedor-tipo {
+
+  text-align: center;
+
+  ion-row {
+    justify-content: center;
+  }
+
+  .opcion {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 16px;
+  }
+
+  .activa {
+    border: 1px solid #ff0d00;
+  }
+
+  img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 1px;
+  }
+
+  .opcion p {
+    margin: 2px 0 0;
+    font-size: 15px;
+  }
+
+  .boton-centro ion-button {
+    max-width: 250px;
+    height: 45px;
+    border-radius: 30px;
+    margin: 40px auto 0;
+  }
+
+}
+
+
+
+
+
+.venta-card {
+
+  text-align: center;
+
+  ion-row {
+    justify-content: center;
+  }
+
+  .opcion {
+    border-radius: 16px;
+    // padding: 20px 0;
+    text-align: center;
+  }
+
+  .logo-mini {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 6px;
+  }
+
+  p {
+    font-size: 10px;
+    margin: 0;
+  }
+
+}
+
+.pregunta {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+
+
+
+
+
+.btn-publicar {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+
+  font-size: 12px;
+  height: 100%;
+  /* lo hace más grande */
+  border-radius: 30px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* separa texto del ícono */
+
+  ion-icon {
+    font-size: 20px;
+    /* icono un poquito más grande */
+  }
+}
+
+
+.resumen-compacto {
+  padding: 12px;
+  width: 100%;
+  // max-width: 700px;
+  margin-bottom: 1rem;
+
+  background-color: #b9b9b900;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(27, 2, 2, 0.131);
+
+  .titulo {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ef0a0a;
+    margin-bottom: 6px;
+  }
+
+  p {
+    margin: 2px 0;
+    font-size: 12px;
+
+    @media (max-width: 720px) {
+      font-size: 10px;
+    }
+  }
+
+  .estado {
+    margin-top: 0px;
+    padding: 0px 0px;
+    color: #ff0000;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  .select-admin {
+    width: 100%;
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 15px;
+    height: 38px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+.btn-secundario {
+  background: #f3f4f6;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 10px;
+  width: 100%;
+  font-weight: 600;
+}
+
+/* Top grid (ubicación + imagenes) */
+.top-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.box {
+  background: #fbfbfb;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+/* Imagenes */
+.btn-img {
+  background: #ff6b2e;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn-limpiar {
+  margin-top: 8px;
+  background: #ffefef;
+  color: #b20000;
+  border: 1px solid #ff6666;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+/* Form grids */
+.grid-form {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-top: 12px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+}
+
+.campo label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* Inputs Ionics look */
+ion-select,
+ion-input,
+textarea {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  --background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e6e6e6;
+  background: #fafafa;
+}
+
+
+
+
+textarea {
+  width: 100%;
+  max-width: 500px;
+}
+
+
+
+/* Ficha técnica */
+.card-especificaciones {
+  background: white;
+  border-left: 4px solid #fa2929;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Botón WhatsApp */
+.btn-wsp {
+  background: #25d366 !important;
+  color: white;
+  border: none;
+  padding: 12px 14px;
+  border-radius: 12px;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 720px) {
+
+  .formulario-wrapper {
+    padding: 12px;
+  }
+
+  .grid-form {
+    grid-template-columns: 1fr;
+  }
+}

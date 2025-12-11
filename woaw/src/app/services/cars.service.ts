@@ -7,6 +7,7 @@ import { GeneralService } from '../services/general.service';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { HeadersService } from './headers.service';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -50,48 +51,67 @@ export class CarsService {
       catchError((error) => this.headersService.handleError(error))
     );
   }
-  getCarsNews(): Observable<any> {
+
+  getCarsNews(limit?: number): Observable<any> {
     return from(this.headersService.obtenerToken()).pipe(
       switchMap((token) => {
         const headers = this.headersService.getJsonHeaders(token);
-        return this.http.get(
-          `${environment.api_key}/cars/vehiculos?tipoVenta=nuevo`,
-          {
-            headers,
-          }
-        );
+
+        let params = new HttpParams().set('tipoVenta', 'nuevo');
+
+        if (limit && limit > 0) {
+          params = params.set('limit', limit.toString());
+        }
+
+        return this.http.get(`${environment.api_key}/cars/vehiculos`, {
+          headers,
+          params
+        });
       }),
       catchError((error) => this.headersService.handleError(error))
     );
   }
-  getCarsSeminuevos(): Observable<any> {
+
+  getCarsSeminuevos(limit?: number): Observable<any> {
     return from(this.headersService.obtenerToken()).pipe(
       switchMap((token) => {
         const headers = this.headersService.getJsonHeaders(token);
-        return this.http.get(
-          `${environment.api_key}/cars/vehiculos?tipoVenta=seminuevo`,
-          {
-            headers,
-          }
-        );
+
+        let params = new HttpParams().set('tipoVenta', 'seminuevo');
+
+        if (limit && limit > 0) {
+          params = params.set('limit', limit.toString());
+        }
+
+        return this.http.get(`${environment.api_key}/cars/vehiculos`, {
+          headers,
+          params
+        });
       }),
       catchError((error) => this.headersService.handleError(error))
     );
   }
-  getCarsUsados(): Observable<any> {
+
+  getCarsUsados(limit?: number): Observable<any> {
     return from(this.headersService.obtenerToken()).pipe(
       switchMap((token) => {
         const headers = this.headersService.getJsonHeaders(token);
-        return this.http.get(
-          `${environment.api_key}/cars/vehiculos?tipoVenta=usado`,
-          {
-            headers,
-          }
-        );
+
+        let params = new HttpParams().set('tipoVenta', 'usado');
+
+        if (limit && limit > 0) {
+          params = params.set('limit', limit.toString());
+        }
+
+        return this.http.get(`${environment.api_key}/cars/vehiculos`, {
+          headers,
+          params
+        });
       }),
       catchError((error) => this.headersService.handleError(error))
     );
   }
+
   guardarAutos(datos: FormData, tipo: string): Observable<any> {
     let ApiURL = ``;
     if (tipo === 'Nuevo') {
