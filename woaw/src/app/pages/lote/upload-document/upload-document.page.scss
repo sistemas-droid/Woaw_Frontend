@@ -1,108 +1,259 @@
-/* --- CONTENEDOR GENERAL --- */
+/* ================================ 
+   CONTENEDOR GENERAL
+================================ */
 .ion-padding {
-    width: 100%;
     max-width: 1100px;
     margin: 0 auto;
+    padding-top: 20px;
 }
 
-/* --- TITULO DE LA PÁGINA --- */
-h1 {
-    font-size: 26px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 4px;
+/* ================================
+   TITULOS PREMIUM WOAW
+================================ */
+.titulo-woaw {
+    font-size: 34px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    background: linear-gradient(90deg, #000, #e60023);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.ion-text-muted {
-    color: #6b7280;
+.subtitulo-woaw {
     font-size: 15px;
+    color: #6d6d6d;
+    margin-top: -4px;
 }
 
-/* --- TARJETA PRINCIPAL --- */
-ion-card {
-    border-radius: 14px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+/* ================================
+   TARJETA PRINCIPAL
+================================ */
+.upload-card {
+    border-radius: 20px;
+    padding: 8px;
+    border: 1px solid #eee;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
+}
+
+/* ================================
+   INPUT DE ARCHIVO
+================================ */
+.file-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px 10px;
     border: 1px solid #e5e7eb;
-    padding: 6px;
-    transition: 0.25s ease-in-out;
+    border-radius: 14px;
+    background: #fff;
+    gap: 10px;
+}
+
+.file-label {
+    flex: 0 0 auto;
+    font-weight: 700;
+    color: #111;
+    white-space: nowrap;
+    order: 1;
+}
+
+/* WRAPPER DEL LINK (DESKTOP) */
+.file-link-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    order: 2;
+}
+
+.file-link {
+    font-size: 12px;
+    font-weight: 700;
+    color: #e60023;
+    cursor: pointer;
+    text-decoration: underline;
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &:hover {
-        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
-        transform: translateY(-1px);
+        color: #b0001a;
     }
 }
 
-/* --- INPUT DE ARCHIVO (Custom bonito) --- */
-ion-item {
-    --background: #fafafa;
-    --border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    margin-top: 10px;
+/* BOTÓN X */
+.file-delete-btn {
+    order: 3;
+    border: none;
+    background: transparent;
+    color: #e60023;
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    line-height: 1;
+    margin-left: 8px;
 
-    input[type="file"] {
-        margin-left: 12px;
-        font-size: 14px;
-        color: #444;
-        padding: 10px 0;
+    &:hover {
+        color: #b0001a;
+        transform: scale(1.1);
+    }
+}
+
+/* INPUT FILE (BOTÓN ROJO DERECHA) */
+.file-item input[type=file] {
+    order: 4;
+    margin-left: auto;
+    font-size: 13px;
+    cursor: pointer;
+
+    &::-webkit-file-upload-button {
+        background: #e60023;
+        color: #fff;
+        border-radius: 6px;
+        padding: 7px 12px;
+        border: none;
+        font-weight: 600;
         cursor: pointer;
+        transition: 0.2s ease-in-out;
 
-        &::-webkit-file-upload-button {
-            background: var(--ion-color-danger);
-            color: #fff;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s ease;
+        &:hover {
+            background: #b0001a;
         }
+    }
 
-        &::-webkit-file-upload-button:hover {
-            background: #b40000;
-        }
+    &::file-selector-button {
+        background: #e60023;
+        color: #fff;
+        border-radius: 6px;
+        padding: 7px 12px;
+        border: none;
+        font-weight: 600;
     }
 }
 
-/* --- TEXTO DEL ARCHIVO SELECCIONADO --- */
-.archivo {
-    font-size: 15px;
-    background: #f9fafb;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #e5e7eb;
-    display: inline-block;
-    margin-top: 10px;
+
+/* ================================
+   DESKTOP: BOTONES UNO AL LADO DEL OTRO
+================================ */
+@media (min-width: 601px) {
+
+    .botones-desktop {
+        display: flex;
+        gap: 12px;
+        margin-top: 10px;
+        justify-content: center;
+    }
+
+    .botones-desktop ion-button {
+        flex: 1;
+        max-width: 240px;
+        /* evita que se estiren demasiado */
+    }
+
+    /* Separar footer */
+    .upload-card {
+        margin-bottom: 40px;
+        /* espacio finito antes del footer */
+    }
 }
 
-/* --- BOTONES --- */
-ion-button {
-    --border-radius: 10px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
+/* ================================
+   MOBILE: LINK ABAJO
+================================ */
+
+/* Oculto en desktop */
+.file-link-mobile {
+    display: none;
 }
 
-ion-button[color="primary"] {
-    --background: var(--ion-color-danger);
-    --background-hover: #b30000;
+@media (max-width: 600px) {
+
+    .file-item {
+        /* 👉 mantenemos fila, solo centramos vertical */
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .file-label {
+        order: 1;
+        white-space: normal !important;
+        /* permite salto de línea solo en móvil */
+    }
+
+    .file-item input[type=file] {
+        order: 2;
+        margin-left: auto;
+        width: auto;
+    }
+
+    /* Desktop link se oculta en móvil */
+    .file-link-wrapper {
+        display: none !important;
+    }
+
+    /* Mobile link aparece ABAJO */
+    .file-link-mobile {
+        display: flex !important;
+        gap: 6px;
+        align-items: center;
+        margin-top: 12px;
+        margin-bottom: 18px;
+        padding-left: 4px;
+        width: 100%;
+    }
+
+    .file-link-mobile .file-link {
+        font-size: 13px;
+        font-weight: 700;
+        color: #e60023;
+        text-decoration: underline;
+    }
+
+    .file-link-mobile .file-delete-btn {
+        font-size: 16px;
+        margin-left: 4px;
+    }
+
+    /* Ocultar texto feo sin romper el botón */
+    input[type=file] {
+        color: transparent !important;
+    }
+
+    input[type=file]::file-selector-button,
+    input[type=file]::-webkit-file-upload-button {
+        font-size: 14px !important;
+        line-height: normal !important;
+    }
 }
 
-ion-button[fill="outline"] {
+/* ================================
+   TEXTO ARCHIVO SELECCIONADO
+================================ */
+.archivo-info {
+    font-size: 14px;
+    color: #333;
+}
+
+/* ================================
+   BOTONES
+================================ */
+.btn-subir {
+    --background: linear-gradient(135deg, #e60023, #ff3b3b);
+    --border-radius: 14px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+}
+
+.btn-cancelar {
+    --border-radius: 14px;
     --border-color: #111;
     --color: #111;
+    font-weight: 700;
 
     &:hover {
-        --background: #f4f4f4;
-    }
-}
-
-/* --- RESPONSIVE --- */
-@media (max-width: 600px) {
-    h1 {
-        font-size: 22px;
-    }
-
-    ion-card {
-        padding: 0;
+        --background: #111;
+        --color: #fff;
     }
 }

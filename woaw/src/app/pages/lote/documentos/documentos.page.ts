@@ -9,7 +9,13 @@ interface LoteDocument {
   subtitle: string;
   icon: string;
   uploaded: boolean;
+
+  // 🔥 NUEVO
+  status?: 'aprobado' | 'rechazado' | 'pendiente' | null;
+  comentarios?: string | null;
+  url?: string | null;
 }
+
 
 @Component({
   selector: 'app-documentos',
@@ -98,9 +104,14 @@ export class DocumentosPage implements OnInit {
           const slug = this.mapaDocumentos[key];
           if (!slug) return;
 
+          const backendDoc = docs[key];
           const docFront = this.documents.find(d => d.tipo === slug);
+
           if (docFront) {
             docFront.uploaded = true;
+            docFront.status = backendDoc.estado || 'pendiente';
+            docFront.comentarios = backendDoc.comentarios || null;
+            docFront.url = backendDoc.url || null;
           }
         });
       },
@@ -138,10 +149,11 @@ export class DocumentosPage implements OnInit {
     });
   }
 
-  // =============================
-  //   NAVEGAR A SUBIR DOCUMENTO
-  // =============================
   uploadDocument(doc: LoteDocument) {
+
+    if (doc.status === 'aprobado') {
+      return; // simplemente no navega
+    }
 
     let tipoReal = doc.tipo;
 
@@ -155,10 +167,6 @@ export class DocumentosPage implements OnInit {
       `/lote/upload-document/${this.nombreLote}/${this.idLote}/${tipoReal}`
     );
   }
-
-  // =============================
-  //   PROGRESO REAL PF VS PM
-  // =============================
 
   getTotalDocsRequeridos(): number {
     if (this.tipoPersona === 'fisica') {
@@ -181,6 +189,19 @@ export class DocumentosPage implements OnInit {
 
     return Math.round((this.getUploadedCount() / total) * 100);
   }
+
+  getCardClass(doc: LoteDocument) {
+    if (doc.status === 'aprobado') return 'doc-aprobado';
+    if (doc.status === 'rechazado') return 'doc-rechazado';
+    return 'doc-pendiente';
+  }
+
+  getStatusIcon(doc: LoteDocument) {
+    if (doc.status === 'aprobado') return 'checkmark-circle';
+    if (doc.status === 'rechazado') return 'close-circle';
+    return 'hourglass-outline';
+  }
+
 
   irAlLote() {
     if (!this.nombreLote || !this.idLote) return;

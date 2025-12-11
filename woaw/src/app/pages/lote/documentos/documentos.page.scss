@@ -1,71 +1,182 @@
+/* === CONTENEDOR GENERAL === */
+ion-content {
+  --background: #f8f9fb;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+  color: #111;
+}
+
+/* Subtítulo suave */
+ion-text p {
+  font-size: 14px;
+  color: #6d6d6d;
+}
+
+/* === TARJETA DE PROGRESO === */
+ion-card {
+  border-radius: 16px !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+  border: none !important;
+}
+
+/* Texto de progreso */
+.progreso-text {
+  font-size: 16px;
+  font-weight: 700;
+}
+
 /* === GRID CENTRADO === */
 .docs-grid {
   width: 100%;
   display: flex;
   justify-content: center;
+  padding: 10px 0;
 }
 
 .docs-row {
   justify-content: center;
-  gap: 20px;
+  gap: 22px;
 }
 
-/* Todas las columnas con mismo ancho visual */
+/* Columnas uniformes */
 .docs-col {
   display: flex;
 }
 
-/* === CARTAS === */
+/* === TARJETA DE DOCUMENTO === */
 .ion-card-document {
   width: 100%;
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  border: 1px solid #ddd;
-  border-radius: 14px;
-  transition: .25s ease-in-out;
-  background: #fff;
+  min-height: 210px;
+  padding: 8px 4px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1.5px solid #e3e3e3;
+  transition: 0.25s ease-in-out;
+  cursor: pointer;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, .15);
+    transform: translateY(-6px);
     border-color: var(--ion-color-danger);
+    box-shadow: 0 10px 26px rgba(255, 0, 34, 0.12);
   }
 }
 
-/* Carta cuando está completada */
+/* Estado completado */
 .ion-card-uploaded {
-  border: 2px solid var(--ion-color-success);
-  background: rgba(46, 204, 113, .08);
+  border-color: var(--ion-color-success) !important;
+  background: rgba(46, 204, 113, 0.12);
+  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.15);
 }
 
-/* Ícono + Título */
+/* === TITULO + ICONO === */
 .card-title {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  font-size: 18px;
+  gap: 10px;
+  font-weight: 800 !important;
+  font-size: 18px !important;
   color: #111;
 }
 
-/* Ícono de documento */
+/* Ícono rojo elegante */
 .ion-icon-document {
-  font-size: 26px;
+  font-size: 28px;
   color: var(--ion-color-danger);
+  min-width: 28px;
+}
+
+/* Subtítulo del documento */
+ion-card-subtitle {
+  font-size: 13px !important;
+  margin-top: 4px;
+  color: #666 !important;
+}
+
+/* Badge */
+ion-badge {
+  margin-top: 10px;
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 6px;
 }
 
 /* === BOTÓN VOLVER === */
 .volver-container {
-  margin-top: 40px;
-  text-align: center;
+  margin: 40px auto 32px;
+  display: flex;
+  justify-content: center;
 }
 
+/* Solo el pill rojo, sin tarjeta blanca detrás */
 .btn-volver {
-  --border-radius: 10px;
-  --background: var(--ion-color-danger);
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  /* importante: NO usar padding normal aquí */
+  padding: 0;
+  margin: 0;
+
+  --border-radius: 999px;
+  --background: linear-gradient(135deg, #e60023, #ff4136);
+  --box-shadow: 0 6px 18px rgba(255, 0, 0, 0.25);
+
+  font-weight: 700;
+  letter-spacing: 0.6px;
+
+  min-width: 220px;
+  max-width: 280px;
+  width: auto;
+  height: 44px;
+  /* opcional pero ayuda a que se vea uniforme */
+}
+
+/* === ESTADOS PREMIUM === */
+
+.doc-aprobado {
+  border-color: #2ecc71 !important;
+  background: rgba(46, 204, 113, 0.12) !important;
+
+  .icon-status {
+    color: #2ecc71 !important;
+  }
+}
+
+.doc-rechazado {
+  border-color: var(--ion-color-danger) !important;
+  background: rgba(255, 0, 34, 0.10) !important;
+
+  .icon-status {
+    color: var(--ion-color-danger) !important;
+  }
+
+  .comentario-rechazo {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #b30000;
+    font-weight: 600;
+  }
+}
+
+.doc-pendiente {
+  border-color: #f5b942 !important;
+  background: rgba(255, 193, 7, 0.15) !important;
+
+  .icon-status {
+    color: #f5b942 !important;
+  }
+}
+
+/* Icono principal */
+.icon-status {
+  font-size: 30px;
+  min-width: 30px;
+}
+
+/* Badge premium */
+.badge-status {
+  margin-left: 6px;
+  margin-top: 10px;
+  font-weight: 700;
 }

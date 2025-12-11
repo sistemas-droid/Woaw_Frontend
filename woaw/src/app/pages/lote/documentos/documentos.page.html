@@ -76,26 +76,24 @@
       <ion-grid class="docs-grid ion-margin-bottom">
         <ion-row class="docs-row">
 
-          <!-- ngFor correcto -->
           <ng-container *ngFor="let doc of documents">
 
-            <!-- ngIf correcto (sin acta constitutiva para PF) -->
+            <!-- PF no ve acta constitutiva -->
             <ion-col *ngIf="!(doc.tipo === 'acta-constitutiva' && tipoPersona !== 'moral')" size="12" size-sm="6"
               size-md="4" size-lg="3" class="docs-col">
 
-              <ion-card class="ion-card-document" [class.ion-card-uploaded]="doc.uploaded"
-                (click)="uploadDocument(doc)">
+              <ion-card class="ion-card-document" [ngClass]="getCardClass(doc)" (click)="uploadDocument(doc)">
 
                 <ion-card-header>
 
-                  <ion-card-title class="ion-align-items-center card-title">
-                    <ion-icon [name]="doc.icon" slot="start" class="ion-icon-document"></ion-icon>
+                  <ion-card-title class="card-title">
+                    <ion-icon [name]="getStatusIcon(doc)" class="icon-status"></ion-icon>
                     <ion-text>
                       <h2 class="ion-text-bold">{{ doc.name }}</h2>
                     </ion-text>
                   </ion-card-title>
 
-                  <!-- PF / PM (validación intacta) -->
+                  <!-- PF / PM -->
                   <ion-card-subtitle *ngIf="doc.tipo === 'formatos-autorizacion'">
                     <span *ngIf="tipoPersona === 'fisica'">Persona Física</span>
                     <span *ngIf="tipoPersona === 'moral'">Persona Moral</span>
@@ -110,9 +108,25 @@
                 </ion-card-header>
 
                 <ion-card-content>
+
+                  <!-- Badge de subida -->
                   <ion-badge [color]="doc.uploaded ? 'success' : 'warning'" class="ion-margin-top">
                     {{ doc.uploaded ? 'Completado' : 'Pendiente' }}
                   </ion-badge>
+
+                  <!-- Badge Premium de estado -->
+                  <ion-badge *ngIf="doc.status" [color]="
+                      doc.status === 'aprobado' ? 'success' :
+                      doc.status === 'rechazado' ? 'danger' : 'warning'
+                    " class="badge-status">
+                    {{ doc.status | titlecase }}
+                  </ion-badge>
+
+                  <!-- Comentario si fue rechazado -->
+                  <p *ngIf="doc.status === 'rechazado' && doc.comentarios" class="comentario-rechazo">
+                    Motivo: "{{ doc.comentarios }}"
+                  </p>
+
                 </ion-card-content>
 
               </ion-card>
@@ -124,10 +138,10 @@
         </ion-row>
       </ion-grid>
 
-      <!-- BOTÓN PARA REGRESAR AL LOTE ABAJO DEL GRID -->
+      <!-- Botón volver -->
       <div class="volver-container">
-        <ion-button expand="block" color="danger" fill="solid" class="btn-volver" (click)="irAlLote()">
-          Ver lote "{{ nombreLote }}"
+        <ion-button color="danger" fill="solid" class="btn-volver" (click)="irAlLote()">
+          ir a mi lote "{{ nombreLote }}"
         </ion-button>
       </div>
 

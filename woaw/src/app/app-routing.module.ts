@@ -321,6 +321,10 @@ const routes: Routes = [
         path: 'lote/welcome-lote/:nombre/:id',
         loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then((m) => m.WelcomeLotePageModule)
       },
+      {
+        path: 'lote/lote-verificacion',
+        loadChildren: () => import('./pages/lote/lote-verificacion/lote-verificacion.module').then(m => m.LoteVerificacionPageModule)
+      },
       // ---------------------
       // ---------------------
 
