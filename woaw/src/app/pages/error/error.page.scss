@@ -1,59 +1,60 @@
 .error-page {
-  /* opcional: fondo del ion-content */
-  --background: #0b0b0e;
+  --background: #ffffff; /* Fondo blanco real */
   text-align: center;
-  /* deja el host tranquilo; el truco va en el hijo */
 }
 
 .error-page .error-wrap {
-  /* 🔥 asegura altura de viewport y centra en móvil y desktop */
   min-block-size: 100dvh;
   display: grid;
-  place-content: center;   /* centra vertical + horizontal */
+  place-content: center;
   justify-items: center;
   gap: clamp(16px, 4vh, 28px);
   padding: clamp(12px, 4vw, 28px);
   width: 100%;
 }
 
-/* lo demás igual que ya tienes */
+/* Logo */
 .error-page .logo {
   width: clamp(120px, 22vw, 180px);
   margin-bottom: clamp(8px, 2vh, 14px);
   filter: drop-shadow(0 4px 8px rgba(0,0,0,.4));
 }
 
+/* Título */
 .error-page .headline {
   font-size: clamp(1.1rem, 3vw, 1.6rem);
-  color: #f0f0f0;
-  margin: 0 0 clamp(10px, 2vh, 14px);
+  color: #ffffff; /* negro */
+  font-weight: 800;
+  margin: 0 0 clamp(10px, 2vh, 16px);
 }
 
-/* Contenedor e imagen centrados */
+/* Contenedor de la imagen */
 .error-page .car {
-  position: relative;   /* referencia para lo absoluto */
+  position: relative;
   display: grid;
   place-items: center;
   width: 100%;
-  min-height: clamp(200px, 50vh, 400px); /* espacio reservado para la imagen */
+  min-height: clamp(160px, 30vh, 260px); /* tamaño contenido */
+  margin-bottom: clamp(16px, 4vh, 24px);
 }
-.error-page .car img {
-  position: absolute;   
-  top: 50%;             
-  left: 50%;            
-  transform: translate(-50%, -50%);
-  width: clamp(280px, 75vw, 480px); /* 🔥 ahora más grande */
+
+/* Imagen: usamos una sola regla, sin duplicados */
+.error-page .car img.car {
+  position: static;              /* ya no absolute */
+  top: auto;
+  left: auto;
+  transform: none;
+  width: clamp(160px, 40vw, 260px); /* imagen más pequeña y responsiva */
   height: auto;
   object-fit: contain;
 }
 
-
-/* Botón */
+/* Botón rojo, texto negro */
 .error-page .back-btn {
   width: min(420px, 90vw);
   font-weight: 800;
   letter-spacing: .3px;
   border-radius: clamp(10px, 2vw, 14px);
-  color: #dc143c !important;
+  color: #000000 !important; /* Texto negro */
   box-shadow: 0 10px 28px rgba(220, 20, 60, .45);
 }
