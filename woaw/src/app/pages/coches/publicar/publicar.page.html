@@ -213,7 +213,7 @@
           </ion-select>
         </ion-col>
 
-        <ion-col size="12" class="ion-text-center">
+        <ion-col size="12" class="ion-text-center" *ngIf="tipoDispocitivo !== 'telefono'">
           <button class="btn-wsp"
             (click)="contactosService.contactarPorPublicacionParticular(anio, marca, modelo, precioEstimado!, tipoFactura)">
             <ion-icon name="logo-whatsapp"></ion-icon>
@@ -427,7 +427,8 @@
 
     </ion-grid>
 
-    <ion-buttons slot="end" *ngIf="tipoDispocitivo !== 'telefono' && tipoSeleccionado !== '' && seccionFormulario !== 3">
+    <ion-buttons slot="end"
+      *ngIf="tipoDispocitivo !== 'telefono' && tipoSeleccionado !== '' && seccionFormulario !== 3">
       <ion-button class="btn-publicar" expand="block" color="danger" shape="round" fill="solid" type="button"
         (click)="EnviarVeiculo()">
         Publicar
@@ -453,12 +454,17 @@
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button color="danger" fill="solid" type="button" (click)="EnviarVeiculo()">
+      <ion-button color="danger" fill="solid" type="button" *ngIf=" seccionFormulario !== 3" (click)="EnviarVeiculo()">
         Publicar
         <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
       </ion-button>
 
-      
+      <ion-button color="success" fill="solid" type="button" *ngIf=" seccionFormulario === 3"
+        (click)="contactosService.contactarPorPublicacionParticular(anio, marca, modelo, precioEstimado!, tipoFactura)">
+        Contáctanos
+        <ion-icon name="logo-whatsapp"></ion-icon>
+      </ion-button>
+
     </ion-buttons>
 
   </ion-toolbar>

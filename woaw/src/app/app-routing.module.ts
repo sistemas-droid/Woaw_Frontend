@@ -88,12 +88,6 @@ const routes: Routes = [
         data: { title: "Mensajes | woaw" },
       },
       {
-        path: "ficha/:tipo/:id",
-        loadChildren: () =>
-          import("./pages/ficha/ficha.module").then((m) => m.FichaPageModule),
-        data: { title: "Detalle del vehículo | woaw" },
-      },
-      {
         path: "mis-autos",
         loadChildren: () =>
           import("./pages/coches/mis-autos/mis-autos.module").then(
@@ -411,6 +405,32 @@ const routes: Routes = [
         path: 'publicar',
         loadChildren: () => import('./pages/coches/publicar/publicar.module').then(m => m.PublicarPageModule)
       },
+
+      // ---------------------
+      // FICHAS 
+      // ---------------------
+      // {
+      //   path: "ficha/:tipo/:id",
+      //   loadChildren: () =>
+      //     import("./pages/ficha/ficha.module").then((m) => m.FichaPageModule),
+      //   data: { title: "Detalle del vehículo | woaw" },
+      // },
+      {
+        path: 'ficha/autos/:id',
+        loadChildren: () => import('./pages/coches/ficha-auto/ficha-auto.module').then(m => m.FichaAutoPageModule),
+        data: { title: "Detalle del vehículo | woaw" },
+      },
+      {
+        path: 'ficha/motos/:id',
+        loadChildren: () => import('./pages/motos/ficha-motos/ficha-motos.module').then(m => m.FichaMotosPageModule)
+      },
+      {
+        path: 'ficha/camiones/:id',
+        loadChildren: () => import('./pages/camiones/ficha-camiones/ficha-camiones.module').then(m => m.FichaCamionesPageModule)
+      },
+
+      // ---------------------
+      // ---------------------
     ],
   },
   {
@@ -419,6 +439,7 @@ const routes: Routes = [
       import("./pages/error/error.module").then((m) => m.ErrorPageModule),
     data: { title: "Página no encontrada | woaw" },
   },
+
 
 ];
 

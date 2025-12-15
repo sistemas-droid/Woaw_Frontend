@@ -303,7 +303,7 @@ export class PublicarPage implements OnInit {
   }
 
   regresarInicio() {
-    this.router.navigate(['/seguros/autos']);
+    this.router.navigate(['/new-car']);
   }
   async seleccionarUbicacion() {
     const modal = await this.modalController.create({ component: MapaComponent });
