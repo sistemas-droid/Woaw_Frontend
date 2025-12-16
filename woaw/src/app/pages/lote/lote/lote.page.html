@@ -22,7 +22,12 @@
       <h2 class="ficha-lote__titulo titulo-mobile">
         <ion-icon name="business-outline" color="danger"></ion-icon>
         {{ lote.nombre }}
+
+        <!-- ✅ PALOMITA -->
+        <ion-icon *ngIf="lote.estatusDocumentos === 'verificado'" name="checkmark-circle" class="verified-inline">
+        </ion-icon>
       </h2>
+
 
       <div class="ficha-lote__head">
 
@@ -36,6 +41,10 @@
           <h2 class="ficha-lote__titulo titulo-desktop">
             <ion-icon name="business-outline" color="danger"></ion-icon>
             {{ lote.nombre }}
+
+            <!-- ✅ PALOMITA -->
+            <ion-icon *ngIf="lote.estatusDocumentos === 'verificado'" name="checkmark-circle" class="verified-inline">
+            </ion-icon>
           </h2>
 
           <p class="ficha-lote__campo">

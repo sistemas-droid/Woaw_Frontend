@@ -37,17 +37,14 @@
   }
 }
 
-/* Buscador + título en la misma fila, bien separados */
 .header-lotes-left {
   display: flex;
   align-items: flex-end;
   gap: 40px;
-  /* separación fuerte entre buscador y título */
   flex: 1;
   min-width: 0;
 }
 
-/* Buscador con ancho fijo para que el título pueda centrarse en el resto */
 .buscador-lotes {
   flex: 0 0 430px;
   max-width: 430px;
@@ -58,7 +55,6 @@
   }
 }
 
-/* Título “LOTES” centrado y ajustado a la izquierda donde te gustó */
 .titulo-seccion-lotes {
   flex: 1;
   margin: 0;
@@ -75,7 +71,6 @@
     font-size: 28px;
   }
 
-  /* 🔥 ajuste fuerte hacia la izquierda para compensar los 430px del buscador */
   @media (min-width: 768px) {
     transform: translateX(-200px);
   }
@@ -84,7 +79,6 @@
     font-size: 20px;
     text-align: left;
     transform: none;
-    /* en móvil no movemos nada */
   }
 }
 
@@ -101,8 +95,6 @@
   }
 }
 
-
-/* En móvil se apilan buscador y título */
 @media (max-width: 640px) {
   .header-lotes-left {
     flex-direction: column;
@@ -148,7 +140,7 @@
 
 @media (min-width: 1400px) {
   .lotes-grid {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
@@ -208,12 +200,22 @@
 .lote-title {
   margin: 0;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 900;
   color: #c62828;
   line-height: 1.25;
   display: flex;
+  align-items: center;
   gap: 6px;
-  align-items: flex-start;
+  text-transform: uppercase; // ✅ MAYÚSCULAS
+  letter-spacing: 0.04em; // 🔥 más pro
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .lote-title {
+    display: flex !important;
+    align-items: center;
+  }
 }
 
 .lote-subtitle {
@@ -473,4 +475,20 @@ ion-segment-button.segment-button-checked {
 
 .lote-img ::ng-deep ion-icon {
   display: none !important;
+}
+
+/* Nombre + palomita */
+.lote-nombre {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* ✅ Palomita */
+.verified-inline {
+  font-size: 16px;
+  color: #008dff;
+  flex-shrink: 0;
+  transform: translateY(-1px);
 }

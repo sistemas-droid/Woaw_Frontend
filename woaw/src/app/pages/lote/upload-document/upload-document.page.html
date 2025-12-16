@@ -11,51 +11,69 @@
       </p>
     </div>
 
+    <!-- 🚨 BLOQUEADO SI ESTÁ APROBADO -->
+    <ion-card *ngIf="documentoActualEstado === 'aprobado'" class="upload-card ion-margin-bottom">
+      <ion-card-content class="ion-text-center">
+        <ion-icon name="checkmark-circle" color="success" style="font-size:40px;"></ion-icon>
+        <p class="ion-margin-top ion-text-bold">
+          Este documento ya fue aprobado
+        </p>
+        <p class="ion-text-muted">
+          Si necesitas hacer cambios, contacta a un administrador.
+        </p>
+      </ion-card-content>
+    </ion-card>
+
     <ion-card class="upload-card">
       <ion-card-content>
 
-        <!-- Campo de archivo con enlace al documento actual -->
+        <!-- Campo de archivo -->
         <ion-item lines="none" class="file-item">
 
           <ion-label class="file-label">Seleccionar archivo</ion-label>
 
-          <!-- 👉 Desktop: Link + Tachita dentro del item -->
+          <!-- Link documento actual -->
           <div *ngIf="documentoActualUrl && documentoActualNombre" class="file-link-wrapper">
             <span class="file-link" (click)="abrirDocumento()">
               {{ documentoActualNombre }}
             </span>
 
-            <button type="button" class="file-delete-btn" (click)="eliminarDocumento($event)">
+            <!-- ❌ Solo si NO está aprobado -->
+            <button *ngIf="documentoActualEstado !== 'aprobado'" type="button" class="file-delete-btn"
+              (click)="eliminarDocumento($event)">
               ✕
             </button>
           </div>
 
           <!-- Input file -->
-          <input type="file" (change)="onFileSelected($event)" accept=".pdf,.jpg,.jpeg,.png" />
+          <input type="file" accept=".pdf,.jpg,.jpeg,.png" [disabled]="documentoActualEstado === 'aprobado'"
+            (change)="onFileSelected($event)" />
 
         </ion-item>
 
-        <!-- 👉 Mobile: Link + X ABAJO -->
+        <!-- Mobile link -->
         <div *ngIf="documentoActualUrl && documentoActualNombre" class="file-link-mobile">
           <span class="file-link" (click)="abrirDocumento()">
             {{ documentoActualNombre }}
           </span>
 
-          <button type="button" class="file-delete-btn" (click)="eliminarDocumento($event)">
+          <button *ngIf="documentoActualEstado !== 'aprobado'" type="button" class="file-delete-btn"
+            (click)="eliminarDocumento($event)">
             ✕
           </button>
         </div>
 
-        <!-- Mostrar archivo seleccionado -->
+        <!-- Archivo seleccionado -->
         <div class="ion-text-center ion-margin-top" *ngIf="archivoSeleccionado">
           <p class="archivo-info">
             <strong>Archivo seleccionado:</strong> {{ archivoSeleccionado.name }}
           </p>
         </div>
 
-        <!-- Botón subir -->
+        <!-- Botones -->
         <div class="botones-desktop">
-          <ion-button expand="block" class="btn-subir" [disabled]="!archivoSeleccionado" (click)="subirArchivo()">
+          <ion-button expand="block" class="btn-subir"
+            [disabled]="!archivoSeleccionado || documentoActualEstado === 'aprobado'" (click)="subirArchivo()">
             SUBIR DOCUMENTO
           </ion-button>
 
@@ -64,7 +82,6 @@
             CANCELAR
           </ion-button>
         </div>
-
 
       </ion-card-content>
     </ion-card>
