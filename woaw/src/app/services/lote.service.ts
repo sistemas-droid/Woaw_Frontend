@@ -12,6 +12,9 @@ import { HeadersService } from './headers.service';
   providedIn: 'root'
 })
 export class LoteService {
+  marcarLoteVerificado(idLote: string) {
+    throw new Error('Method not implemented.');
+  }
   obtenerDocumento(idLote: string, tipoDocumento: string) {
     throw new Error('Method not implemented.');
   }

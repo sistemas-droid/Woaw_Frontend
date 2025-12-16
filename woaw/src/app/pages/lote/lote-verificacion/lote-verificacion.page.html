@@ -15,33 +15,37 @@
     <!-- 🔹 LISTA DE LOTES -->
     <div *ngFor="let lote of lotesVerificacion" class="lote-wrapper">
 
-      <!-- =======================================================
-           HEADER DEL LOTE (Nombre, Persona, Toggle)
-      ======================================================= -->
+      <!-- ================= HEADER DEL LOTE ================= -->
       <div class="lote-header">
 
-        <!-- Nombre + tipo persona -->
         <div class="lote-header-main">
-          <h2 class="lote-nombre">{{ lote.nombre }}</h2>
+          <h2 class="lote-nombre">
+            {{ lote.nombre }}
+          </h2>
 
           <p class="tipo-persona" *ngIf="lote.tipoPersona" [ngClass]="lote.tipoPersona">
-            <ion-icon name="person-circle-outline" *ngIf="lote.tipoPersona === 'fisica'"></ion-icon>
-            <ion-icon name="business-outline" *ngIf="lote.tipoPersona === 'moral'"></ion-icon>
+            <ion-icon name="person-circle-outline" *ngIf="lote.tipoPersona === 'fisica'">
+            </ion-icon>
+
+            <ion-icon name="business-outline" *ngIf="lote.tipoPersona === 'moral'">
+            </ion-icon>
+
             {{ lote.tipoPersona === 'fisica' ? 'Persona Física' : 'Persona Moral' }}
           </p>
         </div>
 
-        <!-- 🔥 BOTÓN HAMBURGUESA COQUETÓN -->
+        <!-- BOTÓN EXPANDIR -->
         <button class="btn-hamburguesa" (click)="toggleLote(lote.id)" [ngClass]="{ 'open': expandedState[lote.id] }">
-          <ion-icon [name]="expandedState[lote.id] ? 'chevron-up-outline' : 'chevron-down-outline'">
+
+          <ion-icon [name]="expandedState[lote.id]
+              ? 'chevron-up-outline'
+              : 'chevron-down-outline'">
           </ion-icon>
         </button>
 
-      </div> <!-- /lote-header -->
+      </div>
 
-      <!-- =======================================================
-           PANEL COLAPSABLE DE DOCUMENTOS
-      ======================================================= -->
+      <!-- ================= DOCUMENTOS ================= -->
       <div class="lote-panel" *ngIf="expandedState[lote.id]">
 
         <ion-card class="doc-card" *ngFor="let doc of lote.documentos">
@@ -62,11 +66,13 @@
             <!-- Acciones -->
             <div class="acciones">
 
-              <ion-button color="success" size="small" (click)="aprobar(lote.id, doc)">
+              <ion-button color="success" size="small" [disabled]="doc.estado === 'aprobado'"
+                (click)="aprobar(lote.id, doc)">
                 APROBAR
               </ion-button>
 
-              <ion-button color="danger" size="small" fill="outline" (click)="rechazar(lote.id, doc)">
+              <ion-button color="danger" size="small" fill="outline" [disabled]="doc.estado === 'aprobado'"
+                (click)="rechazar(lote.id, doc)">
                 RECHAZAR
               </ion-button>
 
@@ -80,16 +86,15 @@
 
         </ion-card>
 
-      </div> <!-- /lote-panel -->
+      </div>
 
-    </div> <!-- /lote-wrapper -->
+    </div>
 
-  </div> <!-- /verificacion-container -->
+  </div>
 
-  <!-- =======================================================
-       MODAL PARA RECHAZO
-  ======================================================= -->
-  <ion-modal [isOpen]="modalRechazoOpen" (didDismiss)="modalRechazoOpen = false">
+  <!-- MODAL RECHAZO -->
+  <ion-modal [isOpen]="modalRechazoOpen" (didDismiss)="cerrarModalRechazo()">
+
     <ng-template>
       <div class="modal-box">
         <h2>Motivo de rechazo</h2>
@@ -101,11 +106,12 @@
           Enviar Rechazo
         </ion-button>
 
-        <ion-button expand="block" fill="clear" (click)="modalRechazoOpen = false">
+        <ion-button expand="block" fill="clear" (click)="cerrarModalRechazo()">
           Cancelar
         </ion-button>
       </div>
     </ng-template>
+
   </ion-modal>
 
   <app-footer></app-footer>

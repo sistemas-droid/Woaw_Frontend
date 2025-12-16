@@ -22,7 +22,10 @@ export class LoteVerificacionPage implements OnInit {
   comentarioRechazo = '';
   loteSeleccionadoId: string | null = null;
   docSeleccionado: any = null;
+
+  // 🔹 Estado expandido
   expandedState: { [key: string]: boolean } = {};
+
   // 🔥 Mapa FRONT → BACK
   slugMap: Record<string, string | null> = {
     'constancia-fiscal': 'constanciaSituacionFiscal',
@@ -34,7 +37,7 @@ export class LoteVerificacionPage implements OnInit {
     'formato-aut-pm': 'formatoAutPM',
   };
 
-  // 🔹 Catálogo completo
+  // 🔹 Catálogo base (LOS 7 DOCUMENTOS)
   documentosBase = [
     { slug: 'constancia-fiscal', nombre: 'Constancia de Situación Fiscal' },
     { slug: 'identificacion-apoderado', nombre: 'Identificación del Apoderado' },
@@ -67,6 +70,7 @@ export class LoteVerificacionPage implements OnInit {
 
           let docsFrontend = [...this.documentosBase];
 
+          // ✅ SOLO PERSONA FÍSICA FILTRA
           if (tipoPersona === 'fisica') {
             docsFrontend = docsFrontend.filter(d =>
               d.slug !== 'acta-constitutiva' &&
@@ -74,11 +78,7 @@ export class LoteVerificacionPage implements OnInit {
             );
           }
 
-          if (tipoPersona === 'moral') {
-            docsFrontend = docsFrontend.filter(d =>
-              d.slug !== 'formato-aut-pf'
-            );
-          }
+          // 🚫 PERSONA MORAL NO FILTRA NADA (VE LOS 7)
 
           docsFrontend = docsFrontend.map(base => {
             const backendKey = this.slugMap[base.slug];
@@ -101,7 +101,7 @@ export class LoteVerificacionPage implements OnInit {
           };
         });
       },
-      error: (err) => console.error("❌ Error cargando lotes:", err),
+      error: (err) => console.error('❌ Error cargando lotes:', err),
     });
   }
 
@@ -121,7 +121,9 @@ export class LoteVerificacionPage implements OnInit {
     this.loteService.revisarDocumentoLote(idLote, doc.slug, {
       accion: 'aprobar'
     }).subscribe({
-      next: () => { doc.estado = 'aprobado'; },
+      next: () => {
+        doc.estado = 'aprobado';
+      },
       error: (err) => console.error(err),
     });
   }
