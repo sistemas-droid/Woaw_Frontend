@@ -9,13 +9,10 @@ interface LoteDocument {
   subtitle: string;
   icon: string;
   uploaded: boolean;
-
-  // 🔥 NUEVO
   status?: 'aprobado' | 'rechazado' | 'pendiente' | null;
   comentarios?: string | null;
   url?: string | null;
 }
-
 
 @Component({
   selector: 'app-documentos',
@@ -25,34 +22,35 @@ interface LoteDocument {
 })
 export class DocumentosPage implements OnInit {
 
-  nombreLote: string = '';
-  idLote: string = '';
+  nombreLote = '';
+  idLote = '';
 
-  rfc: string = '';
-  rfcError: string = '';
-  rfcValido: boolean = false;
-  yaIngresoRFC: boolean = false;
+  rfc = '';
+  rfcError = '';
+  rfcValido = false;
+  yaIngresoRFC = false;
 
   tipoPersona: 'fisica' | 'moral' | null = null;
 
-  // 🔥 MAPEO MongoDB → Front-end
+  // 🔥 MAPEO MongoDB → Front-end (CORREGIDO)
   private mapaDocumentos: any = {
     constanciaSituacionFiscal: 'constancia-fiscal',
     identificacionApoderado: 'id-apoderado',
     estadoCuentaLote: 'estado-cuenta-lote',
     actaConstitutiva: 'acta-constitutiva',
     fotosLote: 'fotos-lote',
-    formatoAutPF: 'formatos-autorizacion',
-    formatoAutPM: 'formatos-autorizacion'
+    formatoAutPF: 'formato-aut-pf',
+    formatoAutPM: 'formato-aut-pm'
   };
 
   documents: LoteDocument[] = [
     { tipo: 'constancia-fiscal', name: 'Constancia de Situación Fiscal', subtitle: 'Constancia', icon: 'document', uploaded: false },
     { tipo: 'id-apoderado', name: 'Identificación del Apoderado', subtitle: 'INE o Pasaporte Vigente', icon: 'card', uploaded: false },
     { tipo: 'estado-cuenta-lote', name: 'Estado de Cuenta Lote', subtitle: 'Con CLABE interbancaria', icon: 'wallet', uploaded: false },
-    { tipo: 'acta-constitutiva', name: 'Acta Constitutiva / Asamblea', subtitle: 'Solo para persona Moral', icon: 'document', uploaded: false },
-    { tipo: 'fotos-lote', name: 'Fotos del Lote', subtitle: 'Interior y exterior…', icon: 'camera', uploaded: false },
-    { tipo: 'formatos-autorizacion', name: 'Formatos de Autorización', subtitle: 'Personas Físicas / Morales', icon: 'hammer', uploaded: false },
+    { tipo: 'acta-constitutiva', name: 'Acta Constitutiva / Asamblea', subtitle: 'Solo persona Moral', icon: 'document', uploaded: false },
+    { tipo: 'fotos-lote', name: 'Fotos del Lote', subtitle: 'Interior y exterior', icon: 'camera', uploaded: false },
+    { tipo: 'formato-aut-pf', name: 'Formato de Autorización PF', subtitle: 'Persona Física', icon: 'hammer', uploaded: false },
+    { tipo: 'formato-aut-pm', name: 'Formato de Autorización PM', subtitle: 'Persona Moral', icon: 'hammer', uploaded: false },
   ];
 
   constructor(
@@ -74,27 +72,18 @@ export class DocumentosPage implements OnInit {
     });
   }
 
-  // =============================
-  //   CARGAR RFC DEL BACKEND
-  // =============================
   private cargarRFCDesdeBackend() {
     this.loteService.getLoteById(this.idLote).subscribe({
       next: (lote: any) => {
-        const rfcBackend = lote?.rfc || '';
-
-        if (rfcBackend) {
-          this.rfc = rfcBackend;
+        if (lote?.rfc) {
+          this.rfc = lote.rfc;
           this.validarRFC();
           this.yaIngresoRFC = true;
         }
-      },
-      error: (err) => console.error('Error cargando RFC:', err)
+      }
     });
   }
 
-  // =============================
-  //   CARGAR DOCUMENTOS SUBIDOS
-  // =============================
   private cargarDocumentosSubidos() {
     this.loteService.getLoteById(this.idLote).subscribe({
       next: (lote: any) => {
@@ -104,24 +93,18 @@ export class DocumentosPage implements OnInit {
           const slug = this.mapaDocumentos[key];
           if (!slug) return;
 
-          const backendDoc = docs[key];
           const docFront = this.documents.find(d => d.tipo === slug);
+          if (!docFront) return;
 
-          if (docFront) {
-            docFront.uploaded = true;
-            docFront.status = backendDoc.estado || 'pendiente';
-            docFront.comentarios = backendDoc.comentarios || null;
-            docFront.url = backendDoc.url || null;
-          }
+          docFront.uploaded = true;
+          docFront.status = docs[key].estado || 'pendiente';
+          docFront.comentarios = docs[key].comentarios || null;
+          docFront.url = docs[key].url || null;
         });
-      },
-      error: (err) => console.error('Error cargando documentos:', err)
+      }
     });
   }
 
-  // =============================
-  //   RFC
-  // =============================
   validarRFC() {
     const len = this.rfc.trim().length;
 
@@ -150,34 +133,27 @@ export class DocumentosPage implements OnInit {
   }
 
   uploadDocument(doc: LoteDocument) {
-
-    if (doc.status === 'aprobado') {
-      return; // simplemente no navega
-    }
-
-    let tipoReal = doc.tipo;
-
-    if (doc.tipo === 'formatos-autorizacion') {
-      tipoReal = this.tipoPersona === 'fisica'
-        ? 'formato-aut-pf'
-        : 'formato-aut-pm';
-    }
+    if (doc.status === 'aprobado') return;
 
     this.router.navigateByUrl(
-      `/lote/upload-document/${this.nombreLote}/${this.idLote}/${tipoReal}`
+      `/lote/upload-document/${this.nombreLote}/${this.idLote}/${doc.tipo}`
     );
   }
 
   getTotalDocsRequeridos(): number {
     if (this.tipoPersona === 'fisica') {
-      return this.documents.filter(d => d.tipo !== 'acta-constitutiva').length;
+      return this.documents.filter(d =>
+        d.tipo !== 'acta-constitutiva' && d.tipo !== 'formato-aut-pm'
+      ).length;
     }
     return this.documents.length;
   }
 
   getUploadedCount(): number {
     const requeridos = this.tipoPersona === 'fisica'
-      ? this.documents.filter(d => d.tipo !== 'acta-constitutiva')
+      ? this.documents.filter(d =>
+        d.tipo !== 'acta-constitutiva' && d.tipo !== 'formato-aut-pm'
+      )
       : this.documents;
 
     return requeridos.filter(d => d.uploaded).length;
@@ -185,9 +161,7 @@ export class DocumentosPage implements OnInit {
 
   getProgressPercentage(): number {
     const total = this.getTotalDocsRequeridos();
-    if (total === 0) return 0;
-
-    return Math.round((this.getUploadedCount() / total) * 100);
+    return total ? Math.round((this.getUploadedCount() / total) * 100) : 0;
   }
 
   getCardClass(doc: LoteDocument) {
@@ -202,10 +176,8 @@ export class DocumentosPage implements OnInit {
     return 'hourglass-outline';
   }
 
-
   irAlLote() {
     if (!this.nombreLote || !this.idLote) return;
     this.router.navigateByUrl(`/lote/${this.nombreLote}/${this.idLote}`);
   }
-
 }

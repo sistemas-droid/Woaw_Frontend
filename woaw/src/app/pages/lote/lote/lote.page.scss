@@ -318,3 +318,19 @@
     gap: 6px;
   }
 }
+
+/* Nombre + palomita */
+.lote-nombre {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* ✅ Palomita */
+.verified-inline {
+  font-size: 20px;
+  color: #008dff;
+  flex-shrink: 0;
+  transform: translateY(-1px);
+}

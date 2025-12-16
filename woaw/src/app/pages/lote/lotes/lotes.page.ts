@@ -144,11 +144,7 @@ export class LotesPage implements OnInit {
       }))
     );
   }
-
-
-
-
-
+  
   async getLotes() {
     try {
       this.mostrar_spinner = true;
@@ -221,12 +217,6 @@ export class LotesPage implements OnInit {
       this.applyTab(this.activeTab);
     }
   }
-
-
-
-
-
-
 
   applyTab(tab: 'todos' | 'mios') {
     this.activeTab = tab;
