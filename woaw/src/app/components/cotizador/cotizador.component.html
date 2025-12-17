@@ -5,80 +5,160 @@
 </div>
 
 <!-- Cotizador -->
-<ion-grid *ngIf="edadValida" class="cotizador-container">
-  <h2>Consigue tu crédito</h2>
+<ion-grid *ngIf="edadValida && !isNative" class="cotizador-container">
+  <h2>¡Consigue tu crédito!</h2>
 
-  <ion-row class="steps-row">
-    <!-- PASO 1: ENGANCHE -->
-    <ion-col size="12" size-md="4" class="step step-1">
-      <div class="step-header">
-        <div class="step-number">1</div>
-        <div>
-          <p class="step-title">Enganche</p>
-          <small class="step-subtitle">
-            A partir de {{ engancheMinimoPercent }}%
-          </small>
+  <ion-row>
+
+    <!-- PASO 1 -->
+    <ion-col size="12" size-md="6">
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number">1</div>
+          <div>
+            <p class="step-title">Enganche</p>
+            <small class="step-subtitle">
+              A partir de {{ engancheMinimoPercent }}%
+            </small>
+          </div>
         </div>
-      </div>
 
-      <div class="input-enganche-wrapper">
-        <span>$</span>
-        <input type="number" [value]="enganche" (input)="onEngancheManualChange($event)" [min]="engancheMinimo"
-          [max]="engancheMaximo" step="100" />
-      </div>
-
-      <div *ngIf="mensajeErrorEnganche" class="mensaje-error">
-        {{ mensajeErrorEnganche }}
-      </div>
-    </ion-col>
-
-    <!-- PASO 2: PLAZO -->
-    <ion-col size="12" size-md="4" class="step step-2" *ngIf="!mensajeErrorEnganche">
-      <div class="step-header">
-        <div class="step-number">2</div>
-        <div>
-          <p class="step-title">Plazo</p>
-          <small class="step-subtitle">Meses</small>
+        <div class="input-enganche-wrapper">
+          <span>$</span>
+          <input type="number" [value]="enganche" (input)="onEngancheManualChange($event)" [min]="engancheMinimo"
+            [max]="engancheMaximo" step="100" />
         </div>
-      </div>
 
-      <div class="opciones">
-        <label class="opcion" *ngFor="let m of plazosDisponibles">
-          <input type="radio" name="plazo" [value]="m" [checked]="plazo === m" (change)="onPlazoChange(m)" />
-          <span>{{ m }}</span>
-        </label>
-      </div>
-    </ion-col>
-
-    <!-- PASO 3: MENSUALIDAD -->
-    <ion-col size="12" size-md="4" class="step step-3" *ngIf="!mensajeErrorEnganche">
-      <div class="step-header">
-        <div class="step-number">3</div>
-        <div>
-          <p class="step-title">Mensualidad desde:</p>
-        </div>
-      </div>
-
-      <div class="resultado-mensualidad">
-        <div class="monto">
-          ${{ calcularMensualidad(plazo) | number: '1.0-0' }}
-          <span>/ mes</span>
-        </div>
-        <div class="tasa">
-          <span class="link-plazos">
-          Tasa: {{ getTasa(plazo) | percent: '1.2-2' }}
-        </span>
+        <div *ngIf="mensajeErrorEnganche" class="mensaje-error">
+          {{ mensajeErrorEnganche }}
         </div>
       </div>
     </ion-col>
+
+    <!-- PASO 2 -->
+    <ion-col size="12" size-md="6" *ngIf="!mensajeErrorEnganche">
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number">2</div>
+          <div>
+            <p class="step-title">Plazo</p>
+            <small class="step-subtitle">Meses</small>
+          </div>
+        </div>
+
+        <div class="plazos-wrapper">
+          <span class="flecha izquierda" (click)="scrollPlazos(-1)">‹</span>
+
+          <div class="opciones-scroll">
+            <label class="opcion" *ngFor="let m of plazosDisponibles">
+              <input type="radio" name="plazo" [value]="m" [checked]="plazo === m" (change)="onPlazoChange(m)" />
+              <span>{{ m }}</span>
+              <small>meses</small>
+            </label>
+          </div>
+
+          <span class="flecha derecha" (click)="scrollPlazos(1)">›</span>
+        </div>
+      </div>
+    </ion-col>
+
+    <!-- PASO 3 -->
+    <ion-col size="12" size-md="6" *ngIf="!mensajeErrorEnganche">
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number">3</div>
+          <div>
+            <p class="step-title">Mensualidad desde</p>
+          </div>
+        </div>
+
+        <div class="resultado-mensualidad">
+          <div class="monto">
+            ${{ calcularMensualidad(plazo) | number: '1.0-0' }}
+            <span>/ mes</span>
+          </div>
+
+          <div class="tasa">
+            Tasa:
+            <span class="link-plazos">
+              {{ getTasa(plazo) | percent: '1.2-2' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </ion-col>
+
+    <ion-col size="12" size-md="6" *ngIf="!mensajeErrorEnganche">
+      <p class="nota">
+        Simulación de crédito. El costo del seguro
+        <strong>varía por vehículo</strong>.
+        Solicita tu cotización en <strong>PDF</strong>.
+      </p>
+      <button [disabled]="mensajeErrorEnganche" class="btn-solicitar" (click)="enviarCredito()">
+        Solicitar crédito ahora
+      </button>
+    </ion-col>
+
   </ion-row>
+</ion-grid>
 
-  <button [disabled]="mensajeErrorEnganche" class="btn-solicitar" (click)="enviarCredito()">
-    Solicitar crédito ahora
+
+
+
+<!-- Cotizador NATIVO -->
+<ion-grid *ngIf="edadValida && isNative" class="cotizador-native">
+
+  <h2 class="titulo-native">Consigue tu crédito</h2>
+
+  <!-- ENGANCHE -->
+  <div class="bloque">
+    <p class="label">Enganche</p>
+    <small class="sub">
+      A partir de {{ engancheMinimoPercent }}%
+    </small>
+
+    <div class="input-enganche-wrapper">
+      <span>$</span>
+      <input type="number" [value]="enganche" (input)="onEngancheManualChange($event)" [min]="engancheMinimo"
+        [max]="engancheMaximo" step="100" />
+    </div>
+
+    <div *ngIf="mensajeErrorEnganche" class="mensaje-error">
+      {{ mensajeErrorEnganche }}
+    </div>
+  </div>
+
+  <!-- PLAZO -->
+  <div class="bloque" *ngIf="!mensajeErrorEnganche">
+    <p class="label">Plazo</p>
+
+    <div class="opciones-native">
+      <label class="opcion-native" *ngFor="let m of plazosDisponibles">
+        <input type="radio" name="plazoNative" [value]="m" [checked]="plazo === m" (change)="onPlazoChange(m)" />
+        <span>{{ m }} meses</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado-native" *ngIf="!mensajeErrorEnganche">
+    <p class="desde">Mensualidad desde</p>
+    <div class="monto">
+      ${{ calcularMensualidad(plazo) | number: '1.0-0' }}
+      <span>/ mes</span>
+    </div>
+    <small class="tasa">
+      Tasa: {{ getTasa(plazo) | percent: '1.2-2' }}
+    </small>
+  </div>
+
+  <!-- CTA -->
+  <button class="btn-native" [disabled]="mensajeErrorEnganche" (click)="enviarCredito()">
+    Solicitar crédito
   </button>
 
-  <p class="nota">
-    Simulación de crédito. El costo del seguro <strong>varía por vehículo</strong>.
-    Solicita tu cotización en <strong>PDF</strong> para conocer el monto exacto.
+  <p class="nota-native">
+    Simulación de crédito. El seguro varía por vehículo.
   </p>
+
 </ion-grid>

@@ -128,7 +128,7 @@ export class AppComponent {
     const rutasSinTabs = [
       '/update-car/', '/usados', '/nuevos', '/seminuevos', '/publicar',
       '/m-nuevos', '/mis-motos', '/seguros/poliza', '/mis-autos',
-      '/seguros/autos', '/seguros/cotiza/', '/seguros/cotizar-manual',
+      '/seguros/autos', '/seguros/cotiza/', '/seguros/cotizar-manual', '/fichas/',
       '/renta-coches', '/seguros/persona', '/search/vehiculos/', '/add-lote', '/renta/add-coche', '/camiones/todos', '/soporte'
     ];
     return this.esDispositivoMovil && !rutasSinTabs.some((r) => this.currentUrl.startsWith(r));
@@ -141,7 +141,7 @@ export class AppComponent {
   }
 
   get mostrarWoalft(): boolean {
-    const rutasSinWoalft = ['/soporte', '/usados', '/nuevos', '/seminuevos',
+    const rutasSinWoalft = ['/soporte', '/usados', '/nuevos', '/seminuevos', '/fichas/',
       '/m-nuevos', '/mis-motos', '/mis-autos', '/camiones/todos'];
     return !rutasSinWoalft.some(r => this.currentUrl.startsWith(r));
   }

@@ -198,6 +198,7 @@ export class MenuVehiculosPage implements OnInit {
 
   public irAFichaAuto(id?: string) {
     if (!id) return;
-    this.router.navigate(["/ficha", "autos", id]);
+    // this.router.navigate(["/ficha", "autos", id]);
+    this.router.navigate(['/fichas/autos', id]);
   }
 }

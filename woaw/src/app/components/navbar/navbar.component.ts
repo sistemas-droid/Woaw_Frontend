@@ -252,6 +252,6 @@ export class NavbarComponent implements OnInit {
     if (rutaActual === '/home') {
       return;
     }
-    window.history.back();
+    this.router.navigate(["/home"]);
   }
 }

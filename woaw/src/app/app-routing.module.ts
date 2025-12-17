@@ -14,14 +14,14 @@ const routes: Routes = [
     data: { title: "Iniciar sesión | woaw" },
   },
   /* {
-  path: "asesores",
-  loadChildren: () =>
+    path: "asesores",
+    loadChildren: () =>
     import("./pages/asesores/asesores.module").then(
       (m) => m.AsesoresPageModule
     ),
-  canActivate: [asesoresGuard],
-  data: { title: "Asesores | woaw" },
-}, */
+    canActivate: [asesoresGuard],
+    data: { title: "Asesores | woaw" },
+  }, */
   {
     path: "autenticacion-user",
     loadChildren: () =>
@@ -111,6 +111,7 @@ const routes: Routes = [
           import("./pages/new-car/new-car.module").then(
             (m) => m.NewCarPageModule
           ),
+        canActivate: [AuthPhoneGuard],
         data: { title: "Publicar nuevo vehículo | woaw" }
       },
       {
@@ -409,25 +410,25 @@ const routes: Routes = [
       // ---------------------
       // FICHAS 
       // ---------------------
-      // {
-      //   path: "ficha/:tipo/:id",
-      //   loadChildren: () =>
-      //     import("./pages/ficha/ficha.module").then((m) => m.FichaPageModule),
-      //   data: { title: "Detalle del vehículo | woaw" },
-      // },
       {
-        path: 'ficha/autos/:id',
-        loadChildren: () => import('./pages/coches/ficha-auto/ficha-auto.module').then(m => m.FichaAutoPageModule),
+        path: "ficha/:tipo/:id",
+        loadChildren: () =>
+          import("./pages/ficha/ficha.module").then((m) => m.FichaPageModule),
         data: { title: "Detalle del vehículo | woaw" },
       },
       {
-        path: 'ficha/motos/:id',
-        loadChildren: () => import('./pages/motos/ficha-motos/ficha-motos.module').then(m => m.FichaMotosPageModule)
+        path: 'fichas/autos/:id',
+        loadChildren: () => import('./pages/coches/ficha-auto/ficha-auto.module').then(m => m.FichaAutoPageModule),
+        data: { title: "Detalle del vehículo | woaw" },
       },
-      {
-        path: 'ficha/camiones/:id',
-        loadChildren: () => import('./pages/camiones/ficha-camiones/ficha-camiones.module').then(m => m.FichaCamionesPageModule)
-      },
+      // {
+      //   path: 'ficha/motos/:id',
+      //   loadChildren: () => import('./pages/motos/ficha-motos/ficha-motos.module').then(m => m.FichaMotosPageModule)
+      // },
+      // {
+      //   path: 'ficha/camiones/:id',
+      //   loadChildren: () => import('./pages/camiones/ficha-camiones/ficha-camiones.module').then(m => m.FichaCamionesPageModule)
+      // },
 
       // ---------------------
       // ---------------------

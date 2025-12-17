@@ -28,7 +28,7 @@ export class SugerenciasComponent implements OnInit {
     public generalService: GeneralService,
     private camionesService: CamionesService,
     private motosService: MotosService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.peticion();
@@ -41,7 +41,7 @@ export class SugerenciasComponent implements OnInit {
   async peticion() {
     const url = this.router.url;
     const esCamiones = url.includes('/ficha/camiones/');
-    const esMotos    = url.includes('/ficha/motos/');
+    const esMotos = url.includes('/ficha/motos/');
 
     if (esCamiones) {
       this.camionesService.getRecomendadoCamion().subscribe({
@@ -96,8 +96,12 @@ export class SugerenciasComponent implements OnInit {
     const url = this.router.url;
     const tipo =
       url.includes('/ficha/camiones/') ? 'camiones' :
-      url.includes('/ficha/motos/')    ? 'motos'    :
-      'autos';
-    this.router.navigate(['/ficha', tipo, auto._id]);
+        url.includes('/ficha/motos/') ? 'motos' :
+          'autos';
+    if (tipo === 'autos') {
+      this.router.navigate(['/fichas/autos', auto._id]);
+    } else {
+      this.router.navigate(['/ficha', tipo, auto._id]);
+    }
   }
 }
