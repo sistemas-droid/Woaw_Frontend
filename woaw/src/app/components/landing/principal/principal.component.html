@@ -1,7 +1,6 @@
-
 <section class="contenedor_cratas_home">
-  <div class="cards-grid">
 
+  <!-- <div class="cards-grid">
     <article class="car-card car-card-nuevos" (click)="redirecion('/nuevos')">
       <img src="/assets/home/cartasHome1.webp" alt="Auto nuevo" class="bg-card">
       <header class="card-head">
@@ -46,43 +45,217 @@
         <button class="btn-card btn-nuevos"><ion-icon name="arrow-forward"></ion-icon></button>
       </footer>
     </article>
+  </div> -->
 
-  </div>
+  <ion-grid class="contenedor">
+    <ion-row>
+      <ion-col size="12" size-md="3">
+        <section class="contenedor_cratas_home">
+          <div class="cards-grid">
+            <article class="car-card car-card-usados" (click)="redirecion('/usados')">
+              <img src="/assets/home/cartasHome3.webp" alt="Auto nuevo" class="bg-card" />
+              <header class="card-head">
+                <h1><span>Autos</span> Usados</h1>
+                <!-- <p>Listos para una nueva historia.</p> -->
+              </header>
+              <ul class="card-list">
+                <li>Entrega rápida</li>
+                <li>Financiamiento 15%</li>
+              </ul>
+              <footer class="card-foot">
+                <button class="btn-card btn-usados">Ver ofertas</button>
+              </footer>
+            </article>
+
+            <article class="car-card car-card-seminuevos" (click)="redirecion('/seminuevos')">
+              <img src="/assets/home/cartasHome2.webp" alt="Auto seminuevo" class="bg-card" />
+              <header class="card-head">
+                <h1><span>Autos</span> Seminuevos</h1>
+                <!-- <p>Historial verificado.</p> -->
+              </header>
+              <ul class="card-list">
+                <li>Tomamos tu auto</li>
+                <li>Financiamiento 15%</li>
+              </ul>
+              <footer class="card-foot">
+                <button class="btn-card btn-seminuevos">Explorar</button>
+              </footer>
+            </article>
+
+            <article class="car-card car-card-nuevos" (click)="redirecion('/nuevos')">
+              <img src="/assets/home/cartasHome1.webp" alt="Auto nuevo" class="bg-card" />
+              <header class="card-head">
+                <h1><span>Autos</span> Nuevos</h1>
+                <!-- <p>Estrena hoy con garantía total.</p> -->
+              </header>
+              <ul class="card-list">
+                <li>Arrendamiento</li>
+                <li>Financiamiento 10%</li>
+              </ul>
+              <footer class="card-foot">
+                <button class="btn-card btn-nuevos">Ver catálogo</button>
+              </footer>
+            </article>
+          </div>
+        </section>
+      </ion-col>
+
+      <ion-col size="12" size-md="9">
+
+        <div class="cars-rows">
+
+          <!-- USADOS -->
+          <section class="cars-section">
+            <div class="cars-scroll">
+              <article class="car-card" *ngFor="let a of autosUsados | slice:0:5; trackBy: trackById"
+                (click)="irAFichaAuto(a._id)">
+                <div class="card-media">
+                  <img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
+                    [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'" />
+                  <span class="ribbon ribbon--red">Usado</span>
+                </div>
+                <div class="card-body">
+                  <h4 class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</h4>
+                  <p class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</p>
+                  <ul class="specs" *ngIf="!esDispositivoMovil">
+                    <li *ngIf="a.transmision">{{ a.transmision }}</li>
+                    <li *ngIf="mostrarKilometraje(a)">{{ a.kilometraje | number }} km</li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="car-card more-card" (click)="redirecion('usados')">
+                <div class="more-inner">
+                  <span class="more-arrow">➜</span>
+                  <span class="more-text">Ver más</span>
+                  <span class="more-count">{{ conUsados }} disponibles</span>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <!-- SEMINUEVOS -->
+          <section class="cars-section">
+            <div class="cars-scroll">
+              <article class="car-card" *ngFor="let a of autosSeminuevos | slice:0:5; trackBy: trackById"
+                (click)="irAFichaAuto(a._id)">
+                <div class="card-media">
+
+                  <img [src]="getImagen(a)" [alt]="a.marca + ' ' + a.modelo" (error)="onImgError($event, a)" />
+
+
+                  <span class="ribbon ribbon--amber">Seminuevo</span>
+                </div>
+                <div class="card-body">
+                  <h1 class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</h1>
+                  <p class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</p>
+                  <ul class="specs" *ngIf="!esDispositivoMovil">
+                    <li *ngIf="a.transmision">{{ a.transmision }}</li>
+                    <li *ngIf="mostrarKilometraje(a)">{{ a.kilometraje | number }} km</li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="car-card more-card" (click)="redirecion('seminuevos')">
+                <div class="more-inner">
+                  <span class="more-arrow">➜</span>
+                  <span class="more-text">Ver más</span>
+                  <span class="more-count">{{ conSeminuevos }} disponibles</span>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <!-- NUEVOS -->
+          <section class="cars-section">
+            <div class="cars-scroll">
+              <article class="car-card" *ngFor="let a of autosNuevos | slice:0:5; trackBy: trackById"
+                (click)="irAFichaAuto(a._id)">
+                <div class="card-media">
+                  <img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
+                    [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'" />
+                  <span class="ribbon ribbon--green">Nuevo</span>
+                </div>
+                <div class="card-body">
+                  <h4 class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</h4>
+                  <p class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</p>
+                  <ul class="specs" *ngIf="!esDispositivoMovil">
+                    <li *ngIf="a.transmision">{{ a.transmision }}</li>
+                    <li *ngIf="mostrarKilometraje(a)">{{ a.kilometraje | number }} km</li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="car-card more-card" (click)="redirecion('nuevos')">
+                <div class="more-inner">
+                  <span class="more-arrow">➜</span>
+                  <span class="more-text">Ver más</span>
+                  <span class="more-count">{{ conNuevos }} disponibles</span>
+                </div>
+              </article>
+            </div>
+          </section>
+
+        </div>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </section>
 
 
 <section class="grid-categorias">
   <div class="grid-categorias__wrap">
 
-    <a class="cat-card" href="/m-nuevos" [style]="'background-image: url('+img2+')'">
-      <span class="cat-card__overlay">
-        <h3 class="cat-card__title">Motos</h3>
-        <p class="cat-card__subtitle">De calle, touring y más </p>
-      </span>
+
+    <a class="cat-card cat-card--seg" href="/seguros/disponibles">
+      <div class="cat-card__copy">
+        <span class="cat-card__kicker">Cotiza</span>
+        <span class="cat-card__title">Seguros</span>
+        <span class="cat-card__subtitle">Asegura tu auto en minutos</span>
+      </div>
+      <img class="cat-card__img" src="/assets/home/se.png" alt="Seguros" />
     </a>
 
-    <a class="cat-card" href="/arrendamiento" style="background-image: url('/assets/home/F8.png')">
-      <span class="cat-card__overlay">
-        <h3 class="cat-card__title">Arrendamiento</h3>
-        <p class="cat-card__subtitle">Estrena sin comprar.</p>
-      </span>
+    <a class="cat-card cat-card--arr" href="/arrendamiento">
+      <div class="cat-card__copy">
+        <span class="cat-card__kicker">Estrena</span>
+        <span class="cat-card__title">Arrendamiento</span>
+        <span class="cat-card__subtitle">Sin comprar. Deducible. Rápido.</span>
+      </div>
+      <img class="cat-card__img" src="/assets/home/ca.png" alt="Arrendamiento" />
     </a>
 
-    <a class="cat-card" href="/seguros/disponibles" style="background-image: url('/assets/home/F7.png')">
-      <span class="cat-card__overlay">
-        <h3 class="cat-card__title">Seguros</h3>
-        <p class="cat-card__subtitle">Cotiza y asegura en minutos.</p>
-      </span>
+    <a class="cat-card cat-card--motos" href="/m-nuevos">
+      <div class="cat-card__copy">
+        <span class="cat-card__kicker">Explora</span>
+        <span class="cat-card__title">Motos</span>
+        <span class="cat-card__subtitle">De calle, touring y más</span>
+      </div>
+      <img class="cat-card__img" src="/assets/home/mto.png" alt="Motos" />
     </a>
+
+    <a class="cat-card cat-card--cam" href="/camiones/todos">
+      <div class="cat-card__copy">
+        <span class="cat-card__kicker">Soluciones</span>
+        <span class="cat-card__title">Camiones & carga</span>
+        <span class="cat-card__subtitle">de carga para tu negocio</span>
+      </div>
+      <img class="cat-card__img" src="/assets/home/A3.webp" alt="Seguros" />
+    </a>
+
   </div>
 </section>
 
 
 
 
-<div class="band-cards">
 
-  <!-- <div class="full-center">
+
+
+<!-- <div class="band-cards">
+
+  <div class="full-center">
     <article class="mini-card mini-arrendamiento">
       <img [src]="'/assets/home/F5.png'" alt="Auto en renta" class="bg-card-min">
       <h4>Renta de autos</h4>
@@ -92,7 +265,7 @@
         <span class="mini-foot__label">Próximamente</span>
       </div>
     </article>
-  </div> -->
+  </div>
 
   <article class="mini-card mini-seguros" (click)="redirecion('/camiones/todos')">
     <img [src]="img3" alt="Camiones de carga" class="bg-card-min">
@@ -104,7 +277,7 @@
     </div>
   </article>
 
-</div>
+</div> -->
 
 
 
