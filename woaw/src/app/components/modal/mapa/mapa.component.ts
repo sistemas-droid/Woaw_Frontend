@@ -50,9 +50,9 @@ export class MapaComponent implements OnInit, AfterViewInit {
     private http: HttpClient,
     private generalService: GeneralService,
     private zone: NgZone
-  ) { }
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   async ngAfterViewInit() {
     await this.obtenerUbicacion();
@@ -69,22 +69,32 @@ export class MapaComponent implements OnInit, AfterViewInit {
     }, 400);
   }
 
-  /** 📍 Obtener ubicación actual del usuario */
+  /** 📍 Obtener ubicación actual del usuario (alta precisión) */
   async obtenerUbicacion() {
     try {
-      const position = await Geolocation.getCurrentPosition();
+      const position = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0,
+      });
+
       this.lat = position.coords.latitude;
       this.lng = position.coords.longitude;
 
+      // Crea mapa con la ubicación actual
       this.obtenerDireccion();
+
+      // Configura Autocomplete
       this.searchMap();
     } catch (error: any) {
-      console.warn('Error al obtener ubicación:', error.message);
+      console.warn('Error al obtener ubicación:', error?.message);
       this.generalService.alert(
         'No se pudo obtener tu ubicación',
         'Verifica que los permisos de ubicación estén habilitados y que tengas conexión a internet. También puedes seleccionar manualmente un punto en el mapa.',
         'warning'
       );
+      // Si falla GPS, igual intenta cargar mapa en un lugar default (opcional)
+      // Pero no te lo meto porque dijiste "no mover nada".
     }
   }
 
@@ -134,6 +144,10 @@ export class MapaComponent implements OnInit, AfterViewInit {
 
         this.cargandoMapa = false;
         this.configurarClickEnMapa();
+
+        // ✅ PRESELECCIÓN AUTOMÁTICA: tu ubicación actual ya queda como "lugar"
+        // Esto pone pin rojo + direcciónCompleta + botón Guardar
+        this.obtenerDireccionDelLugar(this.lat, this.lng, center);
       }
     });
   }
@@ -176,18 +190,23 @@ export class MapaComponent implements OnInit, AfterViewInit {
     this.http.get(url).subscribe((res: any) => {
       if (res.status === 'OK' && res.results.length > 0) {
         const components = res.results[0].address_components;
-        let ciudad = '', estado = '';
+        let ciudad = '',
+          estado = '';
+
         for (const comp of components) {
           if (comp.types.includes('locality')) ciudad = comp.long_name;
           else if (!ciudad && comp.types.includes('sublocality')) ciudad = comp.long_name;
           else if (!ciudad && comp.types.includes('administrative_area_level_2')) ciudad = comp.long_name;
+
           if (comp.types.includes('administrative_area_level_1')) estado = comp.long_name;
         }
 
-        this.generalService.obtenerDireccionDesdeCoordenadas(lat, lng)
+        this.generalService
+          .obtenerDireccionDesdeCoordenadas(lat, lng)
           .then((direccion) => {
             this.zone.run(() => {
-              this.direccionCompleta = direccion || res.results[0].formatted_address || `${ciudad}, ${estado}`;
+              this.direccionCompleta =
+                direccion || res.results[0].formatted_address || `${ciudad}, ${estado}`;
               this.ubicacionLugar = [ciudad, estado, lat, lng];
               this.ubicacionLugarInvalida = true;
               this.textoBoton = 'Guardar';
@@ -212,6 +231,7 @@ export class MapaComponent implements OnInit, AfterViewInit {
     // Centrar mapa y marcar punto
     this.map.setCenter(location);
     if (this.markerLugar) this.markerLugar.setMap(null);
+
     this.markerLugar = new google.maps.Marker({
       map: this.map,
       position: location,
@@ -245,6 +265,42 @@ export class MapaComponent implements OnInit, AfterViewInit {
     this.direccionCompleta = 'Selecciona la ubicación';
     if (this.inputDireccion) this.inputDireccion.value = '';
     this.mostrarBotonLimpiar = false;
+  }
+
+  /** 🎯 Botón "Mi ubicación" (más preciso) */
+  async usarMiUbicacionActual() {
+    try {
+      const position = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0,
+      });
+
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      this.lat = lat;
+      this.lng = lng;
+
+      this.limpiarInputDireccion();
+
+      const centerLiteral: google.maps.LatLngLiteral = { lat, lng };
+
+      if (this.map) {
+        this.map.setCenter(centerLiteral);
+        this.map.setZoom(16);
+      }
+
+      // Preselecciona como ubicación elegida
+      this.obtenerDireccionDelLugar(lat, lng, centerLiteral);
+    } catch (err: any) {
+      console.warn('Error al actualizar ubicación:', err?.message);
+      this.generalService.alert(
+        'No se pudo actualizar tu ubicación',
+        'Revisa permisos de GPS y conexión.',
+        'warning'
+      );
+    }
   }
 
   confirmarUbicacion() {
