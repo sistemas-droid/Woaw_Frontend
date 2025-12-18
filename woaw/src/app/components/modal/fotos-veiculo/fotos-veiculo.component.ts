@@ -84,7 +84,7 @@ transform: any = { scale: 1.0, rotate: 0 };
     this.croppedBlob = null;
 
     // ✅ reset zoom (por defecto "normal", sin acercar)
-    this.zoom = this.ZOOM_MAX;
+    this.zoom = (this.ZOOM_MIN + this.ZOOM_MAX) / 2;
     this.transform = { scale: this.zoom, rotate: 0 };
   }
 

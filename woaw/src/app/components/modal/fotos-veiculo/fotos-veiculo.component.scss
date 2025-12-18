@@ -358,6 +358,50 @@ ion-footer {
   color: rgba(0, 0, 0, 0.55);
 }
 
+
+
+
+
+.footer-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 🔵 Zoom */
+.footer-zoom {
+  padding: 0 8px;
+}
+
+/* 🔴 Botones */
+.footer-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 15px;
+}
+
+.footer-actions ion-button {
+  width: 100%;
+  margin: 0;
+}
+
+/* En pantallas muy angostas → uno debajo del otro */
+@media (max-width: 360px) {
+  .footer-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+
+
+
+
+
+
 /* ✅ Responsive: cuando se hace angosto, acomoda todo */
 @media (max-width: 420px) {
   .cropper-head {
