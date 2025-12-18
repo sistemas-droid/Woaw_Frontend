@@ -83,6 +83,30 @@
       z-index: 2;
     }
   }
+
+  .add-more-placeholder {
+    width: 100px;
+    height: 100px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    ion-icon {
+      font-size: 30px;
+      color: #ccc;
+    }
+
+    &:hover {
+      border-color: #ff4d00;
+
+      ion-icon {
+        color: #ff4d00;
+      }
+    }
+  }
 }
 
 .file-input-label {
@@ -118,7 +142,6 @@ ion-footer {
   padding: 8px;
 }
 
-/* Nuevos estilos para las mejoras visuales */
 .preview-placeholder {
   width: 100%;
   max-width: 150px;
@@ -132,48 +155,21 @@ ion-footer {
   justify-content: center;
   background-color: #f4f4f4;
   cursor: pointer;
-  
+
   &:hover {
     border-color: #ff4d00;
-    
+
     ion-icon {
       color: #ff4d00;
     }
   }
-  
+
   ion-icon {
     font-size: 40px;
     color: #ccc;
   }
 }
 
-.imagenes-secundarias {
-  .add-more-placeholder {
-    width: 100px;
-    height: 100px;
-    border: 2px dashed #ccc;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    
-    ion-icon {
-      font-size: 30px;
-      color: #ccc;
-    }
-    
-    &:hover {
-      border-color: #ff4d00;
-      
-      ion-icon {
-        color: #ff4d00;
-      }
-    }
-  }
-}
-
-/* Mejora estética para los botones y contenedores */
 .file-input-label:hover {
   background: #e8e8e8;
   border-color: #b8b8b8;
@@ -186,12 +182,200 @@ ion-footer {
 .campo-principal {
   display: flex;
   flex-direction: column;
-  align-items: center;   
-  text-align: center;   
+  align-items: center;
+  text-align: center;
 }
 
 .campo-principal .preview-placeholder,
 .campo-principal .preview-container {
-  margin: 10px auto;     
+  margin: 10px auto;
 }
 
+/* ===========================
+   ✅ UI del recorte más clara
+   =========================== */
+/* ===========================
+   ✅ UI del recorte más clara (mejorada)
+   =========================== */
+
+.cropper-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.cropper-head__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.cropper-title {
+  margin: 0;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: -0.2px;
+  color: rgba(0, 0, 0, 0.92);
+}
+
+/* ✅ En vez de párrafo largo: pasos tipo “chips” */
+.cropper-steps {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: rgba(0, 0, 0, 0.62);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.cropper-steps .step {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+
+  ion-icon {
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.cropper-steps .step.strong {
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.cropper-steps .dot {
+  opacity: 0.35;
+  font-weight: 900;
+}
+
+/* Badge */
+.cropper-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
+.cropper-badge.ready {
+  background: rgba(0, 0, 0, 0.10);
+  color: rgba(0, 0, 0, 0.86);
+}
+
+/* Wrap */
+.cropper-wrap {
+  position: relative;
+}
+
+/* Tip flotante más discreto y mejor ubicado */
+.cropper-tip {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  z-index: 5;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+
+  ion-icon {
+    font-size: 15px;
+  }
+}
+
+/* Zoom */
+.zoom-row {
+  margin-top: 12px;
+}
+
+.zoom-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.zoom-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(0, 0, 0, 0.86);
+  font-weight: 900;
+  font-size: 12px;
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
+.zoom-mini {
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.zoom-hint {
+  font-size: 11px;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+}
+
+.zoom-range {
+  --bar-height: 6px;
+  --knob-size: 18px;
+  --pin-background: #000;
+}
+
+.zoom-help {
+  margin: 6px 0 0 0;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+/* ✅ Responsive: cuando se hace angosto, acomoda todo */
+@media (max-width: 420px) {
+  .cropper-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cropper-badge {
+    align-self: flex-start;
+  }
+
+  .zoom-label {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .zoom-hint {
+    white-space: normal;
+  }
+}
