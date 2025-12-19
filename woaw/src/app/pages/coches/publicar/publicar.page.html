@@ -1,0 +1,424 @@
+<app-navbar></app-navbar>
+
+<ion-content class="pub-ios" [fullscreen]="true">
+
+  <app-spinner *ngIf="mostrar_spinnet"></app-spinner>
+
+  <section class="formulario-wrapper ios-shell">
+
+    <!-- RESUMEN / HEADER CARD -->
+    <ion-grid class="resumen-compacto ios-card ios-summary">
+      <ion-row>
+
+        <ion-col size="12" size-md="6">
+          <ion-grid>
+            <ion-row>
+
+              <ion-col size="12" class="titulo ios-title">
+                Publicar vehículo
+              </ion-col>
+
+              <ion-col size="3">
+                <p class="ios-kv">Año: <strong>{{ anio }}</strong></p>
+              </ion-col>
+
+              <ion-col size="3">
+                <p class="ios-kv">Marca: <strong>{{ marca }}</strong></p>
+              </ion-col>
+
+              <ion-col size="3">
+                <p class="ios-kv">Modelo: <strong>{{ modelo }}</strong></p>
+              </ion-col>
+
+              <ion-col size="3" class="ion-text-center" *ngIf="MyRole !== 'admin'">
+                <p class="estado ios-badge">{{ estadoVehiculo }}</p>
+              </ion-col>
+
+              <ion-col size="12" *ngIf="MyRole === 'admin'">
+                <ion-select
+                  class="select-admin ios-input"
+                  mode="ios"
+                  interface="alert"
+                  [value]="estadoVehiculo"
+                  (ionChange)="onTipoChange($event)"
+                >
+                  <ion-select-option value="Nuevo">Nuevo</ion-select-option>
+                  <ion-select-option value="Seminuevo">Seminuevo</ion-select-option>
+                  <ion-select-option value="Usado">Usado</ion-select-option>
+                </ion-select>
+              </ion-col>
+
+              <!-- ¿CÓMO QUIERES VENDER TU AUTO? (particular) -->
+              <ion-col size="12" size-md="8" class="box ios-box" *ngIf=" MyRole !== 'admin' && MyRole !== 'lotero'">
+                <p class="pregunta ios-question">¿Cómo quieres vender tu auto?</p>
+
+                <ion-item lines="none" class="ios-item">
+                  <ion-icon name="car-outline" slot="start"></ion-icon>
+
+                  <ion-select
+                    placeholder="Selecciona una opción"
+                    mode="ios"
+                    interface="alert"
+                    (ionChange)="quienLovende($event.detail.value)"
+                    class="ios-select"
+                  >
+                    <ion-select-option value="0">Lo vendo yo</ion-select-option>
+                    <ion-select-option value="1">Que lo venda WOAW</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" size-md="8" class="box ios-box" *ngIf=" MyRole === 'admin' || MyRole === 'lotero'">
+                <p class="pregunta ios-question">¿Cómo quieres vender tu auto?</p>
+
+                <ion-item lines="none" class="ios-item">
+                  <ion-icon name="car-outline" slot="start"></ion-icon>
+
+                  <ion-select
+                    placeholder="Selecciona una opción"
+                    interface="alert"
+                    (ionChange)="seleccionarTipo($event.detail.value)"
+                    class="ios-select"
+                  >
+                    <ion-select-option value="particular">Particular</ion-select-option>
+                    <ion-select-option value="lote">Agencia / Lote</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+        </ion-col>
+
+        <!-- BLOQUE ACCIONES (ubicación / lote / imágenes) -->
+        <ion-col size="12" size-md="6" *ngIf="seccionFormulario === 2 ">
+          <ion-grid>
+            <ion-row>
+
+              <!-- Ubicación particular -->
+              <ion-col size="12" size-md="6" class="box ios-box" *ngIf="tipoSeleccionado == 'particular'">
+
+                <ion-button expand="block" color="danger" shape="round" class="ios-pill ios-danger"
+                  (click)="seleccionarUbicacion()">
+                  <ion-icon name="location-outline" slot="start"></ion-icon>
+                  Seleccionar ubicación
+                </ion-button>
+
+                <div class="ubicacion ios-inline" *ngIf="ubicacionSeleccionada">
+                  <ion-icon name="location-outline"></ion-icon>
+                  {{ direccionCompleta }}
+                </div>
+              </ion-col>
+
+              <!-- Lote -->
+              <ion-col size="12" size-md="6" class="box ios-box" *ngIf="tipoSeleccionado == 'lote'">
+
+                <ion-item class="select-w-icon ios-item" lines="none">
+                  <ion-icon name="business-outline" slot="start"></ion-icon>
+                  <ion-select
+                    [(ngModel)]="loteSeleccionado"
+                    (ionChange)="onLoteSeleccionado()"
+                    mode="ios"
+                    interface="alert"
+                    class="ios-select"
+                  >
+                    <ion-select-option *ngFor="let lote of lotes" [value]="lote._id">
+                      {{ lote.nombre }}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+
+                <div *ngIf="ubicacionesLoteSeleccionado!.length > 1" class="bloque-direcciones ios-subcard">
+                  <label class="ios-label-mini">Dirección:</label>
+
+                  <ion-item class="select-w-icon ios-item" lines="none">
+                    <ion-icon name="location-outline" slot="start"></ion-icon>
+                    <ion-select [(ngModel)]="direccionSeleccionada" mode="ios" interface="alert" class="ios-select">
+                      <ion-select-option *ngFor="let dir of ubicacionesLoteSeleccionado; let i = index" [value]="dir">
+                        {{ ubicacionesLoteLegibles[i] || 'Obteniendo dirección...' }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </div>
+
+                <div *ngIf="direccionSeleccionada && ubicacionesLoteSeleccionado.length === 1" class="ubicacion ios-inline">
+                  <ion-icon name="location-outline"></ion-icon>
+                  <span>{{ direccionCompleta }}</span>
+                </div>
+
+              </ion-col>
+
+              <!-- Imágenes -->
+              <ion-col size="12" size-md="6" class="box ios-box" *ngIf="tipoSeleccionado !== ''">
+
+                <ion-button expand="block" color="danger" shape="round" class="ios-pill ios-danger"
+                  (click)="seleccionarImagenes()">
+                  <ion-icon name="image-outline" slot="start"></ion-icon>
+                  Seleccionar Imágenes
+
+                  <label class="radio-validacion ios-check"
+                    [class.activo]="imagenesValidas"
+                    [class.inactivo]="!imagenesValidas">
+                    <span class="radio-custom"></span>
+                    <ion-icon name="checkmark-outline"></ion-icon>
+                  </label>
+                </ion-button>
+
+                <button *ngIf="imagenesIntentadas" class="btn-limpiar ios-ghost" (click)="limpiarImagenes()">
+                  <ion-icon name="trash-outline"></ion-icon>
+                  Imágenes
+                </button>
+
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+
+    <!-- PUBLICACIÓN PARTICULAR -->
+    <ion-grid
+      *ngIf=" seccionFormulario === 3 && (MyRole === 'cliente' || MyRole === 'vendedor')"
+      class="publicacion-card ios-card ios-highlight"
+    >
+      <ion-row>
+        <ion-col size="12">
+          <p class="info-txt ios-info">
+            <strong>¡Nosotros nos encargamos!</strong><br />
+            Publicamos tu auto y agendamos citas.
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="info-grid">
+        <ion-col size="12" size-md="2"><p class="ios-kv">Año: <strong>{{ anio }}</strong></p></ion-col>
+        <ion-col size="12" size-md="2"><p class="ios-kv">Marca: <strong>{{ marca }}</strong></p></ion-col>
+        <ion-col size="12" size-md="2"><p class="ios-kv">Modelo: <strong>{{ modelo }}</strong></p></ion-col>
+        <ion-col size="12" size-md="2"><p class="estado ios-badge">{{ estadoVehiculo }}</p></ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-label position="stacked" class="ios-label">Precio estimado (opcional)</ion-label>
+          <ion-input type="number" [(ngModel)]="precioEstimado" class="ios-input"></ion-input>
+        </ion-col>
+
+        <ion-col size="12">
+          <ion-label position="stacked" class="ios-label">Tipo de factura (opcional)</ion-label>
+          <ion-select [(ngModel)]="tipoFactura" mode="ios" interface="alert" class="ios-input">
+            <ion-select-option value="original">Original</ion-select-option>
+            <ion-select-option value="refacturada">Refacturada</ion-select-option>
+            <ion-select-option value="sin factura">Sin factura</ion-select-option>
+          </ion-select>
+        </ion-col>
+
+        <ion-col size="12" class="ion-text-center" *ngIf="tipoDispocitivo !== 'telefono'">
+          <button class="btn-wsp ios-wsp"
+            (click)="contactosService.contactarPorPublicacionParticular(anio, marca, modelo, precioEstimado!, tipoFactura)">
+            <ion-icon name="logo-whatsapp"></ion-icon>
+            Contáctanos
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- FORMULARIO COMPLETO -->
+    <ion-grid *ngIf=" seccionFormulario == 2 && tipoSeleccionado !== ''" class="form-card ios-card ios-form">
+
+      <!-- NUEVO -->
+      <ion-row *ngIf="estadoVehiculo_logico === 'nuevo'" class="ios-block">
+        <ion-col size="12">
+          <label class="ios-label">Selecciona las versiones disponibles y asigna un precio:</label>
+        </ion-col>
+
+        <ion-col size="12" *ngFor="let version of versiones; let i = index" class="version-item ios-rowline">
+          <ion-checkbox
+            [checked]="versionSeleccionada[i]"
+            (ionChange)="toggleVersion(i, version)"
+            class="ios-checkbox"
+          ></ion-checkbox>
+
+          <span class="ios-rowtext">{{ version }}</span>
+
+          <ion-input
+            *ngIf="versionSeleccionada[i]"
+            type="number"
+            min="0"
+            placeholder="Precio"
+            [(ngModel)]="preciosVersiones[version]"
+            class="ios-input ios-mini"
+          ></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <!-- SEMINUEVO / USADO / VIEJITO -->
+      <ion-grid>
+        <ion-row *ngIf="estadoVehiculo_logico === 'seminuevo' || estadoVehiculo_logico === 'usado' || estadoVehiculo_logico === 'viejito'"
+          class="ios-grid">
+
+          <ion-col size="12" size-md="4">
+            <label class="ios-label">Versión: <span class="requerido">*</span></label>
+
+            <ion-select
+              *ngIf="!esUsadoAntiguo && versionesDisponibles"
+              [(ngModel)]="versionSeleccionadaTexto"
+              (ngModelChange)="onSeleccionVersion($event)"
+              placeholder="Selecciona una versión"
+              mode="ios"
+              interface="alert"
+              class="ios-input"
+            >
+              <ion-select-option *ngFor="let version of versiones" [value]="version">
+                {{ version }}
+              </ion-select-option>
+            </ion-select>
+
+            <ion-input
+              *ngIf="esUsadoAntiguo || !versionesDisponibles"
+              type="text"
+              placeholder="Escribe la versión"
+              [(ngModel)]="versionSeleccionadaTexto"
+              class="ios-input"
+            ></ion-input>
+          </ion-col>
+
+          <ion-col size="12" size-md="4">
+            <label class="ios-label">Precio: <span class="requerido">*</span></label>
+            <ion-input type="number" min="0" placeholder="Precio del vehículo" [(ngModel)]="precio" class="ios-input"></ion-input>
+          </ion-col>
+
+          <ion-col size="12" size-md="4">
+            <label class="ios-label">Placas: <span class="opcional_css">(opcional)</span></label>
+            <ion-input type="text" placeholder="Ej. UVY-123-A" [(ngModel)]="placas" class="ios-input"></ion-input>
+          </ion-col>
+
+          <ion-col size="12" size-md="4">
+            <label class="ios-label">Kilometraje: <span class="requerido">*</span></label>
+            <ion-input type="number" min="0" placeholder="Ej. 45000" [(ngModel)]="kilometraje" class="ios-input"></ion-input>
+          </ion-col>
+
+          <ion-col size="12" size-md="4">
+            <label class="ios-label">Color: <span class="requerido">*</span></label>
+            <ion-select [(ngModel)]="colorSeleccionado" placeholder="Selecciona un color" mode="ios" interface="alert" class="ios-input">
+              <ion-select-option *ngFor="let opcion of opciones" [value]="opcion.label">
+                {{ opcion.label }}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+
+          <ion-col size="12" size-md="4">
+            <label class="ios-label">Moneda:<span class="requerido">*</span></label>
+            <ion-select [(ngModel)]="moneda" mode="ios" interface="alert" class="ios-input">
+              <ion-select-option value="MXN">MXN - Pesos mexicanos</ion-select-option>
+            </ion-select>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid>
+        <ion-row class="ios-two">
+          <ion-col size="12" size-md="7">
+            <textarea rows="10" placeholder="Ej. Auto en excelente estado..." [(ngModel)]="descripcion" class="ios-textarea"></textarea>
+          </ion-col>
+
+          <ion-col size="12" size-md="5">
+            <ion-row class="grid-info" *ngIf="versionesDisponibles && (estadoVehiculo_logico === 'seminuevo' || estadoVehiculo_logico === 'usado')">
+              <ion-col size="12" class="columna-ficha">
+                <div class="card-especificaciones ios-tech" *ngIf="especificacionesVersion">
+                  <h4 class="ios-tech-title">Ficha técnica</h4>
+
+                  <ul class="ios-tech-list">
+                    <li *ngIf="especificacionesVersion.motor"><strong>Motor:</strong> {{ especificacionesVersion.motor }}</li>
+                    <li *ngIf="especificacionesVersion.potencia"><strong>Potencia:</strong> {{ especificacionesVersion.potencia }}</li>
+                    <li *ngIf="especificacionesVersion.cilindros"><strong>Cilindros:</strong> {{ especificacionesVersion.cilindros }}</li>
+                    <li *ngIf="especificacionesVersion.transmision"><strong>Transmisión:</strong> {{ especificacionesVersion.transmision }}</li>
+                    <li *ngIf="especificacionesVersion.traccion"><strong>Tracción:</strong> {{ especificacionesVersion.traccion }}</li>
+                    <li *ngIf="especificacionesVersion.combustible"><strong>Combustible:</strong> {{ especificacionesVersion.combustible }}</li>
+                    <li *ngIf="especificacionesVersion.pasajeros"><strong>Pasajeros:</strong> {{ especificacionesVersion.pasajeros }}</li>
+                    <li *ngIf="especificacionesVersion.puertas"><strong>Puertas:</strong> {{ especificacionesVersion.puertas }}</li>
+                    <li *ngIf="especificacionesVersion.rines"><strong>Rines:</strong> {{ especificacionesVersion.rines }}</li>
+                    <li *ngIf="especificacionesVersion.tipoVehiculo"><strong>Tipo de vehículo:</strong> {{ especificacionesVersion.tipoVehiculo }}</li>
+
+                    <li *ngIf="especificacionesVersion.extra?.length > 0">
+                      <strong>Extras:</strong>
+                      <ul class="sublista ios-sublist">
+                        <li *ngFor="let extra of especificacionesVersion.extra">{{ extra }}</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <!-- FORMULARIO VIEJITO -->
+      <ion-row *ngIf="estadoVehiculo_logico === 'viejito' || !versionesDisponibles" class="ios-grid">
+        <ion-col size="12" size-md="4" *ngFor="let campo of camposEspecificaciones">
+          <label class="ios-label">
+            {{ etiquetasCampos[campo] }}:
+            <span class="opcional_css">(opcional)</span>
+          </label>
+          <ion-input type="text" [placeholder]="'Ej. ' + ejemplosCampos[campo]" [(ngModel)]="camposViejito[campo]" class="ios-input"></ion-input>
+        </ion-col>
+
+        <ion-col size="12" size-md="4">
+          <label class="ios-label">Extras: <span class="opcional_css">(opcional)</span></label>
+          <textarea [(ngModel)]="extrasTexto" placeholder="Ej. Quemacocos, GPS, Cámara de reversa..." rows="8" class="ios-textarea"></textarea>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+
+    <!-- BOTÓN PUBLICAR DESKTOP -->
+    <ion-buttons
+      slot="end"
+      class="ios-actions"
+      *ngIf="tipoDispocitivo !== 'telefono' && tipoSeleccionado !== '' && seccionFormulario !== 3"
+    >
+      <ion-button class="btn-publicar ios-pill ios-danger" expand="block" color="danger" shape="round" fill="solid" type="button"
+        (click)="EnviarVeiculo()">
+        <ion-icon name="save" slot="start"></ion-icon>
+        Publicar
+      </ion-button>
+    </ion-buttons>
+
+  </section>
+
+  <app-footer></app-footer>
+
+</ion-content>
+
+<!-- FOOTER TELÉFONO -->
+<ion-footer *ngIf="tipoDispocitivo === 'telefono'" class="safe-footer footer_css_seguros ios-footer">
+  <ion-toolbar class="ios-footerbar" mode="ios">
+
+    <ion-buttons slot="start">
+      <ion-button fill="clear" class="ios-ghost-btn" (click)="regresarInicio()">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+        Atrás
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button class="ios-pill ios-danger" color="danger" fill="solid" type="button"
+        *ngIf=" seccionFormulario !== 3"
+        (click)="EnviarVeiculo()">
+        Publicar
+        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button class="ios-pill ios-success" color="success" fill="solid" type="button"
+        *ngIf=" seccionFormulario === 3"
+        (click)="contactosService.contactarPorPublicacionParticular(anio, marca, modelo, precioEstimado!, tipoFactura)">
+        Contáctanos
+        <ion-icon name="logo-whatsapp"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-footer>

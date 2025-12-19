@@ -1,106 +1,118 @@
-.error-page {
-  --background: #0b0b0e;
+/* =========================
+   iOS Error Page
+========================= */
+.error-page.ios {
+  --background: #f5f5f7; /* iOS light */
+  background: #f5f5f7;
   text-align: center;
 }
 
-/* Contenedor general: centra todo en la pantalla */
-.error-page .error-wrap {
+/* Centro perfecto */
+.error-wrap {
   min-block-size: 100dvh;
   display: grid;
   place-content: center;
   justify-items: center;
-  padding: clamp(16px, 4vw, 32px);
-  width: 100%;
+  padding: clamp(16px, 4vw, 28px);
 }
 
-/* Sección interior */
-.error-page .error-section {
+/* Card iOS */
+.error-card {
+  width: min(520px, 92vw);
+  padding: clamp(18px, 4vw, 26px);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow:
+    0 20px 40px rgba(15, 23, 42, 0.14),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
   display: grid;
-  gap: clamp(12px, 3vh, 20px);
+  gap: 14px;
   justify-items: center;
-  max-width: 520px;
-  width: 100%;
 }
 
 /* Logo */
-.error-page .logo {
-  width: clamp(120px, 22vw, 180px);
-  margin-bottom: clamp(8px, 2vh, 14px);
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+.logo {
+  width: clamp(110px, 20vw, 160px);
+  height: auto;
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.18));
 }
 
 /* Título */
-.error-page .headline {
-  font-size: clamp(1.3rem, 4vw, 1.7rem);
-  color: #f9fafb;
-  margin: 0;
-  font-weight: 800;
+.headline {
+  margin: 4px 0 0;
+  font-size: clamp(1.25rem, 3.5vw, 1.7rem);
+  font-weight: 1000;
+  color: #0f172a;
   letter-spacing: 0.2px;
 }
 
 /* Subtítulo */
-.error-page .subhead {
+.subhead {
   margin: 0;
-  color: #9ca3af;
-  font-size: 0.9rem;
+  max-width: 34rem;
+  font-size: 0.95rem;
   line-height: 1.5;
-  max-width: 32rem;
+  color: #475569;
+  font-weight: 700;
 }
 
-/* Contenedor de la imagen del coche */
-.error-page .car-wrap {
-  position: relative;
+/* Imagen */
+.car {
+  width: 100%;
   display: grid;
   place-items: center;
-  width: 100%;
-  min-height: clamp(220px, 45vh, 360px);
+  min-height: clamp(170px, 30vh, 270px);
+  padding: 6px 0;
 }
 
-/* Imagen del coche */
-.error-page .car-img {
-  width: clamp(260px, 70vw, 440px);
+.car-img {
+  width: clamp(180px, 45vw, 280px);
   height: auto;
   object-fit: contain;
-  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.85));
+  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.22));
 }
 
-/* Botón “Volver a WOAW” */
-.error-page .back-btn {
-  width: min(420px, 90vw);
-  margin-top: clamp(4px, 1vh, 8px);
-  font-weight: 800;
-  letter-spacing: 0.3px;
-  --border-radius: 999px;
-  --box-shadow: 0 12px 26px rgba(239, 68, 68, 0.55);
+/* Botón iOS pill */
+.back-btn {
+  width: min(420px, 92vw);
+  margin-top: 6px;
+  font-weight: 1000;
+  letter-spacing: 0.2px;
   text-transform: none;
+
+  --border-radius: 999px;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+
+  --box-shadow: 0 16px 30px rgba(255, 59, 48, 0.30);
 }
 
-/* Ajustes en pantallas muy chicas */
-@media (max-width: 380px) {
-  .error-page .headline {
-    font-size: 1.1rem;
+/* Dark mode iOS (se ve cabrón también) */
+@media (prefers-color-scheme: dark) {
+  .error-page.ios {
+    --background: #0b0b0e;
+    background: #0b0b0e;
   }
 
-  .error-page .subhead {
-    font-size: 0.8rem;
+  .error-card {
+    background: rgba(17, 24, 39, 0.62);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    box-shadow: 0 26px 50px rgba(0, 0, 0, 0.55);
   }
 
-  .error-page .car-img {
-    width: 80vw;
-  }
-}
-
-/* Respeta modo claro/oscuro del sistema (opcional) */
-@media (prefers-color-scheme: light) {
-  .error-page {
-    --background: #f3f4f6;
+  .headline {
+    color: #f8fafc;
   }
 
-  .error-page .headline {
-    color: #111827;
+  .subhead {
+    color: rgba(226, 232, 240, 0.75);
   }
 
-  .error-page .subhead {
-    color: #4b5563;
+  .car-img {
+    filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.85));
   }
 }

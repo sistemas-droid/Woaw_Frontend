@@ -1,35 +1,143 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true">
-  <div class="ion-padding">
+<ion-content mode="ios" [fullscreen]="true" class="upload-content">
+  <div class="page-shell ion-padding">
 
-    <div class="ion-text-center ion-margin-bottom">
-      <h1 class="ion-text-bold">{{ nombreDocumentoMostrar }}</h1>
-      <p class="ion-text-muted">Subir documento para el lote: <strong>{{ nombreLote }}</strong></p>
+    <!-- Título -->
+    <div class="page-title-box">
+      <div class="title-chip">
+        <ion-icon name="document-text-outline"></ion-icon>
+        <span>Documentos</span>
+      </div>
+
+      <h1 class="titulo-woaw">{{ nombreDocumentoMostrar }}</h1>
+      <p class="subtitulo-woaw">
+        Subir documento para el lote: <strong>{{ nombreLote }}</strong>
+      </p>
     </div>
 
-    <ion-card>
-      <ion-card-content>
-
-        <!-- Selector de archivo -->
-        <ion-item>
-          <ion-label>Seleccionar archivo</ion-label>
-          <input type="file" (change)="onFileSelected($event)" accept=".pdf,.jpg,.jpeg,.png" />
-        </ion-item>
-
-        <div class="ion-text-center ion-margin-top" *ngIf="archivoSeleccionado">
-          <p><strong>Archivo seleccionado:</strong> {{ archivoSeleccionado.name }}</p>
+    <!-- 🚨 BLOQUEADO SI ESTÁ APROBADO -->
+    <ion-card *ngIf="documentoActualEstado === 'aprobado'" class="upload-card lock-card ion-margin-bottom">
+      <ion-card-content class="lock-inner">
+        <div class="lock-icon">
+          <ion-icon name="checkmark-circle"></ion-icon>
         </div>
 
-        <ion-button expand="block" color="danger" class="ion-margin-top" [disabled]="!archivoSeleccionado"
-          (click)="subirArchivo()">
-          Subir Documento
-        </ion-button>
+        <div class="lock-text">
+          <p class="lock-title">Este documento ya fue aprobado</p>
+          <p class="lock-sub">
+            Si necesitas hacer cambios, contacta a un administrador.
+          </p>
+        </div>
+      </ion-card-content>
+    </ion-card>
 
-        <ion-button expand="block" fill="outline" class="ion-margin-top"
-          (click)="router.navigateByUrl('/lote/documentos/' + nombreLote + '/' + idLote)">
-          Cancelar
-        </ion-button>
+    <!-- Card principal -->
+    <ion-card class="upload-card main-card">
+      <ion-card-content>
+
+        <!-- Campo de archivo -->
+        <div class="file-card">
+
+          <div class="file-head">
+            <div class="file-head-left">
+              <div class="file-icon">
+                <ion-icon name="cloud-upload-outline"></ion-icon>
+              </div>
+
+              <div class="file-head-text">
+                <p class="file-title">Seleccionar archivo</p>
+                <p class="file-hint">PDF o imagen (JPG/PNG). Máx. según tu backend.</p>
+              </div>
+            </div>
+
+            <!-- Estado mini -->
+            <span class="status-pill"
+              [ngClass]="{
+                'ok': documentoActualEstado === 'aprobado',
+                'warn': documentoActualEstado === 'pendiente',
+                'bad': documentoActualEstado === 'rechazado'
+              }"
+              *ngIf="documentoActualEstado">
+              {{ documentoActualEstado | uppercase }}
+            </span>
+          </div>
+
+          <!-- Link documento actual (desktop) -->
+          <div *ngIf="documentoActualUrl && documentoActualNombre" class="file-link-row desktop-only">
+            <button type="button" class="file-link" (click)="abrirDocumento()">
+              <ion-icon name="link-outline"></ion-icon>
+              <span>{{ documentoActualNombre }}</span>
+            </button>
+
+            <!-- ❌ Solo si NO está aprobado -->
+            <button
+              *ngIf="documentoActualEstado !== 'aprobado'"
+              type="button"
+              class="file-delete-btn"
+              (click)="eliminarDocumento($event)">
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+          </div>
+
+          <!-- Input -->
+          <ion-item lines="none" class="file-item">
+            <ion-label class="file-label">Archivo</ion-label>
+
+            <input
+              class="file-input"
+              type="file"
+              accept=".pdf,.jpg,.jpeg,.png"
+              [disabled]="documentoActualEstado === 'aprobado'"
+              (change)="onFileSelected($event)" />
+          </ion-item>
+
+          <!-- Link documento actual (mobile) -->
+          <div *ngIf="documentoActualUrl && documentoActualNombre" class="file-link-row mobile-only">
+            <button type="button" class="file-link" (click)="abrirDocumento()">
+              <ion-icon name="link-outline"></ion-icon>
+              <span>{{ documentoActualNombre }}</span>
+            </button>
+
+            <button
+              *ngIf="documentoActualEstado !== 'aprobado'"
+              type="button"
+              class="file-delete-btn"
+              (click)="eliminarDocumento($event)">
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+          </div>
+
+          <!-- Archivo seleccionado -->
+          <div class="selected-wrap" *ngIf="archivoSeleccionado">
+            <div class="selected-pill">
+              <ion-icon name="attach-outline"></ion-icon>
+              <span><strong>Seleccionado:</strong> {{ archivoSeleccionado.name }}</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Botones -->
+        <div class="botones-desktop">
+          <ion-button
+            expand="block"
+            class="btn-subir"
+            [disabled]="!archivoSeleccionado || documentoActualEstado === 'aprobado'"
+            (click)="subirArchivo()">
+            <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+            Subir documento
+          </ion-button>
+
+          <ion-button
+            expand="block"
+            fill="outline"
+            class="btn-cancelar"
+            (click)="router.navigateByUrl('/lote/documentos/' + nombreLote + '/' + idLote)">
+            <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+            Cancelar
+          </ion-button>
+        </div>
 
       </ion-card-content>
     </ion-card>

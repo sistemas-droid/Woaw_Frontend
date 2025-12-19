@@ -1,23 +1,25 @@
-<ion-content color="dark" class="error-page" [fullscreen]="true">
+<ion-content class="error-page ios" [fullscreen]="true">
   <div class="error-wrap">
 
-    <!-- Logo -->
-    <img class="logo" src="/assets/icon/logo4.png" alt="Woaw Logo" />
+    <!-- Card iOS -->
+    <section class="error-card">
 
-    <!-- Sección principal -->
-    <section class="error-section">
+      <!-- Logo -->
+      <img class="logo" src="/assets/icon/logo4.png" alt="WOAW Logo" />
+
+      <!-- Texto -->
       <h1 class="headline">Página no encontrada</h1>
       <p class="subhead">
         Parece que este camino no lleva a ningún vehículo. Intenta volver al inicio.
       </p>
 
-      <!-- Imagen central -->
-      <div class="car-wrap">
-        <img
-          class="car-img"
-          src="/assets/autos/taller2.png"
-          alt="Auto en reparación"
-        />
+      <!-- Imagen central (elige la que sí tengas) -->
+      <div class="car">
+        <!-- Opción A -->
+        <!-- <img class="car-img" src="/assets/autos/taller2.png" alt="Auto en reparación" /> -->
+
+        <!-- Opción B -->
+        <img class="car-img" src="/assets/woalft/error.png" alt="Auto en reparación" />
       </div>
 
       <!-- Botón -->
@@ -27,9 +29,11 @@
         expand="block"
         color="danger"
         class="back-btn"
+        mode="ios"
       >
         Volver a WOAW
       </ion-button>
+
     </section>
 
   </div>

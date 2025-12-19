@@ -35,16 +35,20 @@
 
   <!-- Leyenda -->
   <div class="legend-ubicacion">
-    <div class="legend-item">
-      <span class="dot dot-green"></span>
-      <span>Mi ubicación</span>
-    </div>
+    
 
     <div class="legend-item">
       <ion-icon name="location-sharp" class="pin"></ion-icon>
       <span>Ubicación a seleccionar (toca el mapa)</span>
     </div>
-  </div>
+  </div>  
+
+  <div class="legend-ubicacion">
+  <button class="legend-item" (click)="usarMiUbicacionActual()">
+    <span class="dot dot-green"></span>
+    Mi ubicación
+  </button>
+</div>
 
   <!-- Mapa -->
   <div class="map-wrapper">
@@ -53,6 +57,8 @@
       <ion-spinner name="crescent" color="primary"></ion-spinner>
       <p class="txt-spinner">Cargando mapa...</p>
     </div>
+
+    
 
     <!-- Mapa real -->
     <div #mapContainer class="map-container" [hidden]="cargandoMapa"></div>

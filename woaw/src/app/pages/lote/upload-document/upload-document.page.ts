@@ -11,12 +11,16 @@ import { LoteService } from 'src/app/services/lote.service';
 })
 export class UploadDocumentPage implements OnInit {
 
-  nombreLote: string = '';
-  idLote: string = '';
-  tipoDocumento: string = '';
+  nombreLote = '';
+  idLote = '';
+  tipoDocumento = '';
 
   archivoSeleccionado: File | null = null;
-  nombreDocumentoMostrar: string = '';
+  nombreDocumentoMostrar = '';
+
+  documentoActualUrl: string | null = null;
+  documentoActualNombre: string | null = null;
+  documentoActualEstado: 'aprobado' | 'rechazado' | 'pendiente' | null = null;
 
   constructor(
     private navCtrl: NavController,
@@ -28,49 +32,52 @@ export class UploadDocumentPage implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.route.paramMap.subscribe(params => {
       this.nombreLote = params.get('nombre') ?? '';
       this.idLote = params.get('id') ?? '';
       this.tipoDocumento = params.get('tipoDoc') ?? '';
-
       this.nombreDocumentoMostrar = this.formatearTitulo(this.tipoDocumento);
+      this.cargarDocumentoActual();
     });
   }
 
-  // ============================
-  // Devuelve un título bonito
-  // ============================
-  formatearTitulo(tipo: string): string {
-    switch (tipo) {
-      case 'constancia-fiscal': return 'Constancia de Situación Fiscal';
-      case 'id-apoderado': return 'Identificación del Apoderado';
-      case 'estado-cuenta-lote':
-      case 'estado-cuenta': return 'Estado de Cuenta';
-      case 'acta-constitutiva': return 'Acta Constitutiva';
-      case 'fotos-lote': return 'Fotos del Lote';
-      case 'formato-aut-pf': return 'Formato Autorización Persona Física';
-      case 'formato-aut-pm': return 'Formato Autorización Persona Moral';
-      default: return tipo;
+  private cargarDocumentoActual() {
+    this.loteService.getLoteById(this.idLote).subscribe(lote => {
+      const docs = lote?.documentosVerificacion || {};
+      const mapa: any = {
+        constanciaSituacionFiscal: 'constancia-fiscal',
+        identificacionApoderado: 'id-apoderado',
+        estadoCuentaLote: 'estado-cuenta-lote',
+        actaConstitutiva: 'acta-constitutiva',
+        fotosLote: 'fotos-lote',
+        formatoAutPF: 'formato-aut-pf',
+        formatoAutPM: 'formato-aut-pm'
+      };
+
+      Object.keys(docs).forEach(key => {
+        if (mapa[key] === this.tipoDocumento) {
+          const doc = docs[key];
+          this.documentoActualUrl = doc.url ?? null;
+          this.documentoActualNombre = doc.nombreOriginal ?? null;
+          this.documentoActualEstado = doc.estado ?? null;
+        }
+      });
+    });
+  }
+
+  abrirDocumento() {
+    if (this.documentoActualUrl) {
+      window.open(this.documentoActualUrl, '_blank');
     }
   }
 
-  // ================================
-  // Seleccionar archivo
-  // ================================
   onFileSelected(event: any) {
-    const file = event.target.files[0];
-    this.archivoSeleccionado = file ?? null;
+    if (this.documentoActualEstado === 'aprobado') return;
+    this.archivoSeleccionado = event.target.files[0] ?? null;
   }
 
-  // =================================
-  // Subir documento al backend
-  // =================================
   async subirArchivo() {
-    if (!this.archivoSeleccionado) {
-      this.mostrarToast('Selecciona un archivo antes de continuar.');
-      return;
-    }
+    if (!this.archivoSeleccionado || this.documentoActualEstado === 'aprobado') return;
 
     const loading = await this.loadingCtrl.create({
       message: 'Subiendo archivo...',
@@ -79,63 +86,73 @@ export class UploadDocumentPage implements OnInit {
     await loading.present();
 
     let request$;
-
-    // Seleccionar método correcto según el endpoint real
     switch (this.tipoDocumento) {
       case 'constancia-fiscal':
-        request$ = this.loteService.subirConstanciaFiscal(this.idLote, this.archivoSeleccionado);
-        break;
-
+        request$ = this.loteService.subirConstanciaFiscal(this.idLote, this.archivoSeleccionado); break;
       case 'id-apoderado':
-        request$ = this.loteService.subirIdentificacionApoderado(this.idLote, this.archivoSeleccionado);
-        break;
-
-      case 'estado-cuenta':
+        request$ = this.loteService.subirIdentificacionApoderado(this.idLote, this.archivoSeleccionado); break;
       case 'estado-cuenta-lote':
-        request$ = this.loteService.subirEstadoCuenta(this.idLote, this.archivoSeleccionado);
-        break;
-
+        request$ = this.loteService.subirEstadoCuenta(this.idLote, this.archivoSeleccionado); break;
       case 'acta-constitutiva':
-        request$ = this.loteService.subirActaConstitutiva(this.idLote, this.archivoSeleccionado);
-        break;
-
+        request$ = this.loteService.subirActaConstitutiva(this.idLote, this.archivoSeleccionado); break;
       case 'fotos-lote':
-        request$ = this.loteService.subirFotosLote(this.idLote, this.archivoSeleccionado);
-        break;
-
+        request$ = this.loteService.subirFotosLote(this.idLote, this.archivoSeleccionado); break;
       case 'formato-aut-pf':
-        request$ = this.loteService.subirFormatoAutPF(this.idLote, this.archivoSeleccionado);
-        break;
-
+        request$ = this.loteService.subirFormatoAutPF(this.idLote, this.archivoSeleccionado); break;
       case 'formato-aut-pm':
-        request$ = this.loteService.subirFormatoAutPM(this.idLote, this.archivoSeleccionado);
-        break;
-
+        request$ = this.loteService.subirFormatoAutPM(this.idLote, this.archivoSeleccionado); break;
       default:
-        this.mostrarToast('Tipo de documento no reconocido.');
-        loading.dismiss();
+        await loading.dismiss();
         return;
     }
 
-    request$.subscribe({
-      next: async (res) => {
-        await loading.dismiss();
-        this.mostrarToast('Documento subido con éxito ✔');
-
-        // Regresamos a la página de documentos
-        this.router.navigateByUrl(`/lote/documentos/${this.nombreLote}/${this.idLote}`);
-      },
-      error: async (err) => {
-        console.error(err);
-        await loading.dismiss();
-        this.mostrarToast('Error al subir documento ❌');
-      }
+    request$.subscribe(async () => {
+      await loading.dismiss();
+      this.mostrarToast('Documento subido con éxito ✔');
+      this.router.navigateByUrl(`/lote/documentos/${this.nombreLote}/${this.idLote}`);
     });
   }
 
-  // ======================
-  // Toast bonito
-  // ======================
+  async eliminarDocumento(event?: Event) {
+    event?.stopPropagation();
+    if (this.documentoActualEstado === 'aprobado') return;
+
+    const seguro = confirm('¿Seguro que deseas eliminar este documento?');
+    if (!seguro) return;
+
+    let request$;
+    switch (this.tipoDocumento) {
+      case 'constancia-fiscal': request$ = this.loteService.eliminarConstanciaFiscal(this.idLote); break;
+      case 'id-apoderado': request$ = this.loteService.eliminarIdentificacionApoderado(this.idLote); break;
+      case 'estado-cuenta-lote': request$ = this.loteService.eliminarEstadoCuenta(this.idLote); break;
+      case 'acta-constitutiva': request$ = this.loteService.eliminarActaConstitutiva(this.idLote); break;
+      case 'fotos-lote': request$ = this.loteService.eliminarFotosLote(this.idLote); break;
+      case 'formato-aut-pf': request$ = this.loteService.eliminarFormatoAutPF(this.idLote); break;
+      case 'formato-aut-pm': request$ = this.loteService.eliminarFormatoAutPM(this.idLote); break;
+      default: return;
+    }
+
+    request$.subscribe(() => {
+      this.documentoActualUrl = null;
+      this.documentoActualNombre = null;
+      this.documentoActualEstado = null;
+      this.mostrarToast('Documento eliminado ✔');
+    });
+  }
+
+  formatearTitulo(tipo: string): string {
+    const map: any = {
+      'constancia-fiscal': 'Constancia de Situación Fiscal',
+      'id-apoderado': 'Identificación del Apoderado',
+      'estado-cuenta-lote': 'Estado de Cuenta del Lote',
+      'acta-constitutiva': 'Acta Constitutiva',
+      'fotos-lote': 'Fotos del Lote',
+      'formato-aut-pf': 'Formato Autorización Persona Física',
+      'formato-aut-pm': 'Formato Autorización Persona Moral'
+    };
+    return map[tipo] || tipo;
+  }
+
   async mostrarToast(msg: string) {
     const toast = await this.toastCtrl.create({
       message: msg,
@@ -145,5 +162,4 @@ export class UploadDocumentPage implements OnInit {
     });
     toast.present();
   }
-
 }

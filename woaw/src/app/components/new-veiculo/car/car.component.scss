@@ -15,9 +15,10 @@ section {
   padding: 10px 14px;
   margin: 0 4px 8px;
 
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.94);
   border-radius: 16px;
   border: 1px solid rgba(60, 60, 67, 0.15);
+  backdrop-filter: blur(14px);
   box-shadow:
     0 10px 24px rgba(15, 23, 42, 0.16),
     0 0 0 0.5px rgba(255, 255, 255, 0.8);
@@ -41,7 +42,7 @@ section {
   }
 
   strong {
-    font-weight: 600;
+    font-weight: 800;
     margin-left: 4px;
     color: #111827;
   }
@@ -51,9 +52,10 @@ section {
   font-size: 13px;
   padding: 6px 10px;
   border-radius: 999px;
-  border: 1px solid #ff3b30;
+  border: 1px solid rgba(255, 59, 48, 0.9);
   background: rgba(255, 59, 48, 0.06);
   color: #ff3b30;
+  font-weight: 800;
 }
 
 /* select estado (solo admin) */
@@ -66,7 +68,7 @@ section {
   width: 135px;
   height: 32px;
   border-radius: 999px;
-  border: 1px solid #ff3b30;
+  border: 1px solid rgba(255, 59, 48, 0.7);
   overflow: hidden;
   background: #ffffff;
   display: flex;
@@ -78,8 +80,8 @@ section {
   width: 100%;
   height: 100%;
   --min-height: 32px;
-  --padding-start: 8px;
-  --padding-end: 8px;
+  --padding-start: 10px;
+  --padding-end: 10px;
   --background: transparent;
   --color: #111827;
   --placeholder-color: #8e8e93;
@@ -87,7 +89,7 @@ section {
 
   text-align: center;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 900;
 }
 
 .btn-guardar {
@@ -96,19 +98,16 @@ section {
   background: linear-gradient(135deg, #ff3b30, #ff453a);
   color: #ffffff;
   border-radius: 999px;
-  padding: 8px 16px;
+  padding: 9px 16px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 900;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   cursor: pointer;
 
-  box-shadow: 0 10px 20px rgba(255, 69, 58, 0.4);
-  transition:
-    transform 0.14s ease,
-    box-shadow 0.16s ease,
-    filter 0.14s ease;
+  box-shadow: 0 10px 20px rgba(255, 69, 58, 0.38);
+  transition: transform 0.14s ease, box-shadow 0.16s ease, filter 0.14s ease;
 
   ion-icon.icono-guardar {
     font-size: 18px;
@@ -122,7 +121,7 @@ section {
 
   &:active {
     transform: translateY(0);
-    box-shadow: 0 7px 18px rgba(255, 69, 58, 0.3);
+    box-shadow: 0 7px 18px rgba(255, 69, 58, 0.28);
   }
 }
 
@@ -132,16 +131,18 @@ section {
   margin: 20px auto 10px;
   padding: 16px 12px 18px;
   max-width: 540px;
-  background: #ffffff;
+
+  background: rgba(255, 255, 255, 0.94);
   border-radius: 18px;
   border: 1px solid rgba(60, 60, 67, 0.12);
+  backdrop-filter: blur(14px);
   box-shadow:
     0 12px 24px rgba(15, 23, 42, 0.18),
     0 0 0 0.5px rgba(255, 255, 255, 0.9);
 
   .titulo-tipo {
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 900;
     margin: 0 0 12px;
     color: #111827;
   }
@@ -166,30 +167,26 @@ section {
     position: relative;
     cursor: pointer;
 
-    transition:
-      background 0.18s ease,
-      border-color 0.18s ease,
-      box-shadow 0.18s ease,
-      transform 0.12s ease;
+    transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
 
     img {
-      width: 48px;
-      height: 48px;
+      width: 50px;
+      height: 50px;
       margin-bottom: 8px;
     }
 
     p {
       margin: 0;
-      font-weight: 600;
+      font-weight: 800;
       font-size: 13px;
       color: #111827;
-      padding: 0 8px;
+      padding: 0 10px;
     }
 
     .icono-check {
       position: absolute;
-      top: 6px;
-      right: 6px;
+      top: 7px;
+      right: 7px;
       color: #ff3b30;
       font-size: 18px;
     }
@@ -201,8 +198,8 @@ section {
       transform: translateY(-1px);
     }
 
-    &:hover {
-      background-color: #ffffff;
+    &:active {
+      transform: scale(0.99);
     }
   }
 
@@ -218,18 +215,14 @@ section {
     padding: 10px 24px;
     background: linear-gradient(135deg, #ff3b30, #ff453a);
     color: #ffffff;
-    font-weight: 600;
+    font-weight: 900;
     font-size: 15px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     cursor: pointer;
     box-shadow: 0 10px 22px rgba(255, 69, 58, 0.4);
-
-    transition:
-      transform 0.14s ease,
-      box-shadow 0.16s ease,
-      filter 0.14s ease;
+    transition: transform 0.14s ease, box-shadow 0.16s ease, filter 0.14s ease;
 
     ion-icon {
       font-size: 18px;
@@ -245,6 +238,7 @@ section {
       background: linear-gradient(135deg, #ffb3b8, #ffc2c0);
       box-shadow: none;
       cursor: not-allowed;
+      opacity: 0.9;
     }
   }
 }
@@ -255,16 +249,17 @@ section {
   padding: 18px 16px;
   max-width: 580px;
 
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.94);
   border-radius: 18px;
   border: 1px solid rgba(60, 60, 67, 0.12);
+  backdrop-filter: blur(14px);
   box-shadow:
     0 12px 24px rgba(15, 23, 42, 0.16),
     0 0 0 0.5px rgba(255, 255, 255, 0.9);
 
   .texto-pregunta {
     font-size: 17px;
-    font-weight: 600;
+    font-weight: 900;
     margin: 0 0 16px;
     color: #111827;
   }
@@ -280,20 +275,16 @@ section {
   .btn-vende-go {
     padding: 10px 18px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 900;
     border-radius: 999px;
     border: none;
     cursor: pointer;
-
     display: inline-flex;
     align-items: center;
     gap: 8px;
 
-    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
-    transition:
-      transform 0.14s ease,
-      box-shadow 0.16s ease,
-      filter 0.14s ease;
+    box-shadow: 0 10px 18px rgba(15, 23, 42, 0.16);
+    transition: transform 0.14s ease, filter 0.14s ease, box-shadow 0.16s ease;
   }
 
   .btn-vender-yo {
@@ -331,7 +322,7 @@ section {
     margin-bottom: 10px;
 
     strong {
-      font-weight: 600;
+      font-weight: 900;
       color: #111827;
     }
   }
@@ -348,7 +339,7 @@ section {
 
       strong {
         margin-left: 4px;
-        font-weight: 600;
+        font-weight: 900;
       }
     }
 
@@ -388,18 +379,14 @@ section {
     padding: 10px 22px;
     background: #25d366;
     color: #ffffff;
-    font-weight: 600;
+    font-weight: 900;
     font-size: 14px;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     cursor: pointer;
     box-shadow: 0 12px 22px rgba(37, 211, 102, 0.45);
-
-    transition:
-      transform 0.14s ease,
-      box-shadow 0.16s ease,
-      filter 0.14s ease;
+    transition: transform 0.14s ease, filter 0.14s ease;
 
     ion-icon {
       font-size: 18px;
@@ -408,6 +395,10 @@ section {
     &:hover {
       transform: translateY(-1px);
       filter: brightness(1.02);
+    }
+
+    &:active {
+      transform: translateY(0);
     }
   }
 }
@@ -436,23 +427,27 @@ section {
     gap: 8px;
   }
 
+  label {
+    font-size: 12px;
+    font-weight: 800;
+    color: #3c3c43;
+    padding-left: 2px;
+  }
+
   button {
     border-radius: 999px;
     border: 1px solid rgba(60, 60, 67, 0.18);
     background: #ffffff;
-    padding: 8px 14px;
+    padding: 9px 14px;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 900;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     cursor: pointer;
 
     box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
-    transition:
-      background 0.14s ease,
-      box-shadow 0.16s ease,
-      transform 0.12s ease;
+    transition: background 0.14s ease, box-shadow 0.16s ease, transform 0.12s ease;
 
     ion-icon {
       font-size: 18px;
@@ -462,22 +457,31 @@ section {
       background: #f8f9fb;
       transform: translateY(-1px);
     }
+
+    &:active {
+      transform: translateY(0);
+    }
   }
 
   .select-lote {
     margin-top: 6px;
     border-radius: 12px;
     border: 1px solid rgba(60, 60, 67, 0.18);
-    padding: 8px 12px;
-    font-size: 13px;
     background: #ffffff;
-    outline: none;
-    -webkit-appearance: none;
 
-    &:focus {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --min-height: 44px;
+    --placeholder-color: #8e8e93;
+
+    &:focus-within {
       border-color: #ff3b30;
       box-shadow: 0 0 0 2px rgba(255, 59, 48, 0.18);
     }
+  }
+
+  .bloque-direcciones {
+    margin-top: 6px;
   }
 
   .ubicacion-mostrada {
@@ -507,14 +511,14 @@ section {
     background: #fff5f4;
     border-color: rgba(255, 59, 48, 0.35);
     color: #b91c1c;
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .radio-validacion {
     margin-left: auto;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
 
     .radio-custom {
       width: 10px;
@@ -547,27 +551,26 @@ section {
 .label-section {
   display: block;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 900;
   color: #3c3c43;
-  margin-bottom: 6px;
+  margin: 6px 2px 8px;
 }
 
 .version-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 10px;
-  margin-bottom: 6px;
-  border-radius: 12px;
+  padding: 10px 10px;
+  margin-bottom: 8px;
+  border-radius: 14px;
   background: #ffffff;
   border: 1px solid rgba(60, 60, 67, 0.14);
-
   box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
 
   span {
     flex: 1;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 800;
     color: #111827;
   }
 
@@ -580,30 +583,23 @@ section {
     --checkmark-color: #ffffff;
   }
 
-  input[type="number"] {
-    width: 120px;
-    border-radius: 10px;
+  ion-input {
+    max-width: 140px;
+    --background: #f2f2f7;
+    --padding-start: 10px;
+    --padding-end: 10px;
+    border-radius: 12px;
     border: 1px solid rgba(60, 60, 67, 0.18);
-    background: #f2f2f7;
-    padding: 6px 8px;
-    font-size: 13px;
-    outline: none;
-
-    &:focus {
-      border-color: #ff3b30;
-      box-shadow: 0 0 0 2px rgba(255, 59, 48, 0.18);
-      background: #ffffff;
-    }
   }
 }
 
 /* GRID PRINCIPAL CAMPOS */
 .grid-form {
-  margin-top: 8px;
+  margin-top: 10px;
   background: #ffffff;
   border-radius: 16px;
   padding: 12px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
 
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -618,18 +614,14 @@ section {
   }
 }
 
-.ficha-viejito {
-  margin-top: 14px;
-}
-
 .campo {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 
   label {
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 900;
     color: #3c3c43;
   }
 
@@ -640,6 +632,7 @@ section {
   .opcional_css {
     font-size: 10px;
     color: #8e8e93;
+    font-weight: 800;
   }
 }
 
@@ -647,20 +640,17 @@ section {
   grid-column: 1 / -1;
 }
 
-/* inputs estilo iOS */
-.campo select,
-.campo input[type="number"],
-.campo input[type="text"],
 .campo textarea {
   width: 100%;
   border-radius: 12px;
   border: 1px solid rgba(60, 60, 67, 0.18);
   background: #f2f2f7;
-  padding: 8px 10px;
+  padding: 10px 12px;
   font-size: 13px;
   color: #111827;
   outline: none;
-  -webkit-appearance: none;
+  resize: vertical;
+  min-height: 90px;
 
   &:focus {
     border-color: #ff3b30;
@@ -669,30 +659,25 @@ section {
   }
 }
 
-.campo textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
 /* FICHA TÉCNICA VERSION */
 .grid-info {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 8px;
-  margin-top: 10px;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 .columna-ficha .card-especificaciones {
   background: #ffffff;
   border-radius: 16px;
-  padding: 10px 12px;
+  padding: 12px 12px;
   border: 1px solid rgba(60, 60, 67, 0.12);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
 
   h4 {
-    margin: 0 0 8px;
+    margin: 0 0 10px;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 900;
     color: #111827;
   }
 
@@ -704,7 +689,7 @@ section {
     li {
       position: relative;
       padding-left: 14px;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       font-size: 12px;
       color: #374151;
 
@@ -720,13 +705,17 @@ section {
       }
 
       strong {
-        font-weight: 600;
+        font-weight: 900;
       }
     }
   }
 
   .sublista {
-    margin-top: 4px;
+    margin-top: 6px;
     padding-left: 0;
+
+    li::before {
+      background: rgba(255, 59, 48, 0.55);
+    }
   }
 }

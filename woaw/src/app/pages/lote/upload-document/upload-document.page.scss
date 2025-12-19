@@ -1,108 +1,398 @@
-/* --- CONTENEDOR GENERAL --- */
-.ion-padding {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
+/* ================================
+   iOS BASE
+================================ */
+.upload-content {
+  --background: #f2f2f7;
 }
 
-/* --- TITULO DE LA PÁGINA --- */
-h1 {
-    font-size: 26px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 4px;
+/* Contenedor central */
+.page-shell {
+  max-width: 980px;
+  margin: 0 auto;
+  padding-top: 18px;
+  padding-bottom: 24px;
 }
 
-.ion-text-muted {
-    color: #6b7280;
-    font-size: 15px;
+/* ================================
+   TITLE BOX
+================================ */
+.page-title-box {
+  text-align: center;
+  margin-bottom: 14px;
 }
 
-/* --- TARJETA PRINCIPAL --- */
-ion-card {
-    border-radius: 14px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e5e7eb;
-    padding: 6px;
-    transition: 0.25s ease-in-out;
+.title-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 10px 24px rgba(15, 23, 42, 0.10),
+    0 0 0 0.5px rgba(148, 163, 184, 0.35);
+  color: #111827;
+  font-weight: 800;
+  font-size: 12px;
+  margin-bottom: 10px;
 
+  ion-icon {
+    font-size: 16px;
+    color: #ef4444;
+  }
+}
+
+.titulo-woaw {
+  margin: 0;
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 950;
+  letter-spacing: -0.8px;
+  text-transform: uppercase;
+
+  background: linear-gradient(90deg, #111, #e60023);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitulo-woaw {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: rgba(17, 24, 39, 0.70);
+
+  strong {
+    color: rgba(17, 24, 39, 0.95);
+  }
+}
+
+/* ================================
+   CARD BASE
+================================ */
+.upload-card {
+  border-radius: 22px !important;
+  border: none !important;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 18px 44px rgba(15, 23, 42, 0.16),
+    0 0 0 0.6px rgba(148, 163, 184, 0.30);
+}
+
+/* Card principal más “iOS” */
+.main-card {
+  backdrop-filter: blur(10px);
+}
+
+/* ================================
+   LOCK CARD
+================================ */
+.lock-card {
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.lock-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 14px !important;
+}
+
+.lock-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: rgba(34, 197, 94, 0.12);
+  box-shadow: 0 10px 22px rgba(34, 197, 94, 0.12);
+
+  ion-icon {
+    font-size: 30px;
+    color: #22c55e;
+  }
+}
+
+.lock-title {
+  margin: 0;
+  font-weight: 900;
+  color: #111827;
+}
+
+.lock-sub {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: rgba(17, 24, 39, 0.65);
+}
+
+/* ================================
+   FILE CARD (inside)
+================================ */
+.file-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Head */
+.file-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.file-head-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.file-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  background: rgba(239, 68, 68, 0.10);
+  display: grid;
+  place-items: center;
+
+  ion-icon {
+    font-size: 22px;
+    color: #ef4444;
+  }
+}
+
+.file-head-text {
+  min-width: 0;
+}
+
+.file-title {
+  margin: 0;
+  font-weight: 950;
+  color: #111827;
+  font-size: 14px;
+  letter-spacing: -0.2px;
+}
+
+.file-hint {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: rgba(17, 24, 39, 0.60);
+}
+
+/* Estado pill */
+.status-pill {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  padding: 7px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(255, 255, 255, 0.65);
+  color: #111827;
+
+  &.ok {
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.35);
+    color: #0f7a3b;
+  }
+
+  &.warn {
+    background: rgba(245, 158, 11, 0.14);
+    border-color: rgba(245, 158, 11, 0.35);
+    color: #9a6400;
+  }
+
+  &.bad {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.35);
+    color: #b0001a;
+  }
+}
+
+/* Row link */
+.file-link-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.file-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  max-width: 100%;
+  color: #e60023;
+  font-weight: 900;
+  font-size: 13px;
+
+  ion-icon {
+    font-size: 16px;
+  }
+
+  span {
+    max-width: 420px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: underline;
+  }
+
+  &:active {
+    transform: scale(0.99);
+  }
+}
+
+.file-delete-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+
+  display: grid;
+  place-items: center;
+
+  background: rgba(239, 68, 68, 0.12);
+  color: #e60023;
+
+  transition: transform .15s ease, background .15s ease;
+
+  ion-icon {
+    font-size: 18px;
+    font-weight: 900;
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  @media (hover:hover) {
     &:hover {
-        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
-        transform: translateY(-1px);
+      background: rgba(239, 68, 68, 0.18);
     }
+  }
 }
 
-/* --- INPUT DE ARCHIVO (Custom bonito) --- */
-ion-item {
-    --background: #fafafa;
-    --border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    margin-top: 10px;
-
-    input[type="file"] {
-        margin-left: 12px;
-        font-size: 14px;
-        color: #444;
-        padding: 10px 0;
-        cursor: pointer;
-
-        &::-webkit-file-upload-button {
-            background: var(--ion-color-danger);
-            color: #fff;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s ease;
-        }
-
-        &::-webkit-file-upload-button:hover {
-            background: #b40000;
-        }
-    }
+/* iOS item */
+.file-item {
+  --background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 16px;
+  padding: 8px 10px;
 }
 
-/* --- TEXTO DEL ARCHIVO SELECCIONADO --- */
-.archivo {
-    font-size: 15px;
-    background: #f9fafb;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #e5e7eb;
-    display: inline-block;
-    margin-top: 10px;
+.file-label {
+  font-weight: 900;
+  color: #111827;
 }
 
-/* --- BOTONES --- */
-ion-button {
-    --border-radius: 10px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
+/* Input file (pill button) */
+.file-input {
+  margin-left: auto;
+  font-size: 13px;
+  cursor: pointer;
 }
 
-ion-button[color="primary"] {
-    --background: var(--ion-color-danger);
-    --background-hover: #b30000;
+.file-item input[type=file]::file-selector-button,
+.file-item input[type=file]::-webkit-file-upload-button {
+  background: #e60023;
+  color: #fff;
+  border-radius: 999px;
+  padding: 9px 14px;
+  border: none;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  cursor: pointer;
 }
 
-ion-button[fill="outline"] {
-    --border-color: #111;
-    --color: #111;
+/* Selected */
+.selected-wrap {
+  display: flex;
+  justify-content: center;
+}
 
+.selected-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.04);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: rgba(17, 24, 39, 0.85);
+  font-size: 13px;
+  font-weight: 700;
+
+  ion-icon {
+    font-size: 16px;
+    color: #ef4444;
+  }
+}
+
+/* ================================
+   BOTONES
+================================ */
+.botones-desktop {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.botones-desktop ion-button {
+  flex: 1;
+  min-width: 220px;
+  max-width: 320px;
+}
+
+/* Subir */
+.btn-subir {
+  --background: linear-gradient(135deg, #e60023, #ff3b3b);
+  --border-radius: 16px;
+  --box-shadow: 0 16px 34px rgba(230, 0, 35, 0.25);
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Cancelar outline iOS */
+.btn-cancelar {
+  --border-radius: 16px;
+  --border-color: rgba(17, 24, 39, 0.55);
+  --color: rgba(17, 24, 39, 0.85);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  @media (hover:hover) {
     &:hover {
-        --background: #f4f4f4;
+      --background: rgba(17, 24, 39, 0.06);
     }
+  }
 }
 
-/* --- RESPONSIVE --- */
+/* ================================
+   RESPONSIVE: LINKS
+================================ */
+.desktop-only { display: flex; }
+.mobile-only { display: none; }
+
 @media (max-width: 600px) {
-    h1 {
-        font-size: 22px;
-    }
+  .desktop-only { display: none; }
+  .mobile-only { display: flex; }
 
-    ion-card {
-        padding: 0;
-    }
+  /* Oculta el texto feo del input en mobile pero deja el botón */
+  .file-item input[type=file] {
+    color: transparent !important;
+  }
 }

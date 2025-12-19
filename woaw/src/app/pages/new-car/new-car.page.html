@@ -1,5 +1,6 @@
-<ion-header *ngIf="esDispositivoMovil">
-  <ion-toolbar class="ios-toolbar newcar-toolbar">
+<!-- HEADER iOS SOLO MÓVIL -->
+<ion-header *ngIf="esDispositivoMovil" translucent="true">
+  <ion-toolbar class="ios-toolbar newcar-toolbar" mode="ios">
     <ion-buttons slot="start">
       <button class="btn-back-ios" (click)="regresar()">
         <ion-icon name="chevron-back-outline"></ion-icon>
@@ -12,7 +13,7 @@
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button class="btn-close-ios" (click)="regresar()">
+      <ion-button class="btn-close-ios" fill="clear" (click)="regresar()">
         <ion-icon name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -22,11 +23,16 @@
 <!-- NAV DESKTOP -->
 <app-navbar *ngIf="!esDispositivoMovil"></app-navbar>
 
-<ion-content [fullscreen]="true" class="newcar-bg">
+<ion-content mode="ios" [fullscreen]="true" class="newcar-bg">
+
   <section class="contenedor_espacio">
+
+    <!-- ENCABEZADO -->
     <div class="encabezado-subida">
-      <h1>Publica tu vehículo</h1>
-      <p>Elige qué tipo es, llena los datos básicos y continúa con los detalles.</p>
+      <div class="hero-card">
+        <h1>Publica tu vehículo</h1>
+        <p>Elige qué tipo es, llena los datos básicos y continúa con los detalles.</p>
+      </div>
     </div>
 
     <!-- CATEGORÍAS -->
@@ -49,6 +55,7 @@
 
         <div class="icono">
           <img [src]="opcion.icono" [alt]="opcion.label" />
+
           <div
             *ngIf="opcion.tipo === seleccion && puedeActivar(opcion.tipo)"
             class="check-icono"
@@ -56,6 +63,7 @@
             ✔
           </div>
         </div>
+
         <div class="label">{{ opcion.label }}</div>
       </div>
     </div>
@@ -66,39 +74,42 @@
       *ngIf="seleccion === 'lote' || seleccion === 'auto' || seleccion === 'moto' || seleccion === 'camion' || seleccion === 'renta'"
     >
       <div *ngIf="!isLoggedIn && seleccion != 'lote'" class="mensaje-autenticacion">
-        Para publicar y vender un vehículo, primero debes iniciar sesión o crear
-        una cuenta.
+        Para publicar y vender un vehículo, primero debes iniciar sesión o crear una cuenta.
         <button class="btn-acceso" (click)="irAInicio()">Acceder</button>
       </div>
 
-      <!-- Año: oculto en renta -->
-
-
-
+      <!-- INPUTS BÁSICOS -->
       <div class="fila-inputs" *ngIf="!mostrarCarComponent && isLoggedIn">
 
         <!-- AÑO (oculto en renta) -->
         <div class="campo" *ngIf="seleccion !== 'renta'">
-          <label for="anio"
-            >Año <span class="requerido">*</span></label
+          <label for="anio">Año <span class="requerido">*</span></label>
+
+          <ion-select
+            mode="ios"
+            interface="alert"
+            placeholder="Selecciona un año"
+            [(ngModel)]="anioSeleccionado"
+            (ionChange)="verificarAnio('select')"
+            class="ios-select"
           >
-
-          <!-- SELECT FLOTANTE NATIVO (ALERT + IOS) -->
-          <ion-select mode="ios" interface="alert" placeholder="Selecciona un año" [(ngModel)]="anioSeleccionado"
-            (ionChange)="verificarAnio('select')">
-
             <ion-select-option value="">Selecciona un año</ion-select-option>
             <ion-select-option *ngFor="let anio of listaAnios" [value]="anio">
               {{ anio }}
             </ion-select-option>
             <ion-select-option value="otro">Otro…</ion-select-option>
-
           </ion-select>
 
-          <!-- INPUT -->
-          <ion-input *ngIf="mostrarInputOtroAnio" type="number" min="1800" max="2007" placeholder="Escribe el año"
-            [(ngModel)]="anioManual" (ionInput)="verificarAnio('escrito')">
-          </ion-input>
+          <ion-input
+            *ngIf="mostrarInputOtroAnio"
+            type="number"
+            min="1800"
+            max="2007"
+            placeholder="Escribe el año"
+            [(ngModel)]="anioManual"
+            (ionInput)="verificarAnio('escrito')"
+            class="ios-input"
+          ></ion-input>
 
           <p *ngIf="mostrarInputOtroAnio && mansaje_error" class="error_msj">
             {{ mansaje_error }}
@@ -107,43 +118,56 @@
 
         <!-- MARCA -->
         <div class="campo">
-          <label for="marca"
-            >Marca <span class="requerido">*</span></label
+          <label for="marca">Marca <span class="requerido">*</span></label>
+
+          <ion-select
+            *ngIf="!marcaEsPersonalizada"
+            mode="ios"
+            interface="alert"
+            placeholder="Selecciona una marca"
+            [(ngModel)]="marcaSeleccionada"
+            (ionChange)="obtenerModelosSiCorresponde()"
+            [disabled]="seleccion !== 'renta' && !anioValido"
+            class="ios-select"
           >
-
-          <!-- SELECT FLOTANTE NATIVO -->
-          <ion-select *ngIf="!marcaEsPersonalizada" mode="ios" interface="alert" placeholder="Selecciona una marca"
-            [(ngModel)]="marcaSeleccionada" (ionChange)="obtenerModelosSiCorresponde()"
-            [disabled]="seleccion !== 'renta' && !anioValido">
-
             <ion-select-option value="">Selecciona una marca</ion-select-option>
 
-            <ion-select-option *ngFor="let marca of marcas"
-              [value]="(seleccion === 'auto' || seleccion === 'renta') ? marca.key : marca._id">
+            <ion-select-option
+              *ngFor="let marca of marcas"
+              [value]="(seleccion === 'auto' || seleccion === 'renta') ? marca.key : marca._id"
+            >
               {{ marca.nombre }}
             </ion-select-option>
 
             <ion-select-option value="otro">Otra marca…</ion-select-option>
-
           </ion-select>
 
-          <!-- INPUT -->
-          <ion-input *ngIf="marcaEsPersonalizada" type="text" maxlength="25" placeholder="Escribe la marca"
-            [(ngModel)]="marcaSeleccionada" (ionBlur)="obtenerModelosSiCorresponde()">
-          </ion-input>
+          <ion-input
+            *ngIf="marcaEsPersonalizada"
+            type="text"
+            maxlength="25"
+            placeholder="Escribe la marca"
+            [(ngModel)]="marcaSeleccionada"
+            (ionBlur)="obtenerModelosSiCorresponde()"
+            class="ios-input"
+          ></ion-input>
         </div>
 
         <!-- MODELO -->
         <div class="campo">
-          <label for="modelo"
-            >Modelo <span class="requerido">*</span></label
-          >
+          <label for="modelo">Modelo <span class="requerido">*</span></label>
 
           <!-- RENTA SELECT -->
-          <ion-select *ngIf="seleccion === 'renta' && !modeloEsPersonalizado" mode="ios" interface="alert"
-            placeholder="Selecciona un modelo" [(ngModel)]="modeloSeleccionado" (ionChange)="selecionarModelo()"
-            [disabled]="!marcaSeleccionada">
-
+          <ion-select
+            *ngIf="seleccion === 'renta' && !modeloEsPersonalizado"
+            mode="ios"
+            interface="alert"
+            placeholder="Selecciona un modelo"
+            [(ngModel)]="modeloSeleccionado"
+            (ionChange)="selecionarModelo()"
+            [disabled]="!marcaSeleccionada"
+            class="ios-select"
+          >
             <ion-select-option value="">Selecciona un modelo</ion-select-option>
 
             <ion-select-option *ngFor="let modelo of modelos" [value]="modelo?.modelo || modelo?.nombre">
@@ -151,48 +175,74 @@
             </ion-select-option>
 
             <ion-select-option value="otro">Otro modelo…</ion-select-option>
-
           </ion-select>
 
           <!-- RENTA INPUT -->
-          <ion-input *ngIf="seleccion === 'renta' && modeloEsPersonalizado" type="text" maxlength="25"
-            placeholder="Escribe el modelo" [(ngModel)]="modeloSeleccionado" (ionBlur)="validarInputModelo()">
-          </ion-input>
+          <ion-input
+            *ngIf="seleccion === 'renta' && modeloEsPersonalizado"
+            type="text"
+            maxlength="25"
+            placeholder="Escribe el modelo"
+            [(ngModel)]="modeloSeleccionado"
+            (ionBlur)="validarInputModelo()"
+            class="ios-input"
+          ></ion-input>
 
           <!-- NO RENTA – ANTES 2008 -->
-          <ion-input *ngIf="seleccion !== 'renta' && esAnioAnteriorA2008()" type="text" maxlength="25"
-            placeholder="Escribe el modelo" [(ngModel)]="modeloSeleccionado" (ionInput)="selecionarModelo()">
-          </ion-input>
+          <ion-input
+            *ngIf="seleccion !== 'renta' && esAnioAnteriorA2008()"
+            type="text"
+            maxlength="25"
+            placeholder="Escribe el modelo"
+            [(ngModel)]="modeloSeleccionado"
+            (ionInput)="selecionarModelo()"
+            class="ios-input"
+          ></ion-input>
 
-          <!-- NO RENTA – SELECT FLOTANTE NATIVO -->
-          <ion-select *ngIf="seleccion !== 'renta' && !esAnioAnteriorA2008() && !modeloEsPersonalizado" mode="ios"
-            interface="alert" placeholder="Selecciona un modelo" [(ngModel)]="modeloSeleccionado"
-            (ionChange)="selecionarModelo()" [disabled]="!marcaSeleccionada">
-
+          <!-- NO RENTA – SELECT -->
+          <ion-select
+            *ngIf="seleccion !== 'renta' && !esAnioAnteriorA2008() && !modeloEsPersonalizado"
+            mode="ios"
+            interface="alert"
+            placeholder="Selecciona un modelo"
+            [(ngModel)]="modeloSeleccionado"
+            (ionChange)="selecionarModelo()"
+            [disabled]="!marcaSeleccionada"
+            class="ios-select"
+          >
             <ion-select-option value="">Selecciona un modelo</ion-select-option>
 
-            <ion-select-option *ngFor="let modelo of modelos"
-              [value]="(seleccion === 'auto') ? modelo.modelo : modelo.nombre">
+            <ion-select-option
+              *ngFor="let modelo of modelos"
+              [value]="(seleccion === 'auto') ? modelo.modelo : modelo.nombre"
+            >
               {{ (seleccion === 'auto') ? modelo.modelo : modelo.nombre }}
             </ion-select-option>
 
             <ion-select-option value="otro">Otro modelo…</ion-select-option>
-
           </ion-select>
 
           <!-- INPUT PERSONALIZADO -->
-          <ion-input *ngIf="seleccion !== 'renta' && modeloEsPersonalizado" type="text" maxlength="25"
-            placeholder="Escribe el modelo" [(ngModel)]="modeloSeleccionado" (ionBlur)="validarInputModelo()">
-          </ion-input>
+          <ion-input
+            *ngIf="seleccion !== 'renta' && modeloEsPersonalizado"
+            type="text"
+            maxlength="25"
+            placeholder="Escribe el modelo"
+            [(ngModel)]="modeloSeleccionado"
+            (ionBlur)="validarInputModelo()"
+            class="ios-input"
+          ></ion-input>
 
         </div>
       </div>
 
-
-      <!-- botón continuar incluye renta -->
-      <button [disabled]="!formularioValido()"
-        *ngIf="!mostrarCarComponent && isLoggedIn  && (seleccion === 'auto' || seleccion === 'moto' || seleccion === 'renta' || seleccion === 'camion')"
-        class="btn-guardar" (click)="mostrarComponente()">
+      <!-- CONTINUAR -->
+      <button
+        [disabled]="!formularioValido()"
+        *ngIf="!mostrarCarComponent && isLoggedIn && (seleccion === 'auto' || seleccion === 'moto' || seleccion === 'renta' || seleccion === 'camion')"
+        class="btn-guardar"
+        (click)="irAPublicar()"
+      >
         Continuar
         <ion-icon name="arrow-forward-outline"></ion-icon>
       </button>
@@ -203,6 +253,7 @@
           <ion-icon name="chevron-back-outline" class="icono-regresar"></ion-icon>
           Regresar
         </button>
+
         <div class="seleccion-info">
           <img [src]="mostrarIcono" alt="icono seleccionado" />
           <p>{{ mostrarSelecion }}</p>
@@ -245,6 +296,7 @@
 
       <app-add *ngIf="mostrarCarComponent && seleccion === 'lote'"></app-add>
     </div>
+
   </section>
 
 </ion-content>

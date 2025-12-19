@@ -22,9 +22,9 @@ import { SpinnerComponent } from "../../components/spinner/spinner.component";
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class NavbarComponent implements OnInit {
-onClear() {
-throw new Error('Method not implemented.');
-}
+  onClear() {
+    throw new Error('Method not implemented.');
+  }
   esDispositivoMovil: boolean = false;
   mostrar_spinnet: boolean = false;
   estaEnHome: boolean = false;
@@ -50,7 +50,7 @@ throw new Error('Method not implemented.');
     private popoverCtrl: PopoverController,
     private route: ActivatedRoute,
     public motoservice: MotosService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Detectar tipo de dispositivo
@@ -248,6 +248,10 @@ throw new Error('Method not implemented.');
   }
 
   regresar() {
-    window.history.back();
+    const rutaActual = this.router.url;
+    if (rutaActual === '/home') {
+      return;
+    }
+    this.router.navigate(["/home"]);
   }
 }

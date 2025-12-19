@@ -59,4 +59,6 @@ firebase hosting:channel:deploy mi-feature
 
 
 --- INASTALACIONES ---
-npm install @capawesome/capacitor-app-update
+npm install @capawesome/capacitor-app-update  
+npm install ngx-image-cropper
+

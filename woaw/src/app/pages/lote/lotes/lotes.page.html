@@ -11,18 +11,25 @@
     </ion-refresher-content>
   </ion-refresher>
 
-
-  <app-spinner *ngIf="mostrar_spinner" [tipo]="tipo_spinner" [text]="texto_spinner" [sub_text]="textoSub_spinner"></app-spinner>
+  <app-spinner
+    *ngIf="mostrar_spinner"
+    [tipo]="tipo_spinner"
+    [text]="texto_spinner"
+    [sub_text]="textoSub_spinner">
+  </app-spinner>
 
   <div class="ocntenedor_css_lotes">
-    <!-- HEADER / TOOLBAR DE LOTES -->
+
+    <!-- ===========================
+         HEADER / TOOLBAR LOTES
+    ============================ -->
     <div class="boton-container" *ngIf="!mostrarAuto">
       <div class="header-lotes-bar">
 
-        <!-- Izquierda: buscador + título -->
+        <!-- IZQ: buscador + titulo -->
         <div class="header-lotes-left">
 
-          <!-- 🔍 Card SOLO para el buscador -->
+          <!-- 🔍 Search pill -->
           <div class="search-card" *ngIf="!addLote">
             <ion-searchbar
               mode="ios"
@@ -30,14 +37,14 @@
               (ionInput)="filtrarLotes()"
               placeholder="Buscar lote..."
               debounce="300"
-              class="buscador-lotes ios-search">
+              class="ios-search">
             </ion-searchbar>
           </div>
 
           <h1 class="titulo-seccion-lotes">Lotes</h1>
         </div>
 
-        <!-- Tabs iOS para todos / mios -->
+        <!-- Tabs iOS: todos / mios -->
         <ion-segment
           *ngIf="MyRole === 'admin' || MyRole === 'lotero'"
           mode="ios"
@@ -52,78 +59,87 @@
           <ion-segment-button value="mios">
             <ion-label>Mis lotes ({{ lotesMine.length }})</ion-label>
           </ion-segment-button>
-
         </ion-segment>
 
+        <!-- Resultados -->
         <h2 class="titulo-lotes">{{ totalLotes }} Resultados</h2>
       </div>
     </div>
 
-    <!-- GRID DE LOTES -->
-    <ion-grid
-      *ngIf="!addLote && !mostrarAuto"
-      class="lotes-grid-shell">
-      <ion-row class="lotes-row">
+    <!-- ===========================
+         GRID LOTES (CSS GRID)
+    ============================ -->
+    <div class="lotes-grid" *ngIf="!addLote && !mostrarAuto">
 
-        <ion-col
-          size="6"
-          size-md="4"
-          size-lg="3"
-          size-xl="2"
-          *ngFor="let lote of lotesFiltrados; let i = index"
-          class="lote-col">
+      <ion-card
+        mode="ios"
+        class="lote-card ios-card-lote"
+        *ngFor="let lote of lotesFiltrados; let i = index"
+        (click)="mostrarAutos(lote)"
+        button>
 
-          <ion-card
-            mode="ios"
-            class="lote-card ios-card-lote"
-            (click)="mostrarAutos(lote)"
-            button>
+        <!-- 🥇🥈🥉 RANKING -->
+        <div
+          class="ranking-badge"
+          *ngIf="activeTab === 'todos' && (ranking[i] === 1 || ranking[i] === 2 || ranking[i] === 3)">
+          <span [ngClass]="{
+            gold: ranking[i] === 1,
+            silver: ranking[i] === 2,
+            bronze: ranking[i] === 3
+          }">
+            {{ ranking[i] }}
+          </span>
+        </div>
 
-            <!-- 🥇🥈🥉 MEDALLAS SOLO 1–3 -->
-            <div
-              class="ranking-badge"
-              *ngIf="activeTab === 'todos' && (ranking[i] === 1 || ranking[i] === 2 || ranking[i] === 3)">
-              <span [ngClass]="{
-                gold: ranking[i] === 1,
-                silver: ranking[i] === 2,
-                bronze: ranking[i] === 3
-              }">
-                {{ ranking[i] }}
-              </span>
-            </div>
+        <!-- 🖼️ IMAGEN -->
+        <div class="lote-img">
+          <img [src]="lote.imagenPrincipal" alt="Imagen del lote" loading="lazy" />
+        </div>
 
-            <div class="lote-img">
-              <img [src]="lote.imagenPrincipal" alt="Imagen del lote" />
-            </div>
+        <!-- 📄 INFO -->
+        <ion-card-header class="lote-header">
 
-            <ion-card-header class="lote-header">
-              <ion-card-title class="lote-title clamp-2">
-                <ion-icon name="business-outline"></ion-icon>
-                {{ lote.nombre }}
-              </ion-card-title>
+          <ion-card-title class="lote-title clamp-2">
+            <ion-icon name="business-outline"></ion-icon>
 
-              <ion-card-subtitle
-                *ngIf="lote.direccion?.length"
-                class="lote-subtitle clamp-2">
-                <ion-icon name="location-outline"></ion-icon>
-                {{ lote.direccion[0].ciudad }}, {{ lote.direccion[0].estado }}
-              </ion-card-subtitle>
+            <span class="lote-nombre">
+              {{ lote.nombre }}
 
-              <ion-card-subtitle class="lote-subtitle clamp-2">
-                <ion-icon name="car-sport-outline"></ion-icon>
-                Total: {{ lote.conteoCoches?.total }}
-              </ion-card-subtitle>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+              <!-- ✅ VERIFICADO -->
+              <ion-icon
+                *ngIf="lote.estatusDocumentos === 'verificado'"
+                name="checkmark-circle"
+                class="verified-inline">
+              </ion-icon>
+            </span>
+          </ion-card-title>
 
-    <!-- SIN LOTES -->
+          <ion-card-subtitle
+            *ngIf="lote.direccion?.length"
+            class="lote-subtitle clamp-2">
+            <ion-icon name="location-outline"></ion-icon>
+            {{ lote.direccion[0].ciudad }}, {{ lote.direccion[0].estado }}
+          </ion-card-subtitle>
+
+          <ion-card-subtitle class="lote-subtitle clamp-2">
+            <ion-icon name="car-sport-outline"></ion-icon>
+            Total: {{ lote.conteoCoches?.total }}
+          </ion-card-subtitle>
+
+        </ion-card-header>
+
+      </ion-card>
+    </div>
+
+    <!-- ===========================
+         SIN LOTES
+    ============================ -->
     <div class="no-lotes ios-empty" *ngIf="!addLote && lotesFiltrados.length === 0">
       <ion-icon name="business-outline" class="no-icon"></ion-icon>
       <p>No hay lotes disponibles</p>
     </div>
+
   </div>
-<br><br><br>
+
+  <br><br><br>
 </ion-content>

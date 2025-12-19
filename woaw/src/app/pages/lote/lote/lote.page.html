@@ -31,7 +31,12 @@
       <!-- Título mobile -->
       <h2 class="ficha-lote__titulo titulo-mobile">
         <ion-icon name="business-outline" class="titulo-icon"></ion-icon>
-        {{ lote.nombre }}
+
+        <span class="lote-nombre">
+          {{ lote.nombre }}
+          <!-- ✅ PALOMITA -->
+          <ion-icon *ngIf="lote.estatusDocumentos === 'verificado'" name="checkmark-circle" class="verified-inline"></ion-icon>
+        </span>
       </h2>
 
       <div class="ficha-lote__head">
@@ -49,7 +54,12 @@
           <!-- Título desktop -->
           <h2 class="ficha-lote__titulo titulo-desktop">
             <ion-icon name="business-outline" class="titulo-icon"></ion-icon>
-            {{ lote.nombre }}
+
+            <span class="lote-nombre">
+              {{ lote.nombre }}
+              <!-- ✅ PALOMITA -->
+              <ion-icon *ngIf="lote.estatusDocumentos === 'verificado'" name="checkmark-circle" class="verified-inline"></ion-icon>
+            </span>
           </h2>
 
           <p class="ficha-lote__campo">
@@ -96,20 +106,19 @@
         <!-- CATÁLOGO + PAGINACIÓN -->
         <ion-col size="12" size-md="9">
 
-          <!-- Catálogo de autos, MISMO GRID que Favoritos -->
           <div class="catalogo-autos">
             <ng-container *ngFor="let auto of autosPaginados">
               <app-cartas [auto]="auto"></app-cartas>
             </ng-container>
           </div>
 
-          <!-- Paginación iOS ROJA igual a Favoritos -->
+          <!-- Paginación iOS -->
           <div class="contenedor-paginacion-ios" *ngIf="totalPaginas > 1 && autosPaginados.length > 0">
             <p class="titulo-paginacion">más</p>
+
             <div class="paginacion-scroll-ios">
               <div class="paginacion-ios">
 
-                <!-- Flecha anterior -->
                 <button
                   class="pagina-ios"
                   (click)="setPagina(paginaActual - 1)"
@@ -117,7 +126,6 @@
                   ‹
                 </button>
 
-                <!-- Botones dinámicos -->
                 <ng-container *ngFor="let i of paginasReducidas">
                   <button
                     *ngIf="esNumero(i)"
@@ -126,14 +134,10 @@
                     (click)="setPagina(i)">
                     {{ i }}
                   </button>
-                  <span
-                    *ngIf="!esNumero(i)"
-                    class="ellipsis-ios">
-                    ...
-                  </span>
+
+                  <span *ngIf="!esNumero(i)" class="ellipsis-ios">...</span>
                 </ng-container>
 
-                <!-- Flecha siguiente -->
                 <button
                   class="pagina-ios"
                   (click)="setPagina(paginaActual + 1)"
@@ -150,12 +154,11 @@
     </ion-grid>
   </div>
 
-  <!-- EMPTY STATE IGUAL ESTILO, PERO CON CARRO -->
+  <!-- EMPTY STATE -->
   <div class="mensaje-vacio" *ngIf="autosPaginados.length === 0">
     <ion-icon name="car-sport-outline" size="large" color="medium"></ion-icon>
     <p>No se encontraron vehículos en este lote todavía.</p>
   </div>
-
 
   <!-- MODAL IMAGEN -->
   <ion-modal
@@ -165,10 +168,7 @@
     [backdropDismiss]="true">
     <ng-template>
       <ion-content class="modal-imagen-content">
-        <ion-button
-          fill="clear"
-          class="modal-imagen__close ios-close-btn"
-          (click)="cerrarModal()">
+        <ion-button fill="clear" class="modal-imagen__close ios-close-btn" (click)="cerrarModal()">
           <ion-icon name="close-outline" slot="icon-only"></ion-icon>
         </ion-button>
 

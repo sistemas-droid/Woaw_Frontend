@@ -14,14 +14,14 @@ const routes: Routes = [
     data: { title: "Iniciar sesión | woaw" },
   },
   /* {
-  path: "asesores",
-  loadChildren: () =>
+    path: "asesores",
+    loadChildren: () =>
     import("./pages/asesores/asesores.module").then(
       (m) => m.AsesoresPageModule
     ),
-  canActivate: [asesoresGuard],
-  data: { title: "Asesores | woaw" },
-}, */
+    canActivate: [asesoresGuard],
+    data: { title: "Asesores | woaw" },
+  }, */
   {
     path: "autenticacion-user",
     loadChildren: () =>
@@ -88,12 +88,6 @@ const routes: Routes = [
         data: { title: "Mensajes | woaw" },
       },
       {
-        path: "ficha/:tipo/:id",
-        loadChildren: () =>
-          import("./pages/ficha/ficha.module").then((m) => m.FichaPageModule),
-        data: { title: "Detalle del vehículo | woaw" },
-      },
-      {
         path: "mis-autos",
         loadChildren: () =>
           import("./pages/coches/mis-autos/mis-autos.module").then(
@@ -117,6 +111,7 @@ const routes: Routes = [
           import("./pages/new-car/new-car.module").then(
             (m) => m.NewCarPageModule
           ),
+        canActivate: [AuthPhoneGuard],
         data: { title: "Publicar nuevo vehículo | woaw" }
       },
       {
@@ -321,6 +316,10 @@ const routes: Routes = [
         path: 'lote/welcome-lote/:nombre/:id',
         loadChildren: () => import('./pages/lote/welcome-lote/welcome-lote.module').then((m) => m.WelcomeLotePageModule)
       },
+      {
+        path: 'lote/lote-verificacion',
+        loadChildren: () => import('./pages/lote/lote-verificacion/lote-verificacion.module').then(m => m.LoteVerificacionPageModule)
+      },
       // ---------------------
       // ---------------------
 
@@ -403,6 +402,36 @@ const routes: Routes = [
         path: 'asesores',
         loadChildren: () => import('./pages/asesores/asesores.module').then(m => m.AsesoresPageModule)
       },
+      {
+        path: 'publicar',
+        loadChildren: () => import('./pages/coches/publicar/publicar.module').then(m => m.PublicarPageModule)
+      },
+
+      // ---------------------
+      // FICHAS 
+      // ---------------------
+      {
+        path: "ficha/:tipo/:id",
+        loadChildren: () =>
+          import("./pages/ficha/ficha.module").then((m) => m.FichaPageModule),
+        data: { title: "Detalle del vehículo | woaw" },
+      },
+      {
+        path: 'fichas/autos/:id',
+        loadChildren: () => import('./pages/coches/ficha-auto/ficha-auto.module').then(m => m.FichaAutoPageModule),
+        data: { title: "Detalle del vehículo | woaw" },
+      },
+      // {
+      //   path: 'ficha/motos/:id',
+      //   loadChildren: () => import('./pages/motos/ficha-motos/ficha-motos.module').then(m => m.FichaMotosPageModule)
+      // },
+      // {
+      //   path: 'ficha/camiones/:id',
+      //   loadChildren: () => import('./pages/camiones/ficha-camiones/ficha-camiones.module').then(m => m.FichaCamionesPageModule)
+      // },
+
+      // ---------------------
+      // ---------------------
     ],
   },
   {
@@ -411,6 +440,8 @@ const routes: Routes = [
       import("./pages/error/error.module").then((m) => m.ErrorPageModule),
     data: { title: "Página no encontrada | woaw" },
   },
+
+
 ];
 
 @NgModule({

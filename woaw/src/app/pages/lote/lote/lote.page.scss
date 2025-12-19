@@ -86,6 +86,7 @@
     0 0 0 0.5px rgba(148, 163, 184, 0.45);
 }
 
+/* Layout desktop */
 @media (min-width: 561px) {
   .ficha-lote__head {
     display: grid;
@@ -122,7 +123,7 @@
   }
 }
 
-/* layout móvil cabeza */
+/* Layout móvil */
 @media (max-width: 560px) {
   .ficha-lote__head {
     display: grid;
@@ -186,18 +187,23 @@
   font-size: 20px;
 }
 
-/* Imagen */
-.ficha-lote__img {
-  grid-column: 2;
-  justify-self: end;
-
-  @media (max-width: 560px) {
-    grid-column: 1;
-    grid-row: 2;
-    justify-self: flex-start;
-  }
+/* Nombre + palomita (mezcla del main) */
+.lote-nombre {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
 }
 
+/* ✅ Palomita */
+.verified-inline {
+  font-size: 20px;
+  color: #008dff;
+  flex-shrink: 0;
+  transform: translateY(-1px);
+}
+
+/* Imagen */
 .ficha-lote__imagen {
   width: 140px;
   height: 140px;
@@ -278,7 +284,7 @@
   }
 }
 
-/* ===== CATÁLOGO – TARJETAS iOS (igual Favoritos) ===== */
+/* ===== CATÁLOGO – GRID ===== */
 .catalogo-autos {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -301,7 +307,7 @@
   }
 }
 
-/* ===== PAGINACIÓN iOS ROJA (igual Favoritos) ===== */
+/* ===== PAGINACIÓN iOS ROJA ===== */
 .contenedor-paginacion-ios {
   width: 100%;
   display: flex;
@@ -356,7 +362,6 @@
     0 0 0 0.5px rgba(255, 255, 255, 0.9);
 }
 
-/* Botones rojos iguales a Favoritos */
 .pagina-ios {
   min-width: 32px;
   height: 32px;
@@ -392,7 +397,7 @@
   }
 
   &.activa {
-    background: #ff3b30; /* rojo iOS */
+    background: #ff3b30;
     color: #ffffff;
     box-shadow: 0 8px 18px rgba(255, 59, 48, 0.55);
     transform: translateY(-1px);
@@ -406,7 +411,7 @@
   font-weight: 500;
 }
 
-/* ===== EMPTY STATE iOS (igual estilo) ===== */
+/* ===== EMPTY STATE ===== */
 .mensaje-vacio {
   text-align: center;
   margin-top: 18vh;
@@ -480,7 +485,6 @@
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
 }
 
-/* Botón cerrar modal estilo iOS */
 .modal-imagen__close {
   position: fixed;
   top: 16px;
@@ -511,5 +515,13 @@
 
   .contenedor-catalogo {
     margin: 2px auto 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ficha-lote,
+  .pagina-ios,
+  .ios-card {
+    transition: none !important;
   }
 }

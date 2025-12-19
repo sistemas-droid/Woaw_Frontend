@@ -2,12 +2,13 @@
 
 <ion-content [fullscreen]="true" class="arrendamiento-ios" #contenidoScroll>
 
-  <!-- 🎯 Hero de arrendamiento en mood iOS -->
+  <!-- 🎯 Hero iOS -->
   <div class="hero-arr-ios">
     <img
       src="/assets/autos/publicidad/arrendamiento.webp"
       alt="Fondo arrendamiento"
       class="hero-img-ios"
+      loading="lazy"
     />
 
     <div class="hero-overlay-ios">
@@ -31,31 +32,36 @@
     </div>
 
     <div class="columna-derecha">
+      <!-- Card coches -->
       <div class="card-opcion-ios" (click)="cambiarTipo('coches')">
-        <img class="img_coche" src="/assets/autos/arre1.webp" alt="Coche" />
+        <img class="img_coche" src="/assets/autos/arre1.webp" alt="Coche" loading="lazy" />
         <h3>COCHES</h3>
         <p>Vehículos ideales para uso personal o corporativo.</p>
-        <button class="btn-card-ios">
+
+        <button class="btn-card-ios" type="button">
           Arrendar Coche
+          <ion-icon name="chevron-forward-outline"></ion-icon>
         </button>
       </div>
 
+      <!-- Card camiones -->
       <div class="card-opcion-ios" (click)="cambiarTipo('camiones')">
-        <img class="img_camion" src="/assets/autos/arre2.png" alt="Camión" />
+        <img class="img_camion" src="/assets/autos/arre2.png" alt="Camión" loading="lazy" />
         <h3>CAMIONES</h3>
         <p>Soluciones de transporte para empresas y logística.</p>
-        <button class="btn-card-ios">
+
+        <button class="btn-card-ios" type="button">
           Arrendar Camión
+          <ion-icon name="chevron-forward-outline"></ion-icon>
         </button>
       </div>
     </div>
-
-
   </section>
 
   <!-- BLOQUE DE MARCAS + FORM -->
   <section class="contenedor_arrendamiento" *ngIf="selecionaVehiculo">
     <div id="top-seccion-arrendamiento-marcas" class="contenedor-arrendamiento-ios">
+
       <p class="titulo_seccion_ios">{{ tipoSeleccionado }}</p>
 
       <div class="encabezado-arrendamiento-ios">
@@ -64,6 +70,7 @@
           <ion-icon name="arrow-back-outline"></ion-icon>
           Regresar
         </button>
+
         <button class="btn-regresar-ios" *ngIf="mostrarModelos" (click)="regresar()">
           <ion-icon name="arrow-back-outline"></ion-icon>
           Regresar
@@ -105,6 +112,7 @@
                   [src]="marca.imageUrl"
                   [alt]="marca.nombre"
                   (error)="marca.imagenValida = false"
+                  loading="lazy"
                 />
                 <span class="marca-nombre-grid" [title]="marca.nombre">
                   {{ marca.nombre }}
@@ -126,6 +134,7 @@
                   [src]="marca.imageUrl"
                   [alt]="marca.nombre"
                   (error)="marca.imagenValida = false"
+                  loading="lazy"
                 />
                 <span class="marca-nombre-grid" [title]="marca.nombre">
                   {{ marca.nombre }}
@@ -142,6 +151,7 @@
               [src]="marcaSeleccionada.imageUrl"
               [alt]="marcaSeleccionada.nombre"
               class="logo-marca"
+              loading="lazy"
             />
             <h4 class="nombre-marca">{{ marcaSeleccionada.nombre }}</h4>
           </div>
@@ -175,15 +185,13 @@
         <div class="contenedor-modelos-ios">
           <form [formGroup]="formArrendamiento" (ngSubmit)="enviarSolicitud('Email')">
             <ion-grid>
+
               <!-- DATOS GENERALES -->
               <ion-row>
                 <ion-col size="12" size-md="4">
                   <label class="wo-label">Nombre completo: <strong>*</strong></label>
                   <div class="wo-control">
-                    <ion-input
-                      formControlName="nombre"
-                      placeholder="Ej. Juan Pérez"
-                    ></ion-input>
+                    <ion-input formControlName="nombre" placeholder="Ej. Juan Pérez"></ion-input>
                   </div>
                 </ion-col>
 
@@ -200,9 +208,7 @@
                       <ion-select-option value="Persona Física Actividad Empresarial">
                         Persona Física Actividad Empresarial
                       </ion-select-option>
-                      <ion-select-option value="Moral">
-                        Persona Moral
-                      </ion-select-option>
+                      <ion-select-option value="Moral">Moral</ion-select-option>
                     </ion-select>
                   </div>
                 </ion-col>
@@ -210,33 +216,21 @@
                 <ion-col size="12" size-md="4">
                   <label class="wo-label">Código Postal: <strong>*</strong></label>
                   <div class="wo-control">
-                    <ion-input
-                      type="number"
-                      formControlName="cp"
-                      placeholder="-----"
-                    ></ion-input>
+                    <ion-input type="number" formControlName="cp" placeholder="-----"></ion-input>
                   </div>
                 </ion-col>
 
                 <ion-col size="12" size-md="4">
                   <label class="wo-label">RFC: <strong>*</strong></label>
                   <div class="wo-control">
-                    <ion-input
-                      type="text"
-                      formControlName="rfc"
-                      placeholder="*********"
-                    ></ion-input>
+                    <ion-input type="text" formControlName="rfc" placeholder="*********"></ion-input>
                   </div>
                 </ion-col>
 
                 <ion-col size="12" size-md="4">
                   <label class="wo-label">Correo electrónico: <strong>*</strong></label>
                   <div class="wo-control">
-                    <ion-input
-                      type="email"
-                      formControlName="correo"
-                      placeholder="Ej. juan@mail.com"
-                    ></ion-input>
+                    <ion-input type="email" formControlName="correo" placeholder="Ej. juan@mail.com"></ion-input>
                   </div>
                 </ion-col>
 
@@ -273,10 +267,7 @@
                       [value]="modelosSeleccionados"
                       (ionChange)="onModelosChange($event)"
                     >
-                      <ion-select-option
-                        *ngFor="let modelo of modelos"
-                        [value]="modelo"
-                      >
+                      <ion-select-option *ngFor="let modelo of modelos" [value]="modelo">
                         {{ modelo.modelo }}
                       </ion-select-option>
                     </ion-select>
@@ -299,16 +290,11 @@
                             <ion-col size="8"><strong>Versión</strong></ion-col>
                           </ion-row>
 
-                          <ion-row
-                            *ngFor="let item of modelosConVersiones; let i = index"
-                            class="fila-version"
-                          >
-                            <!-- Modelo -->
+                          <ion-row *ngFor="let item of modelosConVersiones; let i = index" class="fila-version">
                             <ion-col size="4" class="ellipsis">
                               {{ item.modelo.modelo }}
                             </ion-col>
 
-                            <!-- Select versiones -->
                             <ion-col size="8">
                               <div class="wo-control wo-compact">
                                 <ion-select
@@ -321,10 +307,7 @@
                                   [(ngModel)]="modelosConVersiones[i].versionSeleccionada"
                                   [ngModelOptions]="{ standalone: true }"
                                 >
-                                  <ion-select-option
-                                    *ngFor="let version of item.versiones"
-                                    [value]="version"
-                                  >
+                                  <ion-select-option *ngFor="let version of item.versiones" [value]="version">
                                     {{ version }}
                                   </ion-select-option>
                                 </ion-select>
@@ -339,27 +322,27 @@
               </ng-container>
 
               <!-- BOTONES DE ENVÍO -->
-              <ion-row class="ion-justify-content-center" style="gap: 12px;">
-                <!-- Botón rojo -->
+              <ion-row class="ion-justify-content-center fila-botones-envio">
                 <button type="submit" class="button-native custom-btn danger">
                   <ion-icon name="mail-open-outline"></ion-icon>
                   Enviar Gmail
                 </button>
 
-                <!-- Botón verde (WhatsApp) -->
                 <button
                   type="button"
                   class="button-native custom-btn success"
                   (click)="enviarSolicitud('Wh')"
                 >
-                  <ion-icon name="logo-whatsapp" slot="start"></ion-icon>
+                  <ion-icon name="logo-whatsapp"></ion-icon>
                   WhatsApp
                 </button>
               </ion-row>
+
             </ion-grid>
           </form>
         </div>
       </ng-container>
+
     </div>
 
     <div #infoArrendamiento></div>

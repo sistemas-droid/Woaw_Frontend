@@ -1,16 +1,31 @@
 <app-spinner *ngIf="mostrar_spinnet"></app-spinner>
 
-<ion-header [translucent]="true" >
-  <ion-toolbar class="custom-toolbar ios-toolbar" >
+<ion-header [translucent]="true">
+  <ion-toolbar class="custom-toolbar ios-toolbar">
+
+    <!-- LEFT -->
     <ion-buttons slot="start">
       <div class="logo_content">
-        <img
-          src="/assets/icon/logo2.png"
-          loading="lazy"
-          alt="WOAW"
-          class="logo"
-          (click)="redirecion_logo()"
-        />
+
+        <!-- Back (solo móvil y cuando NO estás en home) + Logo -->
+        <ion-button
+          fill="clear"
+          class="btn-back-logo"
+          (click)="!estaEnHome && esDispositivoMovil ? regresar() : redirecion_logo()"
+        >
+          <ion-icon
+            name="chevron-back-outline"
+            class="icon-back"
+            *ngIf="!estaEnHome && esDispositivoMovil"
+          ></ion-icon>
+
+          <img
+            src="/assets/icon/logo2.png"
+            loading="lazy"
+            alt="WOAW"
+            class="logo"
+          />
+        </ion-button>
 
         <!-- Botón lupa para mostrar buscador (MÓVIL) -->
         <ion-button
@@ -45,7 +60,8 @@
       </div>
 
       <!-- Searchbar MÓVIL desplegable -->
-      <div class="buscador-container" *ngIf="mostrarBuscador && !estaEnHome && esDispositivoMovil">
+      <div class="buscador-container buscador-container--movil"
+           *ngIf="mostrarBuscador && !estaEnHome && esDispositivoMovil">
         <ion-searchbar
           [(ngModel)]="terminoBusqueda"
           (ionInput)="onInputChange($event)"
@@ -56,9 +72,12 @@
       </div>
     </ion-buttons>
 
+    <!-- RIGHT -->
     <ion-buttons slot="end">
+
       <!-- NAV DESKTOP -->
       <ng-container *ngIf="!esDispositivoMovil">
+
         <ion-button fill="clear" [ngClass]="{ 'activo': isActive('home') }" (click)="redirecion('home')">
           inicio
         </ion-button>
@@ -71,43 +90,23 @@
           Vehiculos
         </ion-button>
 
-        <ion-button
-          fill="clear"
-          [ngClass]="{ 'activo': isActive('m-nuevos') }"
-          (click)="redirecion('m-nuevos')"
-        >
+        <ion-button fill="clear" [ngClass]="{ 'activo': isActive('m-nuevos') }" (click)="redirecion('m-nuevos')">
           Motos
         </ion-button>
 
-        <ion-button
-          fill="clear"
-          [ngClass]="{ 'activo': isActive('camiones/todos') }"
-          (click)="redirecion('camiones/todos')"
-        >
+        <ion-button fill="clear" [ngClass]="{ 'activo': isActive('camiones/todos') }" (click)="redirecion('camiones/todos')">
           Camiones
         </ion-button>
 
-        <ion-button
-          fill="clear"
-          [ngClass]="{ 'activo': isActive('arrendamiento') }"
-          (click)="redirecion('arrendamiento')"
-        >
+        <ion-button fill="clear" [ngClass]="{ 'activo': isActive('arrendamiento') }" (click)="redirecion('arrendamiento')">
           Arrendamiento
         </ion-button>
 
-        <ion-button
-          fill="clear"
-          [ngClass]="{ 'activo': isActive('seguros/disponibles') }"
-          (click)="redirecion('seguros/disponibles')"
-        >
+        <ion-button fill="clear" [ngClass]="{ 'activo': isActive('seguros/disponibles') }" (click)="redirecion('seguros/disponibles')">
           Seguros de autos
         </ion-button>
 
-        <ion-button
-          fill="clear"
-          [ngClass]="{ 'activo': isActive('conocenos') }"
-          (click)="redirecion('conocenos')"
-        >
+        <ion-button fill="clear" [ngClass]="{ 'activo': isActive('conocenos') }" (click)="redirecion('conocenos')">
           Nosotros
         </ion-button>
 
@@ -145,7 +144,7 @@
                 alt="Foto de perfil"
                 width="20"
                 height="20"
-                style="border-radius: 50%; object-fit: cover;"
+                class="avatar"
                 referrerpolicy="no-referrer"
                 (error)="fotoPerfil = null"
               />
@@ -156,10 +155,11 @@
             <span class="nombre-usuario">{{ usuario }}</span>
           </div>
         </div>
+
       </ng-container>
       <!-- /NAV DESKTOP -->
 
-      <!-- ICONOS MÓVIL (stack) -->
+      <!-- ICONOS MÓVIL -->
       <ion-button
         fill="clear"
         class="stack"
@@ -205,6 +205,7 @@
           <span class="label">Menú</span>
         </span>
       </ion-button>
+
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

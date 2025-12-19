@@ -9,6 +9,9 @@ interface LoteDocument {
   subtitle: string;
   icon: string;
   uploaded: boolean;
+  status?: 'aprobado' | 'rechazado' | 'pendiente' | null;
+  comentarios?: string | null;
+  url?: string | null;
 }
 
 @Component({
@@ -19,34 +22,35 @@ interface LoteDocument {
 })
 export class DocumentosPage implements OnInit {
 
-  nombreLote: string = '';
-  idLote: string = '';
+  nombreLote = '';
+  idLote = '';
 
-  rfc: string = '';
-  rfcError: string = '';
-  rfcValido: boolean = false;
-  yaIngresoRFC: boolean = false;
+  rfc = '';
+  rfcError = '';
+  rfcValido = false;
+  yaIngresoRFC = false;
 
   tipoPersona: 'fisica' | 'moral' | null = null;
 
-  // 🔥 MAPEO MongoDB → Front-end
+  // 🔥 MAPEO MongoDB → Front-end (CORREGIDO)
   private mapaDocumentos: any = {
     constanciaSituacionFiscal: 'constancia-fiscal',
     identificacionApoderado: 'id-apoderado',
     estadoCuentaLote: 'estado-cuenta-lote',
     actaConstitutiva: 'acta-constitutiva',
     fotosLote: 'fotos-lote',
-    formatoAutPF: 'formatos-autorizacion',
-    formatoAutPM: 'formatos-autorizacion'
+    formatoAutPF: 'formato-aut-pf',
+    formatoAutPM: 'formato-aut-pm'
   };
 
   documents: LoteDocument[] = [
     { tipo: 'constancia-fiscal', name: 'Constancia de Situación Fiscal', subtitle: 'Constancia', icon: 'document', uploaded: false },
     { tipo: 'id-apoderado', name: 'Identificación del Apoderado', subtitle: 'INE o Pasaporte Vigente', icon: 'card', uploaded: false },
     { tipo: 'estado-cuenta-lote', name: 'Estado de Cuenta Lote', subtitle: 'Con CLABE interbancaria', icon: 'wallet', uploaded: false },
-    { tipo: 'acta-constitutiva', name: 'Acta Constitutiva / Asamblea', subtitle: 'Solo para persona Moral', icon: 'document', uploaded: false },
-    { tipo: 'fotos-lote', name: 'Fotos del Lote', subtitle: 'Interior y exterior…', icon: 'camera', uploaded: false },
-    { tipo: 'formatos-autorizacion', name: 'Formatos de Autorización', subtitle: 'Personas Físicas / Morales', icon: 'hammer', uploaded: false },
+    { tipo: 'acta-constitutiva', name: 'Acta Constitutiva / Asamblea', subtitle: 'Solo persona Moral', icon: 'document', uploaded: false },
+    { tipo: 'fotos-lote', name: 'Fotos del Lote', subtitle: 'Interior y exterior', icon: 'camera', uploaded: false },
+    { tipo: 'formato-aut-pf', name: 'Formato de Autorización PF', subtitle: 'Persona Física', icon: 'hammer', uploaded: false },
+    { tipo: 'formato-aut-pm', name: 'Formato de Autorización PM', subtitle: 'Persona Moral', icon: 'hammer', uploaded: false },
   ];
 
   constructor(
@@ -68,27 +72,18 @@ export class DocumentosPage implements OnInit {
     });
   }
 
-  // =============================
-  //   CARGAR RFC DEL BACKEND
-  // =============================
   private cargarRFCDesdeBackend() {
     this.loteService.getLoteById(this.idLote).subscribe({
       next: (lote: any) => {
-        const rfcBackend = lote?.rfc || '';
-
-        if (rfcBackend) {
-          this.rfc = rfcBackend;
+        if (lote?.rfc) {
+          this.rfc = lote.rfc;
           this.validarRFC();
           this.yaIngresoRFC = true;
         }
-      },
-      error: (err) => console.error('Error cargando RFC:', err)
+      }
     });
   }
 
-  // =============================
-  //   CARGAR DOCUMENTOS SUBIDOS
-  // =============================
   private cargarDocumentosSubidos() {
     this.loteService.getLoteById(this.idLote).subscribe({
       next: (lote: any) => {
@@ -99,18 +94,17 @@ export class DocumentosPage implements OnInit {
           if (!slug) return;
 
           const docFront = this.documents.find(d => d.tipo === slug);
-          if (docFront) {
-            docFront.uploaded = true;
-          }
+          if (!docFront) return;
+
+          docFront.uploaded = true;
+          docFront.status = docs[key].estado || 'pendiente';
+          docFront.comentarios = docs[key].comentarios || null;
+          docFront.url = docs[key].url || null;
         });
-      },
-      error: (err) => console.error('Error cargando documentos:', err)
+      }
     });
   }
 
-  // =============================
-  //   RFC
-  // =============================
   validarRFC() {
     const len = this.rfc.trim().length;
 
@@ -138,38 +132,28 @@ export class DocumentosPage implements OnInit {
     });
   }
 
-  // =============================
-  //   NAVEGAR A SUBIR DOCUMENTO
-  // =============================
   uploadDocument(doc: LoteDocument) {
-
-    let tipoReal = doc.tipo;
-
-    if (doc.tipo === 'formatos-autorizacion') {
-      tipoReal = this.tipoPersona === 'fisica'
-        ? 'formato-aut-pf'
-        : 'formato-aut-pm';
-    }
+    if (doc.status === 'aprobado') return;
 
     this.router.navigateByUrl(
-      `/lote/upload-document/${this.nombreLote}/${this.idLote}/${tipoReal}`
+      `/lote/upload-document/${this.nombreLote}/${this.idLote}/${doc.tipo}`
     );
   }
 
-  // =============================
-  //   PROGRESO REAL PF VS PM
-  // =============================
-
   getTotalDocsRequeridos(): number {
     if (this.tipoPersona === 'fisica') {
-      return this.documents.filter(d => d.tipo !== 'acta-constitutiva').length;
+      return this.documents.filter(d =>
+        d.tipo !== 'acta-constitutiva' && d.tipo !== 'formato-aut-pm'
+      ).length;
     }
     return this.documents.length;
   }
 
   getUploadedCount(): number {
     const requeridos = this.tipoPersona === 'fisica'
-      ? this.documents.filter(d => d.tipo !== 'acta-constitutiva')
+      ? this.documents.filter(d =>
+        d.tipo !== 'acta-constitutiva' && d.tipo !== 'formato-aut-pm'
+      )
       : this.documents;
 
     return requeridos.filter(d => d.uploaded).length;
@@ -177,14 +161,23 @@ export class DocumentosPage implements OnInit {
 
   getProgressPercentage(): number {
     const total = this.getTotalDocsRequeridos();
-    if (total === 0) return 0;
+    return total ? Math.round((this.getUploadedCount() / total) * 100) : 0;
+  }
 
-    return Math.round((this.getUploadedCount() / total) * 100);
+  getCardClass(doc: LoteDocument) {
+    if (doc.status === 'aprobado') return 'doc-aprobado';
+    if (doc.status === 'rechazado') return 'doc-rechazado';
+    return 'doc-pendiente';
+  }
+
+  getStatusIcon(doc: LoteDocument) {
+    if (doc.status === 'aprobado') return 'checkmark-circle';
+    if (doc.status === 'rechazado') return 'close-circle';
+    return 'hourglass-outline';
   }
 
   irAlLote() {
     if (!this.nombreLote || !this.idLote) return;
     this.router.navigateByUrl(`/lote/${this.nombreLote}/${this.idLote}`);
   }
-
 }

@@ -1,7 +1,6 @@
 /* ================================
    FONDO / LAYOUT iOS
-   ================================ */
-
+================================ */
 .lotes-content {
   --background: #f2f2f7;
   padding-top: calc(12px + env(safe-area-inset-top, 0px));
@@ -10,27 +9,22 @@
   padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
 }
 
-/* Contenedor general sin carta gigante */
 .ocntenedor_css_lotes {
   max-width: 1300px;
   margin: 0 auto;
   padding: 4px 4px 12px;
-
   background: transparent !important;
-  border-radius: 0 !important;
   box-shadow: none !important;
   border: none !important;
 }
 
 /* ================================
-   HEADER / TOOLBAR LOTES
-   ================================ */
-
+   HEADER
+================================ */
 .boton-container {
   margin: 4px 0 10px;
 }
 
-/* Header “plano”, sin card gigante */
 .header-lotes-bar {
   display: flex;
   align-items: center;
@@ -39,7 +33,6 @@
   gap: 12px;
 }
 
-/* Buscador + título en la misma fila */
 .header-lotes-left {
   display: flex;
   align-items: flex-end;
@@ -48,7 +41,7 @@
   min-width: 0;
 }
 
-/* 🔍 Card SOLO del tamaño del buscador */
+/* Card SOLO del buscador */
 .search-card {
   display: inline-flex;
   align-items: center;
@@ -64,11 +57,8 @@
     0 0 0 0.6px rgba(148, 163, 184, 0.35);
 }
 
-/* Searchbar estilo iOS pill, ocupando todo dentro de la card */
 .ios-search {
   width: 100%;
-  max-width: 100%;
-
   --background: #f2f2f7;
   --border-radius: 999px;
   --icon-color: #9ca3af;
@@ -77,7 +67,7 @@
   --box-shadow: none;
 }
 
-/* Título LOTES */
+/* Título */
 .titulo-seccion-lotes {
   flex: 1;
   margin: 0;
@@ -97,15 +87,22 @@
   @media (min-width: 768px) {
     transform: translateX(-110px);
   }
+}
 
-  @media (max-width: 640px) {
-    font-size: 18px;
-    text-align: center;
-    transform: none;
+/* Resultados */
+.titulo-lotes {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  color: #4b5563;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    display: none;
   }
 }
 
-/* Ajustes mobile header */
+/* Mobile header */
 @media (max-width: 640px) {
   .header-lotes-left {
     flex-direction: column;
@@ -120,7 +117,8 @@
 
   .titulo-seccion-lotes {
     width: 100%;
-    margin-top: 4px;
+    transform: none;
+    margin-top: 6px;
   }
 
   .header-lotes-bar {
@@ -128,23 +126,9 @@
   }
 }
 
-/* Texto de resultados */
-.titulo-lotes {
-  font-size: 14px;
-  font-weight: 600;
-  margin: 0;
-  color: #4b5563;
-  white-space: nowrap;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-}
-
 /* ================================
    SEGMENT iOS
-   ================================ */
-
+================================ */
 .ios-segment {
   --background: transparent;
   padding-inline: 6px;
@@ -153,7 +137,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
   padding: 2px;
   border-radius: 999px;
   background: #f2f2f7;
@@ -174,7 +157,7 @@
 
   min-width: 110px;
   text-transform: none;
-  font-weight: 600;
+  font-weight: 800;
   font-size: 12px;
   letter-spacing: 0.02em;
 }
@@ -190,33 +173,32 @@
   box-shadow: 0 8px 18px rgba(239, 68, 68, 0.5);
 }
 
-@media (hover: hover) {
-  .ios-segment ion-segment-button:hover::part(native) {
-    background: rgba(148, 163, 184, 0.08);
+/* ================================
+   GRID LOTES (CSS GRID)
+================================ */
+.lotes-grid {
+  margin-top: 6px;
+  display: grid;
+  gap: 12px;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  .ios-segment ion-segment-button.segment-button-checked:hover::part(native) {
-    background: #ef4444;
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: 1400px) {
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
 /* ================================
-   GRID / CARDS
-   ================================ */
-
-.lotes-grid-shell {
-  margin-top: 6px;
-}
-
-.lotes-row {
-  row-gap: 12px;
-}
-
-.lote-col {
-  display: flex;
-}
-
-/* Card estilo iOS */
+   CARD LOTE iOS
+================================ */
 .lote-card,
 .ios-card-lote {
   width: 100%;
@@ -231,7 +213,7 @@
   outline: none;
 
   box-shadow:
-    0 18px 40px rgba(15, 23, 42, 0.2),
+    0 18px 40px rgba(15, 23, 42, 0.20),
     0 0 0 0.5px rgba(148, 163, 184, 0.35);
   border: none;
 
@@ -241,17 +223,19 @@
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.lote-card:hover {
-  transform: translateY(-3px);
-  box-shadow:
-    0 24px 52px rgba(15, 23, 42, 0.3),
-    0 0 0 0.5px rgba(248, 113, 113, 0.3);
+@media (hover: hover) {
+  .lote-card:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 24px 52px rgba(15, 23, 42, 0.30),
+      0 0 0 0.5px rgba(248, 113, 113, 0.30);
+  }
 }
 
 .lote-card:focus-visible {
   box-shadow:
     0 0 0 2px rgba(239, 68, 68, 0.6),
-    0 24px 52px rgba(15, 23, 42, 0.3);
+    0 24px 52px rgba(15, 23, 42, 0.30);
 }
 
 /* Imagen */
@@ -272,7 +256,7 @@
   display: block;
 }
 
-/* Contenido */
+/* Info */
 .lote-header {
   flex: 1 1 auto;
   display: flex;
@@ -285,12 +269,16 @@
 .lote-title {
   margin: 0;
   font-size: 14px;
-  font-weight: 800;
-  color: #b91c1c;
-  line-height: 1.2;
+  font-weight: 900;
+  color: #c62828;
+  line-height: 1.25;
   display: flex;
+  align-items: center;
   gap: 6px;
-  align-items: flex-start;
+
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  overflow: hidden;
 }
 
 .lote-subtitle {
@@ -309,8 +297,7 @@
   color: #ef4444;
 }
 
-/* Clamps */
-.clamp-1,
+/* Clamp */
 .clamp-2 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -318,20 +305,11 @@
   white-space: normal;
   word-break: break-word;
   overflow-wrap: anywhere;
-}
-
-.clamp-1 {
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
-}
-
-.clamp-2 {
   -webkit-line-clamp: 2;
   line-clamp: 2;
 }
 
 /* Responsive cards */
-
 @media (max-width: 640px) {
   .lote-card {
     height: 260px;
@@ -354,16 +332,9 @@
   }
 }
 
-@media (max-width: 360px) {
-  .lote-card {
-    height: 250px;
-  }
-}
-
 /* ================================
-   MENSAJE SIN LOTES
-   ================================ */
-
+   SIN LOTES
+================================ */
 .no-lotes {
   text-align: center;
   padding: 36px 20px 40px;
@@ -373,7 +344,7 @@
 
 .no-lotes p {
   margin-top: 10px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .no-lotes .no-icon {
@@ -392,9 +363,8 @@
 }
 
 /* ================================
-   BADGE RANKING
-   ================================ */
-
+   RANKING BADGE
+================================ */
 .ranking-badge {
   position: absolute;
   bottom: 8px;
@@ -416,13 +386,12 @@
   border-radius: 50%;
   color: #111827;
   border: 2px solid rgba(15, 23, 42, 0.9);
-  text-shadow: none;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
 }
 
-.ranking-badge .gold {
-  background: #fbbf24;
-}
+.ranking-badge .gold { background: #fbbf24; }
+.ranking-badge .silver { background: #e5e7eb; }
+.ranking-badge .bronze { background: #cd7f32; }
 
 .ranking-badge .gold::before {
   content: "👑";
@@ -434,10 +403,6 @@
   -webkit-text-stroke: 0.5px #000;
 }
 
-.ranking-badge .silver {
-  background: #e5e7eb;
-}
-
 .ranking-badge .silver::before {
   content: "★";
   position: absolute;
@@ -447,10 +412,6 @@
   font-size: 20px;
   color: #f3f4f6;
   -webkit-text-stroke: 0.6px rgba(0, 0, 0, 0.6);
-}
-
-.ranking-badge .bronze {
-  background: #cd7f32;
 }
 
 .ranking-badge .bronze::after {
@@ -467,8 +428,18 @@
   box-sizing: border-box;
 }
 
-/* Por si algún icono raro en lote-img */
-.lote-img ion-icon,
-.lote-img ::ng-deep ion-icon {
-  display: none !important;
+/* Nombre + palomita */
+.lote-nombre {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* ✅ palomita verificado */
+.verified-inline {
+  font-size: 16px;
+  color: #008dff;
+  flex-shrink: 0;
+  transform: translateY(-1px);
 }

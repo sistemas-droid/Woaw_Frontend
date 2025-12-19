@@ -1,76 +1,313 @@
-/* === GRID CENTRADO === */
-.docs-grid {
+/* =========================
+   iOS Docs Page
+========================= */
+.docs-ios {
+  --background: #f5f5f7;
+  background: #f5f5f7;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+}
+
+.page-wrap {
   width: 100%;
-  display: flex;
-  justify-content: center;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 14px 14px 28px;
 }
 
-.docs-row {
-  justify-content: center;
-  gap: 20px;
+/* =========================
+   Cards base iOS
+========================= */
+.step-card,
+.progress-card {
+  width: min(720px, 100%);
+  margin: 12px auto 14px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.12),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: hidden;
 }
 
-/* Todas las columnas con mismo ancho visual */
-.docs-col {
-  display: flex;
-}
-
-/* === CARTAS === */
-.ion-card-document {
-  width: 100%;
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  border: 1px solid #ddd;
-  border-radius: 14px;
-  transition: .25s ease-in-out;
-  background: #fff;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, .15);
-    border-color: var(--ion-color-danger);
-  }
-}
-
-/* Carta cuando está completada */
-.ion-card-uploaded {
-  border: 2px solid var(--ion-color-success);
-  background: rgba(46, 204, 113, .08);
-}
-
-/* Ícono + Título */
-.card-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  font-size: 18px;
-  color: #111;
-}
-
-/* Ícono de documento */
-.ion-icon-document {
-  font-size: 26px;
-  color: var(--ion-color-danger);
-}
-
-/* === BOTÓN VOLVER === */
-.volver-container {
-  margin-top: 40px;
+.step-head,
+.progress-head {
+  padding: 16px 16px 0;
   text-align: center;
 }
 
-.btn-volver {
-  --border-radius: 10px;
-  --background: var(--ion-color-danger);
-  font-weight: 600;
+.step-title {
+  margin: 6px 0 6px;
+  font-size: clamp(20px, 3.2vw, 26px);
+  font-weight: 900;
+  letter-spacing: -0.4px;
+  color: #0f172a;
 }
 
-.ion-padding{
-    width: 100%;
-    max-width: 1500px;
-    margin: 0 auto;
+.step-subtitle {
+  margin: 0 0 12px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #475569;
+  font-weight: 700;
+}
+
+.step-body,
+.progress-body {
+  padding: 14px 16px 16px;
+}
+
+/* =========================
+   RFC field iOS
+========================= */
+.ios-field {
+  margin-bottom: 12px;
+}
+
+.ios-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin: 0 0 6px 2px;
+}
+
+.ios-item {
+  --background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  --min-height: 48px;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.ios-item:focus-within {
+  border-color: rgba(37, 99, 235, 0.55);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+  background: #ffffff;
+}
+
+.ios-error {
+  margin: 8px 2px 0;
+  font-size: 13px;
+  color: #dc2626;
+  font-weight: 800;
+}
+
+/* Botón primario */
+.btn-primary-ios {
+  --border-radius: 999px;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  --box-shadow: 0 16px 30px rgba(255, 59, 48, 0.28);
+  text-transform: none;
+}
+
+/* =========================
+   Progreso
+========================= */
+.progress-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.progress-count {
+  margin: 0;
+  font-size: 13px;
+  color: #334155;
+  font-weight: 800;
+}
+
+.progress-percent {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 1000;
+  color: #ef4444;
+}
+
+.progress-bar-ios {
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+/* =========================
+   Docs grid iOS
+========================= */
+.docs-grid-ios {
+  width: 100%;
+  margin: 0 auto;
+  padding: 6px 0 0;
+}
+
+.docs-row-ios {
+  justify-content: center;
+  gap: 14px;
+}
+
+.docs-col-ios {
+  display: flex;
+}
+
+/* Card documento */
+.doc-card-ios {
+  width: 100%;
+  border-radius: 18px !important;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  box-shadow:
+    0 14px 26px rgba(15, 23, 42, 0.10),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  overflow: hidden;
+}
+
+.doc-card-ios:active {
+  transform: scale(0.98);
+  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.12);
+}
+
+@media (min-width: 768px) {
+  .doc-card-ios:hover {
+    transform: translateY(-4px);
+    border-color: rgba(239, 68, 68, 0.55);
+    box-shadow: 0 18px 34px rgba(255, 0, 34, 0.14);
+  }
+}
+
+.doc-card-header {
+  padding: 14px 14px 0;
+}
+
+.doc-title-row {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.doc-icon {
+  font-size: 30px;
+  color: #ef4444;
+  margin-top: 2px;
+}
+
+.doc-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 1000;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.doc-subtitle {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.doc-card-body {
+  padding: 10px 14px 14px;
+}
+
+.badge-pill {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  margin-top: 10px;
+}
+
+.badge-status {
+  margin-left: 6px;
+}
+
+.rechazo-msg {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  color: #b91c1c;
+  font-weight: 800;
+  background: rgba(255, 0, 34, 0.08);
+  border: 1px solid rgba(255, 0, 34, 0.18);
+  padding: 10px 10px;
+  border-radius: 14px;
+}
+
+/* Hint */
+.tap-hint {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 900;
+}
+
+/* =========================
+   Estados premium (ngClass)
+========================= */
+.doc-aprobado {
+  border-color: rgba(34, 197, 94, 0.55) !important;
+  background: rgba(34, 197, 94, 0.08) !important;
+
+  .doc-icon {
+    color: #22c55e !important;
+  }
+}
+
+.doc-rechazado {
+  border-color: rgba(239, 68, 68, 0.55) !important;
+  background: rgba(239, 68, 68, 0.07) !important;
+
+  .doc-icon {
+    color: #ef4444 !important;
+  }
+}
+
+.doc-pendiente {
+  border-color: rgba(245, 158, 11, 0.55) !important;
+  background: rgba(245, 158, 11, 0.08) !important;
+
+  .doc-icon {
+    color: #f59e0b !important;
+  }
+}
+
+/* =========================
+   Botón volver iOS
+========================= */
+.volver-wrap {
+  margin: 26px auto 18px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-back-ios {
+  width: min(420px, 92vw);
+  --border-radius: 999px;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  font-weight: 1000;
+  letter-spacing: 0.2px;
+  --box-shadow: 0 16px 30px rgba(255, 59, 48, 0.28);
+  text-transform: none;
+}
+
+/* Responsive padding */
+@media (max-width: 480px) {
+  .page-wrap {
+    padding: 10px 10px 24px;
+  }
 }

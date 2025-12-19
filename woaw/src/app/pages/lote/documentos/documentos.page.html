@@ -1,137 +1,159 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true">
-  <div class="ion-padding">
+<ion-content [fullscreen]="true" class="docs-ios">
+  <div class="page-wrap">
 
-    <!-- Paso 1: RFC -->
-    <div class="ion-margin-bottom" *ngIf="!yaIngresoRFC">
-
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title class="ion-text-center">
-            Validar RFC del Lote
-          </ion-card-title>
-          <ion-card-subtitle class="ion-text-center">
-            Ingresa el RFC para determinar si eres Persona Física o Moral
-          </ion-card-subtitle>
-        </ion-card-header>
-
-        <ion-card-content>
-
-          <ion-item>
-            <ion-label position="floating">RFC del Lote</ion-label>
-            <ion-input [(ngModel)]="rfc" (ionInput)="validarRFC()" maxlength="13" clearInput>
-            </ion-input>
-          </ion-item>
-
-          <p *ngIf="rfcError" style="color:red; margin-top:8px; font-size:14px;">
-            {{ rfcError }}
-          </p>
-
-          <ion-button expand="block" class="ion-margin-top" color="danger" [disabled]="!rfcValido"
-            (click)="enviarRFC()">
-            Continuar
-          </ion-button>
-
-        </ion-card-content>
-      </ion-card>
-
-    </div>
-
-    <!-- Paso 2: Documentos -->
-    <div *ngIf="yaIngresoRFC">
-
-      <div class="ion-text-center ion-margin-bottom">
-        <ion-text>
-          <h1 class="ion-text-bold">Documentación Requerida</h1>
-        </ion-text>
-
-        <ion-text color="medium">
-          <p>Para completar tu solicitud, necesitamos los siguientes documentos</p>
-        </ion-text>
-
-        <ion-card class="ion-margin-vertical">
-          <ion-card-content>
-
-            <div class="ion-text-center ion-margin-bottom">
-              <ion-text>
-                <p class="ion-text-bold">
-                  Progreso: {{ getUploadedCount() }}/{{ getTotalDocsRequeridos() }}
-                </p>
-              </ion-text>
-
-              <ion-text color="danger">
-                <p class="ion-text-bold">{{ getProgressPercentage() }}%</p>
-              </ion-text>
-            </div>
-
-            <ion-progress-bar [value]="getProgressPercentage() / 100" color="danger">
-            </ion-progress-bar>
-
-          </ion-card-content>
-        </ion-card>
+    <!-- PASO 1: RFC -->
+    <section class="step-card" *ngIf="!yaIngresoRFC">
+      <div class="step-head">
+        <h1 class="step-title">Validar RFC del Lote</h1>
+        <p class="step-subtitle">
+          Ingresa el RFC para determinar si eres Persona Física o Moral.
+        </p>
       </div>
 
-      <!-- GRID DE DOCUMENTOS CENTRADO -->
-      <ion-grid class="docs-grid ion-margin-bottom">
-        <ion-row class="docs-row">
+      <div class="step-body">
+        <div class="ios-field">
+          <label class="ios-label">RFC del Lote</label>
+          <ion-item lines="none" class="ios-item">
+            <ion-input
+              [(ngModel)]="rfc"
+              (ionInput)="validarRFC()"
+              maxlength="13"
+              clearInput
+              placeholder="Ej. ABCD001122XXX"
+              inputmode="text"
+              autocapitalize="characters"
+            ></ion-input>
+          </ion-item>
 
-          <!-- ngFor correcto -->
+          <p *ngIf="rfcError" class="ios-error">
+            {{ rfcError }}
+          </p>
+        </div>
+
+        <ion-button
+          expand="block"
+          color="danger"
+          class="btn-primary-ios"
+          [disabled]="!rfcValido"
+          (click)="enviarRFC()"
+          mode="ios"
+        >
+          Continuar
+        </ion-button>
+      </div>
+    </section>
+
+    <!-- PASO 2: DOCUMENTOS -->
+    <section *ngIf="yaIngresoRFC">
+
+      <!-- HEADER + PROGRESO -->
+      <section class="progress-card">
+        <div class="progress-head">
+          <h1 class="step-title">Documentación Requerida</h1>
+          <p class="step-subtitle">
+            Para completar tu solicitud, necesitamos los siguientes documentos.
+          </p>
+        </div>
+
+        <div class="progress-body">
+          <div class="progress-top">
+            <p class="progress-count">
+              Progreso: <strong>{{ getUploadedCount() }}</strong>/<strong>{{ getTotalDocsRequeridos() }}</strong>
+            </p>
+            <p class="progress-percent">{{ getProgressPercentage() }}%</p>
+          </div>
+
+          <ion-progress-bar
+            [value]="getProgressPercentage() / 100"
+            color="danger"
+            class="progress-bar-ios"
+          ></ion-progress-bar>
+        </div>
+      </section>
+
+      <!-- GRID DE DOCUMENTOS -->
+      <ion-grid class="docs-grid-ios">
+        <ion-row class="docs-row-ios">
+
           <ng-container *ngFor="let doc of documents">
-
-            <!-- ngIf correcto (sin acta constitutiva para PF) -->
-            <ion-col *ngIf="!(doc.tipo === 'acta-constitutiva' && tipoPersona !== 'moral')" size="12" size-sm="6"
-              size-md="4" size-lg="3" class="docs-col">
-
-              <ion-card class="ion-card-document" [class.ion-card-uploaded]="doc.uploaded"
-                (click)="uploadDocument(doc)">
-
-                <ion-card-header>
-
-                  <ion-card-title class="ion-align-items-center card-title">
-                    <ion-icon [name]="doc.icon" slot="start" class="ion-icon-document"></ion-icon>
-                    <ion-text>
-                      <h2 class="ion-text-bold">{{ doc.name }}</h2>
-                    </ion-text>
-                  </ion-card-title>
-
-                  <!-- PF / PM (validación intacta) -->
-                  <ion-card-subtitle *ngIf="doc.tipo === 'formatos-autorizacion'">
-                    <span *ngIf="tipoPersona === 'fisica'">Persona Física</span>
-                    <span *ngIf="tipoPersona === 'moral'">Persona Moral</span>
-                    <span *ngIf="!tipoPersona">Personas Físicas / Morales</span>
-                  </ion-card-subtitle>
-
-                  <!-- Normal -->
-                  <ion-card-subtitle *ngIf="doc.tipo !== 'formatos-autorizacion'">
-                    {{ doc.subtitle }}
-                  </ion-card-subtitle>
-
+            <!-- ✅ SOLO SE FILTRA ACTA CONSTITUTIVA -->
+            <ion-col
+              *ngIf="doc.tipo !== 'acta-constitutiva' || tipoPersona === 'moral'"
+              size="12" size-sm="6" size-md="4" size-lg="3"
+              class="docs-col-ios"
+            >
+              <ion-card
+                class="doc-card-ios"
+                [ngClass]="getCardClass(doc)"
+                (click)="uploadDocument(doc)"
+              >
+                <ion-card-header class="doc-card-header">
+                  <div class="doc-title-row">
+                    <ion-icon [name]="getStatusIcon(doc)" class="doc-icon"></ion-icon>
+                    <div class="doc-title-text">
+                      <h2 class="doc-title">{{ doc.name }}</h2>
+                      <p class="doc-subtitle">{{ doc.subtitle }}</p>
+                    </div>
+                  </div>
                 </ion-card-header>
 
-                <ion-card-content>
-                  <ion-badge [color]="doc.uploaded ? 'success' : 'warning'" class="ion-margin-top">
+                <ion-card-content class="doc-card-body">
+
+                  <!-- Badge subida -->
+                  <ion-badge
+                    [color]="doc.uploaded ? 'success' : 'warning'"
+                    class="badge-pill"
+                  >
                     {{ doc.uploaded ? 'Completado' : 'Pendiente' }}
                   </ion-badge>
+
+                  <!-- Estado -->
+                  <ion-badge
+                    *ngIf="doc.status"
+                    [color]="doc.status === 'aprobado' ? 'success' : doc.status === 'rechazado' ? 'danger' : 'warning'"
+                    class="badge-pill badge-status"
+                  >
+                    {{ doc.status | titlecase }}
+                  </ion-badge>
+
+                  <!-- Comentario rechazo -->
+                  <p
+                    *ngIf="doc.status === 'rechazado' && doc.comentarios"
+                    class="rechazo-msg"
+                  >
+                    Motivo: “{{ doc.comentarios }}”
+                  </p>
+
+                  <!-- Hint iOS -->
+                  <div class="tap-hint">
+                    <span>Toca para subir / reemplazar</span>
+                    <ion-icon name="chevron-forward-outline"></ion-icon>
+                  </div>
+
                 </ion-card-content>
-
               </ion-card>
-
             </ion-col>
-
           </ng-container>
 
         </ion-row>
       </ion-grid>
 
-      <!-- BOTÓN PARA REGRESAR AL LOTE ABAJO DEL GRID -->
-      <div class="volver-container">
-        <ion-button expand="block" color="danger" fill="solid" class="btn-volver" (click)="irAlLote()">
-          Ver lote "{{ nombreLote }}"
+      <!-- BOTÓN VOLVER -->
+      <div class="volver-wrap">
+        <ion-button
+          color="danger"
+          fill="solid"
+          class="btn-back-ios"
+          (click)="irAlLote()"
+          mode="ios"
+        >
+          Ir a mi lote “{{ nombreLote }}”
         </ion-button>
       </div>
 
-    </div>
+    </section>
 
   </div>
 

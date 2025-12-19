@@ -34,24 +34,25 @@
   justify-content: flex-end;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0.55) 55%,
-    rgba(0, 0, 0, 0.75) 100%
+    rgba(0, 0, 0, 0.08) 0%,
+    rgba(0, 0, 0, 0.58) 55%,
+    rgba(0, 0, 0, 0.78) 100%
   );
   color: #f9fafb;
 
   h1 {
     font-size: clamp(20px, 3vw, 24px);
-    font-weight: 700;
+    font-weight: 800;
     margin: 0 0 4px;
+    letter-spacing: 0.01em;
   }
 
   p {
     margin: 0;
     font-size: 13px;
-    max-width: 420px;
+    max-width: 460px;
     line-height: 1.45;
-    opacity: 0.9;
+    opacity: 0.92;
   }
 }
 
@@ -60,21 +61,11 @@
     margin: 8px 10px 12px;
     border-radius: 20px;
   }
-
-  .hero-img-ios {
-    height: 180px;
-  }
-
+  .hero-img-ios { height: 180px; }
   .hero-overlay-ios {
     padding: 14px 14px 12px;
-
-    h1 {
-      font-size: 18px;
-    }
-
-    p {
-      font-size: 12px;
-    }
+    h1 { font-size: 18px; }
+    p { font-size: 12px; }
   }
 }
 
@@ -105,7 +96,7 @@
 .contenedor_primero_ios .columna-izquierda {
   h2 {
     font-size: clamp(22px, 3.4vw, 28px);
-    font-weight: 700;
+    font-weight: 800;
     color: #111827;
     margin: 0 0 6px;
   }
@@ -115,7 +106,7 @@
     font-size: 14px;
     color: #4b5563;
     line-height: 1.5;
-    max-width: 480px;
+    max-width: 520px;
 
     @media (max-width: 960px) {
       margin: 0 auto;
@@ -133,30 +124,8 @@
   }
 }
 
-.card-opcion-ios {
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 14px 10px 12px;
-  box-shadow:
-    0 14px 30px rgba(15, 23, 42, 0.08),
-    0 0 0 0.5px rgba(255, 255, 255, 0.9);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  cursor: pointer;
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    background 0.18s ease;
-
-  &:active {
-    transform: scale(0.98);
-    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
-    background: #f9fafb;
-  }
-
-  .img_coche,
+/* imágenes cards */
+.img_coche,
 .img_camion {
   width: 100%;
   max-width: 200px;
@@ -165,35 +134,63 @@
   margin-bottom: 8px;
 }
 
+.card-opcion-ios {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 14px 12px 12px;
+  box-shadow:
+    0 14px 30px rgba(15, 23, 42, 0.08),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+
+  &:active {
+    transform: scale(0.985);
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    background: #f9fafb;
+  }
+
   h3 {
     margin: 0 0 4px;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 900;
     color: #111827;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.06em;
   }
 
   p {
-    margin: 0 0 8px;
+    margin: 0 0 10px;
     font-size: 12px;
     color: #6b7280;
+    line-height: 1.45;
   }
 }
 
 .btn-card-ios {
   border: none;
   border-radius: 999px;
-  padding: 7px 16px;
+  padding: 8px 16px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 800;
   cursor: pointer;
   background: linear-gradient(135deg, #ff3b30, #ff453a);
   color: #ffffff;
   box-shadow: 0 10px 22px rgba(239, 68, 68, 0.35);
   transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  ion-icon {
+    font-size: 18px;
+  }
 
   &:active {
-    transform: translateY(1px) scale(0.98);
+    transform: translateY(1px) scale(0.985);
     box-shadow: 0 6px 14px rgba(239, 68, 68, 0.32);
     filter: brightness(0.97);
   }
@@ -202,6 +199,12 @@
 /* ===================== */
 /* BLOQUE MARCAS + FORM  */
 /* ===================== */
+.contenedor_arrendamiento {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
 .contenedor-arrendamiento-ios {
   position: relative;
   z-index: 1;
@@ -221,7 +224,7 @@
   text-transform: uppercase;
   font-size: 14px;
   color: #9ca3af;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.16em;
   margin: 0 0 8px;
 }
@@ -241,17 +244,15 @@
   background: #f3f4f6;
   color: #111827;
   font-size: 12px;
-  font-weight: 500;
-  padding: 6px 12px;
+  font-weight: 700;
+  padding: 7px 12px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   cursor: pointer;
   transition: background 0.16s ease, transform 0.12s ease;
 
-  ion-icon {
-    font-size: 16px;
-  }
+  ion-icon { font-size: 16px; }
 
   &:active {
     transform: scale(0.97);
@@ -267,15 +268,15 @@
 }
 
 .buscador-ios {
-  flex: 1;
-  max-width: 280px;
+  max-width: 300px;
   justify-self: end;
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 10px;
+  padding: 8px 12px;
   background: #f3f4f6;
   border-radius: 999px;
+  border: 1px solid rgba(229, 231, 235, 0.9);
 
   ion-icon {
     font-size: 16px;
@@ -283,6 +284,7 @@
   }
 
   input {
+    width: 100%;
     border: none;
     outline: none;
     background: transparent;
@@ -290,9 +292,7 @@
     color: #111827;
   }
 
-  input::placeholder {
-    color: #9ca3af;
-  }
+  input::placeholder { color: #9ca3af; }
 }
 
 @media (max-width: 640px) {
@@ -300,7 +300,6 @@
     grid-template-columns: 1fr;
     justify-items: center;
   }
-
   .buscador-ios {
     max-width: 100%;
     width: 100%;
@@ -326,17 +325,13 @@
   background: #ffffff;
   border-radius: 14px;
   border: 1px solid rgba(209, 213, 219, 0.9);
-  padding: 6px 4px 5px;
+  padding: 8px 6px 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   cursor: pointer;
-  transition:
-    border-color 0.16s ease,
-    box-shadow 0.16s ease,
-    transform 0.12s ease,
-    background 0.16s ease;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.12s ease, background 0.16s ease;
 
   img {
     width: 56px;
@@ -346,7 +341,7 @@
 
   .marca-nombre-grid {
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 800;
     color: #111827;
     text-align: center;
     max-width: 100%;
@@ -355,9 +350,7 @@
     text-overflow: ellipsis;
   }
 
-  &:active {
-    transform: scale(0.97);
-  }
+  &:active { transform: scale(0.97); }
 
   &.seleccionado {
     border-color: #ff3b30;
@@ -401,7 +394,7 @@
   .nombre-marca {
     margin: 0;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 900;
     color: #111827;
   }
 }
@@ -410,25 +403,23 @@
   justify-self: end;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
+  gap: 8px;
+  padding: 9px 14px;
   border-radius: 999px;
   border: none;
   cursor: pointer;
   background: linear-gradient(135deg, #ff3b30, #ff453a);
   color: #ffffff;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 800;
   box-shadow: 0 10px 22px rgba(248, 113, 113, 0.4);
   transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
 
   .icono-flecha,
-  .icono-flecha-arriba {
-    font-size: 18px;
-  }
+  .icono-flecha-arriba { font-size: 18px; }
 
   &:active {
-    transform: translateY(1px) scale(0.98);
+    transform: translateY(1px) scale(0.985);
     box-shadow: 0 6px 14px rgba(248, 113, 113, 0.35);
     filter: brightness(0.97);
   }
@@ -447,21 +438,10 @@
   }
 }
 
-/* CONTENEDOR FORM MODELOS */
-.contenedor-modelos-ios {
-  margin-top: 8px;
-}
-
-/* Para el section que envuelve todo (mantiene z-index) */
-.contenedor_arrendamiento {
-  position: relative;
-  z-index: 1;
-  background: transparent;
-}
-
 /* ============================= */
 /*   FORM / INPUTS iOS STYLE     */
 /* ============================= */
+.contenedor-modelos-ios { margin-top: 8px; }
 
 form {
   max-width: 1100px;
@@ -471,36 +451,28 @@ form {
 .wo-label {
   display: block;
   font-size: 11px;
-  font-weight: 600;
-  margin-bottom: 4px;
+  font-weight: 800;
+  margin-bottom: 6px;
   color: #6b7280;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.wo-label strong {
-  color: #ef4444;
-}
+.wo-label strong { color: #ef4444; }
 
-/* CONTENEDOR DEL INPUT / SELECT */
 .wo-control {
   position: relative;
   width: 100%;
   border-radius: 16px;
-  padding: 8px 12px;
+  padding: 10px 12px;
   background: #f9fafb;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 0 0 0 rgba(15, 23, 42, 0);
   display: flex;
   align-items: center;
-  transition:
-    border-color 0.16s ease,
-    box-shadow 0.18s ease,
-    background 0.16s ease,
-    transform 0.12s ease;
+  transition: border-color 0.16s ease, box-shadow 0.18s ease, background 0.16s ease, transform 0.12s ease;
 
   &.wo-compact {
-    padding: 6px 10px;
+    padding: 8px 10px;
     border-radius: 14px;
   }
 }
@@ -516,63 +488,94 @@ form {
   border: none;
 }
 
-/* TEXTO INPUT */
-.wo-control ion-input::part(native) {
-  font-size: 15px;
-  color: #0f172a;
-  font-weight: 500;
-}
-
-.wo-control ion-input::part(placeholder) {
-  color: #9ca3af;
-  opacity: 1;
-}
-
-/* TEXTO SELECT */
+.wo-control ion-input::part(native),
 .wo-control ion-select::part(text) {
   font-size: 15px;
   color: #0f172a;
-  font-weight: 500;
+  font-weight: 600;
 }
 
+.wo-control ion-input::part(placeholder),
 .wo-control ion-select::part(placeholder) {
   color: #9ca3af;
   opacity: 1;
 }
 
-.wo-control ion-select::part(icon) {
-  margin-inline-start: auto;
-}
-
-/* FOCUS */
 .wo-control:focus-within {
   border-color: #2563eb;
   background: #ffffff;
   box-shadow:
     0 0 0 1px rgba(37, 99, 235, 0.18),
-    0 12px 24px rgba(15, 23, 42, 0.18);
+    0 12px 24px rgba(15, 23, 42, 0.14);
   transform: translateY(-1px);
 }
 
-/* ion-item neutro dentro del form si lo usas */
-ion-item {
-  --padding-start: 0;
-  --inner-padding-end: 0;
-  --highlight-height: 0;
-  --background: transparent;
-  border: none;
+/* tabla versiones */
+.tabla-versiones {
+  border-radius: 18px;
+  box-shadow: 0 16px 28px rgba(15, 23, 42, 0.10);
+  overflow: hidden;
 }
 
-/* GRID COMPACTA VERSIONES */
-.grid-compacta ion-col {
-  flex: 0 0 50%;
-  max-width: 50%;
+.encabezado-tabla {
+  background: #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 6px 0;
+}
+
+.fila-version {
+  border-bottom: 1px solid rgba(229, 231, 235, 0.9);
+  padding: 8px 0;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* fila botones */
+.fila-botones-envio {
+  margin-top: 12px;
+  gap: 12px;
+}
+
+/* Botones de enviar */
+.custom-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: none;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.10);
+  transition: transform 0.14s ease, filter 0.14s ease;
+
+  ion-icon { font-size: 18px; }
+
+  &:active {
+    transform: translateY(1px) scale(0.985);
+    filter: brightness(0.98);
+  }
+}
+
+.custom-btn.danger {
+  background: linear-gradient(135deg, #ff3b30, #ff453a);
+  color: #fff;
+}
+
+.custom-btn.success {
+  background: #22c55e;
+  color: #fff;
 }
 
 /* ===================== */
 /* SECCIÓN ABAJO (INFO)  */
 /* ===================== */
-
 .grid-arrendamiento-ios {
   max-width: 1000px;
   margin: 10px auto 24px;
@@ -592,7 +595,7 @@ ion-item {
     0 0 0 0.5px rgba(255, 255, 255, 0.9);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 
   &:active {
@@ -603,11 +606,11 @@ ion-item {
   h5 {
     margin: 0;
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 900;
     color: #b91c1c;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
 
     ion-icon {
       font-size: 18px;
@@ -623,16 +626,16 @@ ion-item {
   }
 
   ul {
-    margin: 4px 0 0;
+    margin: 0;
     padding-left: 0;
     list-style: none;
     display: grid;
-    gap: 4px;
+    gap: 6px;
 
     li {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-size: 13px;
       color: #374151;
 
@@ -654,37 +657,18 @@ ion-item {
     padding: 14px 12px;
     border-radius: 14px;
 
-    h5 {
-      font-size: 14px;
-    }
-
-    p,
-    ul li {
-      font-size: 12px;
-    }
+    h5 { font-size: 14px; }
+    p, ul li { font-size: 12px; }
   }
 }
 
-/* Botones de enviar (ya los puedes ajustar según tus utilidades) */
-.custom-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px 16px;
-  border-radius: 999px;
-  border: none;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
+/* si traes este offset por tu fondo/hero, lo dejo */
+.despues_de_imagen {
+  margin-top: 37vh;
+  position: relative;
+  z-index: 1;
 
-.custom-btn.danger {
-  background: linear-gradient(135deg, #ff3b30, #ff453a);
-  color: #fff;
-}
-
-.custom-btn.success {
-  background: #22c55e;
-  color: #fff;
+  @media (max-width: 820px) {
+    margin-top: 32vh;
+  }
 }

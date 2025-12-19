@@ -25,6 +25,36 @@
     <app-spinner *ngIf="mostrar_spinnet"></app-spinner>
 
     <ion-list class="menu-list-ios">
+
+      <!-- Administración (solo Admin) -->
+      <div
+        *ngIf="isAdmin"
+        class="menu-section"
+        [class.expanded]="expandedSections.admin"
+        (click)="toggleSection('admin')"
+        [attr.aria-expanded]="expandedSections.admin"
+      >
+        <span>Administración</span>
+        <ion-icon
+          [name]="expandedSections.admin ? 'chevron-up-outline' : 'chevron-down-outline'"
+        ></ion-icon>
+      </div>
+
+      <div
+        *ngIf="isAdmin"
+        class="menu-items"
+        [class.expanded]="expandedSections.admin"
+      >
+        <ion-item
+          (click)="redirecion('lote/lote-verificacion')"
+          button
+          lines="none"
+        >
+          <ion-icon name="document-text-outline" color="danger"></ion-icon>
+          <ion-label>Verificación de Lotes</ion-label>
+        </ion-item>
+      </div>
+
       <!-- Servicios (para todos) -->
       <div
         class="menu-section"
@@ -44,11 +74,7 @@
           <ion-label>Lotes</ion-label>
         </ion-item>
 
-        <ion-item
-          (click)="redirecion('menu-vehiculos/autos')"
-          button
-          lines="none"
-        >
+        <ion-item (click)="redirecion('menu-vehiculos/autos')" button lines="none">
           <ion-icon name="car-sport-outline"></ion-icon>
           <ion-label>Vehículos</ion-label>
         </ion-item>
@@ -73,11 +99,7 @@
           <ion-label>Renta de coches</ion-label>
         </ion-item>
 
-        <ion-item
-          (click)="redirecion('seguros/disponibles')"
-          button
-          lines="none"
-        >
+        <ion-item (click)="redirecion('seguros/disponibles')" button lines="none">
           <ion-icon name="shield-checkmark-outline"></ion-icon>
           <ion-label>Seguros de autos</ion-label>
         </ion-item>
@@ -182,11 +204,7 @@
           <ion-label>Perfil</ion-label>
         </ion-item>
 
-        <ion-item
-          (click)="redirecion('eliminacion-cuenta')"
-          button
-          lines="none"
-        >
+        <ion-item (click)="redirecion('eliminacion-cuenta')" button lines="none">
           <ion-icon name="trash-bin-outline"></ion-icon>
           <ion-label>Eliminar cuenta</ion-label>
         </ion-item>
@@ -196,6 +214,7 @@
           <ion-label>Cerrar sesión</ion-label>
         </ion-item>
       </div>
+
     </ion-list>
   </ion-content>
 

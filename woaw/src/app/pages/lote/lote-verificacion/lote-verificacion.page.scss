@@ -1,0 +1,426 @@
+.ios-verif {
+  --background: #f5f5f7;
+  background: #f5f5f7;
+}
+
+.verif-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 14px 28px;
+}
+
+/* =========================
+   HERO
+========================= */
+.verif-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 8px 18px;
+}
+
+.titulo {
+  margin: 0;
+  font-size: clamp(22px, 3.4vw, 30px);
+  font-weight: 900;
+  letter-spacing: -0.4px;
+  color: #0f172a;
+}
+
+.subtitulo {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.10);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  ion-icon {
+    font-size: 18px;
+    color: #ef4444;
+  }
+
+  span {
+    font-weight: 900;
+    color: #0f172a;
+  }
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+.empty-state {
+  padding: 8px;
+}
+
+.empty-card {
+  width: min(560px, 100%);
+  margin: 0 auto;
+  border-radius: 22px;
+  padding: 22px 18px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.10);
+  text-align: center;
+
+  ion-icon {
+    font-size: 34px;
+    color: #94a3b8;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 900;
+    color: #0f172a;
+  }
+
+  p {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+}
+
+/* =========================
+   LOTE CARD iOS
+========================= */
+.lote-ios {
+  margin-bottom: 16px;
+}
+
+.lote-head {
+  width: 100%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+
+  padding: 18px 18px;
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  box-shadow:
+    0 18px 38px rgba(15, 23, 42, 0.10),
+    0 0 0 0.5px rgba(255, 255, 255, 0.9);
+
+  text-align: left;
+
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+@media (min-width: 768px) {
+  .lote-head:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 46px rgba(15, 23, 42, 0.12);
+  }
+}
+
+.head-left {
+  min-width: 0;
+}
+
+.lote-nombre {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 1000;
+  letter-spacing: -0.2px;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tipo-persona {
+  margin: 8px 0 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 900;
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
+.tipo-persona.fisica {
+  color: #10b981;
+}
+
+.tipo-persona.moral {
+  color: #6366f1;
+}
+
+.head-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.docs-count {
+  font-size: 12px;
+  font-weight: 900;
+  color: #64748b;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+.chev {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+
+  background: #fff1f2;
+  border: 1px solid rgba(239, 68, 68, 0.22);
+
+  ion-icon {
+    color: #ef4444;
+    font-size: 18px;
+    transition: transform 0.18s ease;
+  }
+}
+
+.chev.open ion-icon {
+  transform: rotate(180deg);
+}
+
+/* =========================
+   DOCUMENTOS GRID
+========================= */
+.lote-panel {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 0 6px 6px;
+}
+
+@media (min-width: 768px) {
+  .lote-panel {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* =========================
+   DOC CARD iOS
+========================= */
+.doc-card-ios {
+  border-radius: 18px !important;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  box-shadow: 0 14px 26px rgba(15, 23, 42, 0.08);
+}
+
+.doc-head {
+  padding: 14px 14px 0 !important;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.doc-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 1000;
+  color: #0f172a;
+}
+
+/* Estado pill con dot */
+.estado-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 1000;
+  letter-spacing: 0.06em;
+  border: 1px solid transparent;
+  white-space: nowrap;
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.9;
+  }
+}
+
+/* clases que te regresa colorEstado(doc.estado) */
+.estado-pill.warning {
+  background: rgba(245, 158, 11, 0.12);
+  color: #b45309;
+  border-color: rgba(245, 158, 11, 0.22);
+}
+
+.estado-pill.success {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+  border-color: rgba(34, 197, 94, 0.22);
+}
+
+.estado-pill.danger {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+  border-color: rgba(239, 68, 68, 0.22);
+}
+
+.doc-body {
+  padding: 12px 14px 14px !important;
+}
+
+/* =========================
+   ACCIONES iOS
+========================= */
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.acciones ion-button {
+  --border-radius: 999px;
+  --padding-top: 9px;
+  --padding-bottom: 9px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  font-weight: 900;
+  text-transform: none;
+}
+
+/* Aprobar: negro elegante (iOS pro) */
+.btn-aprobar {
+  --background: #0b0b0e;
+  --background-hover: #111114;
+  --background-activated: #111114;
+  --color: #ffffff;
+  --box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+}
+
+/* Rechazar: rojo iOS */
+.btn-rechazar {
+  --border-color: rgba(239, 68, 68, 0.25);
+  --color: #ef4444;
+}
+
+/* Ver: link iOS */
+.btn-ver {
+  margin-left: auto;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  --color: #ef4444;
+  font-weight: 900;
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
+/* Responsive: botones a full ancho */
+@media (max-width: 600px) {
+  .acciones {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-ver {
+    margin-left: 0;
+    justify-content: center;
+  }
+}
+
+/* =========================
+   MODAL iOS
+========================= */
+.modal-ios::part(content) {
+  --background: transparent;
+}
+
+.modal-box-ios {
+  margin: 0 auto;
+  width: min(520px, 92vw);
+  border-radius: 22px;
+  padding: 18px;
+
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 22px 56px rgba(15, 23, 42, 0.18);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  ion-icon {
+    font-size: 22px;
+    color: #ef4444;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 1000;
+    color: #0f172a;
+  }
+}
+
+.modal-sub {
+  margin: 10px 0 14px;
+  color: #64748b;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.modal-textarea {
+  --background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  margin-bottom: 12px;
+}
+
+.modal-btn {
+  --border-radius: 999px;
+  font-weight: 1000;
+  --box-shadow: 0 18px 34px rgba(239, 68, 68, 0.25);
+  text-transform: none;
+}
+
+.modal-cancel {
+  --color: #64748b;
+  font-weight: 900;
+  text-transform: none;
+}

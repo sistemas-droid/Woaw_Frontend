@@ -1,0 +1,364 @@
+/* =========================
+   Base iOS
+========================= */
+.pub-ios {
+  --background: #f5f5f7;
+  background: #f5f5f7;
+}
+
+.ios-shell {
+  padding: 14px;
+  max-width: 1100px;
+  margin: 10px auto 120px;
+}
+
+/* Card base */
+.ios-card {
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow:
+    0 18px 32px rgba(15, 23, 42, 0.10),
+    0 0 0 0.5px rgba(255,255,255,.9);
+  overflow: hidden;
+}
+
+/* Summary */
+.ios-summary {
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.ios-title {
+  text-align: left;
+  font-size: 18px;
+  font-weight: 1000;
+  color: #0f172a;
+  margin-bottom: 6px;
+  letter-spacing: .2px;
+}
+
+.ios-kv {
+  margin: 2px 0;
+  font-size: 12px;
+  color: #475569;
+
+  strong {
+    color: #0f172a;
+    font-weight: 900;
+  }
+}
+
+.ios-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: .3px;
+  color: #ff3b30;
+  background: rgba(255,59,48,.08);
+  border: 1px solid rgba(255,59,48,.22);
+}
+
+/* Inputs iOS */
+.ios-input,
+.ios-textarea {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --background: #f8fafc;
+  background: #f8fafc;
+  border: 1px solid rgba(226,232,240,.95);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+.ios-textarea {
+  width: 100%;
+  min-height: 220px;
+  padding: 12px;
+  font-size: 14px;
+  color: #0f172a;
+  outline: none;
+}
+
+.ios-label {
+  font-weight: 900;
+  color: #334155;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 10px 0 6px;
+}
+
+.ios-label-mini {
+  display: block;
+  font-weight: 900;
+  color: #64748b;
+  font-size: 11px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  margin: 10px 0 6px;
+}
+
+/* boxes */
+.ios-box {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 12px;
+  border: 1px solid rgba(226,232,240,.9);
+  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.06);
+}
+
+/* ion-item estilo settings */
+.ios-item {
+  --background: transparent;
+  --inner-padding-end: 0;
+  --padding-start: 0;
+  --min-height: 44px;
+
+  ion-icon {
+    color: #ff3b30;
+    font-size: 18px;
+  }
+}
+
+.ios-select {
+  width: 100%;
+}
+
+/* preguntas */
+.ios-question {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0 0 10px;
+}
+
+/* Buttons pill */
+.ios-pill {
+  --border-radius: 999px;
+  font-weight: 1000;
+  letter-spacing: .2px;
+  text-transform: none;
+}
+
+.ios-danger {
+  --background: linear-gradient(135deg, #ff3b30, #ff453a);
+  --box-shadow: 0 14px 26px rgba(255,59,48,.22);
+}
+
+.ios-success {
+  --background: linear-gradient(135deg, #22c55e, #16a34a);
+  --box-shadow: 0 14px 26px rgba(34,197,94,.18);
+}
+
+.ios-ghost-btn {
+  color: #0f172a;
+  font-weight: 900;
+}
+
+/* Inline ubicación */
+.ios-inline {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid rgba(226,232,240,.95);
+  color: #475569;
+  font-weight: 800;
+  font-size: 12px;
+
+  ion-icon {
+    color: #ff3b30;
+    font-size: 16px;
+    margin-top: 1px;
+  }
+}
+
+/* subcard direcciones */
+.ios-subcard {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.02);
+  border: 1px solid rgba(226,232,240,.95);
+}
+
+/* limpiar imágenes */
+.ios-ghost {
+  width: 100%;
+  margin-top: 10px;
+  background: rgba(255,59,48,.08);
+  color: #b91c1c;
+  border: 1px solid rgba(255,59,48,.22);
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-weight: 1000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* radio validación */
+.ios-check {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  .radio-custom {
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    border: 2px solid rgba(255,255,255,.75);
+    display: inline-block;
+    background: rgba(255,255,255,.15);
+  }
+
+  ion-icon {
+    font-size: 16px;
+    color: #fff;
+    opacity: .9;
+  }
+
+  &.activo .radio-custom {
+    background: rgba(255,255,255,.95);
+    border-color: rgba(255,255,255,.95);
+    box-shadow: 0 0 0 4px rgba(255,255,255,.25);
+  }
+
+  &.inactivo ion-icon {
+    opacity: .35;
+  }
+}
+
+/* Cards del formulario */
+.ios-form,
+.ios-highlight {
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.ios-info {
+  margin: 0;
+  padding: 12px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255,59,48,.10), rgba(255,59,48,.04));
+  border: 1px solid rgba(255,59,48,.18);
+  color: #0f172a;
+
+  strong {
+    font-weight: 1000;
+  }
+}
+
+/* filas tipo settings */
+.ios-rowline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(226,232,240,.95);
+  background: #f8fafc;
+  margin-top: 10px;
+}
+
+.ios-rowtext {
+  flex: 1;
+  font-weight: 900;
+  color: #0f172a;
+  font-size: 13px;
+}
+
+.ios-mini {
+  max-width: 160px;
+}
+
+/* Ficha técnica iOS */
+.ios-tech {
+  border-left: 0 !important;
+  border-radius: 18px;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(226,232,240,.95);
+  box-shadow: 0 14px 26px rgba(15,23,42,.08);
+}
+
+.ios-tech-title {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 1000;
+  color: #0f172a;
+}
+
+.ios-tech-list {
+  margin: 0;
+  padding-left: 18px;
+  color: #475569;
+  font-weight: 700;
+
+  li { margin: 6px 0; }
+  strong { color: #0f172a; }
+}
+
+.ios-sublist {
+  margin-top: 6px;
+  padding-left: 18px;
+}
+
+/* WhatsApp button */
+.ios-wsp {
+  background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+  color: #fff;
+  border: none;
+  padding: 12px 14px;
+  border-radius: 14px;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+  font-weight: 1000;
+  box-shadow: 0 14px 26px rgba(34,197,94,.18);
+}
+
+/* acciones desktop */
+.ios-actions {
+  width: 100%;
+  display: block;
+  margin-top: 6px;
+
+  .btn-publicar {
+    width: 100%;
+    height: 48px;
+  }
+}
+
+/* footer iOS */
+.ios-footer {
+  ion-toolbar.ios-footerbar {
+    --background: rgba(255,255,255,.78);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(226,232,240,.9);
+  }
+}
+
+/* responsive */
+@media (max-width: 720px) {
+  .ios-shell {
+    padding: 10px;
+    margin-bottom: 140px;
+  }
+
+  .ios-mini {
+    max-width: 140px;
+  }
+}

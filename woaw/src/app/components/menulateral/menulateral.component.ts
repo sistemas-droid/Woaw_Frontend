@@ -4,12 +4,17 @@ import { IonicModule, MenuController, ModalController } from "@ionic/angular";
 import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
-import { SpinnerComponent } from '../../components/spinner/spinner.component';
+import { SpinnerComponent } from "../../components/spinner/spinner.component";
 import { GeneralService } from "../../services/general.service";
 import { PerfilComponent } from "../modal/perfil/perfil.component";
 
-// ✅ AGREGA 'reservas' al union
-type SectionKey = "configuracion" | "servicios" | "publicaciones" | "reservas";
+// ✅ AGREGA 'admin'
+type SectionKey =
+  | "configuracion"
+  | "servicios"
+  | "publicaciones"
+  | "reservas"
+  | "admin";
 
 @Component({
   selector: "app-menulateral",
@@ -23,19 +28,29 @@ export class MenulateralComponent implements OnInit, OnDestroy {
   public isLoggedIn = false;
   public MyRole: string | null = null;
   mostrar_spinnet: boolean = false;
+
   private readonly MENU_CLOSE_DELAY_MS = 250;
   private subs: Subscription[] = [];
+
   private readonly ALLOWED_ROLES = new Set(["admin", "vendedor", "lotero"]);
+
+  // ✔️ Determina si es publicador
   get isPublisher(): boolean {
     return this.isLoggedIn && this.ALLOWED_ROLES.has(this.MyRole || "");
   }
 
-  // ✅ Cambia el Record para incluir 'reservas'
+  // ✔️ Nuevo getter para ADMIN
+  get isAdmin(): boolean {
+    return this.MyRole === "admin";
+  }
+
+  // ✔️ Estado inicial de todas las secciones
   expandedSections: Record<SectionKey, boolean> = {
     configuracion: false,
     servicios: false,
     publicaciones: false,
-    reservas: false, // 👈 nuevo
+    reservas: false,
+    admin: false,
   };
 
   constructor(
@@ -47,7 +62,7 @@ export class MenulateralComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    // Suscripción al estado de sesión
+    // Sub al estado de sesión
     this.subs.push(
       this.generalService.tokenExistente$.subscribe((estado) => {
         const before = this.isLoggedIn;
@@ -58,27 +73,39 @@ export class MenulateralComponent implements OnInit, OnDestroy {
             configuracion: false,
             servicios: true,
             publicaciones: false,
-            reservas: false,            // 👈 opcional, por claridad
+            reservas: false,
+            admin: false,
           });
           return;
         }
+
         if (before === false && estado === true) {
           this.setSections({
-            configuracion: false, // no abras "Cuenta"
-            servicios: true,      // queda desplegado
-            publicaciones: false, // el rol decide si se muestra
+            configuracion: false,
+            servicios: true,
+            publicaciones: false,
             reservas: false,
+            admin: false,
           });
           return;
         }
       })
     );
 
-    // Suscripción al rol
+    // Sub al rol
     this.subs.push(
       this.generalService.tipoRol$.subscribe((rol) => {
         this.MyRole = rol;
-        if (!this.isPublisher) this.setSections({ publicaciones: false });
+
+        // Si no es publisher, aseguramos que la sección no se abra
+        if (!this.isPublisher) {
+          this.setSections({ publicaciones: false });
+        }
+
+        // Si NO es admin, cerramos admin
+        if (!this.isAdmin) {
+          this.setSections({ admin: false });
+        }
       })
     );
   }
@@ -87,7 +114,7 @@ export class MenulateralComponent implements OnInit, OnDestroy {
     this.subs.forEach((s) => s?.unsubscribe());
   }
 
-  // ✅ Acepta SectionKey (incluye 'reservas')
+  // Aplicar cambios parciales a las secciones
   private setSections(state: Partial<Record<SectionKey, boolean>>) {
     this.expandedSections = {
       ...this.expandedSections,
@@ -110,12 +137,15 @@ export class MenulateralComponent implements OnInit, OnDestroy {
   async redirecion(url: string) {
     try {
       const target = "/" + url.replace(/^\/+/, "");
+
       if (this.router.url === target) {
         await this.menuCtrl.close("menuLateral");
         return;
       }
+
       await this.menuCtrl.close("menuLateral");
       await this.sleep(this.MENU_CLOSE_DELAY_MS);
+
       this.zone.run(() => this.router.navigateByUrl(target));
     } catch (err) {
       console.error("❌ Redirección fallida:", err);
@@ -143,16 +173,17 @@ export class MenulateralComponent implements OnInit, OnDestroy {
   }
 
   async abrirModalPerfil() {
-      const modal = await this.modalCtrl.create({
-        component: PerfilComponent,
-        breakpoints: [0, 0.5, 0.8, 1],
-        cssClass: "modal-perfil",
-        initialBreakpoint: 0.8,
-        handle: true,
-        showBackdrop: true,
-      });
-      await modal.present();
-      await this.menuCtrl.close("menuLateral");
+    const modal = await this.modalCtrl.create({
+      component: PerfilComponent,
+      breakpoints: [0, 0.5, 0.8, 1],
+      cssClass: "modal-perfil",
+      initialBreakpoint: 0.8,
+      handle: true,
+      showBackdrop: true,
+    });
+
+    await modal.present();
+    await this.menuCtrl.close("menuLateral");
   }
 
   abrirmodal() {

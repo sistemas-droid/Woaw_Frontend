@@ -126,9 +126,9 @@ export class AppComponent {
 
   get mostrarTabs(): boolean {
     const rutasSinTabs = [
-      '/update-car/', '/new-car', '/usados', '/nuevos', '/seminuevos',
+      '/update-car/', '/usados', '/nuevos', '/seminuevos', '/publicar',
       '/m-nuevos', '/mis-motos', '/seguros/poliza', '/mis-autos',
-      '/seguros/autos', '/seguros/cotiza/', '/seguros/cotizar-manual',
+      '/seguros/autos', '/seguros/cotiza/', '/seguros/cotizar-manual', '/fichas/',
       '/renta-coches', '/seguros/persona', '/search/vehiculos/', '/add-lote', '/renta/add-coche', '/camiones/todos', '/soporte'
     ];
     return this.esDispositivoMovil && !rutasSinTabs.some((r) => this.currentUrl.startsWith(r));
@@ -144,7 +144,7 @@ export class AppComponent {
     const rutasSinWoalft = [
       '/update-car/', '/new-car', '/usados', '/nuevos', '/seminuevos',
       '/m-nuevos', '/mis-motos', '/seguros/poliza', '/mis-autos',
-      '/seguros/autos', '/seguros/cotiza/', '/seguros/cotizar-manual',
+      '/seguros/autos', '/seguros/cotiza/', '/seguros/cotizar-manual', '/fichas',
       '/renta-coches', '/seguros/persona', '/search/vehiculos/', '/add-lote', '/renta/add-coche', '/camiones/todos','/soporte'];
     return !rutasSinWoalft.some(r => this.currentUrl.startsWith(r));
   }

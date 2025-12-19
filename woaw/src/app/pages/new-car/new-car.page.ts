@@ -347,14 +347,14 @@ export class NewCarPage implements OnInit {
       if (this.MyRole === "admin") {
         // Admin: 2008 .. 2026
         anioEsValido =
-          this.anioValido && anio >= 2008 && anio <= anioActual + 1;
+          this.anioValido && anio >= 1900 && anio <= anioActual + 1;
       } else {
-        // Lotero/Vendedor/Cliente: 2008 .. 2025
-        anioEsValido = this.anioValido && anio >= 2008 && anio <= anioActual;
+        // Lotero/Vendedor/Cliente: 1900 .. 2025
+        anioEsValido = this.anioValido && anio >= 1900 && anio <= anioActual;
       }
     } else {
       // Renta: como lo tenías (hasta año actual)
-      anioEsValido = this.anioValido && anio >= 1800 && anio <= anioActual;
+      anioEsValido = this.anioValido && anio >= 1900 && anio <= anioActual;
     }
 
     const marcaValida =
@@ -365,6 +365,22 @@ export class NewCarPage implements OnInit {
       this.modeloSeleccionado.length <= 25;
 
     return !!anioEsValido && marcaValida && modeloValido;
+  }
+
+  public irAPublicar() {
+    if (this.seleccion === 'auto') {
+      this.router.navigate(['/publicar'], {
+        state: {
+          anio: this.obtenerAnioActual(),
+          marca: this.marcaSeleccionada,
+          modelo: this.modeloSeleccionado,
+          tipo: this.seleccion
+        }
+      });
+    }else{
+      this.mostrarComponente();
+    }
+
   }
 
   mostrarComponente() {
@@ -466,7 +482,7 @@ export class NewCarPage implements OnInit {
       case "auto":
         this.PeticionesMarcasDeAutos(anio);
         break;
-      case "renta": 
+      case "renta":
         this.carsService.getMarcas_all().subscribe({
           next: (data: Marca[]) => {
             this.marcas = (data || []).sort((a: Marca, b: Marca) =>
@@ -754,7 +770,7 @@ export class NewCarPage implements OnInit {
     if (opcion.tipo === 'lote') {
       this.router.navigateByUrl("/add-lote");
       return;
-    }else if(opcion.tipo === 'renta'){
+    } else if (opcion.tipo === 'renta') {
       this.router.navigateByUrl("/renta/add-coche");
       return;
     }

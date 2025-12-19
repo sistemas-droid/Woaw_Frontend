@@ -55,7 +55,7 @@ export class CartasComponent implements OnInit {
     private modalCtrl: ModalController,
     private route: ActivatedRoute,
     public motosService: MotosService,
-    public camionesService: CamionesService 
+    public camionesService: CamionesService
   ) { }
 
   ngOnInit() {
@@ -95,15 +95,15 @@ export class CartasComponent implements OnInit {
     const urlActual = this.router.url;
     const esDesdeBusqueda = /^\/search\/vehiculos\/[^\/]+$/.test(urlActual);
     localStorage.setItem('origenFicha', String(esDesdeBusqueda));
-
+    console.log('Navegando a la ficha del vehículo con ID:', auto._id, 'y tipo:', auto.vehiculo);
     if (auto.vehiculo === 'auto') {
-      this.router.navigate(['/ficha', 'autos', auto._id]);
+      this.router.navigate(['/fichas/autos', auto._id]);
     } else if (auto.vehiculo === 'moto') {
-      this.router.navigate(['/ficha', 'motos', auto._id]);
+      this.router.navigate(['/ficha/motos', auto._id]);
     } else if (auto.vehiculo === 'renta') {
       this.router.navigate(['/renta-ficha', auto._id]);
-    } else if (auto.vehiculo=== 'camion'){
-      this.router.navigate(['/ficha', 'camiones', auto._id]);
+    } else if (auto.vehiculo === 'camion') {
+      this.router.navigate(['/ficha/camiones', auto._id]);
     } else {
       console.warn('Tipo de vehículo no reconocido:', auto.vehiculo);
     }
@@ -138,34 +138,34 @@ export class CartasComponent implements OnInit {
     });
   }
 
-toggleEstado(auto: any, event: Event) {
-  event.stopPropagation();
+  toggleEstado(auto: any, event: Event) {
+    event.stopPropagation();
 
-  const esMoto = this.ubicacion === 'mis_motos';
-  const esCamion = this.ubicacion === 'mis_camiones';
+    const esMoto = this.ubicacion === 'mis_motos';
+    const esCamion = this.ubicacion === 'mis_camiones';
 
-  const svc = esMoto
-    ? this.motosService
-    : esCamion
-      ? this.camionesService
-      : this.carsService;
+    const svc = esMoto
+      ? this.motosService
+      : esCamion
+        ? this.camionesService
+        : this.carsService;
 
-  svc.toggleEstadoVehiculo(auto._id).subscribe({
-    next: () => {
-      auto.estadoVehiculo =
-        auto.estadoVehiculo === 'disponible' ? 'vendido' : 'disponible';
-      this.generalService.alert(
-        'Estado actualizado',
-        `Estado cambiado a "${auto.estadoVehiculo.toUpperCase()}".`,
-        'success'
-      );
-    },
-    error: (err) => {
-      const mensaje = err?.error?.message || 'Error al cambiar el estado.';
-      this.generalService.alert('Error', mensaje, 'danger');
-    },
-  });
-}
+    svc.toggleEstadoVehiculo(auto._id).subscribe({
+      next: () => {
+        auto.estadoVehiculo =
+          auto.estadoVehiculo === 'disponible' ? 'vendido' : 'disponible';
+        this.generalService.alert(
+          'Estado actualizado',
+          `Estado cambiado a "${auto.estadoVehiculo.toUpperCase()}".`,
+          'success'
+        );
+      },
+      error: (err) => {
+        const mensaje = err?.error?.message || 'Error al cambiar el estado.';
+        this.generalService.alert('Error', mensaje, 'danger');
+      },
+    });
+  }
   eliminarDeFavoritos(autoId: string) {
     this.carsService.eliminarFavorito(autoId).subscribe({
       next: () => {
@@ -187,19 +187,19 @@ toggleEstado(auto: any, event: Event) {
       },
     });
   }
- update_car(auto: any, tipo: string) {
-  if (this.ubicacion === 'mis_motos') {
-    this.router.navigate(['/update-car', 'motos', auto._id]);
-  } else if (this.ubicacion === 'mis_camiones') {
-    this.router.navigate(['/update-car', 'camiones', auto._id]);
-  } else if (this.ubicacion === 'mis_autos') {
+  update_car(auto: any, tipo: string) {
+    if (this.ubicacion === 'mis_motos') {
+      this.router.navigate(['/update-car', 'motos', auto._id]);
+    } else if (this.ubicacion === 'mis_camiones') {
+      this.router.navigate(['/update-car', 'camiones', auto._id]);
+    } else if (this.ubicacion === 'mis_autos') {
       this.router.navigate(['/update-car', 'autos', auto._id]);
-  } else if (this.ubicacion === 'mis_autos_renta') {
+    } else if (this.ubicacion === 'mis_autos_renta') {
       this.router.navigate(['/edit-renta', auto._id]); // 👈 correcto
-  } else {
+    } else {
       this.router.navigate(['/update-car', 'renta', auto._id]);
+    }
   }
-}
   onCardClick(auto: any, event: Event): void {
     event.stopPropagation();
     if (this.ubicacion === 'mis_autos' || this.ubicacion === 'mis_motos' || this.ubicacion === "mis_camiones") {
