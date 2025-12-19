@@ -4,13 +4,24 @@
 
   <div class="contenedor-asesores">
     <!-- ENCABEZADO -->
-   <div class="encabezado-asesores">
-  <div class="heading-left">
-    <span class="eyebrow">Atención personalizada</span>
-    <h1>Nuestros asesores</h1>
-    <p>Selecciona al asesor que se encargará de brindarte la mejor atención.</p>
-  </div>
-</div>
+    <div class="encabezado-asesores">
+      <div class="heading-left">
+        <span class="eyebrow">Atención personalizada</span>
+        <h1>Nuestros asesores</h1>
+        <p>Selecciona al asesor que se encargará de brindarte la mejor atención.</p>
+      </div>
+    </div>
+    <!-- LOADING -->
+    <div class="loading" *ngIf="cargando">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando asesores…</p>
+    </div>
+
+    <!-- ERROR -->
+    <div class="error" *ngIf="error">
+      <p>No se pudieron cargar los asesores.</p>
+      <ion-button size="small" (click)="cargarAsesores()">Reintentar</ion-button>
+    </div>
 
     <!-- GRID DE ASESORES -->
     <ion-grid class="grid-asesores">

@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { NavbarComponent } from '../../components/navbar/navbar.component';
+import { NavbarComponent } from '../../../components/navbar/navbar.component';
 import { AsesoresPageRoutingModule } from './asesores-routing.module';
 
-import { FooterComponent } from '../../components/footer/footer.component';
+import { FooterComponent } from '../../../components/footer/footer.component';
 import { AsesoresPage } from './asesores.page';
 
 @NgModule({
