@@ -105,60 +105,92 @@
 
 
 
-<!-- Cotizador NATIVO -->
-<ion-grid *ngIf="edadValida && isNative" class="cotizador-native">
+<ion-grid class="cotizador-native">
 
-  <h2 class="titulo-native">Consigue tu crédito</h2>
+  <!-- Header -->
+  <div class="native-head">
+    <div class="native-title">Consigue tu crédito</div>
+    <div class="native-sub">
+      Simulación. El seguro varía por vehículo.
+    </div>
+  </div>
 
-  <!-- ENGANCHE -->
-  <div class="bloque">
-    <p class="label">Enganche</p>
-    <small class="sub">
-      A partir de {{ engancheMinimoPercent }}%
-    </small>
+  <!-- Enganche -->
+  <div class="native-card">
+    <div class="native-row">
+      <div>
+        <div class="native-label">Enganche</div>
+        <div class="native-hint">Mínimo {{ engancheMinimoPercent }}%</div>
+      </div>
 
-    <div class="input-enganche-wrapper">
-      <span>$</span>
-      <input type="number" [value]="enganche" (input)="onEngancheManualChange($event)" [min]="engancheMinimo"
-        [max]="engancheMaximo" step="100" />
+      <div class="native-badge">
+        {{ engancheMinimoPercent }}%+
+      </div>
     </div>
 
-    <div *ngIf="mensajeErrorEnganche" class="mensaje-error">
+    <div class="native-money">
+      <span class="money-prefix">$</span>
+      <ion-input type="number" inputmode="numeric" [value]="enganche" (ionInput)="onEngancheManualChange($event)"
+        [min]="engancheMinimo" [max]="engancheMaximo" class="money-input">
+      </ion-input>
+    </div>
+
+    <div *ngIf="mensajeErrorEnganche" class="native-error">
       {{ mensajeErrorEnganche }}
     </div>
   </div>
 
-  <!-- PLAZO -->
-  <div class="bloque" *ngIf="!mensajeErrorEnganche">
-    <p class="label">Plazo</p>
+  <!-- Plazo -->
+  <div class="native-card" *ngIf="!mensajeErrorEnganche">
+    <div class="native-row">
+      <div>
+        <div class="native-label">Plazo</div>
+        <div class="native-hint">Selecciona meses</div>
+      </div>
+    </div>
 
-    <div class="opciones-native">
-      <label class="opcion-native" *ngFor="let m of plazosDisponibles">
+    <div class="chips-scroll">
+      <label class="chip" *ngFor="let m of plazosDisponibles">
         <input type="radio" name="plazoNative" [value]="m" [checked]="plazo === m" (change)="onPlazoChange(m)" />
-        <span>{{ m }} meses</span>
+        <span class="chip-main">{{ m }}</span>
+        <span class="chip-sub">meses</span>
       </label>
     </div>
   </div>
 
-  <!-- RESULTADO -->
-  <div class="resultado-native" *ngIf="!mensajeErrorEnganche">
-    <p class="desde">Mensualidad desde</p>
-    <div class="monto">
-      ${{ calcularMensualidad(plazo) | number: '1.0-0' }}
-      <span>/ mes</span>
+  <!-- Resultado -->
+  <div class="native-card native-result" *ngIf="!mensajeErrorEnganche">
+    <div class="result-left">
+      <div class="result-kicker">Mensualidad desde</div>
+      <div class="result-amount">
+        ${{ calcularMensualidad(plazo) | number:'1.0-0' }}
+        <span>/ mes</span>
+      </div>
+      <div class="result-rate">
+        Tasa <span>{{ getTasa(plazo) | percent:'1.2-2' }}</span>
+      </div>
     </div>
-    <small class="tasa">
-      Tasa: {{ getTasa(plazo) | percent: '1.2-2' }}
-    </small>
+
+    <div class="result-right">
+      <div class="pill">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        <span>Seguro variable</span>
+      </div>
+      <div class="pill">
+        <ion-icon name="document-text-outline"></ion-icon>
+        <span>PDF disponible</span>
+      </div>
+    </div>
   </div>
 
-  <!-- CTA -->
-  <button class="btn-native" [disabled]="mensajeErrorEnganche" (click)="enviarCredito()">
-    Solicitar crédito
-  </button>
-
-  <p class="nota-native">
-    Simulación de crédito. El seguro varía por vehículo.
-  </p>
+  <!-- Footer sticky CTA -->
+  <div class="native-cta-wrap" *ngIf="!mensajeErrorEnganche">
+    <button class="native-cta" (click)="enviarCredito()">
+      Solicitar crédito ahora
+    </button>
+    <div class="native-footnote">
+      Al solicitar, te mandamos la cotización en PDF.
+    </div>
+  </div>
 
 </ion-grid>
