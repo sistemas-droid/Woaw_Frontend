@@ -254,7 +254,7 @@ export class FichaAutoPage implements OnInit {
       this.location.back();
       return;
     }
-      window.history.back();
+    window.history.back();
 
 
     // if (this.tipo === "nuevo") {
@@ -488,6 +488,9 @@ export class FichaAutoPage implements OnInit {
     await modal.present();
   }
   async abrirModalImagen(imagenes: string[], indice: number = 0) {
+    if (this.tipo === 'nuevo') {
+      return;
+    }
     const modal = await this.modalCtrl.create({
       component: ImagenesVehiculoComponent,
       componentProps: { imagenes, indice },

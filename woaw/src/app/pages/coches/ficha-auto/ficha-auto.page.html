@@ -16,7 +16,7 @@
         <span *ngIf="!esDispositivoMovil">WhatsApp</span>
         <ion-icon slot="start" name="logo-whatsapp"></ion-icon>
       </ion-button>
-      <ion-button fill="solid" shape="round" color="medium" (click)="contactosService.compartirAuto(auto, 'autos')">
+      <ion-button fill="clear" shape="round"  (click)="contactosService.compartirAuto(auto, 'autos')">
         <span>Compartir</span>
         <ion-icon slot="start" name="share-social-outline"></ion-icon>
       </ion-button>
@@ -358,7 +358,7 @@
         <!-- WHATSAPP (solo o acompañado) -->
         <ion-col [size]="tipo === 'nuevo' ? 6 : 12" class="ion-text-center">
 
-          <ion-button expand="block" color="success" shape="round"
+          <ion-button fill="outline" expand="block" color="success" shape="round"
             (click)="contactosService.contactarWOAW(auto, 'autos')">
 
             <ion-icon slot="start" name="logo-whatsapp"></ion-icon>
@@ -369,8 +369,7 @@
         <!-- ARRENDAR -->
         <ion-col size="6" *ngIf="tipo === 'nuevo'" class="ion-text-center">
 
-          <ion-button expand="block" color="danger" shape="round" (click)="contactosService.ArrendamientoAuto(auto)">
-
+          <ion-button fill="outline" expand="block" color="danger" shape="round" (click)="contactosService.ArrendamientoAuto(auto)">
             <ion-icon slot="start" name="car-sport-outline"></ion-icon>
             Arrendar
           </ion-button>

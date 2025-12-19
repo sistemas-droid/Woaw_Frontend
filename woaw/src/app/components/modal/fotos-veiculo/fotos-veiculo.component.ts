@@ -51,7 +51,7 @@ export class FotosVeiculoComponent implements OnInit {
   CROPPER_UI_HEIGHT = Math.round(this.CROPPER_UI_WIDTH / this.aspectRatio); // ~267
 
   // ✅✅ ZOOM SOLO PARA ALEJAR (NO ACERCAR)
-readonly ZOOM_MIN = 0.7;
+readonly ZOOM_MIN = 0.4;
 readonly ZOOM_MAX = 1.6;
 
 zoom = 1.0;

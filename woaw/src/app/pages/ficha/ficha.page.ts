@@ -8,7 +8,7 @@ import { CarsService } from "./../../services/cars.service";
 import { MotosService } from "./../../services/motos.service";
 import { ContactosService } from "./../../services/contactos.service";
 import { Title } from "@angular/platform-browser";
-import { SeoService } from "../../services/seo.service"; 
+import { SeoService } from "../../services/seo.service";
 import { Location } from "@angular/common";
 import { PoliticasComponent } from "../../components/modal/politicas/politicas.component";
 import { AvisoPrivasidadComponent } from "../../components/modal/aviso-privasidad/aviso-privasidad.component";
@@ -78,7 +78,7 @@ export class FichaPage implements OnInit {
     public CamionesService: CamionesService,
     private location: Location,
     private actionSheetCtrl: ActionSheetController
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.generalService.dispositivo$.subscribe((tipo) => {
@@ -221,8 +221,8 @@ export class FichaPage implements OnInit {
     const webUrl = hasCoords
       ? `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`
       : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-          this.direccionCompleta || ""
-        )}`;
+        this.direccionCompleta || ""
+      )}`;
 
     const platform = Capacitor.getPlatform();
 
@@ -389,14 +389,14 @@ export class FichaPage implements OnInit {
 
     return isImagen
       ? {
-          backgroundImage: mapaColores[color],
-          backgroundSize: "cover",
-          color: "#fff",
-        }
+        backgroundImage: mapaColores[color],
+        backgroundSize: "cover",
+        color: "#fff",
+      }
       : {
-          backgroundColor: mapaColores[color],
-          color: this.colorEsClaro(mapaColores[color]) ? "#000" : "#fff",
-        };
+        backgroundColor: mapaColores[color],
+        color: this.colorEsClaro(mapaColores[color]) ? "#000" : "#fff",
+      };
   }
   colorEsClaro(hex: string): boolean {
     hex = hex.replace("#", "");
@@ -612,6 +612,9 @@ export class FichaPage implements OnInit {
     await modal.present();
   }
   async abrirModalImagen(imagenes: string[], indice: number = 0) {
+    if (this.tipo === 'nuevo') {
+      return;
+    }
     const modal = await this.modalCtrl.create({
       component: ImagenesVehiculoComponent,
       componentProps: { imagenes, indice },
