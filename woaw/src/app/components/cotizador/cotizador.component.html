@@ -5,80 +5,192 @@
 </div>
 
 <!-- Cotizador -->
-<ion-grid *ngIf="edadValida" class="cotizador-container">
-  <h2>Consigue tu crédito</h2>
+<ion-grid *ngIf="edadValida && !isNative" class="cotizador-container">
+  <h2>¡Consigue tu crédito!</h2>
 
-  <ion-row class="steps-row">
-    <!-- PASO 1: ENGANCHE -->
-    <ion-col size="12" size-md="4" class="step step-1">
-      <div class="step-header">
-        <div class="step-number">1</div>
-        <div>
-          <p class="step-title">Enganche</p>
-          <small class="step-subtitle">
-            A partir de {{ engancheMinimoPercent }}%
-          </small>
+  <ion-row>
+
+    <!-- PASO 1 -->
+    <ion-col size="12" size-md="6">
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number">1</div>
+          <div>
+            <p class="step-title">Enganche</p>
+            <small class="step-subtitle">
+              A partir de {{ engancheMinimoPercent }}%
+            </small>
+          </div>
         </div>
-      </div>
 
-      <div class="input-enganche-wrapper">
-        <span>$</span>
-        <input type="number" [value]="enganche" (input)="onEngancheManualChange($event)" [min]="engancheMinimo"
-          [max]="engancheMaximo" step="100" />
-      </div>
-
-      <div *ngIf="mensajeErrorEnganche" class="mensaje-error">
-        {{ mensajeErrorEnganche }}
-      </div>
-    </ion-col>
-
-    <!-- PASO 2: PLAZO -->
-    <ion-col size="12" size-md="4" class="step step-2" *ngIf="!mensajeErrorEnganche">
-      <div class="step-header">
-        <div class="step-number">2</div>
-        <div>
-          <p class="step-title">Plazo</p>
-          <small class="step-subtitle">Meses</small>
+        <div class="input-enganche-wrapper">
+          <span>$</span>
+          <input type="number" [value]="enganche" (input)="onEngancheManualChange($event)" [min]="engancheMinimo"
+            [max]="engancheMaximo" step="100" />
         </div>
-      </div>
 
-      <div class="opciones">
-        <label class="opcion" *ngFor="let m of plazosDisponibles">
-          <input type="radio" name="plazo" [value]="m" [checked]="plazo === m" (change)="onPlazoChange(m)" />
-          <span>{{ m }}</span>
-        </label>
-      </div>
-    </ion-col>
-
-    <!-- PASO 3: MENSUALIDAD -->
-    <ion-col size="12" size-md="4" class="step step-3" *ngIf="!mensajeErrorEnganche">
-      <div class="step-header">
-        <div class="step-number">3</div>
-        <div>
-          <p class="step-title">Mensualidad desde:</p>
-        </div>
-      </div>
-
-      <div class="resultado-mensualidad">
-        <div class="monto">
-          ${{ calcularMensualidad(plazo) | number: '1.0-0' }}
-          <span>/ mes</span>
-        </div>
-        <div class="tasa">
-          <span class="link-plazos">
-          Tasa: {{ getTasa(plazo) | percent: '1.2-2' }}
-        </span>
+        <div *ngIf="mensajeErrorEnganche" class="mensaje-error">
+          {{ mensajeErrorEnganche }}
         </div>
       </div>
     </ion-col>
+
+    <!-- PASO 2 -->
+    <ion-col size="12" size-md="6" *ngIf="!mensajeErrorEnganche">
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number">2</div>
+          <div>
+            <p class="step-title">Plazo</p>
+            <small class="step-subtitle">Meses</small>
+          </div>
+        </div>
+
+        <div class="plazos-wrapper">
+          <span class="flecha izquierda" (click)="scrollPlazos(-1)">‹</span>
+
+          <div class="opciones-scroll">
+            <label class="opcion" *ngFor="let m of plazosDisponibles">
+              <input type="radio" name="plazo" [value]="m" [checked]="plazo === m" (change)="onPlazoChange(m)" />
+              <span>{{ m }}</span>
+              <small>meses</small>
+            </label>
+          </div>
+
+          <span class="flecha derecha" (click)="scrollPlazos(1)">›</span>
+        </div>
+      </div>
+    </ion-col>
+
+    <!-- PASO 3 -->
+    <ion-col size="12" size-md="6" *ngIf="!mensajeErrorEnganche">
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number">3</div>
+          <div>
+            <p class="step-title">Mensualidad desde</p>
+          </div>
+        </div>
+
+        <div class="resultado-mensualidad">
+          <div class="monto">
+            ${{ calcularMensualidad(plazo) | number: '1.0-0' }}
+            <span>/ mes</span>
+          </div>
+
+          <div class="tasa">
+            Tasa:
+            <span class="link-plazos">
+              {{ getTasa(plazo) | percent: '1.2-2' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </ion-col>
+
+    <ion-col size="12" size-md="6" *ngIf="!mensajeErrorEnganche">
+      <p class="nota">
+        Simulación de crédito. El costo del seguro
+        <strong>varía por vehículo</strong>.
+        Solicita tu cotización en <strong>PDF</strong>.
+      </p>
+      <button [disabled]="mensajeErrorEnganche" class="btn-solicitar" (click)="enviarCredito()">
+        Solicitar crédito ahora
+      </button>
+    </ion-col>
+
   </ion-row>
+</ion-grid>
 
-  <button [disabled]="mensajeErrorEnganche" class="btn-solicitar" (click)="enviarCredito()">
-    Solicitar crédito ahora
-  </button>
 
-  <p class="nota">
-    Simulación de crédito. El costo del seguro <strong>varía por vehículo</strong>.
-    Solicita tu cotización en <strong>PDF</strong> para conocer el monto exacto.
-  </p>
+
+
+<ion-grid class="cotizador-native" *ngIf="isNative && edadValida">
+
+  <!-- Header -->
+  <div class="native-head">
+    <div class="native-title">Consigue tu crédito</div>
+    <div class="native-sub">
+      Simulación. El seguro varía por vehículo.
+    </div>
+  </div>
+
+  <!-- Enganche -->
+  <div class="native-card">
+    <div class="native-row">
+      <div>
+        <div class="native-label">Enganche</div>
+        <div class="native-hint">Mínimo {{ engancheMinimoPercent }}%</div>
+      </div>
+
+      <div class="native-badge">
+        {{ engancheMinimoPercent }}%+
+      </div>
+    </div>
+
+    <div class="native-money">
+      <span class="money-prefix">$</span>
+      <ion-input type="number" inputmode="numeric" [value]="enganche" (ionInput)="onEngancheManualChange($event)"
+        [min]="engancheMinimo" [max]="engancheMaximo" class="money-input">
+      </ion-input>
+    </div>
+
+    <div *ngIf="mensajeErrorEnganche" class="native-error">
+      {{ mensajeErrorEnganche }}
+    </div>
+  </div>
+
+  <!-- Plazo -->
+  <div class="native-card" *ngIf="!mensajeErrorEnganche">
+    <div class="native-row">
+      <div>
+        <div class="native-label">Plazo</div>
+        <div class="native-hint">Selecciona meses</div>
+      </div>
+    </div>
+
+    <div class="chips-scroll">
+      <label class="chip" *ngFor="let m of plazosDisponibles">
+        <input type="radio" name="plazoNative" [value]="m" [checked]="plazo === m" (change)="onPlazoChange(m)" />
+        <span class="chip-main">{{ m }}</span>
+        <span class="chip-sub">meses</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Resultado -->
+  <div class="native-card native-result" *ngIf="!mensajeErrorEnganche">
+    <div class="result-left">
+      <div class="result-kicker">Mensualidad desde</div>
+      <div class="result-amount">
+        ${{ calcularMensualidad(plazo) | number:'1.0-0' }}
+        <span>/ mes</span>
+      </div>
+      <div class="result-rate">
+        Tasa <span>{{ getTasa(plazo) | percent:'1.2-2' }}</span>
+      </div>
+    </div>
+
+    <div class="result-right">
+      <div class="pill">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        <span>Seguro variable</span>
+      </div>
+      <div class="pill">
+        <ion-icon name="document-text-outline"></ion-icon>
+        <span>PDF disponible</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer sticky CTA -->
+  <div class="native-cta-wrap" *ngIf="!mensajeErrorEnganche">
+    <button class="native-cta" (click)="enviarCredito()">
+      Solicitar crédito ahora
+    </button>
+    <div class="native-footnote">
+      Al solicitar, te mandamos la cotización en PDF.
+    </div>
+  </div>
+
 </ion-grid>

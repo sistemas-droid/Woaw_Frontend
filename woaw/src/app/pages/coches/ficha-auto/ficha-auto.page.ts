@@ -254,17 +254,16 @@ export class FichaAutoPage implements OnInit {
       this.location.back();
       return;
     }
+    window.history.back();
 
 
-    if (this.tipo === "nuevo") {
-      await this.router.navigate(["/nuevos"]);
-    } else if (this.tipo === "seminuevo") {
-      await this.router.navigate(["/seminuevos"]);
-    } else if (this.tipo === "usado") {
-      await this.router.navigate(["/usados"]);
-    }
-
-
+    // if (this.tipo === "nuevo") {
+    //   await this.router.navigate(["/nuevos"]);
+    // } else if (this.tipo === "seminuevo") {
+    //   await this.router.navigate(["/seminuevos"]);
+    // } else if (this.tipo === "usado") {
+    //   await this.router.navigate(["/usados"]);
+    // }
   }
   volver() {
     // 1) Si Angular tiene navigationId > 1, hubo navegación previa en esta sesión.
@@ -301,7 +300,7 @@ export class FichaAutoPage implements OnInit {
       .subscribe({
         next: (res: any[]) => {
           this.especificacionesAuto = res;
-          console.log('HEYY',this.especificacionesAuto);
+          console.log('HEYY', this.especificacionesAuto);
         },
         error: (err) => {
           this.generalService.loadingDismiss();
@@ -489,6 +488,9 @@ export class FichaAutoPage implements OnInit {
     await modal.present();
   }
   async abrirModalImagen(imagenes: string[], indice: number = 0) {
+    if (this.tipo === 'nuevo') {
+      return;
+    }
     const modal = await this.modalCtrl.create({
       component: ImagenesVehiculoComponent,
       componentProps: { imagenes, indice },

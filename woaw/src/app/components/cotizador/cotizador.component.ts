@@ -4,6 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { GeneralService } from '../../services/general.service';
 import { ContactosService } from './../../services/contactos.service';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-cotizador',
@@ -30,6 +31,9 @@ export class CotizadorComponent implements OnInit {
   disableBtn: boolean = false;
   engancheMinimoPercent = 10;
 
+
+  public isNative = Capacitor.isNativePlatform();
+
   constructor(
     public contactosService: ContactosService,
     private generalService: GeneralService
@@ -46,7 +50,7 @@ export class CotizadorComponent implements OnInit {
       this.edadValida = false;
       return;
     }
-    
+
     // if (!año || año < 2016 || año > añoActual) {
     //   this.edadValida = false;
     //   return;
@@ -109,7 +113,7 @@ export class CotizadorComponent implements OnInit {
   }
 
   get plazosDisponibles(): number[] {
-    const pasos = [12, 24, 36, 48, 60, 72, 84, 96, 108, 120];
+    const pasos = [12, 24, 36, 48, 60, 72, 84, 96, 108, 120].reverse();
     return pasos.filter((p) => p <= this.plazoMaximo);
   }
 
@@ -225,7 +229,10 @@ export class CotizadorComponent implements OnInit {
     return tasaBase;
   }
 
-
+  scrollPlazos(dir: number) {
+    const el = document.querySelector('.opciones-scroll');
+    el?.scrollBy({ left: dir * 120, behavior: 'smooth' });
+  }
 
   enviarCredito(): void {
     this.generalService.confirmarAccion(
@@ -247,4 +254,5 @@ export class CotizadorComponent implements OnInit {
       }
     );
   }
+  
 }

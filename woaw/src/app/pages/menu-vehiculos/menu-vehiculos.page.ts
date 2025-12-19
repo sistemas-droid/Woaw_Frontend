@@ -116,7 +116,7 @@ export class MenuVehiculosPage implements OnInit {
   }
 
   getCarsUsados() {
-    this.carsService.getCarsUsados(5).subscribe({
+    this.carsService.getCarsUsados(10).subscribe({
       next: (res: any) => {
         //  console.log('📦 Objeto recibido del backend (usados):', res);
         this.conUsados = Number(res?.contador ?? 0);
@@ -132,7 +132,7 @@ export class MenuVehiculosPage implements OnInit {
   }
 
   getCarsSeminuevos() {
-    this.carsService.getCarsSeminuevos(5).subscribe({
+    this.carsService.getCarsSeminuevos(10).subscribe({
       next: (res: any) => {
         // console.log('📦 Objeto recibido del backend (seminuevos):', res);
         this.conSeminuevos = Number(res?.contador ?? 0);
@@ -176,7 +176,7 @@ export class MenuVehiculosPage implements OnInit {
 
 
   getCarsNews() {
-    this.carsService.getCarsNews(5).subscribe({
+    this.carsService.getCarsNews(10).subscribe({
       next: (res: any) => {
         //  console.log('📦 Objeto recibido del backend (nuevos):', res);
         this.conNuevos = Number(res?.contador ?? 0);
@@ -198,6 +198,7 @@ export class MenuVehiculosPage implements OnInit {
 
   public irAFichaAuto(id?: string) {
     if (!id) return;
-    this.router.navigate(["/ficha", "autos", id]);
+    // this.router.navigate(["/ficha", "autos", id]);
+    this.router.navigate(['/fichas/autos', id]);
   }
 }

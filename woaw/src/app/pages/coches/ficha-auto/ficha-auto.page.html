@@ -11,27 +11,23 @@
       </ion-title>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button fill="solid" shape="round" *ngIf="!esMio" color="success"
+      <ion-button fill="solid" shape="round" *ngIf="!esMio  && !esDispositivoMovil" color="success"
         (click)="contactosService.contactarWOAW(auto, 'autos')">
-        <!-- <span *ngIf="!esDispositivoMovil">WhatsApp</span> -->
-        WhatsApp
+        <span *ngIf="!esDispositivoMovil">WhatsApp</span>
         <ion-icon slot="start" name="logo-whatsapp"></ion-icon>
       </ion-button>
-      <ion-button fill="solid" shape="round" color="medium" (click)="contactosService.compartirAuto(auto, 'autos')">
-        <!-- <span *ngIf="!esDispositivoMovil">Compartir</span> -->
-        Compartir
+      <ion-button fill="clear" shape="round"  (click)="contactosService.compartirAuto(auto, 'autos')">
+        <span>Compartir</span>
         <ion-icon slot="start" name="share-social-outline"></ion-icon>
       </ion-button>
-      <ion-button fill="solid" shape="round" color="danger" *ngIf="!esMio && tipo === 'nuevo'"
+      <ion-button fill="solid" shape="round" color="danger" *ngIf="!esMio && tipo === 'nuevo' && !esDispositivoMovil"
         (click)="contactosService.ArrendamientoAuto(auto)">
-        <!-- <span *ngIf="!esDispositivoMovil">Arrendar</span> -->
-        Arrendar
-        <ion-icon slot="start" name="logo-model-s"></ion-icon>
+        <span *ngIf="!esDispositivoMovil">Arrendar</span>
+        <ion-icon slot="start" name="car-sport-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 
 <ion-content class="ficha-auto" [fullscreen]="true">
 
@@ -51,24 +47,45 @@
             (touchend)="esDispositivoMovil && onTouchEnd($event)">
             <div class="imagen-principal"
               (click)="abrirModalImagen(auto.imagenes, auto.imagenes.indexOf(imagenSeleccionada)); $event.stopPropagation()">
-              <img [src]="imagenSeleccionada" alt="Imagen principal del auto" (load)="onImagenPrincipalCargada()" />
 
+              <!-- CASO AUTO NUEVO -->
+              <ng-container *ngIf="tipo === 'nuevo'; else imagenNormal">
+                <div class="imagen-nuevo-wrapper">
+                  <!-- fondo -->
+                  <div class="fondo-nuevo"></div>
+
+                  <!-- coche -->
+                  <img class="imagen-auto-nuevo" [src]="imagenSeleccionada" alt="Imagen principal del auto"
+                    (load)="onImagenPrincipalCargada()" />
+                </div>
+              </ng-container>
+
+              <!-- CASO NORMAL -->
+              <ng-template #imagenNormal>
+                <img [src]="imagenSeleccionada" alt="Imagen principal del auto" (load)="onImagenPrincipalCargada()" />
+              </ng-template>
+
+              <!-- loader -->
               <div class="loader_carta" *ngIf="!imagenPrincipalCargada">
                 <div class="spinner_carta"></div>
                 <span class="texto_cargando">Cargando...</span>
               </div>
 
+              <!-- flechas desktop -->
               <ng-container *ngIf="!esDispositivoMovil">
                 <button class="flecha izquierda" (click)="cambiarImagen('anterior'); $event.stopPropagation()"
                   [disabled]="imagenSeleccionada === auto.imagenes[0]">
                   ‹
                 </button>
+
                 <button class="flecha derecha" (click)="cambiarImagen('siguiente'); $event.stopPropagation()"
                   [disabled]="imagenSeleccionada === auto.imagenes[auto.imagenes.length - 1]">
                   ›
                 </button>
               </ng-container>
+
             </div>
+
           </div>
 
           <div class="galeria-inferior">
@@ -93,14 +110,27 @@
             </div>
           </div>
         </div>
+        <ion-col size="12" *ngIf="!esDispositivoMovil">
+          <ion-card class="mapa_admin">
+            <h1 class="text_ubicacion">Ubicación</h1>
+            <div #mapAutoContainer style="width: 100%; height: 300px; border-radius: px;"></div>
+            <ion-card-content style="margin-top: 0.2rem; font-size: 14px; color: #4b5563;">
+              <ion-icon name="location-outline" style="margin-right: 6px;"></ion-icon>
+              {{ direccionCompleta }}
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
       </ion-col>
 
       <!-- PRECIO --- -->
       <ion-col size="12" size-md="6">
         <div *ngIf="auto.estadoVehiculo === 'disponible'" class="card-detalle">
+
           <ion-grid>
             <ion-row>
-              <ion-col size="12" size-md="8">
+
+              <!-- PRICIO  -->
+              <ion-col size="12" size-md="7" class="precio-col">
                 <h2>{{ auto.marca }} {{ auto.modelo }} {{ auto.anio }}</h2>
                 <p class="precio-principal">
                   {{ versionSeleccionada?.nombre }}:
@@ -110,6 +140,20 @@
                   {{ versionSeleccionada?.precio | currency:'MXN':'symbol':'1.0-0'
                   }}
                 </p>
+
+                <p *ngIf="!isLoggedIn" class="mensaje_contacto">
+                  Al contactar estás aceptando el
+                  <strong (click)="aviso(0)">Aviso de Privacidad</strong> y los
+                  <strong (click)="aviso(1)">Términos y condiciones</strong>
+                </p>
+
+              </ion-col>
+
+              <!-- VERSIONES / DESCRIPCIÓN -->
+              <ion-col size="12" size-md="5">
+                <!-- <p class="descripcion-auto" *ngIf="auto.descripcion">
+                  <strong>Descripción:</strong> {{auto.descripcion}}
+                </p> -->
                 <!-- Versiones -->
                 <div class="versiones" *ngIf="tipo === 'nuevo'">
                   <p class="titulo-seccion">Versiones</p>
@@ -119,43 +163,9 @@
                     <span class="precio-version">{{ version.precio | currency:'MXN':'symbol' }}</span>
                   </div>
                 </div>
-
-                <!-- Botón contactar -->
-                <!-- <div class="botones-contacto-responsive">
-                  <button *ngIf="!esMio" (click)="contactosService.contactarWOAW(auto, 'autos')"
-                    class="btn-personalizado success">
-                    <ion-icon name="logo-whatsapp"></ion-icon>
-                    WhatsApp
-                  </button>
-
-                  <button (click)="contactosService.compartirAuto(auto, 'autos')" class="btn-personalizado medium">
-                    <ion-icon name="share-social-outline"></ion-icon>
-                    Compartir
-                  </button>
-
-                  <br />
-                  <button *ngIf="MyRole !== 'admin' && !esMio" class="btn-personalizado danger"
-                    (click)="contactosService.ArrendamientoAuto(auto)">
-                    <ion-icon name="car-sport"></ion-icon>
-                    Arrendar
-                  </button>
-                </div> -->
-
-                <p *ngIf="!isLoggedIn" class="mensaje_contacto">
-                  Al contactar estás aceptando el
-                  <strong (click)="aviso(0)">Aviso de Privacidad</strong> y los
-                  <strong (click)="aviso(1)">Términos y condiciones</strong>
-                </p>
-
-                <p>
-                  {{auto.descripcion}}
-                </p>
-              </ion-col>
-
-              <ion-col size="12" size-md="4">
                 <ion-card class="card-contacto">
                   <!-- VENDEDOR (cuando no hay lote y solo tú/admin lo ven) -->
-                  <ion-card-content *ngIf="auto.lote == null && (MyRole == 'admin' || esMio)"
+                  <!-- <ion-card-content *ngIf="auto.lote == null && (MyRole == 'admin' || esMio)"
                     class="card-contacto__content">
                     <p class="card-contacto__label">Vendedor</p>
 
@@ -173,47 +183,138 @@
                       <ion-icon name="call-outline"></ion-icon>
                       <span>{{ auto.usuarioId.lada }} {{ auto.usuarioId.telefono }}</span>
                     </div>
-                  </ion-card-content>
+                  </ion-card-content> -->
 
-                  <!-- LOTE -->
-                  <ion-card-content *ngIf="auto.lote != null"
-                    class="card-contacto__content card-contacto__content--clickable" (click)="mostrarAutos(auto.lote)">
-                    <p class="card-contacto__label">
-                       {{ auto.lote.nombre }}
-                    </p>
-
-                    <div class="card-lote">
-                      <div class="card-lote__logo">
-                        <ion-avatar>
-                          <img [src]="auto.lote.imagenPrincipal" alt="Logo del lote" />
-                        </ion-avatar>
-                      </div>
-
-                      <div class="card-lote__info">
-                        <div class="card-lote__fila">
-                          <ion-icon name="business-outline"></ion-icon>
-                          <div class="card-lote__nombre">
-                            Lote
-                          </div>
-                        </div>
-
-                        <div class="card-lote__fila">
-                          <ion-icon name="call-outline"></ion-icon>
-                          <span>+52 {{ auto.lote.telefonoContacto }}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </ion-card-content>
                 </ion-card>
+              </ion-col>
+
+              <!-- COTIZADOR  -->
+              <ion-col size="12">
+                <!-- Componente de cotizador Nuevos ☢️ -->
+                <app-cotizador *ngIf="mostrarCotizador" [coche]="auto"
+                  [versionNuevo]="versionSeleccionada?.nombre ?? null"
+                  [precioNuevo]="versionSeleccionada?.precio ?? null">
+                </app-cotizador>
+              </ion-col>
+
+              <!-- ESPESIFICACIONES ---  -->
+              <ion-col size="12" class="specs-col">
+                <ion-grid class="specs-clean">
+
+                  <h4 class="specs-title">Especificaciones del vehículo</h4>
+
+                  <ng-container *ngIf="tipo === 'nuevo'; else usadoSeminuevo">
+                    <ng-container *ngFor="let esp of especificacionesAuto; let i = index">
+
+                      <h5 *ngIf="especificacionesAuto.length > 1" class="version">
+                        Versión {{ i + 1 }}: {{ esp.version }}
+                      </h5>
+
+                      <div class="spec-list">
+                        <div class="spec-item" *ngIf="esp.motor">
+                          <span>Motor</span><span>{{ esp.motor }}</span>
+                        </div>
+
+                        <div class="spec-item" *ngIf="esp.cilindros">
+                          <span>Cilindros</span><span>{{ esp.cilindros }}</span>
+                        </div>
+
+                        <div class="spec-item" *ngIf="esp.traccion">
+                          <span>Tracción</span><span>{{ esp.traccion }}</span>
+                        </div>
+
+                        <div class="spec-item" *ngIf="esp.transmision">
+                          <span>Transmisión</span><span>{{ esp.transmision }}</span>
+                        </div>
+
+                        <div class="spec-item" *ngIf="esp.pasajeros">
+                          <span>Pasajeros</span><span>{{ esp.pasajeros }}</span>
+                        </div>
+
+                        <div class="spec-item" *ngIf="esp.rines">
+                          <span>Rines</span><span>{{ esp.rines }}</span>
+                        </div>
+
+                        <div class="spec-item" *ngIf="esp.anio">
+                          <span>Año</span><span>{{ esp.anio }}</span>
+                        </div>
+                      </div>
+
+                    </ng-container>
+                  </ng-container>
+
+                  <!-- USADO / SEMINUEVO -->
+                  <ng-template #usadoSeminuevo>
+                    <div class="spec-list">
+
+                      <div class="spec-item" *ngIf="auto.lote == null && (MyRole == 'admin' || esMio)">
+                        <span>Vendedor:</span>
+                        <span>
+                          <!-- <ion-icon name="person-circle-outline"></ion-icon> -->
+                          <span>{{ auto.usuarioId.nombre }} {{ auto.usuarioId.apellidos }}</span>
+                          <br>
+                          <!-- <ion-icon name="mail-outline"></ion-icon> -->
+                          <span>{{ auto.usuarioId.email }}</span>
+                          <br>
+                          <!-- <ion-icon name="call-outline"></ion-icon> -->
+                          <span>{{ auto.usuarioId.lada }} {{ auto.usuarioId.telefono }}</span>
+                          <br>
+                        </span>
+                      </div>
+
+                      <div class="spec-item" *ngIf="auto.lote != null">
+                        <span>Lote</span>
+                        <span (click)="mostrarAutos(auto.lote)">
+                          <ion-avatar>
+                            <img [src]="auto.lote.imagenPrincipal" alt="Logo del lote" />
+                          </ion-avatar>
+                          {{ auto.lote.nombre }}
+                        </span>
+                      </div>
+
+                      <div class="spec-item" *ngIf="auto.motor || auto.potencia">
+                        <span>Motor</span>
+                        <span>
+                          {{ auto.motor }}
+                          <ng-container *ngIf="auto.potencia">· {{ auto.potencia }}</ng-container>
+                        </span>
+                      </div>
+
+                      <div class="spec-item" *ngIf="auto.cilindros">
+                        <span>Cilindros</span><span>{{ auto.cilindros }}</span>
+                      </div>
+
+                      <div class="spec-item" *ngIf="auto.traccion">
+                        <span>Tracción</span><span>{{ auto.traccion }}</span>
+                      </div>
+
+                      <div class="spec-item" *ngIf="auto.transmision">
+                        <span>Transmisión</span><span>{{ auto.transmision }}</span>
+                      </div>
+
+                      <div class="spec-item" *ngIf="auto.kilometraje !== null">
+                        <span>Kilometraje</span><span>{{ auto.kilometraje | number }} km</span>
+                      </div>
+
+                      <div class="spec-item" *ngIf="auto.color">
+                        <span>Color</span><span>{{ auto.color }}</span>
+                      </div>
+
+                      <div class="spec-item" *ngIf="auto.anio">
+                        <span>Año</span><span>{{ auto.anio }}</span>
+                      </div>
+                      <div class="spec-item" *ngIf="auto.anio">
+                        <span></span><span>{{ auto.descripcion }}</span>
+                      </div>
+
+                    </div>
+                  </ng-template>
+
+                </ion-grid>
               </ion-col>
 
             </ion-row>
           </ion-grid>
-
-          <!-- Componente de cotizador Nuevos ☢️ -->
-          <app-cotizador *ngIf="mostrarCotizador" [coche]="auto" [versionNuevo]="versionSeleccionada?.nombre ?? null"
-            [precioNuevo]="versionSeleccionada?.precio ?? null">
-          </app-cotizador>
 
         </div>
         <div class="overlay" *ngIf="auto.estadoVehiculo === 'vendido'">
@@ -224,182 +325,12 @@
 
     <!-- ------ ----- ----- ----- ----- ---- ----- ----- ----- ----- ---- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -->
 
-    <ion-row>
-      <!-- ESPESIFICACIONES ---  -->
-      <ion-col size="12" size-lg="6">
-        <div class="especificaciones">
-          <!-- NUEVO -->
-          <ng-container *ngIf="tipo === 'nuevo'; else usadoSeminuevo">
-            <ng-container *ngFor="let esp of especificacionesAuto; let i = index">
-              <div class="espec-compacta">
-                <h4>Especificaciones del vehículo</h4>
-
-                <h5 *ngIf="especificacionesAuto.length > 1">
-                  Versión {{ i + 1 }}: {{ esp.version }}
-                </h5>
-
-                <div class="specs-grid">
-                  <!-- Columna izquierda -->
-                  <div class="spec-col">
-                    <p *ngIf="esp.marca">
-                      <span class="label">Marca:</span>
-                      <span class="value">{{ esp.marca }}</span>
-                    </p>
-
-                    <p *ngIf="esp.modelo">
-                      <span class="label">Modelo:</span>
-                      <span class="value">{{ esp.modelo }}</span>
-                    </p>
-
-                    <p *ngIf="esp.motor">
-                      <span class="label">Motor:</span>
-                      <span class="value">{{ esp.motor }}</span>
-                    </p>
-
-                    <p *ngIf="esp.cilindros">
-                      <span class="label">Cilindros:</span>
-                      <span class="value">{{ esp.cilindros }}</span>
-                    </p>
-
-                    <p *ngIf="esp.traccion">
-                      <span class="label">Tracción:</span>
-                      <span class="value">{{ esp.traccion }}</span>
-                    </p>
-
-                    <p *ngIf="esp.transmision">
-                      <span class="label">Transmisión:</span>
-                      <span class="value">{{ esp.transmision }}</span>
-                    </p>
-                  </div>
-
-                  <!-- Columna derecha -->
-                  <div class="spec-col">
-                    <p *ngIf="esp.puertas">
-                      <span class="label">Puertas:</span>
-                      <span class="value">{{ esp.puertas }}</span>
-                    </p>
-
-                    <p *ngIf="esp.pasajeros">
-                      <span class="label">Pasajeros:</span>
-                      <span class="value">{{ esp.pasajeros }}</span>
-                    </p>
-
-                    <p *ngIf="esp.rines">
-                      <span class="label">Rines:</span>
-                      <span class="value">{{ esp.rines }}</span>
-                    </p>
-
-                    <p *ngIf="esp.combustible">
-                      <span class="label">Combustible:</span>
-                      <span class="value">{{ esp.combustible }}</span>
-                    </p>
-
-                    <p *ngIf="esp.anio">
-                      <span class="label">Año:</span>
-                      <span class="value">{{ esp.anio }}</span>
-                    </p>
-
-                    <p *ngIf="esp.tipoVehiculo">
-                      <span class="label">Tipo:</span>
-                      <span class="value">{{ esp.tipoVehiculo }}</span>
-                    </p>
-                  </div>
-                </div>
-
-                <div class="spec-extra" *ngIf="esp.extra?.length">
-                  <span class="label">Extras:</span>
-                  <span class="value">{{ esp.extra.join(' · ') }}</span>
-                </div>
-              </div>
-            </ng-container>
-          </ng-container>
-
-          <!-- SEMINUEVO / USADO -->
-          <ng-template #usadoSeminuevo>
-            <div class="espec-compacta">
-              <h4>Especificaciones del vehículo</h4>
-
-              <div class="specs-grid">
-                <!-- Columna izquierda -->
-                <div class="spec-col">
-                  <p *ngIf="auto.facturaOriginal">
-                    <span class="label">Factura original</span>
-                    <span class="value">{{ auto.facturaOriginal }}</span>
-                  </p>
-
-                  <p *ngIf="auto.motor || auto.potencia">
-                    <span class="label">Motor:</span>
-                    <span class="value">
-                      <ng-container *ngIf="auto.motor">{{ auto.motor }}</ng-container>
-                      <ng-container *ngIf="auto.potencia"> · {{ auto.potencia }}</ng-container>
-                    </span>
-                  </p>
-
-                  <p *ngIf="auto.cilindros">
-                    <span class="label">Cilindros:</span>
-                    <span class="value">{{ auto.cilindros }}</span>
-                  </p>
-
-                  <p *ngIf="auto.traccion">
-                    <span class="label">Tracción:</span>
-                    <span class="value">{{ auto.traccion }}</span>
-                  </p>
-
-                  <p *ngIf="auto.transmision">
-                    <span class="label">Transmisión:</span>
-                    <span class="value">{{ auto.transmision }}</span>
-                  </p>
-                </div>
-
-                <!-- Columna derecha -->
-                <div class="spec-col">
-                  <p *ngIf="auto.kilometraje !== undefined && auto.kilometraje !== null">
-                    <span class="label">Kilometraje:</span>
-                    <span class="value">{{ auto.kilometraje | number }} km</span>
-                  </p>
-
-                  <p *ngIf="auto.rines">
-                    <span class="label">Rines:</span>
-                    <span class="value">{{ auto.rines }}</span>
-                  </p>
-
-                  <p *ngIf="auto.pasajeros">
-                    <span class="label">Pasajeros:</span>
-                    <span class="value">{{ auto.pasajeros }}</span>
-                  </p>
-
-                  <p *ngIf="auto.color">
-                    <span class="label">Color:</span>
-                    <span class="value">{{ auto.color }}</span>
-                  </p>
-
-                  <p *ngIf="auto.anio">
-                    <span class="label">Año:</span>
-                    <span class="value">{{ auto.anio }}</span>
-                  </p>
-                </div>
-              </div>
-
-              <div class="spec-extra" *ngIf="auto.extra?.length">
-                <span class="label">Extras:</span>
-                <span class="value">{{ auto.extra.join(' · ') }}</span>
-              </div>
-
-              <div class="spec-extra" *ngIf="auto.descripcion">
-                <span class="label">Descripción:</span>
-                <span class="value">{{ auto.descripcion }}</span>
-              </div>
-            </div>
-          </ng-template>
-        </div>
-      </ion-col>
-
-      <!-- MAPA UBICACIÓN ---  -->
-      <ion-col size="12" size-lg="6">
+    <!-- MAPA UBICACIÓN ---  -->
+    <ion-row *ngIf="esDispositivoMovil">
+      <ion-col size="12">
         <ion-card class="mapa_admin">
           <h1 class="text_ubicacion">Ubicación</h1>
           <div #mapAutoContainer style="width: 100%; height: 300px; border-radius: px;"></div>
-          <!-- Dirección debajo del mapa -->
           <ion-card-content style="margin-top: 0.2rem; font-size: 14px; color: #4b5563;">
             <ion-icon name="location-outline" style="margin-right: 6px;"></ion-icon>
             {{ direccionCompleta }}
@@ -417,3 +348,35 @@
   <app-sugerencias [idCar]="idvehiculo"></app-sugerencias>
   <app-footer></app-footer>
 </ion-content>
+
+<ion-footer *ngIf="!esMio && esDispositivoMovil" class="footer-acciones">
+  <ion-toolbar color="dark">
+
+    <ion-grid>
+      <ion-row class="ion-align-items-center ion-justify-content-center">
+
+        <!-- WHATSAPP (solo o acompañado) -->
+        <ion-col [size]="tipo === 'nuevo' ? 6 : 12" class="ion-text-center">
+
+          <ion-button fill="outline" expand="block" color="success" shape="round"
+            (click)="contactosService.contactarWOAW(auto, 'autos')">
+
+            <ion-icon slot="start" name="logo-whatsapp"></ion-icon>
+            WhatsApp
+          </ion-button>
+        </ion-col>
+
+        <!-- ARRENDAR -->
+        <ion-col size="6" *ngIf="tipo === 'nuevo'" class="ion-text-center">
+
+          <ion-button fill="outline" expand="block" color="danger" shape="round" (click)="contactosService.ArrendamientoAuto(auto)">
+            <ion-icon slot="start" name="car-sport-outline"></ion-icon>
+            Arrendar
+          </ion-button>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+
+  </ion-toolbar>
+</ion-footer>

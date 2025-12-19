@@ -1,6 +1,7 @@
 <ion-header translucent>
   <ion-toolbar color="light" class="header-completo">
     <ion-title>Imágenes</ion-title>
+
     <ion-buttons slot="end">
       <ion-button (click)="cancelar()">
         <ion-icon name="close-outline" slot="icon-only"></ion-icon>
@@ -13,97 +14,62 @@
 
   <!-- ✅ MODO RECORTE -->
   <section *ngIf="imagenParaRecortar" class="cropper-mode">
-  <div class="cropper-card">
+    <div class="cropper-card">
 
-    <!-- Header -->
-    <div class="cropper-head">
-      <div class="cropper-head__text">
-        <p class="cropper-title">Ajusta la imagen</p>
+      <!-- Header -->
+      <div class="cropper-head">
+        <div class="cropper-head__text">
+          <p class="cropper-title">Ajusta la imagen</p>
 
-        <div class="cropper-steps">
-          <span class="step">
-            <ion-icon name="move-outline"></ion-icon>
-            Arrastra para encuadrar
-          </span>
+          <div class="cropper-steps">
+            <span class="step">
+              <ion-icon name="move-outline"></ion-icon>
+              Arrastra para encuadrar
+            </span>
 
-          <span class="dot">•</span>
+            <span class="dot">•</span>
 
-          <span class="step">
-            <ion-icon name="search-outline"></ion-icon>
-            Ajusta con zoom
-          </span>
+            <span class="step">
+              <ion-icon name="search-outline"></ion-icon>
+              Ajusta con zoom
+            </span>
 
-          <span class="dot">•</span>
+            <span class="dot">•</span>
 
-          <span class="step strong">
-            Guarda el recorte
-          </span>
+            <span class="step strong">
+              Guarda el recorte
+            </span>
+          </div>
+        </div>
+
+        <!-- Badge -->
+        <!-- <div class="cropper-badge" [class.ready]="cropperReady">
+          <ion-icon [name]="cropperReady ? 'checkmark-circle' : 'time-outline'"></ion-icon>
+          <span>{{ cropperReady ? 'Listo' : 'Cargando…' }}</span>
+        </div> -->
+      </div>
+
+      <!-- Cropper -->
+      <div class="cropper-wrap">
+        <image-cropper [imageFile]="imagenParaRecortar" [maintainAspectRatio]="true" [aspectRatio]="aspectRatio"
+          [containWithinAspectRatio]="true" [cropperStaticWidth]="CROPPER_UI_WIDTH"
+          [cropperStaticHeight]="CROPPER_UI_HEIGHT" [autoCrop]="true" [format]="cropFormat" [outputType]="'blob'"
+          [resizeToWidth]="FINAL_WIDTH" [allowMoveImage]="true" [allowMoveCropper]="false" [transform]="transform"
+          (imageCropped)="onImageCropped($event)" (cropperReady)="onCropperReady()"
+          (loadImageFailed)="onLoadImageFailed()">
+        </image-cropper>
+
+        <!-- Tip flotante (más discreto) -->
+        <div class="cropper-tip">
+          <ion-icon name="hand-left-outline"></ion-icon>
+          <span>Arrastra para acomodar</span>
         </div>
       </div>
 
-      <!-- Badge -->
-      <div class="cropper-badge" [class.ready]="cropperReady">
-        <ion-icon [name]="cropperReady ? 'checkmark-circle' : 'time-outline'"></ion-icon>
-        <span>{{ cropperReady ? 'Listo' : 'Cargando…' }}</span>
-      </div>
+
+
     </div>
-
-    <!-- Cropper -->
-    <div class="cropper-wrap">
-      <image-cropper
-        [imageFile]="imagenParaRecortar"
-        [maintainAspectRatio]="true"
-        [aspectRatio]="aspectRatio"
-        [containWithinAspectRatio]="true"
-        [cropperStaticWidth]="CROPPER_UI_WIDTH"
-        [cropperStaticHeight]="CROPPER_UI_HEIGHT"
-        [autoCrop]="true"
-        [format]="cropFormat"
-        [outputType]="'blob'"
-        [resizeToWidth]="FINAL_WIDTH"
-        [allowMoveImage]="true"
-        [allowMoveCropper]="false"
-        [transform]="transform"
-        (imageCropped)="onImageCropped($event)"
-        (cropperReady)="onCropperReady()"
-        (loadImageFailed)="onLoadImageFailed()">
-      </image-cropper>
-
-      <!-- Tip flotante (más discreto) -->
-      <div class="cropper-tip">
-        <ion-icon name="hand-left-outline"></ion-icon>
-        <span>Arrastra para acomodar</span>
-      </div>
-    </div>
-
-    <!-- Zoom -->
-    <div class="zoom-row">
-      <div class="zoom-label">
-        <div class="zoom-left">
-          <ion-icon name="search-outline"></ion-icon>
-          <span>Zoom</span>
-          <span class="zoom-mini">{{ zoom | number:'1.0-2' }}x</span>
-        </div>
-
-        <span class="zoom-hint">Más detalle / más espacio</span>
-      </div>
-
-      <ion-range
-        class="zoom-range"
-        [min]="ZOOM_MIN"
-        [max]="ZOOM_MAX"
-        step="0.02"
-        [value]="zoom"
-        (ionChange)="onZoomChange($event)">
-      </ion-range>
-
-      <p class="zoom-help">
-        * Ajusta el encuadre sin perder la proporción.
-      </p>
-    </div>
-
-  </div>
-</section>
+  </section>
 
   <!-- ✅ TU UI NORMAL -->
   <ng-container *ngIf="!imagenParaRecortar">
@@ -111,8 +77,8 @@
     <div class="campo campo-principal">
       <label class="etiqueta">Imagen principal *</label>
 
-      <input type="file" id="fileInputPrincipal" accept="image/*"
-             (change)="seleccionarImagenPrincipal($event)" hidden />
+      <input type="file" id="fileInputPrincipal" accept="image/*" (change)="seleccionarImagenPrincipal($event)"
+        hidden />
 
       <label class="preview-placeholder" for="fileInputPrincipal" *ngIf="!imagenPrincipalMostrada">
         <ion-icon name="image-outline"></ion-icon>
@@ -120,8 +86,7 @@
 
       <div class="preview-container" *ngIf="imagenPrincipalMostrada">
         <img [src]="imagenPrincipalMostrada" class="preview-img" />
-        <ion-icon name="close-circle" class="icono-borrar-principal"
-                  (click)="eliminarImagenPrincipal()"></ion-icon>
+        <ion-icon name="close-circle" class="icono-borrar-principal" (click)="eliminarImagenPrincipal()"></ion-icon>
       </div>
     </div>
 
@@ -129,18 +94,15 @@
       <label class="etiqueta">Imágenes secundarias (máx. 10)</label>
 
       <input type="file" id="fileInputSecundario" accept="image/*" multiple
-             (change)="seleccionarImagenesSecundarias($event)" hidden />
+        (change)="seleccionarImagenesSecundarias($event)" hidden />
 
       <div class="imagenes-secundarias">
         <div class="preview-wrapper" *ngFor="let img of imagenesSecundariasMostradas; let i = index">
           <img [src]="img" class="preview-img-mini" />
-          <ion-icon name="close-circle" class="icono-borrar"
-                    (click)="eliminarImagenSecundaria(i)"></ion-icon>
+          <ion-icon name="close-circle" class="icono-borrar" (click)="eliminarImagenSecundaria(i)"></ion-icon>
         </div>
 
-        <label class="add-more-placeholder"
-               *ngIf="imagenesSecundariasMostradas.length < 10"
-               for="fileInputSecundario">
+        <label class="add-more-placeholder" *ngIf="imagenesSecundariasMostradas.length < 10" for="fileInputSecundario">
           <ion-icon name="add-outline"></ion-icon>
         </label>
       </div>
@@ -152,27 +114,48 @@
 
 <ion-footer>
   <ion-toolbar>
-    <div class="botones-footer">
 
-      <!-- ✅ CANCELAR: cambia según modo -->
-      <ion-button
-        color="dark"
-        expand="block"
-        (click)="imagenParaRecortar ? cancelarRecorte() : cancelar()">
-        <ion-icon name="close-outline" slot="start"></ion-icon>
-        Cancelar
-      </ion-button>
+    <div class="footer-wrap">
 
-      <!-- ✅ GUARDAR: si estás recortando, guarda recorte; si no, guarda imágenes -->
-      <ion-button
-        color="danger"
-        expand="block"
-        [disabled]="imagenParaRecortar ? !cropperReady : false"
-        (click)="imagenParaRecortar ? aplicarRecorte() : confirmar()">
-        <ion-icon name="save-outline" slot="start"></ion-icon>
-        {{ imagenParaRecortar ? 'Guardar recorte' : 'Guardar imágenes' }}
-      </ion-button>
+      <!-- 🔵 ZONA ZOOM -->
+      <div class="footer-zoom" *ngIf="imagenParaRecortar">
+        <div class="zoom-row">
+          <div class="zoom-label">
+            <div class="zoom-left">
+              <ion-icon name="search-outline"></ion-icon>
+              <span>Zoom</span>
+              <span class="zoom-mini">{{ zoom | number:'1.0-2' }}x</span>
+            </div>
+
+            <span class="zoom-hint">Más detalle / más espacio</span>
+          </div>
+
+          <ion-range class="zoom-range" color="danger" [min]="ZOOM_MIN" [max]="ZOOM_MAX" step="0.02" [value]="zoom"
+            (ionChange)="onZoomChange($event)">
+          </ion-range>
+
+          <p class="zoom-help">
+            * Ajusta el encuadre sin perder la proporción.
+          </p>
+        </div>
+      </div>
+
+      <!-- 🔴 ZONA BOTONES -->
+      <div class="footer-actions">
+        <ion-button color="dark" (click)="imagenParaRecortar ? cancelarRecorte() : cancelar()">
+          <ion-icon name="close-outline" slot="start"></ion-icon>
+          Cancelar
+        </ion-button>
+
+        <ion-button color="danger" [disabled]="imagenParaRecortar ? !cropperReady : false"
+          (click)="imagenParaRecortar ? aplicarRecorte() : confirmar()">
+          <ion-icon name="save-outline" slot="start"></ion-icon>
+          Guardar recorte
+        </ion-button>
+      </div>
+
 
     </div>
+
   </ion-toolbar>
 </ion-footer>

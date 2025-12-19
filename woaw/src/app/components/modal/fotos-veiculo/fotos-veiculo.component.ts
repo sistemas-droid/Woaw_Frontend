@@ -51,7 +51,7 @@ export class FotosVeiculoComponent implements OnInit {
   CROPPER_UI_HEIGHT = Math.round(this.CROPPER_UI_WIDTH / this.aspectRatio); // ~267
 
   // ✅✅ ZOOM SOLO PARA ALEJAR (NO ACERCAR)
-readonly ZOOM_MIN = 0.7;
+readonly ZOOM_MIN = 0.4;
 readonly ZOOM_MAX = 1.6;
 
 zoom = 1.0;
@@ -84,7 +84,7 @@ transform: any = { scale: 1.0, rotate: 0 };
     this.croppedBlob = null;
 
     // ✅ reset zoom (por defecto "normal", sin acercar)
-    this.zoom = this.ZOOM_MAX;
+    this.zoom = (this.ZOOM_MIN + this.ZOOM_MAX) / 2;
     this.transform = { scale: this.zoom, rotate: 0 };
   }
 

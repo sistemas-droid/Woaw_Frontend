@@ -64,7 +64,7 @@
           <!-- USADOS -->
           <section class="cars-section">
             <div class="cars-scroll">
-              <article class="car-card" *ngFor="let a of autosUsados | slice:0:5; trackBy: trackById"
+              <article class="car-card" *ngFor="let a of autosUsados | slice:0:10; trackBy: trackById"
                 (click)="irAFichaAuto(a._id)">
                 <div class="card-media">
                   <img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
@@ -94,7 +94,7 @@
           <!-- SEMINUEVOS -->
           <section class="cars-section">
             <div class="cars-scroll">
-              <article class="car-card" *ngFor="let a of autosSeminuevos | slice:0:5; trackBy: trackById"
+              <article class="car-card" *ngFor="let a of autosSeminuevos | slice:0:10; trackBy: trackById"
                 (click)="irAFichaAuto(a._id)">
                 <div class="card-media">
 
@@ -126,7 +126,7 @@
           <!-- NUEVOS -->
           <section class="cars-section">
             <div class="cars-scroll">
-              <article class="car-card" *ngFor="let a of autosNuevos | slice:0:5; trackBy: trackById"
+              <article class="car-card" *ngFor="let a of autosNuevos | slice:0:10; trackBy: trackById"
                 (click)="irAFichaAuto(a._id)">
                 <div class="card-media">
                   <img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
