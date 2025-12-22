@@ -68,6 +68,7 @@ export class PrincipalComponent implements OnInit {
   public img2: string = '';
   public img3: string = '';
 
+  private self: number = 0;
 
   public isNative = Capacitor.isNativePlatform();
 
@@ -91,6 +92,11 @@ export class PrincipalComponent implements OnInit {
     // this.getMotos();
     this.cargaimagen();
 
+    if (this.isNative) {
+      this.self = 7;
+    } else {
+      this.self = 5;
+    }
 
   }
 
@@ -268,7 +274,7 @@ export class PrincipalComponent implements OnInit {
 
 
   getCarsUsados() {
-    this.carsService.getCarsUsados(5).subscribe({
+    this.carsService.getCarsUsados(this.self).subscribe({
       next: (res: any) => {
         //  console.log('📦 Objeto recibido del backend (usados):', res);
         this.conUsados = Number(res?.contador ?? 0);
@@ -282,9 +288,9 @@ export class PrincipalComponent implements OnInit {
       },
     });
   }
- 
+
   getCarsSeminuevos() {
-    this.carsService.getCarsSeminuevos(5).subscribe({
+    this.carsService.getCarsSeminuevos(this.self).subscribe({
       next: (res: any) => {
         // console.log('📦 Objeto recibido del backend (seminuevos):', res);
         this.conSeminuevos = Number(res?.contador ?? 0);
@@ -299,7 +305,7 @@ export class PrincipalComponent implements OnInit {
     });
   }
   getCarsNews() {
-    this.carsService.getCarsNews(5).subscribe({
+    this.carsService.getCarsNews(this.self).subscribe({
       next: (res: any) => {
         //  console.log('📦 Objeto recibido del backend (nuevos):', res);
         this.conNuevos = Number(res?.contador ?? 0);

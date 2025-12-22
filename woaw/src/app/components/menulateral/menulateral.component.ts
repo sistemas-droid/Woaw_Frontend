@@ -7,6 +7,7 @@ import { Subscription } from "rxjs";
 import { SpinnerComponent } from "../../components/spinner/spinner.component";
 import { GeneralService } from "../../services/general.service";
 import { PerfilComponent } from "../modal/perfil/perfil.component";
+import { Capacitor } from '@capacitor/core';
 
 // ✅ AGREGA 'admin'
 type SectionKey =
@@ -31,6 +32,8 @@ export class MenulateralComponent implements OnInit, OnDestroy {
 
   private readonly MENU_CLOSE_DELAY_MS = 250;
   private subs: Subscription[] = [];
+
+    public isNative = Capacitor.isNativePlatform();
 
   private readonly ALLOWED_ROLES = new Set(["admin", "vendedor", "lotero"]);
 

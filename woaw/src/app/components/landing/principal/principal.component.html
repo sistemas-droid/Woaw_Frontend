@@ -47,7 +47,7 @@
     </article>
   </div> -->
 
-  <ion-grid class="contenedor">
+  <ion-grid class="contenedor_web" *ngIf="!isNative">
     <ion-row>
       <ion-col size="12" size-md="3">
         <section class="contenedor_cratas_home">
@@ -200,6 +200,168 @@
 
       </ion-col>
     </ion-row>
+  </ion-grid>
+
+  <ion-grid class="contenedor_native" *ngIf="isNative">
+
+    <!-- TOP: Categorías (3 cards) — NO TOCAR -->
+    <div class="native-cats">
+      <ion-card class="cat used" button (click)="redirecion('/usados')">
+        <ion-card-header>
+          <ion-card-subtitle>Autos</ion-card-subtitle>
+          <ion-card-title>
+            Usados
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-card-title>
+        </ion-card-header>
+        <!-- <ion-card-content>
+          <ion-button size="small" fill="solid" color="medium">Ver ofertas</ion-button>
+        </ion-card-content> -->
+      </ion-card>
+
+      <ion-card class="cat semi" button (click)="redirecion('/seminuevos')">
+        <ion-card-header>
+          <ion-card-subtitle>Autos</ion-card-subtitle>
+          <ion-card-title>Seminuevos
+            <ion-icon name="arrow-forward"></ion-icon></ion-card-title>
+        </ion-card-header>
+        <!-- <ion-card-content>
+          <ion-button size="small" fill="solid" color="light">Explorar</ion-button>
+        </ion-card-content> -->
+      </ion-card>
+
+      <ion-card class="cat new" button (click)="redirecion('/nuevos')">
+        <ion-card-header>
+          <ion-card-subtitle>Autos</ion-card-subtitle>
+          <ion-card-title>Nuevos
+            <ion-icon name="arrow-forward"></ion-icon></ion-card-title>
+        </ion-card-header>
+        <!-- <ion-card-content>
+          <ion-button size="small" fill="solid" color="light">Ver catálogo</ion-button>
+        </ion-card-content> -->
+      </ion-card>
+    </div>
+
+    <!-- ===================== USADOS ===================== -->
+    <div class="native-section">
+      <div class="native-head">
+        <ion-text>
+          <h2>Usados</h2>
+        </ion-text>
+        <ion-button fill="clear" color="danger" size="small" (click)="redirecion('usados')">
+          Ver más
+          <ion-icon name="caret-forward-circle-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="native-scroll">
+        <ion-card class="car" button *ngFor="let a of (autosUsados | slice:0:7); trackBy: trackById"
+          (click)="irAFichaAuto(a._id)">
+
+          <div class="media">
+            <ion-img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
+              [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'"></ion-img>
+            <!-- <ion-chip class="badge badge-danger">
+              <ion-label>Usado</ion-label>
+            </ion-chip> -->
+
+          </div>
+
+          <ion-card-content class="body">
+            <div class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</div>
+            <div class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="car more" button (click)="redirecion('usados')">
+          <ion-card-content class="more-inner">
+            <ion-icon name="arrow-forward-outline" color="danger"></ion-icon>
+            <div class="more-text">Ver más</div>
+            <div class="more-count">{{ conUsados }} disponibles</div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <!-- ===================== SEMINUEVOS ===================== -->
+    <div class="native-section">
+      <div class="native-head">
+        <ion-text>
+          <h2>Seminuevos</h2>
+        </ion-text>
+        <ion-button fill="clear" color="danger" size="small" (click)="redirecion('seminuevos')">
+          Ver más
+          <ion-icon name="caret-forward-circle-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="native-scroll">
+        <ion-card class="car" button *ngFor="let a of (autosSeminuevos | slice:0:7); trackBy: trackById"
+          (click)="irAFichaAuto(a._id)">
+
+          <div class="media">
+            <ion-img [src]="getImagen(a)" [alt]="a.marca + ' ' + a.modelo" (ionError)="onImgError($event, a)"></ion-img>
+            <!-- <ion-chip class="badge badge-warning">
+              <ion-label>Seminuevo</ion-label>
+            </ion-chip> -->
+          </div>
+
+          <ion-card-content class="body">
+            <div class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</div>
+            <div class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="car more" button (click)="redirecion('seminuevos')">
+          <ion-card-content class="more-inner">
+            <ion-icon name="arrow-forward-outline" color="danger"></ion-icon>
+            <div class="more-text">Ver más</div>
+            <div class="more-count">{{ conSeminuevos }} disponibles</div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <!-- ===================== NUEVOS ===================== -->
+    <div class="native-section">
+      <div class="native-head">
+        <ion-text>
+          <h2>Nuevos</h2>
+        </ion-text>
+        <ion-button fill="clear" color="danger" size="small" (click)="redirecion('nuevos')">
+          Ver más
+          <ion-icon name="caret-forward-circle-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="native-scroll">
+        <ion-card class="car" button *ngFor="let a of (autosNuevos | slice:0:7); trackBy: trackById"
+          (click)="irAFichaAuto(a._id)">
+
+          <div class="media">
+            <ion-img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
+              [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'"></ion-img>
+            <!-- <ion-chip class="badge badge-success">
+              <ion-label>Nuevo</ion-label>
+            </ion-chip> -->
+          </div>
+
+          <ion-card-content class="body">
+            <div class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</div>
+            <div class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="car more" button (click)="redirecion('nuevos')">
+          <ion-card-content class="more-inner">
+            <ion-icon name="arrow-forward-outline" color="danger"></ion-icon>
+            <div class="more-text">Ver más</div>
+            <div class="more-count">{{ conNuevos }} disponibles</div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
   </ion-grid>
 </section>
 
