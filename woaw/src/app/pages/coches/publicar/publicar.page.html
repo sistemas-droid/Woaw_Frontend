@@ -135,23 +135,57 @@
               <!-- Imágenes -->
               <ion-col size="12" size-md="6" class="box" *ngIf="tipoSeleccionado !== ''">
 
-                <ion-button expand="block" color="danger" shape="round" (click)="seleccionarImagenes()">
-                  <ion-icon name="image-outline" slot="start"></ion-icon>
-                  Seleccionar Imágenes
+  <!-- =======================
+        BOTÓN IMÁGENES (tuyo)
+  ======================= -->
+  <ion-button expand="block" color="danger" shape="round" (click)="seleccionarImagenes()">
+    <ion-icon name="image-outline" slot="start"></ion-icon>
+    Seleccionar Imágenes
 
-                  <label class="radio-validacion" [class.activo]="imagenesValidas" [class.inactivo]="!imagenesValidas">
-                    <span class="radio-custom"></span>
-                    <ion-icon name="checkmark-outline"></ion-icon>
-                  </label>
-                </ion-button>
+    <label class="radio-validacion" [class.activo]="imagenesValidas" [class.inactivo]="!imagenesValidas">
+      <span class="radio-custom"></span>
+      <ion-icon name="checkmark-outline"></ion-icon>
+    </label>
+  </ion-button>
 
+  <button *ngIf="imagenesIntentadas" class="btn-limpiar" (click)="limpiarImagenes()">
+    <ion-icon name="trash-outline"></ion-icon>
+    Imágenes
+  </button>
 
-                <button *ngIf="imagenesIntentadas" class="btn-limpiar" (click)="limpiarImagenes()">
-                  <ion-icon name="trash-outline"></ion-icon>
-                  Imágenes
-                </button>
+  <!-- =======================
+        BOTÓN VIDEO (nuevo)
+  ======================= -->
+  <ion-button
+    expand="block"
+    color="danger"
+    shape="round"
+    class="mt-10"
+    (click)="videoInput.click()"
+  >
+    <ion-icon name="videocam-outline" slot="start"></ion-icon>
+    Seleccionar Video
 
-              </ion-col>
+    <label class="radio-validacion" [class.activo]="videoValido" [class.inactivo]="!videoValido">
+      <span class="radio-custom"></span>
+      <ion-icon name="checkmark-outline"></ion-icon>
+    </label>
+  </ion-button>
+
+  <input
+    #videoInput
+    type="file"
+    accept="video/*"
+    hidden
+    (change)="onVideoSelected($event)"
+  />
+
+  <button *ngIf="videoIntentado" class="btn-limpiar" (click)="limpiarVideo()">
+    <ion-icon name="trash-outline"></ion-icon>
+    Video
+  </button>
+
+</ion-col>
             </ion-row>
           </ion-grid>
         </ion-col>
