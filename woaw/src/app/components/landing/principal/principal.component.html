@@ -204,43 +204,94 @@
 
   <ion-grid class="contenedor_native" *ngIf="isNative">
 
-    <!-- TOP: Categorías (3 cards) — NO TOCAR -->
     <div class="native-cats">
-      <ion-card class="cat used" button (click)="redirecion('/usados')">
+
+        <!-- USADOS -->
+        <ion-card class="cat used" button (click)="redirecion('/usados')">
+          <ion-img src="/assets/home/cartasHome3.webp" class="bg-card card-1"></ion-img>
+          <ion-card-header>
+            <ion-card-subtitle>Autos</ion-card-subtitle>
+            <ion-card-title>
+              Usados
+              <ion-icon name="arrow-forward"></ion-icon>
+            </ion-card-title>
+          </ion-card-header>
+        </ion-card>
+
+        <!-- SEMINUEVOS -->
+        <ion-card class="cat semi" button (click)="redirecion('/seminuevos')">
+          <ion-img src="/assets/home/cartasHome2.webp" class="bg-card card-1"></ion-img>
+          <ion-card-header>
+            <ion-card-subtitle>Autos</ion-card-subtitle>
+            <ion-card-title>
+              Seminuevos
+              <ion-icon name="arrow-forward"></ion-icon>
+            </ion-card-title>
+          </ion-card-header>
+        </ion-card>
+
+        <!-- NUEVOS -->
+        <ion-card class="cat new" button (click)="redirecion('/nuevos')">
+          <ion-img src="/assets/home/cartasHome1.webp" class="bg-card card-1"></ion-img>
+          <ion-card-header>
+            <ion-card-subtitle>Autos</ion-card-subtitle>
+            <ion-card-title>
+              Nuevos
+              <ion-icon name="arrow-forward"></ion-icon>
+            </ion-card-title>
+          </ion-card-header>
+        </ion-card>
+
+      <!-- SEGUROS -->
+      <ion-card class="cat seg" button (click)="redirecion('/seguros/disponibles')">
+        <ion-img src="/assets/home/se.png" class="bg-card card-2"></ion-img>
         <ion-card-header>
-          <ion-card-subtitle>Autos</ion-card-subtitle>
+          <ion-card-subtitle>Cotiza</ion-card-subtitle>
           <ion-card-title>
-            Usados
+            Seguros
             <ion-icon name="arrow-forward"></ion-icon>
           </ion-card-title>
         </ion-card-header>
-        <!-- <ion-card-content>
-          <ion-button size="small" fill="solid" color="medium">Ver ofertas</ion-button>
-        </ion-card-content> -->
       </ion-card>
 
-      <ion-card class="cat semi" button (click)="redirecion('/seminuevos')">
+      <!-- MOTOS -->
+      <ion-card class="cat motos" button (click)="redirecion('/m-nuevos')">
+        <ion-img src="/assets/home/mto.png" class="bg-card card-2"></ion-img>
         <ion-card-header>
-          <ion-card-subtitle>Autos</ion-card-subtitle>
-          <ion-card-title>Seminuevos
-            <ion-icon name="arrow-forward"></ion-icon></ion-card-title>
+          <ion-card-subtitle>Explora</ion-card-subtitle>
+          <ion-card-title>
+            Motos
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-card-title>
         </ion-card-header>
-        <!-- <ion-card-content>
-          <ion-button size="small" fill="solid" color="light">Explorar</ion-button>
-        </ion-card-content> -->
       </ion-card>
 
-      <ion-card class="cat new" button (click)="redirecion('/nuevos')">
+      <!-- CAMIONES -->
+      <ion-card class="cat cam" button (click)="redirecion('/camiones/todos')">
+        <ion-img src="/assets/home/A3.webp" class="bg-card card-2"></ion-img>
         <ion-card-header>
-          <ion-card-subtitle>Autos</ion-card-subtitle>
-          <ion-card-title>Nuevos
-            <ion-icon name="arrow-forward"></ion-icon></ion-card-title>
+          <ion-card-subtitle>Soluciones</ion-card-subtitle>
+          <ion-card-title>
+            Camiones
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-card-title>
         </ion-card-header>
-        <!-- <ion-card-content>
-          <ion-button size="small" fill="solid" color="light">Ver catálogo</ion-button>
-        </ion-card-content> -->
       </ion-card>
+
+      <!-- ARRENDAMIENTO -->
+      <ion-card class="cat arr" button (click)="redirecion('/arrendamiento')">
+        <ion-img src="/assets/home/ca.png" class="bg-card card-2"></ion-img>
+        <ion-card-header>
+          <ion-card-subtitle>Estrena</ion-card-subtitle>
+          <ion-card-title>
+            Arrendamiento
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
     </div>
+
 
     <!-- ===================== USADOS ===================== -->
     <div class="native-section">

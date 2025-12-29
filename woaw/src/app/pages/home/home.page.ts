@@ -72,6 +72,16 @@ export class HomePage implements OnInit, OnDestroy {
     '/assets/home/P2.webp',
   ];
 
+  heroImages: string[] = [
+    '/assets/home/H1.png',
+    '/assets/home/H2.png',
+    '/assets/home/H3.png',
+    '/assets/home/H4.png',
+  ];
+  heroImage = this.heroImages[0];
+  private heroIndex = 0;
+  private heroInterval: any;
+
   imgenPrincipal: string = '';
   siguienteImagen: string = '';
   videoSrc: string = '';
@@ -110,6 +120,7 @@ export class HomePage implements OnInit, OnDestroy {
       this.textoIndex = (this.textoIndex + 1) % this.totalTextos;
     }, 10000);
     this.gatTiposVeiculos();
+    this.startHeroRotation();
   }
 
 
@@ -118,6 +129,9 @@ export class HomePage implements OnInit, OnDestroy {
     // Limpiar el intervalo cuando el componente se destruya
     if (this.imageRotationInterval) {
       clearInterval(this.imageRotationInterval);
+    }
+    if (this.heroInterval) {
+      clearInterval(this.heroInterval);
     }
   }
 
@@ -380,6 +394,17 @@ export class HomePage implements OnInit, OnDestroy {
       }
     }, 10000);
   }
+  public redirecion(url: string) {
+    this.router.navigate([url]);
+  }
 
+  private startHeroRotation() {
+    this.heroInterval = setInterval(() => {
+      this.heroIndex =
+        (this.heroIndex + 1) % this.heroImages.length;
+
+      this.heroImage = this.heroImages[this.heroIndex];
+    }, 8000);
+  }
 
 }

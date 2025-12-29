@@ -16,26 +16,26 @@
         </span> -->
 
         <!-- Botón lupa para mostrar buscador -->
-        <ion-button fill="clear" class="btn-buscar" *ngIf="!mostrarBuscador  && !estaEnHome && esDispositivoMovil"
+        <ion-button fill="clear" class="btn-buscar" *ngIf="!mostrarBuscador   && esDispositivoMovil"
           (click)="mostrarBuscador = true">
           <ion-icon name="search-outline"></ion-icon>
         </ion-button>
 
         <!-- Botón cerrar buscador -->
-        <ion-button fill="clear" class="btn-buscar" *ngIf="mostrarBuscador && !estaEnHome && esDispositivoMovil"
+        <ion-button fill="clear" class="btn-buscar" *ngIf="mostrarBuscador  && esDispositivoMovil"
           (click)="cerrarBuscador()">
           <ion-icon name="close-outline"></ion-icon>
         </ion-button>
       </div>
 
       <!-- Searchbar solo visible si mostrarBuscador está activo -->
-      <div class="buscador-container" *ngIf="!estaEnHome && !esDispositivoMovil">
+      <div class="buscador-container" *ngIf=" !esDispositivoMovil">
         <ion-searchbar [(ngModel)]="terminoBusqueda" (ionInput)="onInputChange($event)"
           (keyup.enter)="irABusqueda(terminoBusqueda)" placeholder="Busca por marca, modelo o año" animated="true">
         </ion-searchbar>
       </div>
 
-      <div class="buscador-container" *ngIf="mostrarBuscador && !estaEnHome && esDispositivoMovil">
+      <div class="buscador-container" *ngIf="mostrarBuscador &&  esDispositivoMovil">
         <ion-searchbar [(ngModel)]="terminoBusqueda" (ionInput)="onInputChange($event)"
           (keyup.enter)="irABusqueda(terminoBusqueda)" placeholder="Busca por marca, modelo o año" animated="true">
         </ion-searchbar>

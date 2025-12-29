@@ -830,14 +830,12 @@
 
   .contenedor_native {
 
-    padding: 10px 10px 10px;
+    padding: 6px 6px 6px;
 
 
     .native-cats {
-      display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: 42%;
-      gap: 10px;
+      display: flex;
+      gap: 8px;
       overflow-x: auto;
       padding-bottom: 6px;
       -webkit-overflow-scrolling: touch;
@@ -846,14 +844,76 @@
         display: none;
       }
 
+      ion-card {
+        flex: 0 0 130px;
+        height: 60px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      ion-card-subtitle {
+        font-size: 13px;
+        font-weight: 500;
+      }
+
       ion-card-title {
+        margin-top: -2px;
         display: flex;
         align-items: center;
-        gap: 6px; 
+        gap: 1px;
+        font-size: 14px;
+        font-weight: 800;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       ion-card-title ion-icon {
-        font-size: 1rem; 
+        font-size: 9px;
+        flex: 0 0 auto;
+      }
+
+      .bg-card {
+        position: absolute;
+        right: 5px;
+        bottom: -3px;
+        opacity: 0.7;
+        pointer-events: none;
+        z-index: 1;
+        display: block;
+        object-fit: contain;
+
+        &.card-1 {
+          width: 48px;
+          height: 48px;
+
+          @media (max-width: 360px) {
+            width: 46px;
+            height: 46px;
+          }
+
+          @media (min-width: 768px) {
+            width: 72px;
+            height: 72px;
+          }
+        }
+
+        &.card-2 {
+          width: 74px;
+          height: 74px;
+          right: 0px;
+          bottom: -20px;
+
+          @media (max-width: 360px) {
+            width: 70px;
+            height: 70px;
+          }
+
+          @media (min-width: 768px) {
+            width: 90px;
+            height: 90px;
+          }
+        }
       }
 
 
@@ -862,6 +922,11 @@
         border-radius: 16px;
         overflow: hidden;
         color: #fff;
+
+        ion-card-header {
+          position: relative;
+          z-index: 2;
+        }
 
         ion-card-title,
         ion-card-subtitle {
@@ -879,8 +944,25 @@
         &.new {
           background: var(--ion-color-danger);
         }
+
+        &.seg {
+          background: #064ced;
+        }
+
+        &.arr {
+          background: #ea0101;
+        }
+
+        &.motos {
+          background: #25b405;
+        }
+
+        &.cam {
+          background: #020617;
+        }
       }
     }
+
 
     /* ===== Secciones ===== */
     .native-section {

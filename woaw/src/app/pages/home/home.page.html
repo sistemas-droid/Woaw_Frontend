@@ -4,7 +4,7 @@
 
   <!-- <app-home-woalft></app-home-woalft> -->
 
-  <div class="goautos-bg">
+  <div class="woaw-bg" *ngIf="!isNative">
     <div class="overlay-container">
       <!-- Overlay principal -->
       <div class="overlay" [class.loaded]="overlayLoaded" [ngStyle]="overlayLoaded ? {
@@ -75,6 +75,94 @@
 
     </div>
   </div>
+
+  <!-- HERO NATIVO -->
+  <section class="native-hero" *ngIf="isNative">
+
+    <div class="native-hero__content">
+      <div class="native-hero__bg-img" [ngStyle]="{ 'background-image': 'url(' + heroImage + ')' }"></div>
+
+      <!-- Copy -->
+      <div class="native-hero__copy">
+        <h1 class="native-hero__title">Compra y acelera</h1>
+        <p class="native-hero__subtitle">Encuentra tu próximo auto en segundos.</p>
+      </div>
+
+      <!-- Search -->
+      <!-- <div class="native-hero__search">
+        <ion-searchbar [(ngModel)]="terminoBusqueda" (ionInput)="onInputChange($event)"
+          (keyup.enter)="irABusqueda(terminoBusqueda)" placeholder="Escribe marca, modelo o tipo..." animated="true"
+          mode="ios"></ion-searchbar>
+      </div> -->
+
+      <!-- Chips tipos -->
+      <!-- <div class="native-hero__chips">
+        <button class="chip" *ngFor="let tipo of TiposVeiculo" (click)="buscarPorTipo(tipo)">
+          {{ tipo }}
+        </button>
+      </div> -->
+
+      <!-- Marcas -->
+      <div class="native-hero__brands">
+        <div class="brand" (click)="irABusqueda('nissan')">
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/nissan-1752250741191.png" alt="Nissan" />
+        </div>
+        <div class="brand" (click)="irABusqueda('chevrolet')">
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/chevrolet-1752250726132.png" alt="Chevrolet" />
+        </div>
+        <div class="brand" (click)="irABusqueda('honda')">
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/honda-1752250731294.png" alt="Honda" />
+        </div>
+        <div class="brand" (click)="irABusqueda('volkswagen')">
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/volkswagen-1752250719366.png"
+            alt="Volkswagen" />
+        </div>
+        <div class="brand" (click)="irABusqueda('kia')">
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/kia-1752250740506.png" alt="Kia" />
+        </div>
+        <div class="brand" (click)="irABusqueda('hyundai')">
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/hyundai-1752250721333.png" alt="Hyundai" />
+        </div>
+        <div class="brand" (click)="irABusqueda('bmw')">
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/bmw-1752250746130.png" alt="BMW" />
+        </div>
+      </div>
+
+      <!-- CTA rápido -->
+      <div class="native-hero__cta">
+        <button class="cta-primary" (click)="redirecion('/new-car')">
+          Poblica tu vehículo
+          <ion-icon name="arrow-forward-outline"></ion-icon>
+        </button>
+
+        <button class="cta-ghost" (click)="redirecion('/arrendamiento')">
+          Arrendamiento
+        </button>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <app-principal #principal></app-principal>
 
