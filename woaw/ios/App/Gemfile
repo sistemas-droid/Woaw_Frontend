@@ -1,0 +1,4 @@
+source "https://rubygems.org"
+
+gem "xcodeproj", github: "CocoaPods/Xcodeproj"
+gem "cocoapods", github: "CocoaPods/CocoaPods"
