@@ -403,6 +403,69 @@ export class PublicarPage implements OnInit {
     }
   }
 
+  videoValido = false;
+videoIntentado = false;
+videoFile: File | null = null;
+
+MAX_VIDEO_MB = 50;
+MAX_VIDEO_SECONDS = 30;
+
+onVideoSelected(event: Event) {
+  this.videoIntentado = true;
+
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+
+  if (!file) {
+    this.resetVideo();
+    return;
+  }
+
+  if (!file.type.startsWith('video/')) {
+    this.resetVideo();
+    alert('Eso no es un pinche video');
+    return;
+  }
+
+  const sizeMB = file.size / (1024 * 1024);
+  if (sizeMB > this.MAX_VIDEO_MB) {
+    this.resetVideo();
+    alert(`El video pesa ${sizeMB.toFixed(1)}MB. Máximo ${this.MAX_VIDEO_MB}MB.`);
+    return;
+  }
+
+  const video = document.createElement('video');
+  video.preload = 'metadata';
+
+  video.onloadedmetadata = () => {
+    URL.revokeObjectURL(video.src);
+
+    if (video.duration > this.MAX_VIDEO_SECONDS) {
+      this.resetVideo();
+      alert(`El video dura ${video.duration.toFixed(1)}s. Máximo ${this.MAX_VIDEO_SECONDS}s.`);
+      return;
+    }
+
+    this.videoFile = file;
+    this.videoValido = true;
+  };
+
+  video.src = URL.createObjectURL(file);
+
+  // pa poder elegir el mismo archivo otra vez
+  input.value = '';
+}
+
+limpiarVideo() {
+  this.resetVideo();
+  this.videoIntentado = false;
+}
+
+private resetVideo() {
+  this.videoValido = false;
+  this.videoFile = null;
+}
+
   // # ----- -----
   // ENVIO DEL FORM ✅✅
   // # ----- -----

@@ -3,7 +3,7 @@
     "apps": [],
     "details": [
       {
-        "appID": "ZBYC88GAFD.com.woaw.woaw",
+        "appID": "2BLYC92HZ7.com.woaw.woaw",
         "paths": [ "/search/*", "/ficha/*", "/*" ]
       }
     ]

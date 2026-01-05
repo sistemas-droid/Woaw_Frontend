@@ -1,45 +1,46 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true" class="ios-content">
+<ion-content
+  [fullscreen]="true"
+  [scrollEvents]="true"
+  class="ios-content"
+>
+
   <div class="home-shell">
-    <!-- HERO / BUSCADOR -->
-    <div class="goautos-bg">
-      <!-- Fondo con imágenes que van pasando -->
-      <div class="overlay-container" >
-        <!-- Imagen actual -->
+
+    <!-- =========================
+         HERO WEB (NO NATIVO)
+    ========================== -->
+    <section class="woaw-bg" *ngIf="!isNative">
+      <div class="overlay-container" [class.transitioning]="transitioning">
+
+        <!-- Overlay actual -->
         <div
           class="overlay"
           [class.loaded]="overlayLoaded"
           [ngStyle]="overlayLoaded ? {
             'background-image':
-            'linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff00 100%), url(' + imgenPrincipal + ')',
+              'linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff00 100%), url(' + imgenPrincipal + ')',
             'background-size': 'cover',
-            'background-position': '50% 85%',
+            'background-position': '50% 95%',
             'background-repeat': 'no-repeat'
-          } : {}">
-        </div>
+          } : {}"
+        ></div>
 
-        <!-- Siguiente imagen para el slide -->
+        <!-- Overlay siguiente -->
         <div
           class="overlay next-overlay"
           *ngIf="siguienteImagen"
-          [ngStyle]="{
-            'background-image':
-            'linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff00 100%), url(' + siguienteImagen + ')',
-            'background-size': 'cover',
-            'background-position': '50% 85%',
-            'background-repeat': 'no-repeat'
-          }">
-        </div>
+          [style.background-image]="'linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff00 100%), url(' + siguienteImagen + ')'"
+        ></div>
+
       </div>
 
-      <!-- Contenido encima del fondo (vidrio + buscador + chips + marcas) -->
+      <!-- Vidrio + contenido -->
       <div class="buscador-container" [class.loaded]="overlayLoaded">
         <div class="contenido-principal">
-          <div class="bloque-contenido">
-            <h1 class="titulo typing">
-              {{ textoAnimado }}
-            </h1>
+          <div class="bloque-contenido ios-glass">
+            <h1 class="titulo typing">{{ textoAnimado }}</h1>
 
             <div class="buscador-box">
               <ion-searchbar
@@ -49,46 +50,136 @@
                 (keyup.enter)="irABusqueda(terminoBusqueda)"
                 placeholder="Escribe lo que buscas..."
                 animated="true"
-                class="buscador">
-              </ion-searchbar>
+                class="buscador"
+              ></ion-searchbar>
             </div>
 
+            <!-- Chips tipos -->
             <div class="tipos-vehiculos">
               <div class="lista-tipos">
-                <div
+                <button
+                  type="button"
                   class="tipo-card"
                   *ngFor="let tipo of TiposVeiculo"
-                  (click)="buscarPorTipo(tipo)">
+                  (click)="buscarPorTipo(tipo)"
+                >
                   {{ tipo }}
-                </div>
+                </button>
               </div>
             </div>
 
+            <!-- Marcas top -->
             <div class="top-marcas">
-              <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/nissan-1752250741191.png"
-                  (click)="irABusqueda('nissan')" alt="Nissan" loading="lazy" />
-              <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/chevrolet-1752250726132.png"
-                  (click)="irABusqueda('Chevrolet')" alt="Chevrolet" loading="lazy" />
-              <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/honda-1752250731294.png"
-                  (click)="irABusqueda('Honda')" alt="Honda" loading="lazy" />
-              <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/volkswagen-1752250719366.png"
-                  (click)="irABusqueda('Volkswagen')" alt="Volkswagen" loading="lazy" />
-              <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/kia-1752250740506.png"
-                  (click)="irABusqueda('Kia')" alt="Kia" loading="lazy" />
-              <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/hyundai-1752250721333.png"
-                  (click)="irABusqueda('Hyundai')" alt="Hyundai" loading="lazy" />
-              <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/bmw-1752250746130.png"
-                  (click)="irABusqueda('bmw')" alt="BMW" loading="lazy" />
+              <img
+                src="https://storage.googleapis.com/wo-aw/uploads/marcas/nissan-1752250741191.png"
+                (click)="irABusqueda('nissan')"
+                alt="Nissan"
+                loading="lazy"
+              />
+              <img
+                src="https://storage.googleapis.com/wo-aw/uploads/marcas/chevrolet-1752250726132.png"
+                (click)="irABusqueda('Chevrolet')"
+                alt="Chevrolet"
+                loading="lazy"
+              />
+              <img
+                src="https://storage.googleapis.com/wo-aw/uploads/marcas/honda-1752250731294.png"
+                (click)="irABusqueda('Honda')"
+                alt="Honda"
+                loading="lazy"
+              />
+              <img
+                src="https://storage.googleapis.com/wo-aw/uploads/marcas/volkswagen-1752250719366.png"
+                (click)="irABusqueda('Volkswagen')"
+                alt="Volkswagen"
+                loading="lazy"
+              />
+              <img
+                src="https://storage.googleapis.com/wo-aw/uploads/marcas/kia-1752250740506.png"
+                (click)="irABusqueda('Kia')"
+                alt="Kia"
+                loading="lazy"
+              />
+              <img
+                src="https://storage.googleapis.com/wo-aw/uploads/marcas/hyundai-1752250721333.png"
+                (click)="irABusqueda('Hyundai')"
+                alt="Hyundai"
+                loading="lazy"
+              />
+              <img
+                src="https://storage.googleapis.com/wo-aw/uploads/marcas/bmw-1752250746130.png"
+                (click)="irABusqueda('bmw')"
+                alt="BMW"
+                loading="lazy"
+              />
             </div>
+
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Sección principal de cards / listados -->
-    <app-principal></app-principal>
+    <!-- =========================
+         HERO NATIVO (main)
+    ========================== -->
+    <section class="native-hero" *ngIf="isNative">
+      <div class="native-hero__content">
+        <div
+          class="native-hero__bg-img"
+          [ngStyle]="{ 'background-image': 'url(' + heroImage + ')' }"
+        ></div>
 
-    <!-- VIDEO SECTION tipo card iOS -->
+        <div class="native-hero__copy">
+          <h1 class="native-hero__title">Compra y acelera</h1>
+          <p class="native-hero__subtitle">Encuentra tu próximo auto en segundos.</p>
+        </div>
+
+        <div class="native-hero__brands">
+          <div class="brand" (click)="irABusqueda('nissan')">
+            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/nissan-1752250741191.png" alt="Nissan" />
+          </div>
+          <div class="brand" (click)="irABusqueda('chevrolet')">
+            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/chevrolet-1752250726132.png" alt="Chevrolet" />
+          </div>
+          <div class="brand" (click)="irABusqueda('honda')">
+            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/honda-1752250731294.png" alt="Honda" />
+          </div>
+          <div class="brand" (click)="irABusqueda('volkswagen')">
+            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/volkswagen-1752250719366.png" alt="Volkswagen" />
+          </div>
+          <div class="brand" (click)="irABusqueda('kia')">
+            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/kia-1752250740506.png" alt="Kia" />
+          </div>
+          <div class="brand" (click)="irABusqueda('hyundai')">
+            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/hyundai-1752250721333.png" alt="Hyundai" />
+          </div>
+          <div class="brand" (click)="irABusqueda('bmw')">
+            <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/bmw-1752250746130.png" alt="BMW" />
+          </div>
+        </div>
+
+        <div class="native-hero__cta">
+          <button class="cta-primary" type="button" (click)="redirecion('/new-car')">
+            Publica tu vehículo
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </button>
+
+          <button class="cta-ghost" type="button" (click)="redirecion('/arrendamiento')">
+            Arrendamiento
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================
+         PRINCIPAL
+    ========================== -->
+    <app-principal #principal></app-principal>
+
+    <!-- =========================
+         VIDEO SECTION (iOS card)
+    ========================== -->
     <section class="video-wrap">
       <video
         #videoEl
@@ -99,16 +190,24 @@
         loop
         playsinline
         preload="auto"
-        poster="assets/img/poster.jpg">
-      </video>
+        poster="assets/img/poster.jpg"
+      ></video>
+
       <div class="overlay">
-        <img src="assets/icon/logo4.png" alt="Logo woaw" class="logo-goautos2" loading="lazy" />
+        <img
+          src="assets/icon/logo4.png"
+          alt="Logo woaw"
+          class="logo-goautos2"
+          loading="lazy"
+        />
         <h1 class="headline">Encuentra tu siguiente vehículo</h1>
         <p class="subheadline">Coches, seminuevos y camiones.</p>
       </div>
     </section>
 
-    <!-- Mensaje app -->
+    <!-- =========================
+         MENSAJE APP
+    ========================== -->
     <section class="seccion-app-mensaje">
       <div class="contenedor-app-mensaje">
         <h2 class="titulo-app">
@@ -123,16 +222,19 @@
     <button class="btn_conocenos" routerLink="/conocenos" type="button">
       Conócenos
     </button>
+
+    <br /><br />
+
+    <app-footer></app-footer>
+
   </div>
 
-  <br><br>
+</ion-content>
 
-
-   <app-footer></app-footer>
-
-   </ion-content>
-
-  <button class="btn-flotante" *ngIf="mostrarBotonFlotante && !esDispositivoMovil" (click)="scrollAPrincipal()">
-    {{ botonFlotanteTexto }}
-  </button>
-
+<button
+  class="btn-flotante"
+  *ngIf="mostrarBotonFlotante && !esDispositivoMovil"
+  (click)="scrollAPrincipal()"
+>
+  {{ botonFlotanteTexto }}
+</button>

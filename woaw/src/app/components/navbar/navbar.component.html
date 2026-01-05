@@ -48,7 +48,7 @@
         </ion-button>
       </div>
 
-      <!-- Searchbar DESKTOP -->
+      <!-- Searchbar DESKTOP (solo cuando NO estás en home) -->
       <div class="buscador-container" *ngIf="!estaEnHome && !esDispositivoMovil">
         <ion-searchbar
           [(ngModel)]="terminoBusqueda"
@@ -59,9 +59,11 @@
         ></ion-searchbar>
       </div>
 
-      <!-- Searchbar MÓVIL desplegable -->
-      <div class="buscador-container buscador-container--movil"
-           *ngIf="mostrarBuscador && !estaEnHome && esDispositivoMovil">
+      <!-- Searchbar MÓVIL desplegable (solo cuando NO estás en home) -->
+      <div
+        class="buscador-container buscador-container--movil"
+        *ngIf="mostrarBuscador && !estaEnHome && esDispositivoMovil"
+      >
         <ion-searchbar
           [(ngModel)]="terminoBusqueda"
           (ionInput)="onInputChange($event)"

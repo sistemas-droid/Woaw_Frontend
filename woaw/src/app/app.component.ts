@@ -35,7 +35,6 @@ function paramsToObject(sp: URLSearchParams): Record<string, string> {
   styleUrls: ['app.component.scss'],
   standalone: false,
 })
-
 export class AppComponent {
   currentUrl: string = '';
   esDispositivoMovil: boolean = false;
@@ -72,7 +71,9 @@ export class AppComponent {
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        gtag('config', 'G-9FQLZKFT9Q', { page_path: event.urlAfterRedirects });
+        try {
+          gtag('config', 'G-9FQLZKFT9Q', { page_path: event.urlAfterRedirects });
+        } catch { }
       }
     });
 
@@ -94,11 +95,8 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.generalService.tokenExistente$.subscribe(async (logged) => {
         try {
-          if (logged) {
-            await this.push.init();
-          } else {
-            await this.push.unregister();
-          }
+          if (logged) await this.push.init();
+          else await this.push.unregister();
         } catch (e) {
           console.warn('[App] push init/unregister error', e);
         }
@@ -110,9 +108,8 @@ export class AppComponent {
       if (this.isLoggedIn) { try { await this.push.init(); } catch { } }
     });
 
-    // Deep links (Siri/custom scheme + universal links)
+    // Deep links
     this.platform.ready().then(() => this.registerDeepLinks());
-
 
     this.platform.ready().then(() => {
       if (this.platform.is('hybrid') || this.platform.is('android') || this.platform.is('ios')) {
@@ -121,15 +118,15 @@ export class AppComponent {
         document.body.classList.add('is-web');
       }
     });
-
   }
 
   get mostrarTabs(): boolean {
     const rutasSinTabs = [
-      '/update-car/', '/usados', '/nuevos', '/seminuevos', '/publicar',
+      '/update-car/', '/usados', '/nuevos', '/seminuevos', '/publicar', '/fichas/autos',
       '/m-nuevos', '/mis-motos', '/seguros/poliza', '/mis-autos',
-      '/seguros/autos', '/seguros/cotiza/', '/seguros/cotizar-manual', '/fichas/',
-      '/renta-coches', '/seguros/persona', '/search/vehiculos/', '/add-lote', '/renta/add-coche', '/camiones/todos', '/soporte'
+      '/seguros/autos', '/seguros/cotiza/', '/seguros/cotizar-manual',
+      '/renta-coches', '/seguros/persona', '/search/vehiculos/', '/add-lote',
+      '/renta/add-coche', '/camiones/todos', '/soporte', '/registro-asesor'
     ];
     return this.esDispositivoMovil && !rutasSinTabs.some((r) => this.currentUrl.startsWith(r));
   }
@@ -145,10 +142,11 @@ export class AppComponent {
       '/update-car/', '/new-car', '/usados', '/nuevos', '/seminuevos',
       '/m-nuevos', '/mis-motos', '/seguros/poliza', '/mis-autos',
       '/seguros/autos', '/seguros/cotiza/', '/seguros/cotizar-manual', '/fichas',
-      '/renta-coches', '/seguros/persona', '/search/vehiculos/', '/add-lote', '/renta/add-coche', '/camiones/todos','/soporte'];
+      '/renta-coches', '/seguros/persona', '/search/vehiculos/', '/add-lote',
+      '/renta/add-coche', '/camiones/todos', '/soporte'
+    ];
     return !rutasSinWoalft.some(r => this.currentUrl.startsWith(r));
   }
-
 
   setDynamicTitle() {
     this.router.events
@@ -173,11 +171,13 @@ export class AppComponent {
 
   async initializeApp() {
     await this.platform.ready();
+
     if (this.platform.is('android')) {
       await StatusBar.setOverlaysWebView({ overlay: false });
       await StatusBar.setBackgroundColor({ color: '#D62828' });
       await StatusBar.setStyle({ style: Style.Dark });
     }
+
     if (this.platform.is('ios')) {
       await StatusBar.setOverlaysWebView({ overlay: false });
       await StatusBar.setStyle({ style: Style.Dark });
@@ -190,10 +190,13 @@ export class AppComponent {
     this.platform.backButton.subscribeWithPriority(9999, async () => {
       const topModal = await this.modalCtrl.getTop();
       if (topModal) { await topModal.dismiss(); return; }
+
       const topAction = await this.actionSheetCtrl.getTop();
       if (topAction) { await topAction.dismiss(); return; }
+
       const topAlert = await this.alertCtrl.getTop();
       if (topAlert) { await topAlert.dismiss(); return; }
+
       const menuOpen = await this.menuCtrl.isOpen();
       if (menuOpen) { await this.menuCtrl.close(); return; }
 
@@ -215,21 +218,12 @@ export class AppComponent {
 
     const now = Date.now();
 
-    // Segundo tap en menos de 1.5s → salir de la app
     if (now - this.lastBackTime < 1500) {
-
-      // 🔁 limpiar cooldown de Woalf antes de cerrar la app
-      try {
-        localStorage.removeItem(WOALF_STORAGE_KEY);
-      } catch (e) {
-        console.warn('[App] No se pudo limpiar Woalf storage', e);
-      }
-
+      try { localStorage.removeItem(WOALF_STORAGE_KEY); } catch { }
       App.exitApp();
       return;
     }
 
-    // Primer tap → mostrar toast
     this.lastBackTime = now;
     const toast = await this.toastCtrl.create({
       message: 'Presiona atrás de nuevo para salir',
@@ -239,8 +233,7 @@ export class AppComponent {
     await toast.present();
   }
 
-
-  // ===== Deep Links (custom scheme + universal links) =====
+  // ===== Deep Links =====
 
   private async registerDeepLinks() {
     // Cold start
@@ -257,63 +250,95 @@ export class AppComponent {
     let url: URL;
     try { url = new URL(urlString); } catch { return; }
 
-    // 1) Custom scheme: woaw://search?...  |  woaw://ficha/<id>
+    const go = (commands: any[], qp?: Record<string, any>) => {
+      this.zone.run(() => {
+        if (qp) this.router.navigate(commands, { queryParams: qp });
+        else this.router.navigate(commands);
+      });
+    };
+
+    // ===== 1) Custom scheme woaw:// =====
     if (url.protocol === 'woaw:') {
-      if (url.host === 'search/vehiculos') {
+      // En custom scheme, iOS mezcla host/pathname
+      const host = (url.host || '').replace(/^\/+|\/+$/g, '');
+      const pathname = (url.pathname || '').replace(/^\/+/, ''); // sin slash inicial
+      const parts = pathname.split('/').filter(Boolean);
+
+      // woaw://search/vehiculos?...  ó  woaw://search/vehiculos?...
+      if (host === 'search' && parts[0] === 'vehiculos') {
         const qp = paramsToObject(url.searchParams as any);
-        this.zone.run(() => {
-          this.router.navigate(['/search/vehiculos'], { queryParams: qp });
-        });
+        go(['/search/vehiculos', ''], qp); // tu ruta es /search/vehiculos/:termino
         return;
       }
-      if (url.host === 'ficha') {
-        const id = url.pathname.replace('/', '');
-        if (id) {
-          this.zone.run(() => this.router.navigate(['/ficha', id]));
+      if (host === 'search/vehiculos') {
+        const qp = paramsToObject(url.searchParams as any);
+        go(['/search/vehiculos', ''], qp);
+        return;
+      }
+
+      // woaw://ficha/autos/<id>  ó  woaw://ficha/<tipo>/<id>
+      if (host === 'ficha') {
+        if (parts.length >= 2) {
+          const tipo = decodeURIComponent(parts[0]);
+          const id = decodeURIComponent(parts[1]);
+          go(['/ficha', tipo, id]); // ✅ TU ROUTING REAL
+          return;
         }
+      }
+
+      // Si llegara tipo woaw://ficha/autos/<id> como host "ficha" y pathname "autos/<id>"
+      if (host === 'ficha' && parts.length >= 2) {
+        const tipo = decodeURIComponent(parts[0]);
+        const id = decodeURIComponent(parts[1]);
+        go(['/ficha', tipo, id]);
         return;
       }
-      return; // otros hosts -> ignora
+
+      return;
     }
 
-    // 2) Universal links (https): wo-aw.com / woaw.mx (ajusta hosts si aplica)
+    // ===== 2) Universal links https:// =====
     const allowedHosts = new Set([
       'wo-aw.com',
       'www.wo-aw.com',
       'woaw.mx',
       'www.woaw.mx',
-      // si añadiste dominios de Firebase a Associated Domains, agrégalos aquí también:
       'peppy-aileron-468716-e5.web.app',
       'peppy-aileron-468716-e5.firebaseapp.com',
     ]);
     if (!allowedHosts.has(url.host)) return;
 
-    // Mapear rutas externas a rutas internas
-    // /search?keywords=...&tipoVenta=...&transmision=...&sort=...
+    // /search/vehiculos?... (pero tu routing es /search/vehiculos/:termino)
     if (url.pathname === '/search/vehiculos') {
       const qp = paramsToObject(url.searchParams as any);
-      this.zone.run(() => {
-        this.router.navigate(['/search/vehiculos'], { queryParams: qp });
-      });
+      go(['/search/vehiculos', ''], qp);
       return;
     }
 
-    // /ficha/:id  → abre detalle
-    const fichaMatch = url.pathname.match(/^\/ficha\/([^/]+)$/);
-    if (fichaMatch) {
-      const id = decodeURIComponent(fichaMatch[1]);
-      this.zone.run(() => this.router.navigate(['/ficha', id]));
+    // /ficha/:tipo/:id  ✅ (tu caso real)
+    const parts = url.pathname.split('/').filter(Boolean); // ['ficha','autos','ID']
+    if (parts[0] === 'ficha' && parts.length >= 3) {
+      const tipo = decodeURIComponent(parts[1]);
+      const id = decodeURIComponent(parts[2]);
+      go(['/ficha', tipo, id]);
+      return;
+    }
+
+    // /fichas/autos/:id  (tu otra ruta)
+    if (parts[0] === 'fichas' && parts[1] === 'autos' && parts.length >= 3) {
+      const id = decodeURIComponent(parts[2]);
+      go(['/fichas/autos', id]);
       return;
     }
   }
 
+  // ===== Update loop =====
+
   private startUpdateCheckLoop() {
-    // Cada 40 segundos revisa si hay actualización disponible
     this.updateCheckInterval = setInterval(() => {
       this.checkForAppUpdateNative();
     }, 40000);
   }
-
 
   private async checkForAppUpdateNative() {
     if (!this.platform.is('android')) return;
@@ -321,15 +346,9 @@ export class AppComponent {
     try {
       const info = await AppUpdate.getAppUpdateInfo();
 
-      // Si NO hay actualización disponible, no mostramos nada
-      if (info.updateAvailability !== AppUpdateAvailability.UPDATE_AVAILABLE) {
-        return;
-      }
+      if (info.updateAvailability !== AppUpdateAvailability.UPDATE_AVAILABLE) return;
 
-      // ⚠️ Evitar mostrar alertas duplicadas
-      if (document.querySelector('ion-alert')) {
-        return;
-      }
+      if (document.querySelector('ion-alert')) return;
 
       const alert = await this.alertCtrl.create({
         header: 'Actualización disponible',
@@ -339,26 +358,19 @@ export class AppComponent {
       `,
         backdropDismiss: false,
         buttons: [
-          {
-            text: 'Más tarde',
-            role: 'cancel'
-          },
+          { text: 'Más tarde', role: 'cancel' },
           {
             text: 'Actualizar ahora',
             handler: async () => {
-              await AppUpdate.openAppStore({
-                androidPackageName: 'com.helscode.woaw'
-              });
+              await AppUpdate.openAppStore({ androidPackageName: 'com.helscode.woaw' });
             }
           }
         ]
       });
 
       await alert.present();
-
     } catch (err) {
       console.error('[App] Error al comprobar actualización nativa', err);
     }
   }
-
 }

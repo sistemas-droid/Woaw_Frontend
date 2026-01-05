@@ -90,7 +90,7 @@
           </ion-grid>
         </ion-col>
 
-        <!-- BLOQUE ACCIONES (ubicación / lote / imágenes) -->
+        <!-- BLOQUE ACCIONES (ubicación / lote / imágenes / video) -->
         <ion-col size="12" size-md="6" *ngIf="seccionFormulario === 2 ">
           <ion-grid>
             <ion-row>
@@ -98,8 +98,13 @@
               <!-- Ubicación particular -->
               <ion-col size="12" size-md="6" class="box ios-box" *ngIf="tipoSeleccionado == 'particular'">
 
-                <ion-button expand="block" color="danger" shape="round" class="ios-pill ios-danger"
-                  (click)="seleccionarUbicacion()">
+                <ion-button
+                  expand="block"
+                  color="danger"
+                  shape="round"
+                  class="ios-pill ios-danger"
+                  (click)="seleccionarUbicacion()"
+                >
                   <ion-icon name="location-outline" slot="start"></ion-icon>
                   Seleccionar ubicación
                 </ion-button>
@@ -148,25 +153,76 @@
 
               </ion-col>
 
-              <!-- Imágenes -->
+              <!-- Imágenes + Video -->
               <ion-col size="12" size-md="6" class="box ios-box" *ngIf="tipoSeleccionado !== ''">
 
-                <ion-button expand="block" color="danger" shape="round" class="ios-pill ios-danger"
-                  (click)="seleccionarImagenes()">
+                <!-- IMÁGENES (iOS tuyo) -->
+                <ion-button
+                  expand="block"
+                  color="danger"
+                  shape="round"
+                  class="ios-pill ios-danger"
+                  (click)="seleccionarImagenes()"
+                >
                   <ion-icon name="image-outline" slot="start"></ion-icon>
                   Seleccionar Imágenes
 
-                  <label class="radio-validacion ios-check"
+                  <label
+                    class="radio-validacion ios-check"
                     [class.activo]="imagenesValidas"
-                    [class.inactivo]="!imagenesValidas">
+                    [class.inactivo]="!imagenesValidas"
+                  >
                     <span class="radio-custom"></span>
                     <ion-icon name="checkmark-outline"></ion-icon>
                   </label>
                 </ion-button>
 
-                <button *ngIf="imagenesIntentadas" class="btn-limpiar ios-ghost" (click)="limpiarImagenes()">
+                <button
+                  *ngIf="imagenesIntentadas"
+                  class="btn-limpiar ios-ghost"
+                  (click)="limpiarImagenes()"
+                >
                   <ion-icon name="trash-outline"></ion-icon>
                   Imágenes
+                </button>
+
+                <!-- VIDEO (nuevo, mismo estilo iOS sin tocar CSS) -->
+                <ion-button
+                  expand="block"
+                  color="danger"
+                  shape="round"
+                  class="ios-pill ios-danger"
+                  style="margin-top: 10px;"
+                  (click)="videoInput.click()"
+                >
+                  <ion-icon name="videocam-outline" slot="start"></ion-icon>
+                  Seleccionar Video
+
+                  <label
+                    class="radio-validacion ios-check"
+                    [class.activo]="videoValido"
+                    [class.inactivo]="!videoValido"
+                  >
+                    <span class="radio-custom"></span>
+                    <ion-icon name="checkmark-outline"></ion-icon>
+                  </label>
+                </ion-button>
+
+                <input
+                  #videoInput
+                  type="file"
+                  accept="video/*"
+                  hidden
+                  (change)="onVideoSelected($event)"
+                />
+
+                <button
+                  *ngIf="videoIntentado"
+                  class="btn-limpiar ios-ghost"
+                  (click)="limpiarVideo()"
+                >
+                  <ion-icon name="trash-outline"></ion-icon>
+                  Video
                 </button>
 
               </ion-col>
@@ -215,8 +271,10 @@
         </ion-col>
 
         <ion-col size="12" class="ion-text-center" *ngIf="tipoDispocitivo !== 'telefono'">
-          <button class="btn-wsp ios-wsp"
-            (click)="contactosService.contactarPorPublicacionParticular(anio, marca, modelo, precioEstimado!, tipoFactura)">
+          <button
+            class="btn-wsp ios-wsp"
+            (click)="contactosService.contactarPorPublicacionParticular(anio, marca, modelo, precioEstimado!, tipoFactura)"
+          >
             <ion-icon name="logo-whatsapp"></ion-icon>
             Contáctanos
           </button>
@@ -255,8 +313,10 @@
 
       <!-- SEMINUEVO / USADO / VIEJITO -->
       <ion-grid>
-        <ion-row *ngIf="estadoVehiculo_logico === 'seminuevo' || estadoVehiculo_logico === 'usado' || estadoVehiculo_logico === 'viejito'"
-          class="ios-grid">
+        <ion-row
+          *ngIf="estadoVehiculo_logico === 'seminuevo' || estadoVehiculo_logico === 'usado' || estadoVehiculo_logico === 'viejito'"
+          class="ios-grid"
+        >
 
           <ion-col size="12" size-md="4">
             <label class="ios-label">Versión: <span class="requerido">*</span></label>
@@ -380,8 +440,15 @@
       class="ios-actions"
       *ngIf="tipoDispocitivo !== 'telefono' && tipoSeleccionado !== '' && seccionFormulario !== 3"
     >
-      <ion-button class="btn-publicar ios-pill ios-danger" expand="block" color="danger" shape="round" fill="solid" type="button"
-        (click)="EnviarVeiculo()">
+      <ion-button
+        class="btn-publicar ios-pill ios-danger"
+        expand="block"
+        color="danger"
+        shape="round"
+        fill="solid"
+        type="button"
+        (click)="EnviarVeiculo()"
+      >
         <ion-icon name="save" slot="start"></ion-icon>
         Publicar
       </ion-button>
@@ -405,16 +472,26 @@
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button class="ios-pill ios-danger" color="danger" fill="solid" type="button"
+      <ion-button
+        class="ios-pill ios-danger"
+        color="danger"
+        fill="solid"
+        type="button"
         *ngIf=" seccionFormulario !== 3"
-        (click)="EnviarVeiculo()">
+        (click)="EnviarVeiculo()"
+      >
         Publicar
         <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
       </ion-button>
 
-      <ion-button class="ios-pill ios-success" color="success" fill="solid" type="button"
+      <ion-button
+        class="ios-pill ios-success"
+        color="success"
+        fill="solid"
+        type="button"
         *ngIf=" seccionFormulario === 3"
-        (click)="contactosService.contactarPorPublicacionParticular(anio, marca, modelo, precioEstimado!, tipoFactura)">
+        (click)="contactosService.contactarPorPublicacionParticular(anio, marca, modelo, precioEstimado!, tipoFactura)"
+      >
         Contáctanos
         <ion-icon name="logo-whatsapp"></ion-icon>
       </ion-button>

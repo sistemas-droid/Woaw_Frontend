@@ -1,11 +1,16 @@
 <section class="home-servicios-ios">
 
   <!-- TÍTULO -->
+  <!-- <div class="contenedor_titulo"> -->
+    <!-- <img class="logo-goautos2" src="/assets/icon/logo4.png" alt="Go Autos" /> -->
+    <!-- <h2 class="titulo_principal">Explora, compara y estrena</h2>
+  </div> -->
 
-
-  <ion-grid class="contenedor">
+  <!-- =========================
+       WEB / NO NATIVO (MAIN)
+  ========================== -->
+  <ion-grid class="contenedor_web" *ngIf="!isNative">
     <ion-row>
-
 
       <!-- COLUMNA DERECHA: Carruseles -->
       <ion-col size="12" size-md="9">
@@ -26,11 +31,13 @@
               <article
                 class="car-card"
                 *ngFor="let a of autosUsados | slice:0:10; trackBy: trackById"
-                (click)="irAFichaAuto(a._id)">
-
+                (click)="irAFichaAuto(a._id)"
+              >
                 <div class="card-media">
-                  <img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
-                       [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'" />
+                  <img
+                    [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
+                    [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'"
+                  />
                   <span class="ribbon ribbon--red">Usado</span>
                 </div>
 
@@ -65,8 +72,8 @@
               <article
                 class="car-card"
                 *ngFor="let a of autosSeminuevos | slice:0:10; trackBy: trackById"
-                (click)="irAFichaAuto(a._id)">
-
+                (click)="irAFichaAuto(a._id)"
+              >
                 <div class="card-media">
                   <img [src]="getImagen(a)" [alt]="a.marca + ' ' + a.modelo" (error)="onImgError($event, a)" />
                   <span class="ribbon ribbon--amber">Seminuevo</span>
@@ -75,7 +82,6 @@
                 <div class="card-body">
                   <h4 class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</h4>
                   <p class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</p>
-
                 </div>
               </article>
 
@@ -104,19 +110,19 @@
               <article
                 class="car-card"
                 *ngFor="let a of autosNuevos | slice:0:10; trackBy: trackById"
-                (click)="irAFichaAuto(a._id)">
-
+                (click)="irAFichaAuto(a._id)"
+              >
                 <div class="card-media">
-                  <img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
-                       [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'" />
+                  <img
+                    [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
+                    [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'"
+                  />
                   <span class="ribbon ribbon--green">Nuevo</span>
                 </div>
 
                 <div class="card-body">
                   <h4 class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</h4>
                   <p class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</p>
-
-
                 </div>
               </article>
 
@@ -136,76 +142,242 @@
     </ion-row>
   </ion-grid>
 
-  <!-- GRID CATEGORÍAS GRANDES -->
+  <!-- =========================
+       NATIVO / iOS (IOS BRANCH)
+  ========================== -->
+  <ion-grid class="contenedor_native" *ngIf="isNative">
+
+    <!-- SCROLL CATEGORÍAS (más grandes) -->
+    <div class="native-cats">
+
+      <!-- USADOS -->
+      <ion-card class="cat used" button (click)="redirecion('/usados')">
+        <ion-img src="/assets/home/cartasHome3.webp" class="bg-card card-1"></ion-img>
+        <ion-card-header>
+          <ion-card-subtitle>Autos</ion-card-subtitle>
+          <ion-card-title>
+            Usados
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+      <!-- SEMINUEVOS -->
+      <ion-card class="cat semi" button (click)="redirecion('/seminuevos')">
+        <ion-img src="/assets/home/cartasHome2.webp" class="bg-card card-1"></ion-img>
+        <ion-card-header>
+          <ion-card-subtitle>Autos</ion-card-subtitle>
+          <ion-card-title>
+            Seminuevos
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+      <!-- NUEVOS -->
+      <ion-card class="cat new" button (click)="redirecion('/nuevos')">
+        <ion-img src="/assets/home/cartasHome1.webp" class="bg-card card-1"></ion-img>
+        <ion-card-header>
+          <ion-card-subtitle>Autos</ion-card-subtitle>
+          <ion-card-title>
+            Nuevos
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+      <!-- SEGUROS -->
+      <ion-card class="cat seg" button (click)="redirecion('/seguros/disponibles')">
+        <ion-img src="/assets/home/se.png" class="bg-card card-2"></ion-img>
+        <ion-card-header>
+          <ion-card-title>
+            Seguros
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+      <!-- MOTOS -->
+      <ion-card class="cat motos" button (click)="redirecion('/m-nuevos')">
+        <ion-img src="/assets/home/mto.png" class="bg-card card-2"></ion-img>
+        <ion-card-header>
+          <ion-card-title>
+            Motos
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+      <!-- CAMIONES -->
+      <ion-card class="cat cam" button (click)="redirecion('/camiones/todos')">
+        <ion-img src="/assets/home/A3.webp" class="bg-card card-2"></ion-img>
+        <ion-card-header>
+          <ion-card-title>
+            Camiones
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+      <!-- ARRENDAMIENTO -->
+      <ion-card class="cat arr" button (click)="redirecion('/arrendamiento')">
+        <ion-img src="/assets/home/ca.png" class="bg-card card-2"></ion-img>
+        <ion-card-header>
+          <ion-card-title>
+            Arrendamiento
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+    </div>
+
+    <!-- ✅ PUNTITOS ROJOS (solo indicador visual de scroll) -->
+    <div class="native-cats-dots" aria-hidden="true">
+      <span class="dot is-active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+
+    <!-- ===================== USADOS ===================== -->
+    <div class="native-section">
+      <div class="native-head">
+        <ion-text><h2>Usados</h2></ion-text>
+        <ion-button fill="clear" color="danger" size="small" (click)="redirecion('usados')">
+          Ver más <ion-icon name="caret-forward-circle-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="native-scroll">
+        <ion-card class="car" button *ngFor="let a of (autosUsados | slice:0:7); trackBy: trackById"
+          (click)="irAFichaAuto(a._id)">
+          <div class="media">
+            <ion-img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
+              [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'"></ion-img>
+          </div>
+          <ion-card-content class="body">
+            <div class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</div>
+            <div class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="car more" button (click)="redirecion('usados')">
+          <ion-card-content class="more-inner">
+            <ion-icon name="arrow-forward-outline" color="danger"></ion-icon>
+            <div class="more-text">Ver más</div>
+            <div class="more-count">{{ conUsados }} disponibles</div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <!-- ===================== SEMINUEVOS ===================== -->
+    <div class="native-section">
+      <div class="native-head">
+        <ion-text><h2>Seminuevos</h2></ion-text>
+        <ion-button fill="clear" color="danger" size="small" (click)="redirecion('seminuevos')">
+          Ver más <ion-icon name="caret-forward-circle-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="native-scroll">
+        <ion-card class="car" button *ngFor="let a of (autosSeminuevos | slice:0:7); trackBy: trackById"
+          (click)="irAFichaAuto(a._id)">
+          <div class="media">
+            <ion-img [src]="getImagen(a)" [alt]="a.marca + ' ' + a.modelo" (ionError)="onImgError($event, a)"></ion-img>
+          </div>
+          <ion-card-content class="body">
+            <div class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</div>
+            <div class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="car more" button (click)="redirecion('seminuevos')">
+          <ion-card-content class="more-inner">
+            <ion-icon name="arrow-forward-outline" color="danger"></ion-icon>
+            <div class="more-text">Ver más</div>
+            <div class="more-count">{{ conSeminuevos }} disponibles</div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <!-- ===================== NUEVOS ===================== -->
+    <div class="native-section">
+      <div class="native-head">
+        <ion-text><h2>Nuevos</h2></ion-text>
+        <ion-button fill="clear" color="danger" size="small" (click)="redirecion('nuevos')">
+          Ver más <ion-icon name="caret-forward-circle-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="native-scroll">
+        <ion-card class="car" button *ngFor="let a of (autosNuevos | slice:0:7); trackBy: trackById"
+          (click)="irAFichaAuto(a._id)">
+          <div class="media">
+            <ion-img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
+              [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'"></ion-img>
+          </div>
+          <ion-card-content class="body">
+            <div class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</div>
+            <div class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="car more" button (click)="redirecion('nuevos')">
+          <ion-card-content class="more-inner">
+            <ion-icon name="arrow-forward-outline" color="danger"></ion-icon>
+            <div class="more-text">Ver más</div>
+            <div class="more-count">{{ conNuevos }} disponibles</div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+  </ion-grid>
+
   <section class="grid-categorias">
     <div class="grid-categorias__wrap">
 
-      <a class="cat-card"
-         href="/m-nuevos"
-         [style]="'background-image: url('+img2+')'">
-        <span class="cat-card__overlay">
-          <h3 class="cat-card__title">Motos</h3>
-          <p class="cat-card__subtitle">De calle, touring y más</p>
-        </span>
+      <a class="cat-card cat-card--seg" href="/seguros/disponibles">
+        <div class="cat-card__copy">
+          <span class="cat-card__kicker">Cotiza</span>
+          <span class="cat-card__title">Seguros</span>
+          <span class="cat-card__subtitle">Asegura tu auto en minutos</span>
+        </div>
+        <img class="cat-card__img" src="/assets/home/se.png" alt="Seguros" />
       </a>
 
-      <a class="cat-card"
-         href="/arrendamiento"
-         style="background-image: url('/assets/home/F8.jpeg')">
-        <span class="cat-card__overlay">
-          <h3 class="cat-card__title">Arrendamiento</h3>
-          <p class="cat-card__subtitle">Estrena sin comprar.</p>
-        </span>
+      <a class="cat-card cat-card--arr" href="/arrendamiento">
+        <div class="cat-card__copy">
+          <span class="cat-card__kicker">Estrena</span>
+          <span class="cat-card__title">Arrendamiento</span>
+          <span class="cat-card__subtitle">Sin comprar. Deducible.</span>
+        </div>
+        <img class="cat-card__img" src="/assets/home/ca.png" alt="Arrendamiento" />
       </a>
 
-      <a class="cat-card"
-         href="/seguros/disponibles"
-         style="background-image: url('/assets/home/F7.png')">
-        <span class="cat-card__overlay">
-          <h3 class="cat-card__title">Seguros</h3>
-          <p class="cat-card__subtitle">Cotiza y asegura en minutos.</p>
-        </span>
+      <a class="cat-card cat-card--motos" href="/m-nuevos">
+        <div class="cat-card__copy">
+          <span class="cat-card__kicker">Explora</span>
+          <span class="cat-card__title">Motos</span>
+          <span class="cat-card__subtitle">De calle, touring y más</span>
+        </div>
+        <img class="cat-card__img" src="/assets/home/mto.png" alt="Motos" />
+      </a>
+
+      <a class="cat-card cat-card--cam" href="/camiones/todos">
+        <div class="cat-card__copy">
+          <span class="cat-card__kicker">Soluciones</span>
+          <span class="cat-card__title">Camiones & carga</span>
+          <span class="cat-card__subtitle">de carga para tu negocio</span>
+        </div>
+        <img class="cat-card__img" src="/assets/home/A3.webp" alt="Seguros" />
       </a>
 
     </div>
   </section>
-
-  <!-- BAND CARDS -->
-  <section class="band-cards">
-
-    <!-- RENTA (si lo quieres luego, lo dejas listo)
-    <article class="car-card car-card-renta">
-      <img [src]="'/assets/home/F8.png'" alt="Renta de autos" class="bg-card" />
-      <header class="card-head">
-        <h3>Renta de autos</h3>
-        <p>Muévete cuando quieras...</p>
-      </header>
-      <ul class="card-list">
-        <li>Renta flexible</li>
-      </ul>
-      <footer class="card-foot">
-        <button class="btn-card btn-renta" disabled>Próximamente</button>
-      </footer>
-    </article>
-    -->
-
-    <!-- CAMIONES -->
-    <article class="car-card car-card-camiones" (click)="redirecion('/camiones/todos')">
-      <img [src]="img3" alt="Camiones de carga" class="bg-card" />
-      <header class="card-head">
-        <h3>Camiones &amp; carga</h3>
-        <p>Soluciones de carga para tu negocio.</p>
-      </header>
-      <ul class="card-list">
-        <li>Flotillas y empresas</li>
-        <li>Financiamiento</li>
-      </ul>
-      <footer class="card-foot">
-        <button class="btn-card btn-camiones">Ver camiones</button>
-      </footer>
-    </article>
-
-  </section>
-
 
 </section>

@@ -400,8 +400,13 @@ const routes: Routes = [
 
       {
         path: 'asesores',
-        loadChildren: () => import('./pages/asesores/asesores.module').then(m => m.AsesoresPageModule)
+        loadChildren: () => import('./pages/asesor/asesores/asesores.module').then(m => m.AsesoresPageModule)
       },
+      {
+        path: 'registro-asesor',
+        loadChildren: () => import('./pages/asesor/registro-asesor/registro-asesor.module').then(m => m.RegistroAsesorPageModule)
+      },
+
       {
         path: 'publicar',
         loadChildren: () => import('./pages/coches/publicar/publicar.module').then(m => m.PublicarPageModule)

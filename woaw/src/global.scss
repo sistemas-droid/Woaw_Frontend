@@ -71,6 +71,11 @@ ion-toolbar {
   -webkit-box-shadow: none !important;
 }
 
+html,
+body {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 
 //      ______
@@ -533,6 +538,7 @@ ion-popover.select-popover[class*="pop-"] {
     font-weight: 600;
     letter-spacing: 0.5px;
   }
+
   ion-button[color="warning"] {
     --border-radius: 12px;
     --padding-start: 22px;
@@ -543,6 +549,7 @@ ion-popover.select-popover[class*="pop-"] {
     font-weight: 600;
     letter-spacing: 0.5px;
   }
+
   ion-button[color="medium"] {
     --border-radius: 12px;
     --padding-start: 22px;

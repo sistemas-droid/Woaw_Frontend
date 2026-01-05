@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15488B5C346A6993AE79F092 /* Pods_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C45520C809070B63589BD9A4 /* Pods_App.framework */; };
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
 		50379B232058CBB4000EE86E /* capacitor.config.json in Resources */ = {isa = PBXBuildFile; fileRef = 50379B222058CBB4000EE86E /* capacitor.config.json */; };
 		504EC3081FED79650016851F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504EC3071FED79650016851F /* AppDelegate.swift */; };
@@ -19,7 +20,7 @@
 		7CCC36D22EB2CB9400A38C42 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCC36D12EB2CB9400A38C42 /* SwiftUI.framework */; };
 		7CCC36DF2EB2CB9600A38C42 /* WoawWidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7CCC36CE2EB2CB9400A38C42 /* WoawWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7CE90BCF2EB518CD0003B649 /* WoawShortcuts.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = 7CE90BC62EB518CD0003B649 /* WoawShortcuts.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		E50E7D34B6742EC2FC6B40A7 /* Pods_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 162055B2A83DEAC4315DF168 /* Pods_App.framework */; };
+		9CFACEE12F0C6399000F355D /* File.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9CFACEE02F0C6399000F355D /* File.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,9 +66,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		162055B2A83DEAC4315DF168 /* Pods_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B4299C34B8D3498661E9724 /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
-		41BD62A5745958E464E807DC /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
 		50379B222058CBB4000EE86E /* capacitor.config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = capacitor.config.json; sourceTree = "<group>"; };
 		504EC3041FED79650016851F /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		504EC3071FED79650016851F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,7 +85,9 @@
 		7CE90BC12EB517DC0003B649 /* AppRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AppRelease.entitlements; sourceTree = "<group>"; };
 		7CE90BC62EB518CD0003B649 /* WoawShortcuts.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = WoawShortcuts.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CE90BD82EB5327D0003B649 /* WoawWidgetsExtensionRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WoawWidgetsExtensionRelease.entitlements; sourceTree = "<group>"; };
-		821EEE00AA501AA1D9BF5842 /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
+		9CFACEE02F0C6399000F355D /* File.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = File.txt; sourceTree = "<group>"; };
+		B8B994C250E9273D9181BB3A /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
+		C45520C809070B63589BD9A4 /* Pods_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -115,7 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E50E7D34B6742EC2FC6B40A7 /* Pods_App.framework in Frameworks */,
+				15488B5C346A6993AE79F092 /* Pods_App.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,7 +145,7 @@
 			children = (
 				7CCC36CF2EB2CB9400A38C42 /* WidgetKit.framework */,
 				7CCC36D12EB2CB9400A38C42 /* SwiftUI.framework */,
-				162055B2A83DEAC4315DF168 /* Pods_App.framework */,
+				C45520C809070B63589BD9A4 /* Pods_App.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -182,6 +184,7 @@
 				504EC3071FED79650016851F /* AppDelegate.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
 				504EC30E1FED79650016851F /* Assets.xcassets */,
+				9CFACEE02F0C6399000F355D /* File.txt */,
 				504EC3101FED79650016851F /* LaunchScreen.storyboard */,
 				504EC3131FED79650016851F /* Info.plist */,
 				2FAD9762203C412B000D30F8 /* config.xml */,
@@ -193,8 +196,8 @@
 		AAF89D80045A48FC79F04F78 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				821EEE00AA501AA1D9BF5842 /* Pods-App.debug.xcconfig */,
-				41BD62A5745958E464E807DC /* Pods-App.release.xcconfig */,
+				B8B994C250E9273D9181BB3A /* Pods-App.debug.xcconfig */,
+				1B4299C34B8D3498661E9724 /* Pods-App.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -206,13 +209,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 504EC3161FED79650016851F /* Build configuration list for PBXNativeTarget "App" */;
 			buildPhases = (
-				038F91C8092DD6062709FC03 /* [CP] Check Pods Manifest.lock */,
+				DDB29037A7437D4A3F5163A2 /* [CP] Check Pods Manifest.lock */,
 				504EC3001FED79650016851F /* Sources */,
 				504EC3011FED79650016851F /* Frameworks */,
 				504EC3021FED79650016851F /* Resources */,
 				7CCC36E02EB2CB9600A38C42 /* Embed Foundation Extensions */,
-				14CAE3A01F596AC86ADE8E0E /* [CP] Embed Pods Frameworks */,
 				7CE90BA62EB3F7AF0003B649 /* Embed ExtensionKit Extensions */,
+				F015B71047A24633829892BD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -261,8 +264,6 @@
 				7CE90BC72EB518CD0003B649 /* WoawShortcuts */,
 			);
 			name = WoawShortcuts;
-			packageProductDependencies = (
-			);
 			productName = WoawShortcuts;
 			productReference = 7CE90BC62EB518CD0003B649 /* WoawShortcuts.appex */;
 			productType = "com.apple.product-type.extensionkit-extension";
@@ -320,6 +321,7 @@
 				50379B232058CBB4000EE86E /* capacitor.config.json in Resources */,
 				504EC30D1FED79650016851F /* Main.storyboard in Resources */,
 				7CCC36C82EB2BDD600A38C42 /* GoogleService-Info.plist in Resources */,
+				9CFACEE12F0C6399000F355D /* File.txt in Resources */,
 				2FAD9763203C412B000D30F8 /* config.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -341,7 +343,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		038F91C8092DD6062709FC03 /* [CP] Check Pods Manifest.lock */ = {
+		DDB29037A7437D4A3F5163A2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -363,7 +365,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		14CAE3A01F596AC86ADE8E0E /* [CP] Embed Pods Frameworks */ = {
+		F015B71047A24633829892BD /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -548,20 +550,20 @@
 		};
 		504EC3171FED79650016851F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 821EEE00AA501AA1D9BF5842 /* Pods-App.debug.xcconfig */;
+			baseConfigurationReference = B8B994C250E9273D9181BB3A /* Pods-App.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
-				DEVELOPMENT_TEAM = ZBYC88GAFD;
+				CURRENT_PROJECT_VERSION = 15;
+				DEVELOPMENT_TEAM = 2BLYC92HZ7;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.2.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.woaw.woaw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -573,20 +575,20 @@
 		};
 		504EC3181FED79650016851F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 41BD62A5745958E464E807DC /* Pods-App.release.xcconfig */;
+			baseConfigurationReference = 1B4299C34B8D3498661E9724 /* Pods-App.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/AppRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
-				DEVELOPMENT_TEAM = ZBYC88GAFD;
+				CURRENT_PROJECT_VERSION = 15;
+				DEVELOPMENT_TEAM = 2BLYC92HZ7;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.woaw.woaw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
@@ -609,7 +611,7 @@
 				CODE_SIGN_ENTITLEMENTS = WoawWidgetsExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZBYC88GAFD;
+				DEVELOPMENT_TEAM = 2BLYC92HZ7;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -626,7 +628,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.woaw.woaw.WoawWidgets;
+				PRODUCT_BUNDLE_IDENTIFIER = com.woaw.woaw.Widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = NO;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -653,7 +655,7 @@
 				CODE_SIGN_ENTITLEMENTS = WoawWidgetsExtensionRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZBYC88GAFD;
+				DEVELOPMENT_TEAM = 2BLYC92HZ7;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -669,7 +671,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.woaw.woaw.WoawWidgets;
+				PRODUCT_BUNDLE_IDENTIFIER = com.woaw.woaw.Widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = NO;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -693,7 +695,7 @@
 				CODE_SIGN_ENTITLEMENTS = WoawShortcuts/WoawShortcuts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZBYC88GAFD;
+				DEVELOPMENT_TEAM = 2BLYC92HZ7;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -710,7 +712,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.woaw.woaw.WoawShortcuts;
+				PRODUCT_BUNDLE_IDENTIFIER = com.woaw.woaw.Shortcuts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -735,7 +737,7 @@
 				CODE_SIGN_ENTITLEMENTS = WoawShortcuts/WoawShortcutsRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZBYC88GAFD;
+				DEVELOPMENT_TEAM = 2BLYC92HZ7;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -751,7 +753,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.woaw.woaw.WoawShortcuts;
+				PRODUCT_BUNDLE_IDENTIFIER = com.woaw.woaw.Shortcuts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

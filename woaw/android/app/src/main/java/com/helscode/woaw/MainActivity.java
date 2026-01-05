@@ -1,5 +1,7 @@
 package com.helscode.woaw;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -10,11 +12,21 @@ import android.webkit.WebSettings;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat; 
+import androidx.core.view.WindowInsetsCompat;
 
 import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
+
+  // 🔒 BLOQUEA EL TAMAÑO DE LETRA DEL SISTEMA
+  @Override
+  protected void attachBaseContext(Context newBase) {
+    Configuration config = new Configuration(newBase.getResources().getConfiguration());
+    config.fontScale = 1.0f;
+    Context context = newBase.createConfigurationContext(config);
+    super.attachBaseContext(context);
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -45,8 +57,5 @@ public class MainActivity extends BridgeActivity {
       WebSettings settings = webView.getSettings();
       settings.setForceDark(WebSettings.FORCE_DARK_OFF);
     }
-
-
   }
 }
-
