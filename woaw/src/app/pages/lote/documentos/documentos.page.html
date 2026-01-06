@@ -43,33 +43,41 @@
 
       <div class="ion-text-center ion-margin-bottom">
         <ion-text>
-          <h1 class="ion-text-bold">Documentación Requerida</h1>
+          <h1 class="titulo-woaw">Documentación Requerida</h1>
+
         </ion-text>
 
         <ion-text color="medium">
           <p>Para completar tu solicitud, necesitamos los siguientes documentos</p>
         </ion-text>
 
-        <ion-card class="ion-margin-vertical">
+        <ion-card class="progress-steps-card ion-margin-vertical">
           <ion-card-content>
 
-            <div class="ion-text-center ion-margin-bottom">
-              <ion-text>
-                <p class="ion-text-bold">
-                  Progreso: {{ getUploadedCount() }}/{{ getTotalDocsRequeridos() }}
-                </p>
-              </ion-text>
-
-              <ion-text color="danger">
-                <p class="ion-text-bold">{{ getProgressPercentage() }}%</p>
-              </ion-text>
+            <div class="steps-head">
+              <div class="steps-title">PROGRESO</div>
+              <span class="steps-count">{{ getUploadedCount() }}/{{ getTotalDocsRequeridos() }}</span>
+              <div class="steps-meta">
+                <span class="steps-percent">{{ getProgressPercentage() }}%</span>
+              </div>
             </div>
 
-            <ion-progress-bar [value]="getProgressPercentage() / 100" color="danger">
-            </ion-progress-bar>
+            <!-- ✅ Línea con palomitas -->
+            <div class="steps-line" [style.--total]="getTotalDocsRequeridos()" [style.--done]="getUploadedCount()">
+
+              <div class="line-track"></div>
+              <div class="line-fill"></div>
+
+              <!-- N bolitas -->
+              <div class="step" *ngFor="let _ of [].constructor(getTotalDocsRequeridos()); let i = index"
+                [class.done]="i < getUploadedCount()">
+                <ion-icon *ngIf="i < getUploadedCount()" name="checkmark"></ion-icon>
+              </div>
+            </div>
 
           </ion-card-content>
         </ion-card>
+
       </div>
 
       <!-- GRID DE DOCUMENTOS -->
@@ -101,16 +109,18 @@
                 <ion-card-content>
 
                   <!-- Badge de subida -->
-                  <ion-badge [color]="doc.uploaded ? 'success' : 'warning'" class="ion-margin-top">
-                    {{ doc.uploaded ? 'Completado' : 'Pendiente' }}
-                  </ion-badge>
-
-                  <!-- Estado -->
-                  <ion-badge *ngIf="doc.status" [color]="
-                      doc.status === 'aprobado' ? 'success' :
-                      doc.status === 'rechazado' ? 'danger' : 'warning'
-                    " class="badge-status">
-                    {{ doc.status | titlecase }}
+                  <!-- ✅ Badge ÚNICO (sin confusión) -->
+                  <ion-badge class="badge-estado" [ngClass]="{
+                    'badge-vacio': !doc.uploaded,
+                    'badge-revision': doc.uploaded && (!doc.status || doc.status === 'pendiente'),
+                    'badge-aprobado': doc.status === 'aprobado',
+                    'badge-rechazado': doc.status === 'rechazado'
+                  }">
+                    {{
+                    !doc.uploaded ? 'SIN SUBIR' :
+                    (doc.status === 'aprobado' ? 'APROBADO' :
+                    (doc.status === 'rechazado' ? 'RECHAZADO' : 'EN REVISIÓN'))
+                    }}
                   </ion-badge>
 
                   <!-- Comentario rechazo -->
@@ -131,10 +141,11 @@
 
       <!-- Botón volver -->
       <div class="volver-container">
-        <ion-button color="danger" fill="solid" class="btn-volver" (click)="irAlLote()">
-          ir a mi lote "{{ nombreLote }}"
+        <ion-button fill="outline" class="btn-volver" (click)="irAlLote()">
+          IR A MI LOTE "{{ nombreLote }}"
         </ion-button>
       </div>
+
 
     </div>
 

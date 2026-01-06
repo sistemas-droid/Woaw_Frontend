@@ -165,16 +165,20 @@ export class DocumentosPage implements OnInit {
   }
 
   getCardClass(doc: LoteDocument) {
+    if (!doc.uploaded) return 'doc-vacio';
     if (doc.status === 'aprobado') return 'doc-aprobado';
     if (doc.status === 'rechazado') return 'doc-rechazado';
-    return 'doc-pendiente';
+    return 'doc-revision'; // pendiente / en revisión
   }
 
+
   getStatusIcon(doc: LoteDocument) {
+    if (!doc.uploaded) return 'cloud-upload-outline';
     if (doc.status === 'aprobado') return 'checkmark-circle';
     if (doc.status === 'rechazado') return 'close-circle';
-    return 'hourglass-outline';
+    return 'time-outline';
   }
+
 
   irAlLote() {
     if (!this.nombreLote || !this.idLote) return;

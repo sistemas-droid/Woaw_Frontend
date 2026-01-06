@@ -5,26 +5,37 @@
 }
 
 .titulo {
-    font-size: 28px;
+    margin-bottom: 6px;
+}
+
+.titulo-woaw {
+    text-transform: uppercase;
+    font-size: clamp(36px, 4.8vw, 52px);
     font-weight: 900;
-    margin-bottom: 4px;
+    letter-spacing: -1px;
+    line-height: 1.05;
+    background: linear-gradient(90deg,
+            #e60023 0%,
+            #e60023 55%,
+            #111111 55%,
+            #111111 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .subtitulo {
     color: #666;
-    margin-bottom: 20px;
+    margin-bottom: 28px;
+    font-size: 15px;
 }
 
-/* =======================================================
-   MEGA CARD DEL LOTE
-======================================================= */
+
 .lote-wrapper {
     background: #ffffff;
     border-radius: 20px;
     padding: 22px 26px;
     margin-bottom: 35px;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-    /* más suave */
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -62,32 +73,26 @@
 }
 
 .tipo-persona.fisica {
-    color: #10b981;
+    color: #000000;
 }
 
 .tipo-persona.moral {
-    color: #6366f1;
+    color: #d50000;
 }
 
-/* 🔘 Botón hamburguesa, sin neón */
 .btn-hamburguesa {
     border: none;
     outline: none;
     cursor: pointer;
-
     width: 32px;
     height: 32px;
     border-radius: 999px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     background: #fdf2f4;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    /* suave */
     color: #e60023;
-
     transition:
         background 0.15s ease,
         box-shadow 0.15s ease,
@@ -99,7 +104,6 @@
     transition: transform 0.18s ease;
 }
 
-/* estado abierto sin glow loco */
 .btn-hamburguesa.open {
     background: #ffe5ea;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.10);
@@ -116,9 +120,6 @@
     }
 }
 
-/* =======================================================
-   GRID DE DOCUMENTOS
-======================================================= */
 .lote-panel {
     display: grid;
     grid-template-columns: 1fr;
@@ -131,16 +132,12 @@
     }
 }
 
-/* =======================================================
-   TARJETA DE DOCUMENTO
-======================================================= */
 .doc-card {
     border-radius: 16px;
     padding: 16px 20px !important;
     background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.05);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
-    /* menos glow */
 }
 
 .doc-card ion-card-header {
@@ -157,9 +154,6 @@
     color: #1f1f1f;
 }
 
-/* =======================================================
-   BARRA DE ESTADO
-======================================================= */
 .barra-estado {
     width: 100%;
     padding: 8px 12px;
@@ -184,16 +178,12 @@
     color: #d93025;
 }
 
-/* =======================================================
-   BOTONES – ESTILO WOAW ROJO/NEGRO (SIN NEÓN)
-======================================================= */
 .acciones {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-/* Base para todos los botones dentro de acciones */
 .acciones ion-button {
     --border-radius: 999px;
     --padding-top: 8px;
@@ -211,7 +201,6 @@
         color 0.15s ease-out;
 }
 
-/* APROBAR → Negro WOAW, sin glow */
 .acciones ion-button[color="success"] {
     --background: #000000;
     --background-hover: #111111;
@@ -229,10 +218,8 @@
 .acciones ion-button[color="success"]::part(native):hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
-    /* discreto */
 }
 
-/* RECHAZAR → Rojo WOAW, sin glow */
 .acciones ion-button[color="danger"][fill="outline"] {
     --background: #ff1e3c;
     --background-hover: #e01430;
@@ -251,10 +238,8 @@
 .acciones ion-button[color="danger"][fill="outline"]::part(native):hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(255, 30, 60, 0.25);
-    /* suave */
 }
 
-/* VER DOCUMENTO → Link rojo WOAW */
 .acciones ion-button[fill="clear"] {
     --background: transparent;
     --background-hover: transparent;
@@ -278,9 +263,6 @@
     text-decoration: underline;
 }
 
-/* =======================================================
-   MODAL Y TEXTOS SIN LOTES
-======================================================= */
 .modal-box {
     padding: 20px;
 }
@@ -296,7 +278,6 @@
     font-style: italic;
 }
 
-/* ===== FIX: Estilo responsive de botones ===== */
 @media (max-width: 600px) {
     .acciones {
         flex-direction: column;
