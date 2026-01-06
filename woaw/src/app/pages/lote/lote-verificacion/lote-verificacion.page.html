@@ -3,31 +3,29 @@
 <ion-content [fullscreen]="true">
 
   <div class="verificacion-container">
+    <h1 class="titulo titulo-woaw">
+      Verificación de Documentos
+    </h1>
+    <p class="subtitulo">
+      Lotes con documentación para revisar
+    </p>
 
-    <h1 class="titulo">Verificación de Documentos</h1>
-    <p class="subtitulo">Lotes con documentación para revisar</p>
-
-    <!-- 🔹 SI NO HAY LOTES -->
     <p *ngIf="lotesVerificacion.length === 0" class="sin-lotes">
       No hay lotes con documentos para verificar por ahora.
     </p>
 
-    <!-- 🔹 LISTA DE LOTES -->
     <div *ngFor="let lote of lotesVerificacion" class="lote-wrapper">
 
-      <!-- ================= HEADER DEL LOTE ================= -->
+      <!-- HEADER DEL LOTE -->
       <div class="lote-header">
 
         <div class="lote-header-main">
-          <h2 class="lote-nombre">
-            {{ lote.nombre }}
-          </h2>
+          <h2 class="lote-nombre">{{ lote.nombre }}</h2>
 
           <p class="tipo-persona" *ngIf="lote.tipoPersona" [ngClass]="lote.tipoPersona">
-            <ion-icon name="person-circle-outline" *ngIf="lote.tipoPersona === 'fisica'">
-            </ion-icon>
-
-            <ion-icon name="business-outline" *ngIf="lote.tipoPersona === 'moral'">
+            <ion-icon [name]="lote.tipoPersona === 'fisica'
+                ? 'person-circle-outline'
+                : 'business-outline'">
             </ion-icon>
 
             {{ lote.tipoPersona === 'fisica' ? 'Persona Física' : 'Persona Moral' }}
@@ -35,8 +33,7 @@
         </div>
 
         <!-- BOTÓN EXPANDIR -->
-        <button class="btn-hamburguesa" (click)="toggleLote(lote.id)" [ngClass]="{ 'open': expandedState[lote.id] }">
-
+        <button class="btn-hamburguesa" (click)="toggleLote(lote.id)" [ngClass]="{ open: expandedState[lote.id] }">
           <ion-icon [name]="expandedState[lote.id]
               ? 'chevron-up-outline'
               : 'chevron-down-outline'">
@@ -45,10 +42,10 @@
 
       </div>
 
-      <!-- ================= DOCUMENTOS ================= -->
+      <!-- DOCUMENTOS -->
       <div class="lote-panel" *ngIf="expandedState[lote.id]">
 
-        <ion-card class="doc-card" *ngFor="let doc of lote.documentos">
+        <ion-card class="doc-card" *ngFor="let doc of lote.documentos" [ngClass]="{ 'doc-sin-documento': !doc.url }">
 
           <ion-card-header>
             <ion-card-title class="doc-title">
@@ -58,25 +55,25 @@
 
           <ion-card-content>
 
-            <!-- Estado -->
-            <div class="barra-estado" [ngClass]="colorEstado(doc.estado)">
-              {{ doc.estado | uppercase }}
+            <!-- BARRA DE ESTADO -->
+            <div class="barra-estado" [ngClass]="!doc.url ? 'sin-doc' : colorEstado(doc.estado)">
+              {{ !doc.url ? 'SIN DOCUMENTO' : (doc.estado | uppercase) }}
             </div>
 
-            <!-- Acciones -->
+            <!-- ACCIONES -->
             <div class="acciones">
 
-              <ion-button color="success" size="small" [disabled]="doc.estado === 'aprobado'"
+              <ion-button color="success" size="small" [disabled]="!doc.url || doc.estado === 'aprobado'"
                 (click)="aprobar(lote.id, doc)">
                 APROBAR
               </ion-button>
 
-              <ion-button color="danger" size="small" fill="outline" [disabled]="doc.estado === 'aprobado'"
+              <ion-button color="danger" size="small" fill="outline" [disabled]="!doc.url || doc.estado === 'aprobado'"
                 (click)="rechazar(lote.id, doc)">
                 RECHAZAR
               </ion-button>
 
-              <ion-button fill="clear" size="small" (click)="abrir(doc)" [disabled]="!doc.url">
+              <ion-button fill="clear" size="small" [disabled]="!doc.url" (click)="abrir(doc)">
                 VER DOCUMENTO
               </ion-button>
 
@@ -89,12 +86,10 @@
       </div>
 
     </div>
-
   </div>
 
   <!-- MODAL RECHAZO -->
   <ion-modal [isOpen]="modalRechazoOpen" (didDismiss)="cerrarModalRechazo()">
-
     <ng-template>
       <div class="modal-box">
         <h2>Motivo de rechazo</h2>
@@ -111,7 +106,6 @@
         </ion-button>
       </div>
     </ng-template>
-
   </ion-modal>
 
   <app-footer></app-footer>

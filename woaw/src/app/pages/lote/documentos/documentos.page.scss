@@ -20,7 +20,6 @@ ion-text p {
 /* === TARJETA DE PROGRESO === */
 ion-card {
   border-radius: 16px !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
   border: none !important;
 }
 
@@ -66,11 +65,34 @@ ion-card {
   }
 }
 
-/* Estado completado */
+/* === TITULO PRINCIPAL WOAW (CORTE LIMPIO, SIN NEON) === */
+.titulo-woaw {
+  text-transform: uppercase;
+  font-size: clamp(34px, 4.5vw, 46px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin-bottom: 6px;
+  background: linear-gradient(90deg,
+      #e60023 0%,
+      #e60023 55%,
+      #111111 55%,
+      #111111 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtítulo acompaña, no compite */
+.titulo-woaw+p {
+  font-size: 15px;
+  color: #6d6d6d;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* Estado completado (si aún lo usas en algún lado) */
 .ion-card-uploaded {
   border-color: var(--ion-color-success) !important;
   background: rgba(46, 204, 113, 0.12);
-  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.15);
 }
 
 /* === TITULO + ICONO === */
@@ -83,7 +105,7 @@ ion-card {
   color: #111;
 }
 
-/* Ícono rojo elegante */
+/* Ícono rojo elegante (si lo usas, si no, lo puedes borrar luego) */
 .ion-icon-document {
   font-size: 28px;
   color: var(--ion-color-danger);
@@ -97,7 +119,7 @@ ion-card-subtitle {
   color: #666 !important;
 }
 
-/* Badge */
+/* Badge base */
 ion-badge {
   margin-top: 10px;
   font-size: 13px;
@@ -112,28 +134,36 @@ ion-badge {
   justify-content: center;
 }
 
-/* Solo el pill rojo, sin tarjeta blanca detrás */
-.btn-volver {
-  /* importante: NO usar padding normal aquí */
+ion-button.btn-volver {
   padding: 0;
   margin: 0;
-
   --border-radius: 999px;
-  --background: linear-gradient(135deg, #e60023, #ff4136);
-  --box-shadow: 0 6px 18px rgba(255, 0, 0, 0.25);
-
-  font-weight: 700;
+  --box-shadow: none;
+  --background: #ffffff;
+  --color: #e60023;
+  --border-color: #e60023;
+  --border-width: 2px;
+  font-weight: 800;
   letter-spacing: 0.6px;
-
+  text-transform: uppercase;
   min-width: 220px;
-  max-width: 280px;
+  max-width: 320px;
   width: auto;
   height: 44px;
-  /* opcional pero ayuda a que se vea uniforme */
+  transition: transform 0.15s ease;
+}
+
+ion-button.btn-volver:hover {
+  --background: #e60023;
+  --color: #ffffff;
+  transform: translateY(-1px);
+}
+
+ion-button.btn-volver:active {
+  transform: translateY(0);
 }
 
 /* === ESTADOS PREMIUM === */
-
 .doc-aprobado {
   border-color: #2ecc71 !important;
   background: rgba(46, 204, 113, 0.12) !important;
@@ -159,10 +189,10 @@ ion-badge {
   }
 }
 
+/* OJO: este lo usamos como "pendiente" o "en revisión" si no existe status */
 .doc-pendiente {
   border-color: #f5b942 !important;
   background: rgba(255, 193, 7, 0.15) !important;
-
   .icon-status {
     color: #f5b942 !important;
   }
@@ -174,9 +204,161 @@ ion-badge {
   min-width: 30px;
 }
 
-/* Badge premium */
+/* Badge premium viejo (si ya no lo usas, luego lo volamos) */
 .badge-status {
   margin-left: 6px;
   margin-top: 10px;
   font-weight: 700;
+}
+
+/* === CARD VACÍA (NO SUBIDO) === */
+.doc-vacio {
+  border-color: #d7dbe0 !important;
+  background: #f3f5f7 !important;
+  .icon-status {
+    color: #9aa3ad !important;
+  }
+  ion-card-subtitle {
+    color: #7a7a7a !important;
+  }
+}
+
+/* === CARD EN REVISIÓN === */
+.doc-revision {
+  border-color: #f5b942 !important;
+  background: rgba(255, 193, 7, 0.12) !important;
+  .icon-status {
+    color: #f5b942 !important;
+  }
+}
+
+/* === BADGE ÚNICO === */
+.badge-estado {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+}
+
+/* Variantes del badge */
+.badge-vacio {
+  background: #e6eaee;
+  color: #5f6b76;
+}
+
+.badge-revision {
+  background: #ffcc33;
+  color: #111;
+}
+
+.badge-aprobado {
+  background: #2ecc71;
+  color: #111;
+}
+
+.badge-rechazado {
+  background: #e60023;
+  color: #fff;
+}
+/* =========================================================
+   ✅ PROGRESO POR PASOS (PALOMITAS) — TIPO TU EJEMPLO
+   ========================================================= */
+.progress-steps-card {
+  border-radius: 18px !important;
+}
+
+.steps-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 14px;
+}
+
+.steps-title {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #000000;
+}
+
+.steps-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.steps-head {
+  position: relative;
+}
+
+.steps-count {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 900;
+  color: #000000;
+}
+
+.steps-percent {
+  font-size: 18px;
+  font-weight: 900;
+  color: #e60023;
+}
+
+/* Contenedor de la línea */
+.steps-line {
+  position: relative;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+ --total: 5;
+  --done: 0;
+}
+
+/* línea gris completa */
+.line-track {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  height: 4px;
+  border-radius: 999px;
+  background: #e6eaee;
+}
+
+/* línea roja llenada */
+.line-fill {
+  position: absolute;
+  left: 14px;
+  height: 4px;
+  border-radius: 999px;
+  background: #e60023;
+  width: calc((100% - 28px) * (var(--done) / (var(--total) - 1)));
+}
+
+/* cada bolita */
+.step {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #f3f5f7;
+  border: 2px solid #cfd6dd;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+}
+
+/* completado */
+.step.done {
+  background: #e60023;
+  border-color: #e60023;
+}
+
+.step ion-icon {
+  color: #fff;
+  font-size: 18px;
 }

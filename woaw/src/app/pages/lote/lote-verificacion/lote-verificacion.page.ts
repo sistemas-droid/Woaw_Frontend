@@ -8,8 +8,6 @@ import { LoteService } from 'src/app/services/lote.service';
   standalone: false
 })
 export class LoteVerificacionPage implements OnInit {
-
-  // 🔹 Lotes en pantalla
   lotesVerificacion: Array<{
     id: string;
     nombre: string;
@@ -17,16 +15,12 @@ export class LoteVerificacionPage implements OnInit {
     documentos: any[];
   }> = [];
 
-  // 🔹 Modal rechazo
   modalRechazoOpen = false;
   comentarioRechazo = '';
   loteSeleccionadoId: string | null = null;
   docSeleccionado: any = null;
-
-  // 🔹 Estado expandido
   expandedState: { [key: string]: boolean } = {};
 
-  // 🔥 Mapa FRONT → BACK
   slugMap: Record<string, string | null> = {
     'constancia-fiscal': 'constanciaSituacionFiscal',
     'identificacion-apoderado': 'identificacionApoderado',
@@ -37,7 +31,6 @@ export class LoteVerificacionPage implements OnInit {
     'formato-aut-pm': 'formatoAutPM',
   };
 
-  // 🔹 Catálogo base (LOS 7 DOCUMENTOS)
   documentosBase = [
     { slug: 'constancia-fiscal', nombre: 'Constancia de Situación Fiscal' },
     { slug: 'identificacion-apoderado', nombre: 'Identificación del Apoderado' },
@@ -70,15 +63,12 @@ export class LoteVerificacionPage implements OnInit {
 
           let docsFrontend = [...this.documentosBase];
 
-          // ✅ SOLO PERSONA FÍSICA FILTRA
           if (tipoPersona === 'fisica') {
             docsFrontend = docsFrontend.filter(d =>
               d.slug !== 'acta-constitutiva' &&
               d.slug !== 'formato-aut-pm'
             );
           }
-
-          // 🚫 PERSONA MORAL NO FILTRA NADA (VE LOS 7)
 
           docsFrontend = docsFrontend.map(base => {
             const backendKey = this.slugMap[base.slug];
