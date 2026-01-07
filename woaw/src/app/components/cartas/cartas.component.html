@@ -1,4 +1,7 @@
-<div class="auto-card" (click)="onCardClick(auto, $event)">
+<div class="auto-card" [class.auto-card-native]="isNative" [class.auto-card-web]="!isNative"
+  (click)="onCardClick(auto, $event)">
+
+
   <!-- *ngIf="auto.estadoPublicacion !== 'pendiente'" -->
 
   <!-- Botón de favorito -->

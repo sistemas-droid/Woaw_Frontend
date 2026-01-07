@@ -52,230 +52,6 @@
 }
 
 .contenedor_cratas_home {
-  //   padding: 13px 20px;
-  //   background: #ffffff;
-  //   width: 100%;
-  //   max-width: 1800px;
-  //   margin: 20px auto;
-
-  //   @media (max-width: 980px) {
-  //     padding: 5px 7px;
-  //   }
-
-  //   .cards-grid {
-  //     display: grid;
-  //     grid-template-columns: repeat(3, 1fr);
-  //     gap: 24px;
-
-  //     @media (max-width: 980px) {
-  //       gap: 5px;
-  //     }
-
-  //     .car-card {
-  //       cursor: pointer;
-  //       position: relative;
-  //       border-radius: 18px;
-  //       padding: 28px 24px;
-  //       background: #101010;
-  //       color: #f5f5f5;
-  //       border: 1px solid rgba(255, 255, 255, 0.08);
-  //       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  //       transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  //       overflow: hidden;
-
-  //       @media (max-width: 980px) {
-  //         padding: 8px 7px;
-  //         border-radius: 8px;
-  //       }
-
-  //       @media (min-width: 980px) {
-  //         &:hover {
-  //           transform: translateY(-6px);
-  //           box-shadow: 0 10px 8px rgba(0, 0, 0, 0.4);
-  //           border-color: rgba(255, 33, 33, 0.35);
-  //         }
-  //       }
-
-  //       &::before {
-  //         content: "";
-  //         position: absolute;
-  //         right: -40%;
-  //         top: -40%;
-  //         height: 140%;
-  //         width: 40%;
-  //         transform: rotate(-18deg);
-  //         background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 40%, transparent 100%);
-  //         pointer-events: none;
-  //         z-index: 0;
-  //         filter: blur(0.5px);
-  //       }
-
-  //       .bg-card {
-  //         position: absolute;
-  //         width: 180px;
-  //         height: auto;
-  //         opacity: 0.9;
-  //         bottom: 10px;
-  //         right: 10px;
-  //         pointer-events: none;
-  //         transition: opacity 0.3s ease, transform 0.3s ease;
-
-  //         @media (max-width: 980px) {
-  //           width: 90px;
-  //         }
-
-  //         @media (max-width: 720px) {
-  //           width: 60px;
-  //         }
-  //       }
-
-  //       @media (min-width: 980px) {
-  //         &:hover .bg-card {
-  //           opacity: 0.3;
-  //           transform: scale(1.05);
-  //         }
-  //       }
-
-  //       .card-head {
-  //         position: relative;
-  //         z-index: 1;
-
-  //         h3 {
-  //           margin: 0 0 8px 0;
-  //           font-size: 20px;
-  //           font-weight: 800;
-  //           letter-spacing: 0.3px;
-  //           color: #ffffff;
-
-  //           white-space: nowrap;
-  //           overflow: hidden;
-  //           text-overflow: ellipsis;
-
-  //           @media (max-width: 980px) {
-  //             font-size: 18px;
-  //           }
-
-  //           @media (max-width: 720px) {
-  //             font-size: 12px;
-  //           }
-
-  //           span {
-  //             @media (max-width: 720px) {
-  //               display: none;
-  //             }
-  //           }
-  //         }
-
-  //         p {
-  //           margin: 0 0 16px 0;
-  //           font-size: 16px;
-  //           color: #e0e0e0;
-
-  //           white-space: nowrap;
-  //           overflow: hidden;
-  //           text-overflow: ellipsis;
-
-  //           @media (max-width: 980px) {
-  //             font-size: 12px;
-  //           }
-
-  //           @media (max-width: 720px) {
-  //             font-size: 10px;
-  //           }
-  //         }
-  //       }
-
-  //       .card-list {
-  //         position: relative;
-  //         z-index: 1;
-  //         margin: 0 0 18px 20px;
-  //         padding: 0;
-
-  //         @media (max-width: 980px) {
-  //           margin: 0 0 5px 10px;
-  //           margin-top: -10px;
-  //         }
-
-  //         li {
-  //           margin-bottom: 6px;
-  //           list-style: square;
-  //           font-size: 12px;
-
-  //           white-space: nowrap;
-  //           text-overflow: ellipsis;
-
-
-  //           @media (max-width: 980px) {
-  //             font-size: 10px;
-  //           }
-
-  //           @media (max-width: 720px) {
-  //             font-size: 8px;
-  //             display: none;
-  //           }
-  //         }
-  //       }
-
-  //       .card-foot {
-  //         position: relative;
-  //         z-index: 1;
-  //       }
-
-  //       .btn-card {
-  //         display: inline-block;
-  //         padding: 10px 20px;
-  //         border-radius: 999px;
-  //         font-weight: 700;
-  //         border: none;
-  //         cursor: pointer;
-  //         font-size: 15px;
-  //         transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  //         white-space: nowrap;
-  //         overflow: hidden;
-  //         text-overflow: ellipsis;
-
-  //         @media (max-width: 980px) {
-  //           padding: 5px 10px;
-  //           font-size: 10px;
-  //         }
-
-  //         @media (max-width: 720px) {
-  //           padding: 5px 7px;
-  //           font-weight: 400;
-  //           font-size: 8px;
-  //         }
-
-
-  //         &.btn-nuevos {
-  //           background: #ffffffbb;
-  //           color: #b00000;
-  //         }
-
-  //         &.btn-seminuevos {
-  //           background: #ffffff99;
-  //           color: #000000;
-  //         }
-
-  //         &.btn-usados {
-  //           background: #2d2d2d;
-  //           color: #ffffff;
-  //         }
-  //       }
-
-  //       &.car-card-nuevos {
-  //         background: linear-gradient(180deg, #ff2121 0%, #7a0000 100%);
-  //       }
-
-  //       &.car-card-seminuevos {
-  //         background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%);
-  //       }
-
-  //       &.car-card-usados {
-  //         background: linear-gradient(180deg, #a8a8a8 0%, #6c6c6c 100%);
-  //       }
-  //     }
-  //   }
 
   .contenedor_web {
     width: 100%;
@@ -812,22 +588,6 @@
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   .contenedor_native {
 
     padding: 6px 6px 6px;
@@ -873,11 +633,35 @@
         flex: 0 0 auto;
       }
 
+      .img-skeleton {
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        background: linear-gradient(100deg,
+            #e6e6e6 30%,
+            #f2f2f2 50%,
+            #e6e6e6 70%);
+        background-size: 200% 100%;
+        animation: shimmer 1.2s linear infinite;
+        z-index: 1;
+      }
+
+      @keyframes shimmer {
+        from {
+          background-position: 200% 0;
+        }
+
+        to {
+          background-position: -200% 0;
+        }
+      }
+
+
       .bg-card {
         position: absolute;
         right: 5px;
         bottom: -3px;
-        opacity: 0.7;
+        opacity: 0.5;
         pointer-events: none;
         z-index: 1;
         display: block;
@@ -961,157 +745,243 @@
           background: #020617;
         }
       }
+
+      @media (min-width: 768px) {
+        grid-auto-columns: 40%;
+      }
+    }
+
+
+    .scroll-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin: 0px;
+      pointer-events: none;
+
+      span {
+        width: 8px;
+        height: 8px;
+        background: #7b7b7b;
+        border-radius: 50%;
+        opacity: 0.3;
+      }
+
+      span:nth-child(1) {
+        animation-delay: 0s;
+      }
+
+      span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
     }
 
 
     /* ===== Secciones ===== */
     .native-section {
-      margin-top: 0px;
-    }
-
-    .native-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1px 1px 0;
-
-      h2 {
-        margin: 0;
-        font-size: 1.05rem;
-        font-weight: 900;
-      }
-    }
-
-    .native-scroll {
-      display: flex;
-      gap: 5px;
-      overflow-x: auto;
-      padding: 8px 2px 12px;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-
-      &::-webkit-scrollbar {
-        display: none;
-      }
-    }
-
-    .native-scroll .car {
-      flex: 0 0 42%;
-      margin: 0;
-      border-radius: 16px;
-      overflow: hidden;
-      scroll-snap-align: start;
-    }
-
-    /* imagen */
-    .native-scroll .car .media {
-      position: relative;
-      aspect-ratio: 16/10;
-      background: #f3f4f6;
-    }
-
-    .native-scroll .car ion-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* chip */
-    .native-scroll .car .badge {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      margin: 0;
-      padding: 2px 2px;
-    }
-
-    .badge-danger {
-      background: var(--ion-color-medium);
-    }
-
-    .badge-warning {
-      background: var(--ion-color-dark);
-    }
-
-    .badge-success {
-      background: var(--ion-color-danger);
-    }
+      margin-top: 0;
 
 
-
-    /* texto */
-    .native-scroll .car .body {
-      padding: 10px 12px 12px;
-    }
-
-    .native-scroll .car .title {
-      font-weight: 900;
-      font-size: 0.95rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .native-scroll .car .price {
-      margin-top: 2px;
-      font-weight: 950;
-      color: var(--ion-color-danger);
-    }
-
-    /* card ver más */
-    .native-scroll .car.more {
-      display: grid;
-      place-items: center;
-    }
-
-    .native-scroll .car.more .more-inner {
-      display: grid;
-      place-items: center;
-      gap: 6px;
-      text-align: center;
-    }
-
-    .native-scroll .car.more .more-text {
-      font-weight: 950;
-      color: var(--ion-color-danger);
-    }
-
-    .native-scroll .car.more .more-count {
-      font-size: 0.75rem;
-      font-weight: 900;
-      color: var(--ion-color-danger);
-      opacity: 0.9;
-    }
-
-    @media (min-width: 768px) {
-      .native-cats {
-        grid-auto-columns: 40%;
+      /* ================= SKELETON ================= */
+      .car.skeleton {
+        pointer-events: none;
+        background: transparent;
+        box-shadow: none;
       }
 
+      .skeleton-box {
+        height: 120px;
+        border-radius: 12px;
+        background: linear-gradient(90deg,
+            #aaaaaa 25%,
+            #cacaca 37%,
+            #b6b6b6 63%);
+        background-size: 400% 100%;
+        animation: shimmer 1.4s ease infinite;
+      }
+
+      .skeleton-line {
+        height: 14px;
+        margin-top: 10px;
+        border-radius: 6px;
+        background: linear-gradient(90deg,
+            #e6e6e6 25%,
+            #f2f2f2 37%,
+            #e6e6e6 63%);
+        background-size: 400% 100%;
+        animation: shimmer 1.4s ease infinite;
+
+        &.short {
+          width: 60%;
+        }
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: 100% 0;
+        }
+
+        100% {
+          background-position: -100% 0;
+        }
+      }
+
+
+      /* ================= HEADER ================= */
+      .native-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 4px 0;
+
+        h2 {
+          margin: 0;
+          font-size: 1.05rem;
+          font-weight: 900;
+        }
+      }
+
+      /* ================= SCROLL ================= */
+      .native-scroll {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 8px 4px 12px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+
+      /* ================= CARD ================= */
       .native-scroll .car {
-        flex-basis: 20%;
+        flex: 0 0 42%;
+        margin: 0;
+        border-radius: 16px;
+        overflow: hidden;
+        scroll-snap-align: start;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      }
+
+      /* ================= IMAGEN ================= */
+      .media {
+        position: relative;
+        aspect-ratio: 16 / 10;
+        background: #f3f4f6;
+        overflow: hidden;
+      }
+
+      // .media {
+      //   position: relative;
+      //   width: 100;
+      //   height: 160px;
+      //   overflow: hidden;
+      //   border-radius: 16px;
+      // }
+
+      ion-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .img-hidden {
+        opacity: 0;
+      }
+
+      .skeleton-box {
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        background: linear-gradient(90deg,
+            #888888 25%,
+            #949494 37%,
+            #ededed 63%);
+        background-size: 400% 100%;
+        animation: skeleton 1.4s ease infinite;
+        z-index: 1;
+      }
+
+      @keyframes skeleton {
+        0% {
+          background-position: 100% 0;
+        }
+
+        100% {
+          background-position: 0 0;
+        }
+      }
+
+
+      /* ================= TEXTO ================= */
+      .native-scroll .car .body {
+        padding: 10px 12px 12px;
+      }
+
+      .native-scroll .car .title {
+        font-weight: 900;
+        font-size: 0.95rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .native-scroll .car .price {
+        margin-top: 4px;
+        font-weight: 950;
+        color: var(--ion-color-danger);
+        font-size: 0.95rem;
+      }
+
+      /* ================= VER MÁS ================= */
+      .native-scroll .car.more {
+        display: grid;
+        place-items: center;
+        background: #ffffff;
+        border: none;
+      }
+
+      .native-scroll .car.more .more-inner {
+        display: grid;
+        place-items: center;
+        gap: 6px;
+        text-align: center;
+      }
+
+      .native-scroll .car.more .more-text {
+        font-weight: 950;
+        color: #dc3545;
+        /* rojo */
+      }
+
+      .native-scroll .car.more .more-count {
+        font-size: 0.75rem;
+        font-weight: 900;
+        color: #dc3545;
+        opacity: 0.9;
+      }
+
+
+      /* ================= DESKTOP ================= */
+      @media (min-width: 768px) {
+        .native-scroll {
+          gap: 12px;
+        }
+
+        .native-scroll .car {
+          flex: 0 0 20%;
+        }
       }
     }
+
+
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 

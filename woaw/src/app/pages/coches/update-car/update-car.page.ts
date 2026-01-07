@@ -22,7 +22,7 @@ import { IonSelect } from '@ionic/angular';
 })
 export class UpdateCarPage implements OnInit {
   auto: any = null;
-  seccionActiva: 'datos' | 'imagenes' = 'datos';
+  seccionActiva: 'datos' | 'imagenes' | 'ubicacion' = 'datos';
   urlsImagenes: string[] = [];
   imagenes: File[] = [];
   urlsImagenesExistentes: string[] = [];

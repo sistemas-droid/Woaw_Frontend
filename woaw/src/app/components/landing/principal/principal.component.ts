@@ -57,7 +57,7 @@ export class PrincipalComponent implements OnInit {
   autosNuevos: any[] = [];
   autosSeminuevos: any[] = [];
   autosUsados: any[] = [];
-  misMotos: any[] = [];
+  MotosAll: any[] = [];
   Dispositivo: 'telefono' | 'tablet' | 'computadora' = 'computadora';
   esDispositivoMovil: boolean = false;
   public conUsados: number = 0;
@@ -69,8 +69,28 @@ export class PrincipalComponent implements OnInit {
   public img3: string = '';
 
   private self: number = 0;
-
   public isNative = Capacitor.isNativePlatform();
+
+  catsLoaded = {
+    usados: false,
+    seminuevos: false,
+    nuevos: false,
+    seguros: false,
+    motos: false,
+    camiones: false,
+    arr: false,
+  };
+
+  carsLoading = {
+    usados: true,
+    seminuevos: true,
+    nuevos: true,
+    motos: true
+  };
+
+  carsLoaded: Record<string, boolean> = {};
+  imagenesCargadas = new Set<string>();
+
 
   constructor(
     public carsService: CarsService,
@@ -89,7 +109,7 @@ export class PrincipalComponent implements OnInit {
     this.getCarsNews();
     this.getCarsSeminuevos();
     this.getCarsUsados();
-    // this.getMotos();
+    this.getMotos();
     this.cargaimagen();
 
     if (this.isNative) {
@@ -99,6 +119,14 @@ export class PrincipalComponent implements OnInit {
     }
 
   }
+
+  markCarLoaded(id: string) {
+    this.carsLoaded[id] = true;
+  }
+  onImgLoad(id: string) {
+    this.imagenesCargadas.add(id);
+  }
+
 
   // getCarsNews() {
   //   this.carsService.getCarsNews().subscribe({
@@ -146,23 +174,6 @@ export class PrincipalComponent implements OnInit {
   //     },
   //   });
   // }
-  getMotos() {
-    if (this.tipo !== 'all') {
-      return;
-    }
-    this.motosService.getMotos().subscribe({
-      next: (res: any) => {
-        console.log(res)
-        this.conMotos = res.contador;
-        const moto = res?.motos || []
-        this.misMotos = moto.slice(0, 5);
-      },
-      error: (err) => {
-        const mensaje = err?.error?.message || 'Ocurrió un error inesperado';
-        this.generalService.alert('Error de Conexión', mensaje);
-      },
-    });
-  }
 
   verMas(url: string) {
     this.router.navigate([url]);
@@ -205,10 +216,16 @@ export class PrincipalComponent implements OnInit {
     return Number.isFinite(n) ? n : null;
   }
 
-  public irAFichaAuto(id?: string) {
+  public irAFichaAuto(id?: string, tipo?: string) {
     if (!id) return;
+
+    if (tipo === "moto") {
+      this.router.navigate(['/ficha/motos', id]);
+    } else {
+      this.router.navigate(['/fichas/autos', id]);
+    }
+
     // this.router.navigate(["/ficha", "autos", id]);
-    this.router.navigate(['/fichas/autos', id]);
   }
 
   public getCiudad(a: AutoCard): string {
@@ -281,6 +298,7 @@ export class PrincipalComponent implements OnInit {
         const autos: AutoCard[] = res?.coches || [];
         const autosAleatorios = [...autos].sort(() => Math.random() - 0.5);
         this.autosUsados = autosAleatorios;
+        this.carsLoading.usados = false;
       },
       error: (err) => {
         const mensaje = err?.error?.message || "Ocurrió un error inesperado";
@@ -297,6 +315,7 @@ export class PrincipalComponent implements OnInit {
         const autos: AutoCard[] = res?.coches || [];
         const autosAleatorios = [...autos].sort(() => Math.random() - 0.5);
         this.autosSeminuevos = autosAleatorios;
+        this.carsLoading.seminuevos = false;
       },
       error: (err) => {
         const mensaje = err?.error?.message || "Ocurrió un error inesperado";
@@ -313,6 +332,7 @@ export class PrincipalComponent implements OnInit {
         // Si quieres orden aleatorio en la vista:
         const autosAleatorios = [...autos].sort(() => Math.random() - 0.5);
         this.autosNuevos = autosAleatorios;
+        this.carsLoading.nuevos = false;
       },
       error: (err) => {
         const mensaje = err?.error?.message || "Ocurrió un error inesperado";
@@ -321,6 +341,24 @@ export class PrincipalComponent implements OnInit {
     });
   }
 
+  getMotos() {
+    if (this.tipo !== 'all') {
+      return;
+    }
+    this.motosService.getMotos().subscribe({
+      next: (res: any) => {
+        console.log(res)
+        this.conMotos = res.contador;
+        const moto = res?.motos || []
+        this.MotosAll = moto.slice(0, 5);
+        this.carsLoading.motos = false;
+      },
+      error: (err) => {
+        const mensaje = err?.error?.message || 'Ocurrió un error inesperado';
+        this.generalService.alert('Error de Conexión', mensaje);
+      },
+    });
+  }
 
 
 

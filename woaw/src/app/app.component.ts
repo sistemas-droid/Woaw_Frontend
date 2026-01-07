@@ -142,7 +142,7 @@ export class AppComponent {
   }
 
   get mostrarWoalft(): boolean {
-    const rutasSinWoalft = ['/soporte', '/usados', '/nuevos', '/seminuevos', '/fichas/autos',
+    const rutasSinWoalft = ['/soporte', '/usados', '/nuevos', '/seminuevos', '/fichas/autos', '/update-car/autos/',
       '/m-nuevos', '/mis-motos', '/mis-autos', '/camiones/todos', '/registro-asesor'];
     return !rutasSinWoalft.some(r => this.currentUrl.startsWith(r));
   }
