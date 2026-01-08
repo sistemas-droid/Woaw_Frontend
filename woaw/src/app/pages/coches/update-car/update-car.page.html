@@ -483,7 +483,9 @@
     <div *ngIf="seccionActiva === 'imagenes'">
       <ion-grid>
         <ion-row>
+
           <ion-col size="12" size-md="6">
+
             <ion-card>
               <ion-card-header>
                 <ion-card-title>Imagen principal del auto</ion-card-title>
@@ -499,16 +501,42 @@
                 </div>
 
                 <div class="contenedor-imagen">
-                  <img [src]="imagenPrincipalMostrada" alt="Imagen principal del auto" />
+
+                  <!-- 🔴 MODO NORMAL --><img *ngIf="!modoRecorte" [src]="imagenPrincipalMostrada"
+                    alt="Imagen principal del auto" class="imagen-principal-editable" (click)="editarImagenActual()" />
+
+
+                  <!-- ✂️ MODO RECORTE INLINE -->
+                  <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                    [aspectRatio]="aspectRatio" [resizeToWidth]="FINAL_WIDTH" [cropperMinWidth]="FINAL_WIDTH"
+                    [cropperMaxWidth]="FINAL_WIDTH" [cropperMinHeight]="FINAL_HEIGHT" [cropperMaxHeight]="FINAL_HEIGHT"
+                    format="jpeg" outputType="blob" [transform]="transform" (imageCropped)="onImageCropped($event)">
+                  </image-cropper>
+
                 </div>
+
+                <!-- 🔍 ZOOM -->
+                <ion-range *ngIf="modoRecorte" color="danger" [min]="ZOOM_MIN" [max]="ZOOM_MAX" step="0.02"
+                  [value]="zoom" (ionChange)="onZoomChange($event)">
+                </ion-range>
+
+
+                <!-- 🎯 BOTONES -->
+                <div *ngIf="modoRecorte" class="acciones-recorte">
+                  <ion-button color="medium" (click)="cancelarRecorte()">Cancelar</ion-button>
+                  <ion-button color="danger" (click)="confirmarRecorte()">Guardar</ion-button>
+                </div>
+
                 <p class="texto_css">Selecciona una imagen para remover el fondo</p>
 
-                <div class="galeria-scroll" *ngIf="urlsImagenes?.length">
+                <div class="galeria-scroll" *ngIf="urlsImagenes.length">
                   <img *ngFor="let img of urlsImagenes" [src]="img" alt="Imagen del auto"
                     (click)="actualizarImagenPrincipal(img)" />
                 </div>
               </ion-card-content>
             </ion-card>
+
+
           </ion-col>
 
           <ion-col size="12" size-md="6">
@@ -524,7 +552,7 @@
                   <input type="file" accept="image/*" (change)="agregarImagen($event)" hidden />
                 </label>
 
-                <div class="galeria-scroll-big" *ngIf="urlsImagenes?.length">
+                <div class="galeria-scroll-big" *ngIf="urlsImagenes.length">
                   <div class="img-wrapper" *ngFor="let img of urlsImagenes">
                     <img [src]="img" alt="Imagen del auto" />
                     <div class="overlay-botones">
@@ -544,30 +572,30 @@
 
   </div>
 
-    <!-- 🔸 BOTONES FINALES -->
-    <div class="action-bar">
-      <div class="action-buttons">
-        <ion-button fill="outline" color="light" (click)="regresar()">
-          <ion-icon name="close-outline"></ion-icon>
-          <span>Cancelar</span>
-        </ion-button>
+  <!-- 🔸 BOTONES FINALES -->
+  <div class="action-bar">
+    <div class="action-buttons">
+      <ion-button fill="outline" color="light" (click)="regresar()">
+        <ion-icon name="close-outline"></ion-icon>
+        <span>Cancelar</span>
+      </ion-button>
 
-        <!-- <ion-button fill="outline" color="warning" (click)="onRestablecerClick()" [disabled]="!restablecer">
+      <!-- <ion-button fill="outline" color="warning" (click)="onRestablecerClick()" [disabled]="!restablecer">
           <ion-icon name="refresh-outline"></ion-icon>
           <span>Restablecer</span>
         </ion-button> -->
 
-        <ion-button fill="outline" color="danger" (click)="alert(auto?._id)" [disabled]="!auto?._id">
-          <ion-icon name="trash-outline"></ion-icon>
-          <span>Eliminar</span>
-        </ion-button>
+      <ion-button fill="outline" color="danger" (click)="alert(auto?._id)" [disabled]="!auto?._id">
+        <ion-icon name="trash-outline"></ion-icon>
+        <span>Eliminar</span>
+      </ion-button>
 
-        <ion-button color="success" (click)="onGuardarClick()" [disabled]="!restablecer">
-          <ion-icon name="save-outline"></ion-icon>
-          <span>Guardar</span>
-        </ion-button>
-      </div>
+      <ion-button color="success" (click)="onGuardarClick()" [disabled]="!restablecer">
+        <ion-icon name="save-outline"></ion-icon>
+        <span>Guardar</span>
+      </ion-button>
     </div>
+  </div>
 
   <app-footer></app-footer>
 </ion-content>

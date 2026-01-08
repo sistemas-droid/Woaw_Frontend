@@ -23,7 +23,7 @@
   </div>
 
   <div class="imagen-container">
-    <img [src]="auto.imagenes[0]" [alt]="auto.modelo" loading="lazy" (load)="onImagenCargada()"
+    <img [src]="auto.imagenPrincipal" [alt]="auto.modelo" loading="lazy" (load)="onImagenCargada()"
       (error)="imagenCargada = true" [class.oculta]="!imagenCargada" />
 
     <!-- Capa de oscurecimiento si está vendido -->

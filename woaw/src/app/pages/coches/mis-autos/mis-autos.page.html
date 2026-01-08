@@ -49,7 +49,7 @@
 
       <ion-col size="12" size-md="9">
         <div class="catalogo-autos" *ngIf="vistaActiva === 'venta'">
-          <div *ngIf="autosVentaPaginados?.length === 0" class="mensaje-vacio">
+          <div *ngIf="autosVentaPaginados.length === 0" class="mensaje-vacio">
             <ion-icon name="car-sport-outline" class="icono-mensaje"></ion-icon><br />
             No se encontraron autos de venta.
           </div>
@@ -83,7 +83,7 @@
         </div>
 
         <div class="catalogo-autos" *ngIf="vistaActiva === 'renta'">
-          <div *ngIf="autosRentaPaginados?.length === 0" class="mensaje-vacio">
+          <div *ngIf="autosRentaPaginados.length === 0" class="mensaje-vacio">
             <ion-icon name="car-sport-outline" class="icono-mensaje"></ion-icon><br />
             No se encontraron autos de renta.
           </div>

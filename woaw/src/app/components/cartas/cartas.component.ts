@@ -89,6 +89,10 @@ export class CartasComponent implements OnInit {
         clearInterval(this.verificadorCarga);
       }
     }, 200);
+
+
+    // console.log(this.auto)
+    // imagen: auto.imagenPrincipal || '/assets/default-car.webp',
   }
   onImagenCargada() {
     this.imagenCargada = true;

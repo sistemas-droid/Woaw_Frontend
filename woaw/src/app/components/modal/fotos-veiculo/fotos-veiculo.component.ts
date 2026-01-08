@@ -40,8 +40,8 @@ export class FotosVeiculoComponent implements OnInit {
   private colaSecundarias: File[] = [];
 
   // ✅ salida final fija (lo que quieres)
-  FINAL_WIDTH = 600;
-  FINAL_HEIGHT = 500;
+  FINAL_WIDTH = 880;
+  FINAL_HEIGHT = 680;
 
   // ✅ proporción fija 600/500 = 1.2
   aspectRatio = this.FINAL_WIDTH / this.FINAL_HEIGHT;
@@ -51,19 +51,19 @@ export class FotosVeiculoComponent implements OnInit {
   CROPPER_UI_HEIGHT = Math.round(this.CROPPER_UI_WIDTH / this.aspectRatio); // ~267
 
   // ✅✅ ZOOM SOLO PARA ALEJAR (NO ACERCAR)
-readonly ZOOM_MIN = 0.4;
-readonly ZOOM_MAX = 1.6;
+  readonly ZOOM_MIN = 0.4;
+  readonly ZOOM_MAX = 1.6;
 
-zoom = 1.0;
-transform: any = { scale: 1.0, rotate: 0 };
+  zoom = 1.0;
+  transform: any = { scale: 1.0, rotate: 0 };
 
   constructor(
     private modalController: ModalController,
     private http: HttpClient,
     private generalService: GeneralService
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   cancelar() {
     this.modalController.dismiss();
@@ -73,8 +73,8 @@ transform: any = { scale: 1.0, rotate: 0 };
     const ext = file.name.split('.').pop()?.toLowerCase();
     this.originalExt =
       ext === 'png' ? 'png' :
-      ext === 'webp' ? 'webp' :
-      'jpeg';
+        ext === 'webp' ? 'webp' :
+          'jpeg';
 
     this.cropFormat = this.originalExt;
   }
@@ -227,8 +227,8 @@ transform: any = { scale: 1.0, rotate: 0 };
       this.cropFormat === 'png'
         ? 'image/png'
         : this.cropFormat === 'webp'
-        ? 'image/webp'
-        : 'image/jpeg';
+          ? 'image/webp'
+          : 'image/jpeg';
 
     const croppedFile = new File(
       [this.croppedBlob],

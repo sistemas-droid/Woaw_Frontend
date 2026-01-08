@@ -10,6 +10,7 @@ import { NavbarComponent } from '../../../components/navbar/navbar.component';
 import { FooterComponent } from '../../../components/footer/footer.component';
 
 import { UpdateCarPage } from './update-car.page';
+import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { UpdateCarPage } from './update-car.page';
     NavbarComponent,
     IonicModule,
     UpdateCarPageRoutingModule,
-    FooterComponent
+    FooterComponent,
+    ImageCropperComponent
   ],
   declarations: [UpdateCarPage]
 })
