@@ -612,7 +612,7 @@ export class CarsService {
         /vehiculos?
 
 
-exports.removeBackgroundBuffer = async (req, res) => {
+exports.removeBackgroundBuffer = async (req, res) => 
   try {
     let bufferOriginal = null;
 

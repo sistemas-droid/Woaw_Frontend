@@ -19,13 +19,11 @@ export class ListComponent implements OnInit {
   @Input() tipo: string = '';
   @Input() extra?: string;
 
-  //estado de búsqueda
+  // ✅ lista de autos para construir opciones dinámicas (si se pasa desde el Page)
+  @Input() autos?: any[];
+
   query: string = '';
-
-  // fuente original (sin "Quitar filtro")
   private opcionesBase: any[] = [];
-
-  // arreglo que se muestra (filtrado)
   opcionesFiltradas: any[] = [];
 
   constructor(
@@ -33,13 +31,11 @@ export class ListComponent implements OnInit {
     private generalService: GeneralService,
     private carsService: CarsService,
     private motosService: MotosService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    // Construir opciones según el tipo
     if (this.tipo === 'precio') {
       if (this.extra === 'renta') {
-        // Rangos de renta por día (MXN) — mínimo $500
         this.opcionesBase = [
           { label: '$500 - $699', rango: [500, 699] },
           { label: '$700 - $899', rango: [700, 899] },
@@ -53,7 +49,6 @@ export class ListComponent implements OnInit {
           { label: '$4,000 o más', rango: [4000, Infinity] },
         ];
       } else {
-        // Rangos originales de compra/venta
         this.opcionesBase = [
           { label: 'Menos de $100,000', rango: [0, 99999] },
           { label: '$100,000 - $149,999', rango: [100000, 149999] },
@@ -68,8 +63,10 @@ export class ListComponent implements OnInit {
         ];
       }
       this.applyFilter();
+      return;
+    }
 
-    } else if (this.tipo === 'anio') {
+    if (this.tipo === 'anio') {
       const anioActual = new Date().getFullYear();
       const url = window.location.pathname;
 
@@ -81,8 +78,10 @@ export class ListComponent implements OnInit {
         this.opcionesBase = this.generarRangoAnios(anioActual, 1950);
       }
       this.applyFilter();
+      return;
+    }
 
-    } else if (this.tipo === 'color') {
+    if (this.tipo === 'color') {
       this.opcionesBase = [
         { label: 'Blanco' }, { label: 'Negro' }, { label: 'Gris' }, { label: 'Plateado' },
         { label: 'Rojo' }, { label: 'Azul' }, { label: 'Azul marino' }, { label: 'Verde' },
@@ -93,19 +92,22 @@ export class ListComponent implements OnInit {
         { label: 'Cobre' }, { label: 'Camaleón' }, { label: 'Otro' },
       ];
       this.applyFilter();
+      return;
+    }
 
-    } else if (this.tipo === 'marca') {
+    if (this.tipo === 'marca') {
       if (this.extra === 'motos') {
         this.getMarcas_motos();
       } else if (this.extra === 'camiones') {
-        // lógica especial camiones si aplica
         this.opcionesBase = [];
         this.applyFilter();
       } else {
         this.getMarcas_cohes();
       }
+      return;
+    }
 
-    } else if (this.tipo === 'tipo') {
+    if (this.tipo === 'tipo') {
       if (this.extra === 'motos') {
         this.opcionesBase = [];
         this.applyFilter();
@@ -115,14 +117,40 @@ export class ListComponent implements OnInit {
       } else {
         this.getTipos_coches();
       }
-
-    } else {
-      this.opcionesBase = [];
-      this.applyFilter();
+      return;
     }
+
+    // ✅ NUEVO: filtro general de vehículo (Coche / Moto)
+    if (this.tipo === 'tipoVehiculoGeneral') {
+      const dinamicas = this.buildVehiculoGeneralOptionsFromAutos(this.autos);
+      const base = dinamicas.length ? dinamicas : this.buildVehiculoGeneralFallback();
+
+      // ✅ orden fijo: coche primero siempre
+      this.opcionesBase = base.sort((a, b) => {
+        const ra = a.key === 'coche' ? 0 : a.key === 'moto' ? 1 : 9;
+        const rb = b.key === 'coche' ? 0 : b.key === 'moto' ? 1 : 9;
+        if (ra !== rb) return ra - rb;
+        return String(a.label).localeCompare(String(b.label));
+      });
+
+      this.applyFilter();
+      return;
+    }
+
+    this.opcionesBase = [];
+    this.applyFilter();
   }
 
-  // ————— eventos búsqueda —————
+  // ✅ label bonito para el HTML (Coches/Motos) sin romper el key (coche/moto)
+  getOpcionLabel(opcion: any): string {
+    if (this.tipo === 'tipoVehiculoGeneral') {
+      const k = this.normalize(opcion?.key ?? opcion?.label);
+      if (k === 'coche') return 'Coches';
+      if (k === 'moto') return 'Motos';
+    }
+    return opcion?.label ?? '';
+  }
+
   onSearchChange(ev: any) {
     this.query = (ev?.target?.value ?? '').toString();
     this.applyFilter();
@@ -133,7 +161,6 @@ export class ListComponent implements OnInit {
     this.applyFilter();
   }
 
-  // Aplica filtro sobre opcionesBase, insensible a mayúsculas/acentos
   private applyFilter() {
     const q = this.normalize(this.query);
     if (!q) {
@@ -141,8 +168,7 @@ export class ListComponent implements OnInit {
       return;
     }
 
-    this.opcionesFiltradas = this.opcionesBase.filter(op => {
-      // buscamos en label y también en key si existe
+    this.opcionesFiltradas = this.opcionesBase.filter((op) => {
       const label = this.normalize(op?.label);
       const key = this.normalize(op?.key);
       return label.includes(q) || key.includes(q);
@@ -150,14 +176,10 @@ export class ListComponent implements OnInit {
   }
 
   seleccionar(opcion: any) {
-    if (opcion?.quitar) {
-      this.popoverCtrl.dismiss(null);
-    } else {
-      this.popoverCtrl.dismiss(opcion);
-    }
+    if (opcion?.quitar) this.popoverCtrl.dismiss(null);
+    else this.popoverCtrl.dismiss(opcion);
   }
 
-  // ————— helpers —————
   generarRangoAnios(desde: number, hasta: number): any[] {
     const lista: any[] = [];
     for (let anio = desde; anio >= hasta; anio--) {
@@ -194,6 +216,7 @@ export class ListComponent implements OnInit {
             imageUrl: marca.imageUrl,
           }))
           .sort((a, b) => a.label.localeCompare(b.label));
+
         this.applyFilter();
       },
       error: (err) => {
@@ -215,6 +238,7 @@ export class ListComponent implements OnInit {
             imageUrl: marca.imageUrl,
           }))
           .sort((a, b) => a.label.localeCompare(b.label));
+
         this.applyFilter();
       },
       error: (err) => {
@@ -235,6 +259,7 @@ export class ListComponent implements OnInit {
             key: tipo.toLowerCase().replace(/\s+/g, '-'),
           }))
           .sort((a, b) => a.label.localeCompare(b.label));
+
         this.applyFilter();
       },
       error: (err) => {
@@ -247,7 +272,38 @@ export class ListComponent implements OnInit {
 
   trackByKey = (_: number, item: any) => item?.key ?? item?.label ?? item;
 
-  // normaliza (minúsculas y sin acentos) para comparar
+  // ✅ options dinámicas para coche/moto desde autos
+  private buildVehiculoGeneralOptionsFromAutos(autos?: any[]): any[] {
+    if (!Array.isArray(autos) || autos.length === 0) return [];
+
+    const set = new Set<string>();
+
+    for (const a of autos) {
+      const raw = a?.tipoVehiculoGeneral ?? a?.tipo ?? a?.categoria;
+      let v = this.normalize(raw);
+      if (!v) continue;
+
+      // normalizaciones comunes
+      if (v === 'carro' || v === 'auto' || v === 'automovil') v = 'coche';
+      if (v === 'motocicleta' || v === 'motos') v = 'moto';
+
+      // solo aceptamos coche/moto
+      if (v === 'coche' || v === 'moto') set.add(v);
+    }
+
+    return Array.from(set).map((v) => ({
+      label: v === 'coche' ? 'Coche' : 'Moto',
+      key: v,
+    }));
+  }
+
+  private buildVehiculoGeneralFallback(): any[] {
+    return [
+      { label: 'Coche', key: 'coche' },
+      { label: 'Moto', key: 'moto' },
+    ];
+  }
+
   private normalize(v: any): string {
     return (v ?? '')
       .toString()

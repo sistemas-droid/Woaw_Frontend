@@ -3,7 +3,10 @@
 
 <ion-content #pageContent [fullscreen]="true">
 
-  <app-acomodo [totalAutos]="totalVehiculos" [titulo]="terminoBusqueda" (ordenCambio)="ordenarAutos($event)">
+  <app-acomodo
+    [totalAutos]="totalVehiculos"
+    [titulo]="terminoBusqueda"
+    (ordenCambio)="ordenarAutos($event)">
   </app-acomodo>
 
   <ion-grid *ngIf="tieneResultadosPaginados">
@@ -11,23 +14,36 @@
 
       <!-- Columna lateral de filtros -->
       <ion-col size="12" size-md="3">
-        <app-menu [filtros]="filtros" [filtrosAplicados]="filtrosAplicados"
-          (mostrarOpciones)="mostrarOpciones($event.event, $event.tipo)" (limpiarFiltros)="resetearFiltros()">
+        <app-menu
+          [filtros]="filtros"
+          [filtrosAplicados]="filtrosAplicados"
+          (mostrarOpciones)="mostrarOpciones($event.event, $event.tipo)"
+          (limpiarFiltros)="resetearFiltros()">
         </app-menu>
 
         <div class="line"></div>
 
         <div class="servicios-container" *ngIf="mostrarServicios">
           <div class="lista-servicios">
-            <ion-item *ngFor="let servicio of serviciosEncontrados" button detail="false"
-              (click)="navegarAServicio(servicio.ruta)" class="item-servicio">
-              <ion-icon [name]="servicio.icono || 'help-circle'" slot="start"
-                [color]="servicio.tipo === 'servicio' ? 'danger' : 'success'"></ion-icon>
+            <ion-item
+              *ngFor="let servicio of serviciosEncontrados"
+              button
+              detail="false"
+              (click)="navegarAServicio(servicio.ruta)"
+              class="item-servicio">
+
+              <ion-icon
+                [name]="servicio.icono || 'help-circle'"
+                slot="start"
+                [color]="servicio.tipo === 'servicio' ? 'danger' : 'success'">
+              </ion-icon>
 
               <ion-label class="contenido-servicio">
                 <h4 class="titulo-servicio">{{ servicio.titulo }}</h4>
                 <p class="descripcion-servicio">{{ servicio.descripcion }}</p>
-                <ion-badge [color]="servicio.tipo === 'servicio' ? 'danger' : 'success'" class="badge-tipo">
+                <ion-badge
+                  [color]="servicio.tipo === 'servicio' ? 'danger' : 'success'"
+                  class="badge-tipo">
                   {{ servicio.tipo }}
                 </ion-badge>
               </ion-label>
@@ -43,8 +59,12 @@
       <ion-col size="12" size-md="9">
         <div class="catalogo-autos">
           <ng-container *ngFor="let auto of resultadosPaginados">
-            <app-cartas [auto]="auto" [autosFavoritosIds]="autosFavoritosIds" [ubicacion]="'m-nuevos'"
-              (refrescarAutos)="handleRefrescarAutos($event)" [esMio]="idsMisVehiculos.includes(auto._id)">
+            <app-cartas
+              [auto]="auto"
+              [autosFavoritosIds]="autosFavoritosIds"
+              [ubicacion]="getUbicacionCard(auto)"
+              (refrescarAutos)="handleRefrescarAutos($event)"
+              [esMio]="(idsMisVehiculos || []).includes(auto._id)">
             </app-cartas>
           </ng-container>
         </div>
@@ -53,21 +73,25 @@
         <div class="contenedor-paginacion" *ngIf="totalPaginas > 1">
           <div class="paginacion-scroll">
             <div class="paginacion">
-              <!-- Flecha anterior -->
-              <button class="pagina" (click)="cambiarPagina(paginaActual - 1)"
+              <button
+                class="pagina"
+                (click)="cambiarPagina(paginaActual - 1)"
                 [disabled]="paginaActual === 1">‹</button>
 
-              <!-- Botones dinámicos -->
               <ng-container *ngFor="let i of paginasReducidas">
-                <button *ngIf="esNumero(i)" class="pagina" [class.activa]="paginaActual === i"
+                <button
+                  *ngIf="esNumero(i)"
+                  class="pagina"
+                  [class.activa]="paginaActual === i"
                   (click)="cambiarPagina(i)">
                   {{ i }}
                 </button>
                 <span *ngIf="!esNumero(i)" class="ellipsis">...</span>
               </ng-container>
 
-              <!-- Flecha siguiente -->
-              <button class="pagina" (click)="cambiarPagina(paginaActual + 1)"
+              <button
+                class="pagina"
+                (click)="cambiarPagina(paginaActual + 1)"
                 [disabled]="paginaActual === totalPaginas">›</button>
             </div>
           </div>
@@ -81,27 +105,28 @@
     </ion-row>
   </ion-grid>
 
-
-  <!-- NUEVA SECCIÓN PARA CUANDO NO HAY RESULTADOS -->
+  <!-- Sección sin resultados -->
   <div *ngIf="!tieneResultadosPaginados && !mostrarServicios" class="seccion-sin-resultados">
-
     <div class="contenedor_servicios">
       <div class="servicios_container">
-          <div class="mensaje-principal">
-            <ion-icon name="search-outline" class="icono-busqueda"></ion-icon>
-            <h2>No encontramos resultados para tu búsqueda</h2>
-            <p>Pero tenemos estas opciones que podrían interesarte:</p>
-          </div>
+        <div class="mensaje-principal">
+          <ion-icon name="search-outline" class="icono-busqueda"></ion-icon>
+          <h2>No encontramos resultados para tu búsqueda</h2>
+          <p>Pero tenemos estas opciones que podrían interesarte:</p>
+        </div>
 
         <div class="grid-servicios">
-
-
-          <div class="card-servicio" *ngFor="let servicio of serviciosSugeridos"
+          <div
+            class="card-servicio"
+            *ngFor="let servicio of serviciosSugeridos"
             (click)="navegarAServicio(servicio.ruta)">
             <div class="card-header">
-              <ion-icon [name]="servicio.icono || 'help-circle'"
-                [class]="servicio.tipo === 'servicio' ? 'icono-servicio' : 'icono-categoria'"></ion-icon>
-              <ion-badge [class]="servicio.tipo === 'servicio' ? 'badge-servicio' : 'badge-categoria'">
+              <ion-icon
+                [name]="servicio.icono || 'help-circle'"
+                [class]="servicio.tipo === 'servicio' ? 'icono-servicio' : 'icono-categoria'">
+              </ion-icon>
+              <ion-badge
+                [class]="servicio.tipo === 'servicio' ? 'badge-servicio' : 'badge-categoria'">
                 {{ servicio.tipo }}
               </ion-badge>
             </div>
@@ -121,21 +146,21 @@
     </div>
   </div>
 
-
-
-
   <ng-container *ngIf="mostrarServicios && !tieneResultadosPaginados">
-
     <div class="contenedor_servicios">
       <div class="servicios_container">
         <div class="grid-servicios">
-
-          <div class="card-servicio" *ngFor="let servicio of serviciosEncontrados"
+          <div
+            class="card-servicio"
+            *ngFor="let servicio of serviciosEncontrados"
             (click)="navegarAServicio(servicio.ruta)">
             <div class="card-header">
-              <ion-icon [name]="servicio.icono || 'help-circle'"
-                [class]="servicio.tipo === 'servicio' ? 'icono-servicio' : 'icono-categoria'"></ion-icon>
-              <ion-badge [class]="servicio.tipo === 'servicio' ? 'badge-servicio' : 'badge-categoria'">
+              <ion-icon
+                [name]="servicio.icono || 'help-circle'"
+                [class]="servicio.tipo === 'servicio' ? 'icono-servicio' : 'icono-categoria'">
+              </ion-icon>
+              <ion-badge
+                [class]="servicio.tipo === 'servicio' ? 'badge-servicio' : 'badge-categoria'">
                 {{ servicio.tipo }}
               </ion-badge>
             </div>
@@ -149,15 +174,11 @@
               <ion-icon name="chevron-forward" class="icono-flecha"></ion-icon>
             </div>
           </div>
-
         </div>
       </div>
     </div>
-
   </ng-container>
 
-
   <br><br><br><br><br>
-
   <app-footer></app-footer>
 </ion-content>

@@ -1,43 +1,43 @@
 <app-navbar></app-navbar>
 
-<!-- <ion-header *ngIf="esDispositivoMovil">
-  <ion-toolbar color="dark">
-    <ion-buttons slot="start">
-      <ion-back-button text="" routerDirection="back" defaultHref="/"></ion-back-button>
-      <div class="perfil-header">
-        <img src="/assets/icon/logo4.png" alt="Go Autos" class="logo" />
-      </div>
-      <ion-title>Seminuevos</ion-title>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-content #pageContent [fullscreen]="true">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="arrow-down-outline" refreshingSpinner="crescent"
-      pullingText="Desliza para actualizar" refreshingText="Actualizando...">
+    <ion-refresher-content
+      pullingIcon="arrow-down-outline"
+      refreshingSpinner="crescent"
+      pullingText="Desliza para actualizar"
+      refreshingText="Actualizando...">
     </ion-refresher-content>
   </ion-refresher>
 
-    <app-spinner *ngIf="mostrar_spinner" [tipo]="tipo_spinner" [text]="texto_spinner" [sub_text]="textoSub_spinner"></app-spinner>
+  <app-spinner
+    *ngIf="mostrar_spinner"
+    [tipo]="tipo_spinner"
+    [text]="texto_spinner"
+    [sub_text]="textoSub_spinner">
+  </app-spinner>
 
-
-  <app-acomodo [totalAutos]="totalAutos" (ordenCambio)="ordenarAutos($event)" [titulo]="'Seminuevos'"></app-acomodo>
+  <app-acomodo
+    [totalAutos]="totalAutos"
+    (ordenCambio)="ordenarAutos($event)"
+    [titulo]="'Seminuevos'">
+  </app-acomodo>
 
   <ion-grid class="contenedor-catalogo">
     <ion-row>
+
       <!-- Columna lateral de filtros -->
       <ion-col size="12" size-md="3">
-
-        <app-menu [filtros]="filtros" [filtrosAplicados]="filtrosAplicados"
-          (mostrarOpciones)="mostrarOpciones($event.event, $event.tipo)" (limpiarFiltros)="resetearFiltros()">
+        <app-menu
+          [filtros]="filtros"
+          [filtrosAplicados]="filtrosAplicados"
+          (mostrarOpciones)="mostrarOpciones($event.event, $event.tipo)"
+          (limpiarFiltros)="resetearFiltros()">
         </app-menu>
-
       </ion-col>
 
       <!-- Columna de catálogo -->
       <ion-col size="12" size-md="9">
-
         <div class="catalogo-autos">
 
           <div *ngIf="autosPaginados?.length === 0" class="mensaje-vacio">
@@ -46,34 +46,40 @@
           </div>
 
           <ng-container *ngFor="let auto of autosPaginados">
-            <app-cartas [auto]="auto" [autosFavoritosIds]="autosFavoritosIds" [ubicacion]="'seminuevos'"
-              (refrescarAutos)="handleRefrescarAutos($event)" [esMio]="idsMisAutos.includes(auto._id)">
+            <app-cartas
+              [auto]="auto"
+              [autosFavoritosIds]="autosFavoritosIds"
+              [ubicacion]="'seminuevos'"
+              (refrescarAutos)="handleRefrescarAutos($event)"
+              [esMio]="idsMisAutos.includes(auto._id)">
             </app-cartas>
           </ng-container>
 
         </div>
 
-        <!-- Paginación  -->
+        <!-- Paginación -->
         <div class="contenedor-paginacion" *ngIf="totalPaginas > 1">
           <div class="paginacion-scroll">
             <div class="paginacion">
-              <!-- Flecha anterior -->
-              <button class="pagina" (click)="cambiarPagina(paginaActual - 1)"
+
+              <button class="pagina"
+                (click)="cambiarPagina(paginaActual - 1)"
                 [disabled]="paginaActual === 1">‹</button>
 
-              <!-- Botones dinámicos -->
               <ng-container *ngFor="let i of paginasReducidas">
-                <button *ngIf="esNumero(i)" class="pagina" [class.activa]="paginaActual === i"
+                <button *ngIf="esNumero(i)"
+                  class="pagina"
+                  [class.activa]="paginaActual === i"
                   (click)="cambiarPagina(i)">
                   {{ i }}
                 </button>
                 <span *ngIf="!esNumero(i)" class="ellipsis">...</span>
               </ng-container>
 
-
-              <!-- Flecha siguiente -->
-              <button class="pagina" (click)="cambiarPagina(paginaActual + 1)"
+              <button class="pagina"
+                (click)="cambiarPagina(paginaActual + 1)"
                 [disabled]="paginaActual === totalPaginas">›</button>
+
             </div>
           </div>
         </div>
@@ -83,5 +89,4 @@
   </ion-grid>
 
   <app-footer></app-footer>
-
 </ion-content>
