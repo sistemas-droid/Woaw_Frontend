@@ -39,7 +39,10 @@
             class="logo-marca"
             (error)="ocultarImagen($event)" />
 
-          <ion-label>{{ opcion.label }}</ion-label>
+          <!-- ✅ label bonito para Vehículo -->
+          <ion-label>
+            {{ getOpcionLabel(opcion) }}
+          </ion-label>
         </ng-container>
 
         <ng-template #quitar>

@@ -28,10 +28,12 @@ interface Auto {
 export class UsadosPage implements OnInit {
   esDispositivoMovil: boolean = false;
   autosStorage: any[] = [];
+
   filtros = [
+    { label: 'Vehículo', tipo: 'tipoVehiculoGeneral' }, // 👈 NUEVO (coche / moto)
     { label: 'Marca', tipo: 'marca' },
     { label: 'Precio', tipo: 'precio' },
-    { label: 'Tipo', tipo: 'tipo' },
+    { label: 'Tipo', tipo: 'tipo' }, // SUV, Sedán, etc.
     { label: 'Año', tipo: 'anio' },
     // { label: 'Color', tipo: 'color' },
   ];
@@ -40,10 +42,12 @@ export class UsadosPage implements OnInit {
 
   // ## ----- ☢️☢️☢️☢️
   filtrosAplicados: any = {
+    tipoVehiculoGeneral: null, // 👈 NUEVO (coche / moto)
     precio: null,
     anio: null,
     color: null,
     marca: null,
+    tipo: null, // 👈 (SUV, Sedán, etc.)
   };
 
   public autosFiltrados: any[] = [];
@@ -68,7 +72,7 @@ export class UsadosPage implements OnInit {
 
   ordenActivo: string | null = null;
 
-    public mostrar_spinner: boolean = false;
+  public mostrar_spinner: boolean = false;
   public tipo_spinner: number = 0;
   public texto_spinner: string = 'Cargando...';
   public textoSub_spinner: string = 'Espere un momento';
@@ -92,6 +96,7 @@ export class UsadosPage implements OnInit {
     this.generalService.dispositivo$.subscribe((tipo) => {
       this.esDispositivoMovil = tipo === 'telefono' || tipo === 'tablet';
     });
+
     this.getCarsUsados();
 
     this.generalService.tokenExistente$.subscribe((estado) => {
@@ -104,15 +109,18 @@ export class UsadosPage implements OnInit {
     this.generalService.valorGlobal$.subscribe((valor) => {
       this.itemsPorPagina = valor;
     });
+
     this.misAutos();
   }
+
   async misAutos() {
     if (!this.isLoggedIn) {
       this.idsMisAutos = [];
       return;
-      // public idsMisAutos: string[] = [];
     }
-this.mostrar_spinner= true;
+
+    this.mostrar_spinner = true;
+
     this.carsService.misAutosId().subscribe({
       next: (res: any) => {
         if (res && Array.isArray(res.vehicleIds) && res.vehicleIds.length > 0) {
@@ -121,12 +129,11 @@ this.mostrar_spinner= true;
           this.idsMisAutos = [];
         }
 
-        this.mostrar_spinner= false;
+        this.mostrar_spinner = false;
       },
       error: (err) => {
-        this.mostrar_spinner= false;
-        const mensaje =
-          err?.error?.message || 'Error al obtener tus vehículos.';
+        this.mostrar_spinner = false;
+        const mensaje = err?.error?.message || 'Error al obtener tus vehículos.';
         if (mensaje === 'No se encontraron vehículos para este usuario') {
           this.idsMisAutos = [];
         } else {
@@ -135,19 +142,22 @@ this.mostrar_spinner= true;
       },
     });
   }
+
   getCarsUsados() {
-    this.mostrar_spinner= true;
+    this.mostrar_spinner = true;
+
     this.carsService.getCarsUsados().subscribe({
       next: (res: any) => {
-        const autos = res?.coches || []
+        const autos = res?.coches || [];
+
         const autosFiltrados = this.mostrarPendientes
           ? autos
           : autos.filter((auto: any) => auto.estadoPublicacion !== 'pendiente');
 
-        this.autosStorage = autos.map((auto: any) => {
+        this.autosStorage = autosFiltrados.map((auto: any) => {
           const precios = auto.version?.map((v: any) => v.Precio) || [];
-          const precioDesde = Math.min(...precios);
-          const precioHasta = Math.max(...precios);
+          const precioDesde = precios.length ? Math.min(...precios) : 0;
+          const precioHasta = precios.length ? Math.max(...precios) : 0;
 
           return {
             ...auto,
@@ -157,15 +167,16 @@ this.mostrar_spinner= true;
             precioHasta,
           };
         });
+
         this.totalAutos = this.autosStorage.length;
-        // console.log(this.autosStorage);
+
         this.getCarsFavoritos();
         this.calcularPaginacion();
 
-        this.mostrar_spinner= false;
+        this.mostrar_spinner = false;
       },
       error: (err) => {
-        this.mostrar_spinner= false;
+        this.mostrar_spinner = false;
         const mensaje = err?.error?.message || 'Ocurrió un error inesperado';
         this.generalService.alert('Error al guardar los datos', mensaje);
       },
@@ -180,24 +191,22 @@ this.mostrar_spinner= true;
 
   // ## ----- Calculación de paginación
   calcularPaginacion() {
-    this.totalPaginas = Math.ceil(
-      this.autosStorage.length / this.itemsPorPagina
-    );
+    this.totalPaginas = Math.ceil(this.autosStorage.length / this.itemsPorPagina);
     this.paginas = Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
     this.mostrarPagina(this.paginaActual);
   }
+
   mostrarPagina(pagina: number) {
     this.paginaActual = pagina;
 
-    const base = this.autosFiltrados.length
-      ? this.autosFiltrados
-      : [...this.autosStorage];
+    const base = this.autosFiltrados.length ? this.autosFiltrados : [...this.autosStorage];
 
     const inicio = (pagina - 1) * this.itemsPorPagina;
     const fin = inicio + this.itemsPorPagina;
 
     this.autosPaginados = base.slice(inicio, fin);
   }
+
   cambiarPagina(pagina: number) {
     this.mostrarPagina(pagina);
 
@@ -205,22 +214,24 @@ this.mostrar_spinner= true;
       this.content.scrollToTop(400);
     }, 100);
   }
+
   doRefresh(event: any) {
     this.getCarsUsados();
-    this.filtrosAplicados = {};
+    this.resetearFiltros();
 
     setTimeout(() => {
       event.target.complete();
     }, 1500);
   }
-  
+
   // ## ----- Filtro ☢️☢️☢️☢️
   async mostrarOpciones(ev: Event, tipo: string) {
     const popover = await this.popoverCtrl.create({
       component: ListComponent,
       event: ev,
       translucent: true,
-      componentProps: { tipo },
+      // 👇 le paso tipo y autos por si ListComponent quiere armar categorías dinámicas
+      componentProps: { tipo, autos: this.autosStorage },
     });
 
     await popover.present();
@@ -235,11 +246,32 @@ this.mostrar_spinner= true;
     this.aplicarFiltros();
   }
 
+  // Helpers para normalizar strings
+  private norm(s: any): string {
+    return String(s || '').trim().toLowerCase();
+  }
+
   // ## ----- ☢️☢️☢️☢️
   aplicarFiltros() {
     let autosFiltrados = [...this.autosStorage];
-    
-    const { precio, anio, color, marca, tipo } = this.filtrosAplicados;
+
+    const { precio, anio, color, marca, tipo, tipoVehiculoGeneral } = this.filtrosAplicados;
+
+    // 🚗🏍️ FILTRO COCHE / MOTO (nuevo)
+    // Soporta diferentes nombres de campo por si tu backend usa otro:
+    // auto.tipo (ideal) || auto.categoria || auto.tipoVehiculoGeneral
+    if (tipoVehiculoGeneral?.label) {
+      const wanted = this.norm(tipoVehiculoGeneral.label);
+
+      autosFiltrados = autosFiltrados.filter((auto) => {
+        const candidato =
+          this.norm(auto?.tipo) ||
+          this.norm(auto?.categoria) ||
+          this.norm(auto?.tipoVehiculoGeneral);
+
+        return candidato === wanted;
+      });
+    }
 
     if (precio) {
       autosFiltrados = autosFiltrados.filter(
@@ -253,21 +285,22 @@ this.mostrar_spinner= true;
       autosFiltrados = autosFiltrados.filter((auto) => auto.anio === anio.anio);
     }
 
-    if (color) {
+    if (color?.label) {
       autosFiltrados = autosFiltrados.filter(
-        (auto) => auto.color?.toLowerCase() === color.label.toLowerCase()
+        (auto) => this.norm(auto.color) === this.norm(color.label)
       );
     }
 
-    if (marca) {
+    if (marca?.label) {
       autosFiltrados = autosFiltrados.filter(
-        (auto) => auto.marca.toLowerCase() === marca.label.toLowerCase()
+        (auto) => this.norm(auto.marca) === this.norm(marca.label)
       );
     }
 
-    if (tipo) {
+    // "Tipo" (SUV, Sedán, etc.) — tu filtro original, lo dejo igual nomás con norm por seguridad
+    if (tipo?.label) {
       autosFiltrados = autosFiltrados.filter(
-        (auto) => auto.tipoVehiculo?.toLowerCase() === tipo.label.toLowerCase()
+        (auto) => this.norm(auto.tipoVehiculo) === this.norm(tipo.label)
       );
     }
 
@@ -275,14 +308,13 @@ this.mostrar_spinner= true;
     this.totalPaginas = Math.ceil(autosFiltrados.length / this.itemsPorPagina);
     this.paginas = Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
     this.autosPaginados = autosFiltrados.slice(0, this.itemsPorPagina);
+    this.paginaActual = 1; // para que no te quedes en página muerta
   }
 
   getCarsFavoritos() {
     this.carsService.getCarsFavoritos().subscribe({
       next: (res: any) => {
-        const vehicleIds = res.vehicles.map(
-          (vehicle: any) => vehicle.vehicleId
-        );
+        const vehicleIds = res.vehicles.map((vehicle: any) => vehicle.vehicleId);
         this.autosFavoritosIds = new Set(vehicleIds);
         this.mostrarPagina(this.paginaActual);
       },
@@ -320,17 +352,17 @@ this.mostrar_spinner= true;
       },
     });
   }
+
   handleRefrescarAutos(ubicacion: string) {
     if (ubicacion === 'usados') {
       this.getCarsUsados();
     }
   }
+
   ordenarAutos(criterio: string) {
     this.ordenActivo = criterio;
 
-    const base = this.autosFiltrados.length
-      ? this.autosFiltrados
-      : [...this.autosStorage];
+    const base = this.autosFiltrados.length ? this.autosFiltrados : [...this.autosStorage];
 
     switch (criterio) {
       case 'precioAsc':
@@ -348,10 +380,20 @@ this.mostrar_spinner= true;
     this.totalPaginas = Math.ceil(base.length / this.itemsPorPagina);
     this.paginas = Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
     this.autosPaginados = base.slice(0, this.itemsPorPagina);
+    this.paginaActual = 1;
   }
+
   resetearFiltros() {
-    this.filtrosAplicados = {};
-    this.aplicarFiltros();
+    this.filtrosAplicados = {
+      tipoVehiculoGeneral: null,
+      precio: null,
+      anio: null,
+      color: null,
+      marca: null,
+      tipo: null,
+    };
+    this.autosFiltrados = [];
+    this.calcularPaginacion();
   }
 
   esNumero(valor: any): valor is number {
