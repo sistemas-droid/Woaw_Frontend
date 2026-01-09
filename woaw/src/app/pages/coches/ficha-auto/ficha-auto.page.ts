@@ -25,8 +25,6 @@ import { Capacitor } from "@capacitor/core";
   standalone: false
 })
 export class FichaAutoPage implements OnInit {
-
-
   auto: any = null;
   spinner: boolean = false;
   imagenesCargadas: boolean[] = [];
@@ -64,6 +62,13 @@ export class FichaAutoPage implements OnInit {
   public idvehiculo: string | null = null;
 
   public tipoAlSubir: "particular" | "lote" | null = null;
+
+  galeriaImagenes: string[] = [];
+
+  marcasConFondoNuevo: string[] = [
+    'honda',
+  ];
+
 
   constructor(
     private route: ActivatedRoute,
@@ -111,8 +116,11 @@ export class FichaAutoPage implements OnInit {
   }
   async mostrarauto() {
     this.tipo = (this.auto.tipoVenta || "").toLowerCase();
-    this.imagenSeleccionada = this.auto?.imagenes?.[0] || "";
 
+    // ✅ SIEMPRE construye la galería con imagenPrincipal + imagenes
+    this.construirGaleriaImagenes();
+
+    // el resto de tu lógica de versiones queda igual
     if (this.auto?.version && Array.isArray(this.auto.version)) {
       this.versiones = this.auto.version.map((v: any) => ({
         nombre: v.Name,
@@ -124,29 +132,14 @@ export class FichaAutoPage implements OnInit {
       this.auto.precioDesde = this.versiones[0]?.precio;
       this.auto.precioHasta = this.versiones[this.versiones.length - 1]?.precio;
 
-      this.miniaturasCargadas = {};
-      if (this.auto?.imagenes) {
-        this.auto.imagenes.forEach((img: string) => {
-          this.miniaturasCargadas[img] = false;
-        });
-      }
-
-      setTimeout(() => {
-        const img = new Image();
-        img.src = this.imagenSeleccionada;
-        if (img.complete && img.naturalHeight !== 0) {
-          this.imagenPrincipalCargada = true;
-        }
-      }, 0);
-
-      if (this.tipo === "nuevo") {
-        if (this.versionSeleccionada?.nombre) {
-          this.getEspecificacionesPorVersion(this.versionSeleccionada.nombre);
-        }
+      if (this.tipo === "nuevo" && this.versionSeleccionada?.nombre) {
+        this.getEspecificacionesPorVersion(this.versionSeleccionada.nombre);
       }
     }
+
     this.mostrarmapa();
   }
+
 
   mostrarmapa() {
     const { lat, lng, ciudad, estado } = this.auto.ubicacion;
@@ -300,7 +293,7 @@ export class FichaAutoPage implements OnInit {
       .subscribe({
         next: (res: any[]) => {
           this.especificacionesAuto = res;
-          console.log('HEYY', this.especificacionesAuto);
+          // console.log('HEYY', this.especificacionesAuto);
         },
         error: (err) => {
           this.generalService.loadingDismiss();
@@ -347,14 +340,17 @@ export class FichaAutoPage implements OnInit {
     }
   }
   cambiarImagen(direccion: "siguiente" | "anterior") {
-    const index = this.auto.imagenes.indexOf(this.imagenSeleccionada);
-    const total = this.auto.imagenes.length;
+    const imgs = this.galeriaImagenes || [];
+    const index = imgs.indexOf(this.imagenSeleccionada);
+    const total = imgs.length;
+
     if (direccion === "siguiente" && index < total - 1) {
-      this.imagenSeleccionada = this.auto.imagenes[index + 1];
+      this.imagenSeleccionada = imgs[index + 1];
     } else if (direccion === "anterior" && index > 0) {
-      this.imagenSeleccionada = this.auto.imagenes[index - 1];
+      this.imagenSeleccionada = imgs[index - 1];
     }
   }
+
   get descripcionCorta(): string {
     if (!this.auto?.descripcion) return "";
     const palabras = this.auto.descripcion.split(" ");
@@ -367,6 +363,7 @@ export class FichaAutoPage implements OnInit {
     this.carsService.getCar(id).subscribe({
       next: async (res: any) => {
         this.auto = res;
+        console.log('AUTO', this.auto);
         this.tipoAlSubir = this.auto.lote == null ? "particular" : "lote";
         const storage = localStorage.getItem("user");
         const usuario = storage ? JSON.parse(storage) : null;
@@ -505,5 +502,32 @@ export class FichaAutoPage implements OnInit {
     localStorage.setItem("origenLote", `/lote/${nombreURL}/${lote._id}`);
     this.router.navigate(["/lote", nombreURL, lote._id]);
   }
+  private construirGaleriaImagenes() {
+    const principal = (this.auto?.imagenPrincipal || "").trim();
+    const extras = Array.isArray(this.auto?.imagenes) ? this.auto.imagenes : [];
+
+    const all =
+      this.tipo === "nuevo"
+        ? [principal, ...extras].filter(Boolean)
+        : [...extras].filter(Boolean);
+
+    this.galeriaImagenes = Array.from(new Set(all));
+
+    this.imagenSeleccionada = this.galeriaImagenes[0] || "";
+
+    this.miniaturasCargadas = {};
+    this.galeriaImagenes.forEach((img) => (this.miniaturasCargadas[img] = false));
+
+    this.imagenPrincipalCargada = false;
+  }
+
+  tieneFondoNuevo(): boolean {
+    if (!this.auto?.marca) return false;
+
+    return this.marcasConFondoNuevo.includes(
+      this.auto.marca.toLowerCase()
+    );
+  }
+
 
 }

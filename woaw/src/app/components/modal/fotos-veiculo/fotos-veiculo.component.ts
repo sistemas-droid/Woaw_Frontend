@@ -40,8 +40,8 @@ export class FotosVeiculoComponent implements OnInit {
   private colaSecundarias: File[] = [];
 
   // ✅ salida final fija (lo que quieres)
-  FINAL_WIDTH = 880;
-  FINAL_HEIGHT = 680;
+  FINAL_WIDTH = 950;
+  FINAL_HEIGHT = 580;
 
   // ✅ proporción fija 600/500 = 1.2
   aspectRatio = this.FINAL_WIDTH / this.FINAL_HEIGHT;

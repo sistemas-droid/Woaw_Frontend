@@ -11,6 +11,7 @@ import { MapaComponent } from "../../../components/modal/mapa/mapa.component";
 import { CamionesService } from "../../../services/camiones.service";
 import { firstValueFrom } from "rxjs";
 import { filter } from "rxjs/operators";
+
 import { AfterViewInit, ViewChildren, QueryList } from '@angular/core';
 import { IonSelect } from '@ionic/angular';
 
@@ -97,12 +98,12 @@ export class UpdateCarPage implements OnInit {
   croppedBlob: Blob | null = null;
 
   // tamaño final fijo
-  FINAL_WIDTH = 950;
-  FINAL_HEIGHT = 680;
+  FINAL_WIDTH = 840;
+  FINAL_HEIGHT = 570;
   aspectRatio = this.FINAL_WIDTH / this.FINAL_HEIGHT;
 
-  ZOOM_MIN: number = 1; 
-  ZOOM_MAX: number = 2;
+  // ZOOM_MIN: number = 1;
+  // ZOOM_MAX: number = 2;
 
   // zoom
   zoom = 1;
@@ -614,6 +615,7 @@ export class UpdateCarPage implements OnInit {
   selecionarUnaExistente(nuevaImagen: string) {
     this.imagenPrincipalMostrada = nuevaImagen;
     this.imagenPrincipal = nuevaImagen; // string (URL)
+    console.log("Imagen principal actualizada a existente:", nuevaImagen);
     this.markDirtyFromUI();
   }
 
@@ -697,11 +699,8 @@ export class UpdateCarPage implements OnInit {
       return;
     }
 
-    // 🔥 activar recorte inline
     this.imageChangedEvent = event;
     this.modoRecorte = true;
-
-    // ❌ NO limpiar aquí
   }
 
   async agregarImagen(event: Event) {
@@ -1579,8 +1578,6 @@ export class UpdateCarPage implements OnInit {
     this.restablecerDatos();
   }
 
-
-
   // RECORTE IMAGEN 
   onImageCropped(event: any) {
     this.croppedBlob = event.blob || null;
@@ -1602,8 +1599,8 @@ export class UpdateCarPage implements OnInit {
 
     const file = new File(
       [this.croppedBlob],
-      `imagen-principal.jpg`,
-      { type: 'image/jpeg' }
+      `imagen-principal.png`,
+      { type: 'image/png' }
     );
 
     const comprimidoBlob = await imageCompression(file, {
@@ -1613,7 +1610,6 @@ export class UpdateCarPage implements OnInit {
     });
 
     const preview = URL.createObjectURL(comprimidoBlob);
-
 
     // 🔥 Convertir a File
     const comprimido = new File(
@@ -1635,48 +1631,46 @@ export class UpdateCarPage implements OnInit {
     );
   }
 
-
   async editarImagenActual() {
     if (!this.imagenPrincipalMostrada) return;
 
-    try {
-      // 🔥 1. Convertir URL a Blob
-      const response = await fetch(this.imagenPrincipalMostrada);
-      const blob = await response.blob();
+    const id = this.route.snapshot.paramMap.get("id");
+    if (!id) return;
+    // console.log(this.imagenPrincipalMostrada);
+    this.carsService.get_Img_Editar(id, this.imagenPrincipalMostrada).subscribe({
+      next: (blob: Blob) => {
+        // 🔥 1. Convertir Blob a File
+        const file = new File(
+          [blob],
+          'imagen-principal-editar.jpg',
+          { type: blob.type || 'image/jpeg' }
+        );
 
-      // 🔥 2. Convertir Blob a File
-      const file = new File(
-        [blob],
-        'imagen-principal-editar.jpg',
-        { type: blob.type || 'image/jpeg' }
-      );
+        // 🔥 2. Crear DataTransfer (truco clave)
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
 
-      // 🔥 3. Crear input fake para image-cropper
-      const dataTransfer = new DataTransfer();
-      dataTransfer.items.add(file);
+        // 🔥 3. Input falso
+        const fakeInput = document.createElement('input');
+        fakeInput.type = 'file';
+        fakeInput.files = dataTransfer.files;
 
-      const fakeInput = document.createElement('input');
-      fakeInput.type = 'file';
-      fakeInput.files = dataTransfer.files;
+        // 🔥 4. Simular evento para el cropper
+        this.imageChangedEvent = {
+          target: fakeInput
+        } as unknown as Event;
 
-      // 🔥 4. Simular evento
-      this.imageChangedEvent = {
-        target: fakeInput
-      } as unknown as Event;
-
-      // 🔥 5. Activar recorte
-      this.modoRecorte = true;
-
-    } catch (error) {
-      console.error('Error al preparar imagen para edición', error);
-      this.generalService.alert(
-        'Error',
-        'No se pudo editar la imagen.',
-        'danger'
-      );
-    }
+        // 🔥 5. Activar modo recorte
+        this.modoRecorte = true;
+      },
+      error: () => {
+        this.generalService.alert(
+          'Error',
+          'No se pudo cargar la imagen para editar.',
+          'danger'
+        );
+      }
+    });
   }
-
-
 
 }

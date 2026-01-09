@@ -510,14 +510,15 @@
                   <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
                     [aspectRatio]="aspectRatio" [resizeToWidth]="FINAL_WIDTH" [cropperMinWidth]="FINAL_WIDTH"
                     [cropperMaxWidth]="FINAL_WIDTH" [cropperMinHeight]="FINAL_HEIGHT" [cropperMaxHeight]="FINAL_HEIGHT"
-                    format="jpeg" outputType="blob" [transform]="transform" (imageCropped)="onImageCropped($event)">
+                    format="png" outputType="blob" [backgroundColor]="'rgba(0,0,0,0)'" [transform]="transform"
+                    (imageCropped)="onImageCropped($event)">
                   </image-cropper>
 
                 </div>
 
                 <!-- 🔍 ZOOM -->
-                <ion-range *ngIf="modoRecorte" color="danger" [min]="ZOOM_MIN" [max]="ZOOM_MAX" step="0.02"
-                  [value]="zoom" (ionChange)="onZoomChange($event)">
+                <ion-range *ngIf="modoRecorte" color="danger" min="0.5" max="2" step="0.02" [value]="zoom"
+                  (ionChange)="onZoomChange($event)">
                 </ion-range>
 
 

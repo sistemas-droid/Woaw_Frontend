@@ -1,7 +1,7 @@
 .verificacion-container {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px;
 }
 
 .titulo {
@@ -25,7 +25,7 @@
 
 .subtitulo {
     color: #666;
-    margin-bottom: 28px;
+    margin-bottom: 8px;
     font-size: 15px;
 }
 
@@ -34,7 +34,7 @@
     background: #ffffff;
     border-radius: 20px;
     padding: 22px 26px;
-    margin-bottom: 35px;
+    margin-bottom: 5px;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
@@ -43,8 +43,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 18px;
+    gap: 2px;
+    margin-bottom: 8px;
 }
 
 .lote-header-main {
@@ -84,8 +84,8 @@
     border: none;
     outline: none;
     cursor: pointer;
-    width: 32px;
-    height: 32px;
+    width: 22px;
+    height: 22px;
     border-radius: 999px;
     display: flex;
     align-items: center;
@@ -123,7 +123,7 @@
 .lote-panel {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 0px;
 }
 
 @media (min-width: 768px) {
@@ -134,10 +134,10 @@
 
 .doc-card {
     border-radius: 16px;
-    padding: 16px 20px !important;
+    padding: 10px 16px !important;
     background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.05);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.154);
 }
 
 .doc-card ion-card-header {

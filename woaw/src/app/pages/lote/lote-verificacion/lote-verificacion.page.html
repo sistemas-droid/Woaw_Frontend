@@ -63,17 +63,17 @@
             <!-- ACCIONES -->
             <div class="acciones">
 
-              <ion-button color="success" size="small" [disabled]="!doc.url || doc.estado === 'aprobado'"
+              <ion-button *ngIf="doc.url && doc.estado !== 'aprobado'" color="success" size="small"
                 (click)="aprobar(lote.id, doc)">
                 APROBAR
               </ion-button>
 
-              <ion-button color="danger" size="small" fill="outline" [disabled]="!doc.url || doc.estado === 'aprobado'"
+              <ion-button *ngIf="doc.url && doc.estado !== 'aprobado'" color="danger" size="small" fill="outline"
                 (click)="rechazar(lote.id, doc)">
                 RECHAZAR
               </ion-button>
 
-              <ion-button fill="clear" size="small" [disabled]="!doc.url" (click)="abrir(doc)">
+              <ion-button *ngIf="doc.url" fill="clear" size="small" (click)="abrir(doc)">
                 VER DOCUMENTO
               </ion-button>
 

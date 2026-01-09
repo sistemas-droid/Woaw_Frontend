@@ -70,7 +70,7 @@
             .fondo-nuevo {
                 position: absolute;
                 inset: 0;
-                // background-image: url('/assets/ficha/F3.png');
+                background-image: url('/assets/ficha/F2.png');
                 background-size: cover;
                 background-position: center;
                 filter: blur(0px);
@@ -91,7 +91,7 @@
             .imagen-auto-nuevo {
                 position: relative;
                 max-width: 90%;
-                max-height: 60%;
+                max-height: 70%;
                 object-fit: contain;
                 z-index: 2;
             }
