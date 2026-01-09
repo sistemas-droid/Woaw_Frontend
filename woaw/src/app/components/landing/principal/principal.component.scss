@@ -17,43 +17,6 @@
   }
 }
 
-/* ===== Título sección ===== */
-.home-servicios-ios .contenedor_titulo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  width: 100%;
-  margin: 6px auto 10px;
-  padding: 4px 6px;
-  text-align: center;
-
-  .titulo_principal {
-    margin: 0;
-    font-size: clamp(19px, 2.6vw, 24px);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: #111827;
-
-    &::after {
-      content: "";
-      display: block;
-      width: 44px;
-      height: 3px;
-      margin: 6px auto 0;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #ff0000, #a30404);
-    }
-  }
-
-  .logo-goautos2 {
-    width: clamp(20px, 4vw, 50px);
-    height: auto;
-    object-fit: contain;
-    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .2));
-  }
-}
-
 /* =========================
    WEB (MAIN) - tu CSS grande se queda
    ========================= */
@@ -249,7 +212,7 @@
   }
 
   /* =========================
-     NATIVO / iOS
+     NATIVO / iOS (look ios + skeleton main)
      ========================= */
   .contenedor_native {
     padding: 6px 6px 6px;
@@ -263,7 +226,6 @@
 
       &::-webkit-scrollbar { display: none; }
 
-      /* ✅ MÁS GRANDES (antes 130x60) */
       ion-card {
         flex: 0 0 155px;
         height: 72px;
@@ -290,6 +252,21 @@
       }
 
       ion-card-title ion-icon { font-size: 12px; flex: 0 0 auto; }
+
+      .img-skeleton {
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        background: linear-gradient(100deg, #e6e6e6 30%, #f2f2f2 50%, #e6e6e6 70%);
+        background-size: 200% 100%;
+        animation: shimmer 1.2s linear infinite;
+        z-index: 1;
+      }
+
+      @keyframes shimmer {
+        from { background-position: 200% 0; }
+        to { background-position: -200% 0; }
+      }
 
       .bg-card {
         position: absolute;
@@ -337,7 +314,7 @@
       }
     }
 
-    /* ✅ PUNTITOS ROJOS ABAJO DEL SCROLL */
+    /* ✅ DOTS iOS */
     .native-cats-dots {
       width: 100%;
       display: flex;
@@ -355,6 +332,7 @@
         border-radius: 999px;
         background: rgba(255, 0, 0, 0.35);
         box-shadow: 0 6px 14px rgba(255, 0, 0, 0.18);
+        transition: transform .18s ease, opacity .18s ease, background .18s ease;
       }
 
       .dot.is-active {
@@ -370,6 +348,7 @@
       50% { transform: scale(0.96); opacity: 0.75; }
     }
 
+    /* ===== Secciones ===== */
     .native-section { margin-top: 0px; }
 
     .native-head {
@@ -383,7 +362,7 @@
 
     .native-scroll {
       display: flex;
-      gap: 5px;
+      gap: 5px; /* iOS branch */
       overflow-x: auto;
       padding: 8px 2px 12px;
       scroll-snap-type: x mandatory;
@@ -398,18 +377,56 @@
       border-radius: 16px;
       overflow: hidden;
       scroll-snap-align: start;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* mantiene chido */
     }
 
     .native-scroll .car .media {
       position: relative;
       aspect-ratio: 16/10;
       background: #f3f4f6;
+      overflow: hidden;
     }
 
     .native-scroll .car ion-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    .img-hidden { opacity: 0; }
+
+    /* Skeleton de imagen (main) */
+    .skeleton-box {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: linear-gradient(90deg, #888888 25%, #949494 37%, #ededed 63%);
+      background-size: 400% 100%;
+      animation: skeleton 1.4s ease infinite;
+      z-index: 1;
+    }
+
+    @keyframes skeleton {
+      0% { background-position: 100% 0; }
+      100% { background-position: 0 0; }
+    }
+
+    /* Skeleton card completo (main) */
+    .car.skeleton {
+      pointer-events: none;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .skeleton-line {
+      height: 14px;
+      margin-top: 10px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #e6e6e6 25%, #f2f2f2 37%, #e6e6e6 63%);
+      background-size: 400% 100%;
+      animation: shimmer 1.4s ease infinite;
+
+      &.short { width: 60%; }
     }
 
     .native-scroll .car .body { padding: 10px 12px 12px; }
@@ -428,7 +445,7 @@
       color: var(--ion-color-danger);
     }
 
-    .native-scroll .car.more { display: grid; place-items: center; }
+    .native-scroll .car.more { display: grid; place-items: center; background: #fff; border: none; }
 
     .native-scroll .car.more .more-inner {
       display: grid;
@@ -447,7 +464,6 @@
     }
 
     @media (min-width: 768px) {
-      .native-cats { grid-auto-columns: 40%; }
       .native-scroll .car { flex-basis: 20%; }
     }
   }
@@ -583,114 +599,4 @@
   .cat-card--arr { background: linear-gradient(135deg, #e8001a, #ff3b3b); }
   .cat-card--seg { background: linear-gradient(135deg, #0b57d0, #0a2f8f); }
   .cat-card--cam { background: linear-gradient(135deg, #22d00b, #158f0a); }
-}
-
-/* ===== BAND CARDS (MAIN) ===== */
-.home-servicios-ios .band-cards {
-  width: 100%;
-  margin: 8px auto 14px;
-  padding: 0 4px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-
-  @media (max-width: 640px) {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .car-card {
-    position: relative;
-    border-radius: 20px;
-    padding: 16px 16px 14px;
-    background: #ffffff;
-    border: 1px solid rgba(15, 23, 42, 0.06);
-    box-shadow:
-      0 14px 28px rgba(15, 23, 42, 0.08),
-      0 0 0 0.5px rgba(255, 255, 255, 0.95);
-    color: #0f172a;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-    min-height: 150px;
-
-    &:active {
-      transform: scale(0.985);
-      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1);
-      background: #f9fafb;
-    }
-
-    .bg-card {
-      position: absolute;
-      right: 6px;
-      bottom: -6px;
-      width: 150px;
-      height: auto;
-      object-fit: contain;
-      pointer-events: none;
-      filter: drop-shadow(0 8px 18px rgba(15, 23, 42, 0.35));
-    }
-
-    .card-head {
-      position: relative;
-      z-index: 1;
-      margin-bottom: 10px;
-
-      h3 {
-        margin: 0 0 4px;
-        font-size: clamp(16px, 1.9vw, 20px);
-        font-weight: 700;
-        letter-spacing: -0.01em;
-        color: #0f172a;
-      }
-
-      p {
-        margin: 0;
-        font-size: 13px;
-        color: #6b7280;
-        max-width: 75%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-
-    .card-list {
-      position: relative;
-      z-index: 1;
-      margin: 8px 0 14px;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px 8px;
-
-      li {
-        font-size: 12px;
-        color: #4b5563;
-        padding: 4px 10px;
-        border-radius: 999px;
-        background: #f3f4f6;
-      }
-    }
-
-    .btn-card {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: none;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      background: #111827;
-      color: #f9fafb;
-      box-shadow: 0 10px 18px rgba(15, 23, 42, 0.35);
-
-      &:active { transform: scale(0.97); }
-    }
-
-    &.car-card-camiones .btn-card { background: #111827; }
-  }
 }

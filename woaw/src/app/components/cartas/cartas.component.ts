@@ -22,6 +22,7 @@ import { ImagenesVehiculoComponent } from './../../components/modal/imagenes-veh
 import { ModalController } from '@ionic/angular';
 import { MotosService } from '../../services/motos.service';
 import { CamionesService } from '../../services/camiones.service';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-cartas',
@@ -46,6 +47,8 @@ export class CartasComponent implements OnInit {
 
   imagenCargada = false;
   verificadorCarga: any;
+
+  public isNative = Capacitor.isNativePlatform();
 
   constructor(
     public generalService: GeneralService,
@@ -86,6 +89,10 @@ export class CartasComponent implements OnInit {
         clearInterval(this.verificadorCarga);
       }
     }, 200);
+
+
+    // console.log(this.auto)
+    // imagen: auto.imagenPrincipal || '/assets/default-car.webp',
   }
   onImagenCargada() {
     this.imagenCargada = true;

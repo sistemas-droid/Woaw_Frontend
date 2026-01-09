@@ -1,145 +1,141 @@
 <!-- home.page.html -->
 <app-navbar></app-navbar>
-<ion-content  [fullscreen]="false" class="home-bg" mode="ios">
 
- <app-splash *ngIf="showSplashScreen && esDispositivoMovil && isNative"></app-splash>
-  
-  <ng-container *ngIf="!showSplashScreen && splash">
-    <video autoplay muted loop playsinline class="video-fondo2">
-      <source [src]="videoSrc" type="video/mp4" />
-      Tu navegador no soporta el video HTML5.
-    </video>
+<ion-content
+  class="home-bg"
+  mode="ios"
+  [fullscreen]="true"
+  [scrollY]="true"
+  [forceOverscroll]="true"
+>
+  <div class="home-wrapper">
 
-    <div class="texto-titulo" [ngClass]="{ 'animar-arriba': animarTexto }">
-      <h1
-        [ngStyle]="{
-          color: mostrarContenido.color === 'rojo' ? '#ff0000' : '#ffffff'
-        }"
-      >
-        {{ mostrarContenido.titulo }}
-      </h1>
-    </div>
+    <app-splash *ngIf="showSplashScreen && esDispositivoMovil && isNative"></app-splash>
 
-    <img
-      *ngIf="mostrarContenido.imagen != null"
-      [src]="mostrarContenido.imagen"
-      alt="Imagen ilustrativa"
-      [ngClass]="{ 'animar-info': animarImagen }"
-    />
+    <ng-container *ngIf="!showSplashScreen && splash">
+      <div class="splash-wrap">
+        <video autoplay muted loop playsinline class="video-fondo2">
+          <source [src]="videoSrc" type="video/mp4" />
+          Tu navegador no soporta el video HTML5.
+        </video>
 
-    <div
-      class="texto-contenido"
-      [ngClass]="{ 'animar-arriba': animarTexto }"
-    >
-      <p>{{ mostrarContenido.texto }}</p>
-    </div>
-  </ng-container>
-
-  <!-- LAYOUT PRINCIPAL -->
-  <div class="pantalla-dividida" *ngIf="!splash">
-    <!-- LADO IZQUIERDO (solo escritorio / tablet) -->
-    <div class="lado-izquierdo" *ngIf="!esDispositivoMovil">
-      <video autoplay muted loop playsinline class="video-fondo">
-        <source [src]="videoSrc2" type="video/mp4" />
-        Tu navegador no soporta el video HTML5.
-      </video>
-
-      <div class="texto-izquierdo" [ngClass]="{ 'animar-arriba': animarTexto }">
-        <h2
-          [ngStyle]="{
-            color: mostrarContenido.color === 'rojo' ? '#ff0000' : '#ffffff'
-          }"
-        >
-          {{ mostrarContenido.titulo }}
-        </h2>
-      </div>
-
-      <br />
-
-      <img
-        *ngIf="mostrarContenido.imagen != null"
-        [src]="mostrarContenido.imagen"
-        alt="Imagen ilustrativa"
-        [ngClass]="{ 'animar-izquierda': animarImagen }"
-      />
-
-      <div class="texto-izquierdo" [ngClass]="{ 'animar-arriba': animarTexto }">
-        <p>{{ mostrarContenido.texto }}</p>
-      </div>
-    </div>
-
-    <!-- LADO DERECHO – LOGIN iOS -->
-    <div class="lado-derecho">
-      <div class="safe-area">
-        <div class="container_vidrio">
-          <app-login
-            *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro"
-            [imagenHero]="imgenPrincipal"
-          ></app-login>
-
-          <app-registro
-            *ngIf="!MostrarLogin && !MostrarRecuperacion && MostrarRegistro"
-          ></app-registro>
-
-          <app-resetpassword
-            *ngIf="!MostrarLogin && MostrarRecuperacion && !MostrarRegistro"
-          ></app-resetpassword>
-
-          <p class="link-registro">
-            <span *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro">
-              ¿No tienes una cuenta?
-            </span>
-            <span *ngIf="!MostrarLogin">¿Ya tienes cuenta?</span>
-            <strong>
-              <span
-                (click)="cambioEstatus('registro')"
-                *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro"
-              >
-                Registrarme
-              </span>
-              <span
-                (click)="cambioEstatus('login')"
-                *ngIf="!MostrarLogin"
-              >
-                Iniciar Sesión
-              </span>
-            </strong>
-          </p>
-
-          <p
-            class="link-registro"
-            *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro"
+        <div class="texto-titulo" [ngClass]="{ 'animar-arriba': animarTexto }">
+          <h1
+            [ngStyle]="{
+              color: mostrarContenido.color === 'rojo' ? '#ff0000' : '#ffffff'
+            }"
           >
-            <strong (click)="cambioEstatus('reset')">
-              <ion-icon
-                name="lock-closed-outline"
-                style="vertical-align: middle; margin-right: 6px"
-              ></ion-icon>
-              ¿Olvidaste tu contraseña?
-            </strong>
-          </p>
+            {{ mostrarContenido.titulo }}
+          </h1>
+        </div>
 
-          <!-- Línea de separación -->
-          <div
-            *ngIf="MostrarLogin"
-            class="separador"
-          ></div>
+        <img
+          *ngIf="mostrarContenido.imagen != null"
+          [src]="mostrarContenido.imagen"
+          alt="Imagen ilustrativa"
+          [ngClass]="{ 'animar-info': animarImagen }"
+        />
 
-          <p class="link-registro" *ngIf="MostrarLogin">
-            Acepto las
-            <a class="enlace-politica" (click)="mostrarTerminos()">
-              Términos y condiciones
-            </a>
-            y el
-            <a class="enlace-politica" (click)="mostrarAviso()">
-              Aviso de Privacidad
-            </a>.
-          </p>
+        <div class="texto-contenido" [ngClass]="{ 'animar-arriba': animarTexto }">
+          <p>{{ mostrarContenido.texto }}</p>
+        </div>
+      </div>
+    </ng-container>
 
-          
+    <!-- LAYOUT PRINCIPAL -->
+    <div class="pantalla-dividida" *ngIf="!splash">
+      <!-- LADO IZQUIERDO (solo escritorio / tablet) -->
+      <div class="lado-izquierdo" *ngIf="!esDispositivoMovil">
+        <video autoplay muted loop playsinline class="video-fondo">
+          <source [src]="videoSrc2" type="video/mp4" />
+          Tu navegador no soporta el video HTML5.
+        </video>
 
+        <div class="texto-izquierdo" [ngClass]="{ 'animar-arriba': animarTexto }">
+          <h2
+            [ngStyle]="{
+              color: mostrarContenido.color === 'rojo' ? '#ff0000' : '#ffffff'
+            }"
+          >
+            {{ mostrarContenido.titulo }}
+          </h2>
+        </div>
+
+        <br />
+
+        <img
+          *ngIf="mostrarContenido.imagen != null"
+          [src]="mostrarContenido.imagen"
+          alt="Imagen ilustrativa"
+          [ngClass]="{ 'animar-izquierda': animarImagen }"
+        />
+
+        <div class="texto-izquierdo" [ngClass]="{ 'animar-arriba': animarTexto }">
+          <p>{{ mostrarContenido.texto }}</p>
+        </div>
+      </div>
+
+      <!-- LADO DERECHO – LOGIN iOS -->
+      <div class="lado-derecho">
+        <div class="safe-area">
+          <div class="container_vidrio">
+
+            <app-login
+              *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro"
+              [imagenHero]="imgenPrincipal"
+            ></app-login>
+
+            <app-registro
+              *ngIf="!MostrarLogin && !MostrarRecuperacion && MostrarRegistro"
+            ></app-registro>
+
+            <app-resetpassword
+              *ngIf="!MostrarLogin && MostrarRecuperacion && !MostrarRegistro"
+            ></app-resetpassword>
+
+            <p class="link-registro">
+              <span *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro">
+                ¿No tienes una cuenta?
+              </span>
+              <span *ngIf="!MostrarLogin">¿Ya tienes cuenta?</span>
+              <strong>
+                <span
+                  (click)="cambioEstatus('registro')"
+                  *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro"
+                >
+                  Registrarme
+                </span>
+                <span (click)="cambioEstatus('login')" *ngIf="!MostrarLogin">
+                  Iniciar Sesión
+                </span>
+              </strong>
+            </p>
+
+            <p class="link-registro" *ngIf="MostrarLogin && !MostrarRecuperacion && !MostrarRegistro">
+              <strong (click)="cambioEstatus('reset')">
+                <ion-icon
+                  name="lock-closed-outline"
+                  style="vertical-align: middle; margin-right: 6px"
+                ></ion-icon>
+                ¿Olvidaste tu contraseña?
+              </strong>
+            </p>
+
+            <div *ngIf="MostrarLogin" class="separador"></div>
+
+            <p class="link-registro" *ngIf="MostrarLogin">
+              Acepto las
+              <a class="enlace-politica" (click)="mostrarTerminos()">Términos y condiciones</a>
+              y el
+              <a class="enlace-politica" (click)="mostrarAviso()">Aviso de Privacidad</a>.
+            </p>
+
+            <div class="scroll-spacer"></div>
+
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 </ion-content>

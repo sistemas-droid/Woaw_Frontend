@@ -1,24 +1,24 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true" class="ios-verif">
+<ion-content [fullscreen]="true" class="ios-verif" mode="ios">
 
   <div class="verif-wrap">
 
-    <!-- HEADER -->
+    <!-- HERO -->
     <header class="verif-hero">
       <div class="hero-text">
         <h1 class="titulo">Verificación de Documentos</h1>
         <p class="subtitulo">Lotes con documentación para revisar</p>
       </div>
 
-      <div class="hero-chip">
+      <div class="hero-chip" aria-label="Total de lotes">
         <ion-icon name="shield-checkmark-outline"></ion-icon>
         <span>{{ lotesVerificacion?.length || 0 }}</span>
       </div>
     </header>
 
-    <!-- 🔹 SI NO HAY LOTES -->
-    <section *ngIf="lotesVerificacion.length === 0" class="empty-state">
+    <!-- EMPTY -->
+    <section *ngIf="(lotesVerificacion?.length || 0) === 0" class="empty-state">
       <div class="empty-card">
         <ion-icon name="file-tray-outline"></ion-icon>
         <h2>No hay lotes por ahora</h2>
@@ -26,23 +26,21 @@
       </div>
     </section>
 
-    <!-- 🔹 LISTA DE LOTES -->
+    <!-- LISTA DE LOTES -->
     <section *ngFor="let lote of lotesVerificacion" class="lote-ios">
 
-      <!-- ================= HEADER DEL LOTE ================= -->
+      <!-- HEADER DEL LOTE -->
       <button class="lote-head" type="button" (click)="toggleLote(lote.id)">
         <div class="head-left">
           <h2 class="lote-nombre">{{ lote.nombre }}</h2>
 
-          <p class="tipo-persona" *ngIf="lote.tipoPersona" [ngClass]="lote.tipoPersona">
+          <p
+            class="tipo-persona"
+            *ngIf="lote.tipoPersona"
+            [ngClass]="lote.tipoPersona"
+          >
             <ion-icon
-              name="person-circle-outline"
-              *ngIf="lote.tipoPersona === 'fisica'">
-            </ion-icon>
-
-            <ion-icon
-              name="business-outline"
-              *ngIf="lote.tipoPersona === 'moral'">
+              [name]="lote.tipoPersona === 'fisica' ? 'person-circle-outline' : 'business-outline'">
             </ion-icon>
 
             {{ lote.tipoPersona === 'fisica' ? 'Persona Física' : 'Persona Moral' }}
@@ -54,7 +52,7 @@
             {{ lote.documentos?.length || 0 }} docs
           </span>
 
-          <span class="chev" [ngClass]="{ 'open': expandedState[lote.id] }">
+          <span class="chev" [ngClass]="{ open: expandedState[lote.id] }">
             <ion-icon
               [name]="expandedState[lote.id] ? 'chevron-up-outline' : 'chevron-down-outline'">
             </ion-icon>
@@ -62,32 +60,39 @@
         </div>
       </button>
 
-      <!-- ================= DOCUMENTOS ================= -->
+      <!-- PANEL DOCUMENTOS -->
       <div class="lote-panel" *ngIf="expandedState[lote.id]">
 
-        <ion-card class="doc-card-ios" *ngFor="let doc of lote.documentos">
-
+        <ion-card
+          class="doc-card-ios"
+          *ngFor="let doc of lote.documentos"
+          [ngClass]="{ 'doc-sin-documento': !doc.url }"
+        >
           <ion-card-header class="doc-head">
             <ion-card-title class="doc-title">
               {{ doc.nombre }}
             </ion-card-title>
 
-            <div class="estado-pill" [ngClass]="colorEstado(doc.estado)">
+            <!-- Estado pill (usa tu colorEstado(doc.estado)) -->
+            <div
+              class="estado-pill"
+              [ngClass]="!doc.url ? 'neutral' : colorEstado(doc.estado)"
+            >
               <span class="dot"></span>
-              {{ doc.estado | uppercase }}
+              {{ !doc.url ? 'SIN DOCUMENTO' : (doc.estado | uppercase) }}
             </div>
           </ion-card-header>
 
           <ion-card-content class="doc-body">
 
             <div class="acciones">
-
               <ion-button
                 color="success"
                 size="small"
                 class="btn-aprobar"
-                [disabled]="doc.estado === 'aprobado'"
-                (click)="aprobar(lote.id, doc)">
+                [disabled]="!doc.url || doc.estado === 'aprobado'"
+                (click)="aprobar(lote.id, doc)"
+              >
                 Aprobar
               </ion-button>
 
@@ -96,8 +101,9 @@
                 size="small"
                 fill="outline"
                 class="btn-rechazar"
-                [disabled]="doc.estado === 'aprobado'"
-                (click)="rechazar(lote.id, doc)">
+                [disabled]="!doc.url || doc.estado === 'aprobado'"
+                (click)="rechazar(lote.id, doc)"
+              >
                 Rechazar
               </ion-button>
 
@@ -105,20 +111,18 @@
                 fill="clear"
                 size="small"
                 class="btn-ver"
+                [disabled]="!doc.url"
                 (click)="abrir(doc)"
-                [disabled]="!doc.url">
+              >
                 Ver documento
                 <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
               </ion-button>
-
             </div>
 
           </ion-card-content>
-
         </ion-card>
 
       </div>
-
     </section>
 
   </div>
@@ -148,11 +152,21 @@
           ></ion-textarea>
         </ion-item>
 
-        <ion-button expand="block" color="danger" class="modal-btn" (click)="confirmarRechazo()">
+        <ion-button
+          expand="block"
+          color="danger"
+          class="modal-btn"
+          (click)="confirmarRechazo()"
+        >
           Enviar rechazo
         </ion-button>
 
-        <ion-button expand="block" fill="clear" class="modal-cancel" (click)="cerrarModalRechazo()">
+        <ion-button
+          expand="block"
+          fill="clear"
+          class="modal-cancel"
+          (click)="cerrarModalRechazo()"
+        >
           Cancelar
         </ion-button>
       </div>

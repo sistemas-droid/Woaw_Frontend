@@ -55,7 +55,7 @@ export class PrincipalComponent implements OnInit {
   autosNuevos: any[] = [];
   autosSeminuevos: any[] = [];
   autosUsados: any[] = [];
-  misMotos: any[] = [];
+  MotosAll: any[] = [];
 
   Dispositivo: 'telefono' | 'tablet' | 'computadora' = 'computadora';
   esDispositivoMovil: boolean = false;
@@ -69,18 +69,37 @@ export class PrincipalComponent implements OnInit {
   public img2: string = '';
   public img3: string = '';
 
-  vehTab: 'usados' | 'seminuevos' | 'nuevos' = 'usados';
-
   private self: number = 0;
   public isNative = Capacitor.isNativePlatform();
 
   // =========================
-  // ✅ Indicador de categorías (Nativo)
+  // ✅ Skeleton / imágenes (MAIN)
+  // =========================
+  catsLoaded = {
+    usados: false,
+    seminuevos: false,
+    nuevos: false,
+    seguros: false,
+    motos: false,
+    camiones: false,
+    arr: false,
+  };
+
+  carsLoading = {
+    usados: true,
+    seminuevos: true,
+    nuevos: true,
+    motos: true
+  };
+
+  imagenesCargadas = new Set<string>();
+
+  // =========================
+  // ✅ Indicador categorías (iOS)
   // =========================
   public nativeCatIndex: number = 0;
   public nativeCatLabel: string = 'Usados';
   public nativeCatsTotal: number = 7;
-  public nativeCatsDots: any[] = Array.from({ length: 7 });
 
   private nativeCatsLabels: string[] = [
     'Usados',
@@ -110,25 +129,24 @@ export class PrincipalComponent implements OnInit {
       this.esDispositivoMovil = tipo === 'telefono' || tipo === 'tablet';
     });
 
+    this.self = this.isNative ? 7 : 5;
+
     this.getCarsNews();
     this.getCarsSeminuevos();
     this.getCarsUsados();
+    this.getMotos();
     this.cargaimagen();
 
-    this.self = this.isNative ? 7 : 5;
-
-    // Valores iniciales del indicador
+    // indicador inicial
     this.nativeCatsTotal = this.nativeCatsLabels.length;
-    this.nativeCatsDots = Array.from({ length: this.nativeCatsTotal });
     this.nativeCatIndex = 0;
     this.nativeCatLabel = this.nativeCatsLabels[0] ?? 'Categorías';
   }
 
-  // ✅ Se llama desde (scroll)="onNativeCatsScroll()"
+  // ✅ se llama desde (scroll)="onNativeCatsScroll()"
   public onNativeCatsScroll(): void {
     if (!this.catsNative?.nativeElement) return;
 
-    // Throttle con rAF para que no se vuelva loco el render
     if (this.rafLock) return;
     this.rafLock = requestAnimationFrame(() => {
       this.rafLock && cancelAnimationFrame(this.rafLock);
@@ -137,14 +155,12 @@ export class PrincipalComponent implements OnInit {
       const el = this.catsNative!.nativeElement;
       const scrollLeft = el.scrollLeft;
 
-      // Intento de calcular el “ancho” de una tarjeta (incluyendo gap)
       const firstCard = el.querySelector('ion-card') as HTMLElement | null;
       if (!firstCard) return;
 
       const cardRect = firstCard.getBoundingClientRect();
       const cardWidth = cardRect.width || 170;
 
-      // gap aproximado: si hay 10px en CSS, lo sumamos
       const gap = 10;
       const step = cardWidth + gap;
 
@@ -157,20 +173,8 @@ export class PrincipalComponent implements OnInit {
     });
   }
 
-  getMotos() {
-    if (this.tipo !== 'all') return;
-
-    this.motosService.getMotos().subscribe({
-      next: (res: any) => {
-        this.conMotos = res.contador;
-        const moto = res?.motos || [];
-        this.misMotos = moto.slice(0, 5);
-      },
-      error: (err) => {
-        const mensaje = err?.error?.message || 'Ocurrió un error inesperado';
-        this.generalService.alert('Error de Conexión', mensaje);
-      },
-    });
+  onImgLoad(id: string) {
+    this.imagenesCargadas.add(id);
   }
 
   verMas(url: string) {
@@ -210,22 +214,14 @@ export class PrincipalComponent implements OnInit {
     return Number.isFinite(n) ? n : null;
   }
 
-  public irAFichaAuto(id?: string) {
+  public irAFichaAuto(id?: string, tipo?: string) {
     if (!id) return;
-    this.router.navigate(['/fichas/autos', id]);
-  }
 
-  public getCiudad(a: AutoCard): string {
-    return a?.ubicacion?.ciudad ?? "";
-  }
-
-  public getEstado(a: AutoCard): string {
-    return a?.ubicacion?.estado ?? "";
-  }
-
-  public mostrarKilometraje(a: AutoCard): boolean {
-    const km = this.toNumberSafe(a?.kilometraje);
-    return km !== null && km >= 0;
+    if (tipo === "moto") {
+      this.router.navigate(['/ficha/motos', id]);
+    } else {
+      this.router.navigate(['/fichas/autos', id]);
+    }
   }
 
   public trackById(_: number, a: AutoCard): string {
@@ -255,19 +251,23 @@ export class PrincipalComponent implements OnInit {
     return '/assets/home/no-image.jpeg';
   }
 
-  public onImgError(event: Event, auto: AutoCard) {
-    const img = event.target as HTMLImageElement;
+  public onImgError(event: any, auto: any) {
+    // ion-img manda CustomEvent; img real viene en detail?.target a veces
+    const imgEl: any = event?.target || event?.detail?.target;
 
-    if (img.dataset['fallbackTried'] === '1') {
-      img.src = '/assets/home/no-image.jpeg';
+    // si no hay target, salimos sin romper
+    if (!imgEl) return;
+
+    if (imgEl.dataset?.fallbackTried === '1') {
+      imgEl.src = '/assets/home/no-image.jpeg';
       return;
     }
-    img.dataset['fallbackTried'] = '1';
+    if (imgEl.dataset) imgEl.dataset.fallbackTried = '1';
 
-    if (auto.imagenes && auto.imagenes.length > 0) {
-      img.src = auto.imagenes[0];
+    if (auto?.imagenes && auto.imagenes.length > 0) {
+      imgEl.src = auto.imagenes[0];
     } else {
-      img.src = '/assets/home/no-image.jpeg';
+      imgEl.src = '/assets/home/no-image.jpeg';
     }
   }
 
@@ -278,10 +278,12 @@ export class PrincipalComponent implements OnInit {
         const autos: AutoCard[] = res?.coches || [];
         const autosAleatorios = [...autos].sort(() => Math.random() - 0.5);
         this.autosUsados = autosAleatorios;
+        this.carsLoading.usados = false;
       },
       error: (err) => {
         const mensaje = err?.error?.message || "Ocurrió un error inesperado";
         this.generalService.alert("Error de Conexión", mensaje);
+        this.carsLoading.usados = false;
       },
     });
   }
@@ -293,10 +295,12 @@ export class PrincipalComponent implements OnInit {
         const autos: AutoCard[] = res?.coches || [];
         const autosAleatorios = [...autos].sort(() => Math.random() - 0.5);
         this.autosSeminuevos = autosAleatorios;
+        this.carsLoading.seminuevos = false;
       },
       error: (err) => {
         const mensaje = err?.error?.message || "Ocurrió un error inesperado";
         this.generalService.alert("Error de Conexión", mensaje);
+        this.carsLoading.seminuevos = false;
       },
     });
   }
@@ -308,10 +312,33 @@ export class PrincipalComponent implements OnInit {
         const autos: AutoCard[] = res?.coches || [];
         const autosAleatorios = [...autos].sort(() => Math.random() - 0.5);
         this.autosNuevos = autosAleatorios;
+        this.carsLoading.nuevos = false;
       },
       error: (err) => {
         const mensaje = err?.error?.message || "Ocurrió un error inesperado";
         this.generalService.alert("Error de Conexión", mensaje);
+        this.carsLoading.nuevos = false;
+      },
+    });
+  }
+
+  getMotos() {
+    if (this.tipo !== 'all') {
+      this.carsLoading.motos = false;
+      return;
+    }
+
+    this.motosService.getMotos().subscribe({
+      next: (res: any) => {
+        this.conMotos = Number(res?.contador ?? 0);
+        const moto = res?.motos || [];
+        this.MotosAll = moto.slice(0, 5);
+        this.carsLoading.motos = false;
+      },
+      error: (err) => {
+        const mensaje = err?.error?.message || 'Ocurrió un error inesperado';
+        this.generalService.alert('Error de Conexión', mensaje);
+        this.carsLoading.motos = false;
       },
     });
   }

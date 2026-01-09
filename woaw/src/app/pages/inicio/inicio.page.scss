@@ -1,39 +1,52 @@
 /* home.page.scss */
 
-/* Fondo general tipo iOS */
-ion-content {
-  --background: #f2f2f7; /* system grouped background */
+ion-content.home-bg {
+  --background: #f2f2f7;
   position: relative;
 }
 
+/* ✅ FUERZA scroll real iOS */
+ion-content.home-bg::part(scroll) {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain; /* evita “rebote raro” */
+  touch-action: pan-y;
+}
+
+/* ✅ NO flex en ion-content */
 .home-bg {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
   text-align: center;
   min-height: 100%;
   margin-top: 0 !important;
 }
 
-/* Capa global para splash */
+.home-wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Capa global para splash (NO afecta scroll) */
 .home-bg::before {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   z-index: 0;
   pointer-events: none;
 }
 
 /* ================= SPLASH ================= */
 
+.splash-wrap {
+  position: relative;
+  min-height: 100dvh;
+  z-index: 1;
+}
+
+/* ✅ en iOS evita fixed */
 .video-fondo2 {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -88,39 +101,16 @@ img[alt="Imagen ilustrativa"] {
 
 /* Animaciones splash */
 @keyframes fadeDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes zoomIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
-
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ============== PANTALLA DIVIDIDA ============== */
@@ -128,16 +118,17 @@ img[alt="Imagen ilustrativa"] {
 .pantalla-dividida {
   display: flex;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh; /* ✅ en lugar de 100vh */
   box-sizing: border-box;
   position: relative;
   z-index: 1;
 
   @media (max-width: 768px) {
     flex-direction: column;
+    min-height: auto;
+    padding-bottom: 26px;
   }
 
-  /* LADO IZQUIERDO */
   .lado-izquierdo {
     flex: 1.4;
     display: flex;
@@ -150,13 +141,8 @@ img[alt="Imagen ilustrativa"] {
     overflow: hidden;
     color: #ffffff;
 
-    @media (max-width: 1024px) {
-      padding: 2rem 1.5rem;
-    }
-
-    @media (max-width: 768px) {
-      display: none; /* en iPhone dejamos solo el login */
-    }
+    @media (max-width: 1024px) { padding: 2rem 1.5rem; }
+    @media (max-width: 768px) { display: none; }
 
     video.video-fondo {
       position: absolute;
@@ -197,16 +183,10 @@ img[alt="Imagen ilustrativa"] {
       }
     }
 
-    .animar-izquierda {
-      animation: aparecerIzquierda 1s ease forwards;
-    }
-
-    .animar-arriba {
-      animation: aparecerArriba 1s ease forwards;
-    }
+    .animar-izquierda { animation: aparecerIzquierda 1s ease forwards; }
+    .animar-arriba { animation: aparecerArriba 1s ease forwards; }
   }
 
-  /* LADO DERECHO – LOGIN iOS */
   .lado-derecho {
     flex: 1;
     display: flex;
@@ -216,30 +196,30 @@ img[alt="Imagen ilustrativa"] {
 
     @media (max-width: 768px) {
       padding: 8px 12px 20px;
+      align-items: flex-start;
     }
 
     .safe-area {
       width: 100%;
-      max-width: 520px; /* antes 430, ahora más ancho en tablet */
+      max-width: 520px;
       margin: 0 auto;
-      padding: max(16px, env(safe-area-inset-top)) 12px
-        max(16px, env(safe-area-inset-bottom));
+      padding: max(16px, env(safe-area-inset-top)) 12px max(16px, env(safe-area-inset-bottom));
       box-sizing: border-box;
       display: flex;
       justify-content: center;
       align-items: flex-start;
+      min-height: 100%;
     }
 
     .container_vidrio {
       width: 100%;
-      max-width: 420px; /* base (mobile y pantallas chicas) */
+      max-width: 420px;
       margin: 4px auto 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
 
-      /* MOBILE: que se vea pantalla nativa, sin card negra */
       background: transparent;
       border-radius: 24px;
       padding: 4px 0 10px;
@@ -248,41 +228,7 @@ img[alt="Imagen ilustrativa"] {
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
 
-      /* 💊 TABLET 769–1199px: carta más grande */
-      @media (min-width: 769px) and (max-width: 1199px) {
-        max-width: 540px;
-        margin: 32px auto;
-        padding: 22px 22px 26px;
-        border-radius: 26px;
-        background: rgba(255, 255, 255, 0.96);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        box-shadow:
-          0 18px 40px rgba(15, 23, 42, 0.18),
-          0 0 0 0.5px rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-      }
-
-      /* 💻 DESKTOP 1200+: un poco más angosta para verse premium */
-      @media (min-width: 1200px) {
-        max-width: 480px;
-        margin: 40px auto;
-        padding: 20px 20px 26px;
-        border-radius: 26px;
-        background: rgba(255, 255, 255, 0.97);
-        border: 1px solid rgba(0, 0, 0, 0.04);
-        box-shadow:
-          0 20px 46px rgba(15, 23, 42, 0.22),
-          0 0 0 0.5px rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-      }
-
-      app-login,
-      app-registro,
-      app-resetpassword {
-        width: 100%;
-      }
+      app-login, app-registro, app-resetpassword { width: 100%; }
 
       .link-registro {
         margin-top: 10px;
@@ -295,11 +241,8 @@ img[alt="Imagen ilustrativa"] {
           cursor: pointer;
           color: #ff3b30;
           font-weight: 700;
-          text-decoration: none;
 
-          &:hover {
-            text-decoration: underline;
-          }
+          &:hover { text-decoration: underline; }
         }
       }
 
@@ -308,6 +251,35 @@ img[alt="Imagen ilustrativa"] {
         height: 1px;
         background-color: #e5e7eb;
         margin: 16px 0;
+      }
+
+      .scroll-spacer {
+        height: 22px;
+        width: 100%;
+      }
+
+      @media (min-width: 769px) and (max-width: 1199px) {
+        max-width: 540px;
+        margin: 32px auto;
+        padding: 22px 22px 26px;
+        border-radius: 26px;
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18), 0 0 0 0.5px rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+      }
+
+      @media (min-width: 1200px) {
+        max-width: 480px;
+        margin: 40px auto;
+        padding: 20px 20px 26px;
+        border-radius: 26px;
+        background: rgba(255, 255, 255, 0.97);
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        box-shadow: 0 20px 46px rgba(15, 23, 42, 0.22), 0 0 0 0.5px rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
       }
     }
   }
@@ -319,87 +291,15 @@ a.enlace-politica {
   font-weight: 600;
   text-decoration: underline;
   cursor: pointer;
-
-  &:hover {
-    opacity: 0.9;
-  }
+  &:hover { opacity: 0.9; }
 }
 
-/* Animaciones lado izquierdo */
 @keyframes aparecerIzquierda {
-  0% {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  0% { opacity: 0; transform: translateX(-50px); }
+  100% { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes aparecerArriba {
-  0% {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
-
-/* ================= IMG FONDO MÓVIL ================= */
-
-.bg-img2 {
-  display: block;
-  width: 100vw;
-  opacity: 0.9;
-  max-width: none;
-  height: auto;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  border-radius: 18px;
-  object-fit: cover;
-  opacity: 1;
-  margin-top: 18px;
-  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.25);
-
-  @media (max-width: 540px) {
-    border-radius: 14px;
-  }
-}
-
-/* 💊 TABLET – sin pisar texto */
-@media (max-width: 1024px) and (min-width: 821px) {
-  .bg-img2 {
-    height: 280px;
-    object-fit: contain;
-    transform: scale(0.9);
-    opacity: 0.96;
-    margin-top: 60px;
-  }
-}
-
-/* 📱 Tablet chica / phablet */
-@media (max-width: 820px) and (min-width: 541px) {
-  .bg-img2 {
-    height: 240px;
-    transform: scale(0.9);
-    object-fit: contain;
-    margin-top: 65px;
-  }
-}
-
-/* 📱 MÓVIL – app feel, no landing */
-@media (max-width: 540px) {
-  .bg-img2 {
-    margin-top: -10px;
-    height: 190px;
-    object-fit: contain;
-    transform: scale(0.96);
-  }
-}
-
-/* 🌙 Dark mode general */

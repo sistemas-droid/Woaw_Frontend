@@ -19,6 +19,7 @@ import { registerLocaleData } from '@angular/common';
 import { HomeComponent } from './components/woalft/home/home.component'
 import localeEsMX from '@angular/common/locales/es-MX';
 
+import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
 
 registerLocaleData(localeEsMX);
 

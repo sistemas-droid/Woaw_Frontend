@@ -2,8 +2,8 @@
    iOS Docs Page
 ========================= */
 .docs-ios {
-  --background: #f5f5f7;
-  background: #f5f5f7;
+  --background: #f2f2f7; /* iOS systemGroupedBackground */
+  background: #f2f2f7;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
 }
 
@@ -15,15 +15,15 @@
 }
 
 /* =========================
-   Cards base iOS
+   Cards base iOS (glass)
 ========================= */
 .step-card,
 .progress-card {
-  width: min(720px, 100%);
+  width: min(760px, 100%);
   margin: 12px auto 14px;
   border-radius: 22px;
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(226, 232, 240, 0.95);
   box-shadow:
     0 18px 40px rgba(15, 23, 42, 0.12),
     0 0 0 0.5px rgba(255, 255, 255, 0.9);
@@ -81,7 +81,6 @@
   border: 1px solid #e5e7eb;
   border-radius: 16px;
   --min-height: 48px;
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 
 .ios-item:focus-within {
@@ -103,40 +102,100 @@
   --padding-top: 14px;
   --padding-bottom: 14px;
   font-weight: 900;
-  letter-spacing: 0.2px;
   --box-shadow: 0 16px 30px rgba(255, 59, 48, 0.28);
   text-transform: none;
 }
 
 /* =========================
-   Progreso
+   PROGRESO: steps-line con palomitas
 ========================= */
-.progress-top {
+.steps-head {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 14px;
+}
+
+.steps-title {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #0f172a;
+}
+
+.steps-count {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.steps-meta {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 12px;
 }
 
-.progress-count {
-  margin: 0;
-  font-size: 13px;
-  color: #334155;
-  font-weight: 800;
-}
-
-.progress-percent {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 1000;
+.steps-percent {
+  font-size: 18px;
+  font-weight: 900;
   color: #ef4444;
 }
 
-.progress-bar-ios {
-  height: 10px;
+/* Contenedor de la línea */
+.steps-line {
+  position: relative;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  --total: 5;
+  --done: 0;
+}
+
+/* línea gris completa */
+.line-track {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  height: 4px;
   border-radius: 999px;
-  overflow: hidden;
+  background: #e6eaee;
+}
+
+/* línea roja llenada */
+.line-fill {
+  position: absolute;
+  left: 14px;
+  height: 4px;
+  border-radius: 999px;
+  background: #ef4444;
+  width: calc((100% - 28px) * (var(--done) / max(1, (var(--total) - 1))));
+}
+
+/* bolitas */
+.step {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #f3f5f7;
+  border: 2px solid #cfd6dd;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+}
+
+.step.done {
+  background: #ef4444;
+  border-color: #ef4444;
+}
+
+.step ion-icon {
+  color: #fff;
+  font-size: 18px;
 }
 
 /* =========================
@@ -162,7 +221,7 @@
   width: 100%;
   border-radius: 18px !important;
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.95);
+  border: 1px solid rgba(226, 232, 240, 0.98);
   box-shadow:
     0 14px 26px rgba(15, 23, 42, 0.10),
     0 0 0 0.5px rgba(255, 255, 255, 0.9);
@@ -179,8 +238,8 @@
 @media (min-width: 768px) {
   .doc-card-ios:hover {
     transform: translateY(-4px);
-    border-color: rgba(239, 68, 68, 0.55);
-    box-shadow: 0 18px 34px rgba(255, 0, 34, 0.14);
+    border-color: rgba(239, 68, 68, 0.45);
+    box-shadow: 0 18px 34px rgba(255, 0, 34, 0.12);
   }
 }
 
@@ -196,7 +255,7 @@
 }
 
 .doc-icon {
-  font-size: 30px;
+  font-size: 28px;
   color: #ef4444;
   margin-top: 2px;
 }
@@ -220,19 +279,42 @@
   padding: 10px 14px 14px;
 }
 
-.badge-pill {
-  font-size: 12px;
-  padding: 6px 10px;
+/* =========================
+   Badge único
+========================= */
+.badge-estado {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
   border-radius: 999px;
+  font-size: 12px;
   font-weight: 900;
-  letter-spacing: 0.2px;
-  margin-top: 10px;
+  letter-spacing: 0.6px;
 }
 
-.badge-status {
-  margin-left: 6px;
+/* Variantes */
+.badge-vacio {
+  background: #e6eaee;
+  color: #5f6b76;
 }
 
+.badge-revision {
+  background: #ffcc33;
+  color: #111;
+}
+
+.badge-aprobado {
+  background: #2ecc71;
+  color: #111;
+}
+
+.badge-rechazado {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* Rechazo */
 .rechazo-msg {
   margin: 10px 0 0;
   font-size: 12.5px;
@@ -256,33 +338,35 @@
 }
 
 /* =========================
-   Estados premium (ngClass)
+   Estados premium por card (ngClass)
+   (estos dependen de tu getCardClass(doc))
 ========================= */
 .doc-aprobado {
   border-color: rgba(34, 197, 94, 0.55) !important;
-  background: rgba(34, 197, 94, 0.08) !important;
+  background: rgba(34, 197, 94, 0.06) !important;
 
-  .doc-icon {
-    color: #22c55e !important;
-  }
+  .doc-icon { color: #22c55e !important; }
 }
 
 .doc-rechazado {
   border-color: rgba(239, 68, 68, 0.55) !important;
-  background: rgba(239, 68, 68, 0.07) !important;
+  background: rgba(239, 68, 68, 0.06) !important;
 
-  .doc-icon {
-    color: #ef4444 !important;
-  }
+  .doc-icon { color: #ef4444 !important; }
 }
 
 .doc-pendiente {
   border-color: rgba(245, 158, 11, 0.55) !important;
-  background: rgba(245, 158, 11, 0.08) !important;
+  background: rgba(245, 158, 11, 0.07) !important;
 
-  .doc-icon {
-    color: #f59e0b !important;
-  }
+  .doc-icon { color: #f59e0b !important; }
+}
+
+.doc-vacio {
+  border-color: rgba(148, 163, 184, 0.55) !important;
+  background: rgba(148, 163, 184, 0.10) !important;
+
+  .doc-icon { color: #64748b !important; }
 }
 
 /* =========================
@@ -300,12 +384,11 @@
   --padding-top: 14px;
   --padding-bottom: 14px;
   font-weight: 1000;
-  letter-spacing: 0.2px;
   --box-shadow: 0 16px 30px rgba(255, 59, 48, 0.28);
   text-transform: none;
 }
 
-/* Responsive padding */
+/* Responsive */
 @media (max-width: 480px) {
   .page-wrap {
     padding: 10px 10px 24px;

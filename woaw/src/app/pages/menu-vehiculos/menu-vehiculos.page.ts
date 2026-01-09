@@ -4,6 +4,8 @@ import { AlertController } from "@ionic/angular";
 import { Router } from "@angular/router";
 import { CarsService } from "../../services/cars.service";
 import { GeneralService } from "../../services/general.service";
+import { MotosService } from '../../services/motos.service';
+import { Capacitor } from '@capacitor/core';
 import { DomSanitizer } from "@angular/platform-browser";
 
 interface Ubicacion {
@@ -52,13 +54,40 @@ export class MenuVehiculosPage implements OnInit {
   public conSeminuevos: number = 0;
   public conNuevos: number = 0;
 
+
+  public conMotos: number = 0;
+  MotosAll: any[] = [];
+  public isNative = Capacitor.isNativePlatform();
+
+  catsLoaded = {
+    usados: false,
+    seminuevos: false,
+    nuevos: false,
+    seguros: false,
+    motos: false,
+    camiones: false,
+    arr: false,
+  };
+
+  carsLoading = {
+    usados: true,
+    seminuevos: true,
+    nuevos: true,
+    motos: true,
+  };
+
+  carsLoaded: Record<string, boolean> = {};
+  imagenesCargadas = new Set<string>();
+
+
   constructor(
     private route: ActivatedRoute,
     private alertCtrl: AlertController,
     private router: Router,
     private generalService: GeneralService,
     public carsService: CarsService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public motosService: MotosService,
   ) { }
 
   ngOnInit() {
@@ -71,6 +100,15 @@ export class MenuVehiculosPage implements OnInit {
     this.getCarsNews();
     this.getCarsSeminuevos();
     this.getCarsUsados();
+    this.getMotos();
+  }
+
+
+  markCarLoaded(id: string) {
+    this.carsLoaded[id] = true;
+  }
+  onImgLoad(id: string) {
+    this.imagenesCargadas.add(id);
   }
 
   private toNumberSafe(v: any): number | null {
@@ -123,6 +161,7 @@ export class MenuVehiculosPage implements OnInit {
         const autos: AutoCard[] = res?.coches || [];
         const autosAleatorios = [...autos].sort(() => Math.random() - 0.5);
         this.autosUsados = autosAleatorios;
+        this.carsLoading.usados = false;
       },
       error: (err) => {
         const mensaje = err?.error?.message || "Ocurrió un error inesperado";
@@ -139,6 +178,7 @@ export class MenuVehiculosPage implements OnInit {
         const autos: AutoCard[] = res?.coches || [];
         const autosAleatorios = [...autos].sort(() => Math.random() - 0.5);
         this.autosSeminuevos = autosAleatorios;
+        this.carsLoading.seminuevos = false;
       },
       error: (err) => {
         const mensaje = err?.error?.message || "Ocurrió un error inesperado";
@@ -184,6 +224,7 @@ export class MenuVehiculosPage implements OnInit {
         // Si quieres orden aleatorio en la vista:
         const autosAleatorios = [...autos].sort(() => Math.random() - 0.5);
         this.autosNuevos = autosAleatorios;
+        this.carsLoading.nuevos = false;
       },
       error: (err) => {
         const mensaje = err?.error?.message || "Ocurrió un error inesperado";
@@ -192,13 +233,38 @@ export class MenuVehiculosPage implements OnInit {
     });
   }
 
+
+  getMotos() {
+    this.motosService.getMotos().subscribe({
+      next: (res: any) => {
+        // console.log(res)
+        this.conMotos = res.contador;
+        const moto = res?.motos || []
+        this.MotosAll = moto.slice(0, 5);
+        this.carsLoading.motos = false;
+      },
+      error: (err) => {
+        const mensaje = err?.error?.message || 'Ocurrió un error inesperado';
+        this.generalService.alert('Error de Conexión', mensaje);
+      },
+    });
+  }
+
   public redirecion(url: string) {
     this.router.navigate([url]);
   }
 
-  public irAFichaAuto(id?: string) {
+
+
+  public irAFichaAuto(id?: string, tipo?: string) {
     if (!id) return;
+
+    if (tipo === "moto") {
+      this.router.navigate(['/ficha/motos', id]);
+    } else {
+      this.router.navigate(['/fichas/autos', id]);
+    }
+
     // this.router.navigate(["/ficha", "autos", id]);
-    this.router.navigate(['/fichas/autos', id]);
   }
 }

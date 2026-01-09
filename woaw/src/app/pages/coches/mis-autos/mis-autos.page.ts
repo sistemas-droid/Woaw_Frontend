@@ -103,7 +103,6 @@ export class MisAutosPage implements OnInit {
           return {
             ...auto,
             estadoVehiculo: auto.estadoVehiculo || 'disponible',
-            imagen: auto.imagenPrincipal || '/assets/default-car.webp',
             precioDesde,
             precioHasta,
           };

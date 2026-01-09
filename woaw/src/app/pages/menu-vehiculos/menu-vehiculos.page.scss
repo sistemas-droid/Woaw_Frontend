@@ -3,61 +3,7 @@ ion-content.home-wrap {
 }
 
 /* =========================
-   HEADER iOS (sticky look)
-   ========================= */
-.home-header {
-  padding-top: calc(12px + env(safe-area-inset-top, 0px));
-  padding-left: max(12px, env(safe-area-inset-left, 0px));
-  padding-right: max(12px, env(safe-area-inset-right, 0px));
-  margin-bottom: 6px;
-}
-
-.home-header__inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 14px 12px 6px;
-}
-
-.home-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow:
-    0 14px 30px rgba(15, 23, 42, 0.12),
-    0 0 0 0.6px rgba(148, 163, 184, 0.35);
-  font-weight: 900;
-  font-size: 12px;
-  color: #111827;
-  margin-bottom: 10px;
-
-  ion-icon {
-    font-size: 16px;
-    color: #ef4444;
-  }
-}
-
-/* Título principal */
-.header_titulo {
-  margin: 0;
-  font-weight: 950;
-  letter-spacing: -0.6px;
-  font-size: clamp(18px, 3.1vw, 26px);
-  color: #111827;
-  text-wrap: balance;
-}
-
-.home-sub {
-  margin: 6px 0 0;
-  font-size: 13px;
-  color: rgba(17, 24, 39, 0.65);
-}
-
-/* =========================
-   GRID GENERAL
+   GRID GENERAL (WEB)
    ========================= */
 .contenedor {
   max-width: 1200px;
@@ -67,7 +13,7 @@ ion-content.home-wrap {
 }
 
 /* =========================
-   COLUMNA IZQUIERDA (Tipos)
+   COLUMNA IZQUIERDA (Tipos) - WEB iOS look
    ========================= */
 .contenedor_cratas_home {
   padding: 8px 6px 14px;
@@ -88,7 +34,6 @@ ion-content.home-wrap {
   }
 }
 
-/* Card tipo iOS */
 .type-card {
   position: relative;
   border-radius: 22px;
@@ -123,7 +68,6 @@ ion-content.home-wrap {
   }
 }
 
-/* Fondo decorativo (imagen) */
 .type-bg {
   position: absolute;
   right: 6px;
@@ -216,7 +160,6 @@ ion-content.home-wrap {
   }
 }
 
-/* Acentos por tipo */
 .type-card--usados { background: linear-gradient(135deg, rgba(148,163,184,.13), rgba(255,255,255,.95)); }
 .type-card--seminuevos { background: linear-gradient(135deg, rgba(15,23,42,.06), rgba(255,255,255,.95)); }
 .type-card--nuevos { background: linear-gradient(135deg, rgba(239,68,68,.09), rgba(255,255,255,.95)); }
@@ -226,7 +169,7 @@ ion-content.home-wrap {
 .btn-nuevos { background: #ef4444; color: #fff; }
 
 /* =========================
-   COLUMNA DERECHA (Carruseles)
+   COLUMNA DERECHA (Carruseles) - WEB iOS look
    ========================= */
 .cars-rows {
   display: grid;
@@ -234,7 +177,6 @@ ion-content.home-wrap {
   margin-top: 8px;
 }
 
-/* Header sección */
 .section-head {
   display: flex;
   align-items: center;
@@ -293,7 +235,6 @@ ion-content.home-wrap {
   &::-webkit-scrollbar-track { background: transparent; }
 }
 
-/* Carrusel: snap iOS */
 .cars-scroll {
   display: grid;
   grid-auto-flow: column;
@@ -308,7 +249,6 @@ ion-content.home-wrap {
   }
 }
 
-/* Card auto iOS */
 .car-card {
   scroll-snap-align: start;
   display: grid;
@@ -344,7 +284,6 @@ ion-content.home-wrap {
   }
 }
 
-/* Ribbon */
 .ribbon {
   position: absolute;
   left: 8px;
@@ -407,7 +346,6 @@ ion-content.home-wrap {
   }
 }
 
-/* Card Ver Más */
 .more-card {
   display: flex;
   justify-content: center;
@@ -440,5 +378,282 @@ ion-content.home-wrap {
     font-weight: 800;
     font-size: 10px;
     color: rgba(17, 24, 39, 0.55);
+  }
+}
+
+/* =========================
+   NATIVE (iOS/Android)
+   ========================= */
+.contenedor_native {
+  padding: 6px 6px 6px;
+
+  .native-cats {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar { display: none; }
+
+    ion-card {
+      flex: 0 0 130px;
+      height: 60px;
+      position: relative;
+      overflow: hidden;
+      margin: 0;
+      border-radius: 16px;
+    }
+
+    ion-card-subtitle {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    ion-card-title {
+      margin-top: -2px;
+      display: flex;
+      align-items: center;
+      gap: 1px;
+      font-size: 14px;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    ion-card-title ion-icon {
+      font-size: 9px;
+      flex: 0 0 auto;
+    }
+
+    .img-skeleton {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: linear-gradient(100deg, #e6e6e6 30%, #f2f2f2 50%, #e6e6e6 70%);
+      background-size: 200% 100%;
+      animation: shimmerCats 1.2s linear infinite;
+      z-index: 2;
+    }
+
+    @keyframes shimmerCats {
+      from { background-position: 200% 0; }
+      to { background-position: -200% 0; }
+    }
+
+    .bg-card {
+      position: absolute;
+      right: 5px;
+      bottom: -3px;
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 1;
+      display: block;
+      object-fit: contain;
+
+      &.card-1 {
+        width: 48px;
+        height: 48px;
+
+        @media (max-width: 360px) {
+          width: 46px;
+          height: 46px;
+        }
+        @media (min-width: 768px) {
+          width: 72px;
+          height: 72px;
+        }
+      }
+
+      &.card-2 {
+        width: 74px;
+        height: 74px;
+        right: 0px;
+        bottom: -20px;
+
+        @media (max-width: 360px) {
+          width: 70px;
+          height: 70px;
+        }
+        @media (min-width: 768px) {
+          width: 90px;
+          height: 90px;
+        }
+      }
+    }
+
+    .cat {
+      color: #fff;
+
+      ion-card-header { position: relative; z-index: 3; }
+      ion-card-title, ion-card-subtitle { color: #fff; }
+
+      &.used { background: #6b7280; }
+      &.semi { background: #111827; }
+      &.new { background: var(--ion-color-danger); }
+      &.seg { background: #064ced; }
+      &.arr { background: #ea0101; }
+      &.motos { background: #25b405; }
+      &.cam { background: #020617; }
+    }
+  }
+
+  .scroll-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 0px;
+    pointer-events: none;
+
+    span {
+      width: 8px;
+      height: 8px;
+      background: #7b7b7b;
+      border-radius: 50%;
+      opacity: 0.3;
+    }
+  }
+
+  .native-section {
+    margin-top: 0;
+
+    .native-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 4px 0;
+
+      h2 {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 900;
+      }
+    }
+
+    .native-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 8px 4px 12px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+
+      &::-webkit-scrollbar { display: none; }
+    }
+
+    .native-scroll .car {
+      flex: 0 0 42%;
+      margin: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      scroll-snap-align: start;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .media {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      background: #f3f4f6;
+      overflow: hidden;
+    }
+
+    ion-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .img-hidden { opacity: 0; }
+
+    /* ===== Skeleton para cards ===== */
+    .car.skeleton {
+      pointer-events: none;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .skeleton-box {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: linear-gradient(90deg, #aaaaaa 25%, #cacaca 37%, #b6b6b6 63%);
+      background-size: 400% 100%;
+      animation: shimmerCards 1.4s ease infinite;
+      z-index: 1;
+    }
+
+    .car.skeleton .media.skeleton-box {
+      position: relative;
+      height: 120px;
+      border-radius: 12px;
+    }
+
+    .skeleton-line {
+      height: 14px;
+      margin-top: 10px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #e6e6e6 25%, #f2f2f2 37%, #e6e6e6 63%);
+      background-size: 400% 100%;
+      animation: shimmerCards 1.4s ease infinite;
+
+      &.short { width: 60%; }
+    }
+
+    @keyframes shimmerCards {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+
+    .native-scroll .car .body {
+      padding: 10px 12px 12px;
+    }
+
+    .native-scroll .car .title {
+      font-weight: 900;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .native-scroll .car .price {
+      margin-top: 4px;
+      font-weight: 950;
+      color: var(--ion-color-danger);
+      font-size: 0.95rem;
+    }
+
+    .native-scroll .car.more {
+      display: grid;
+      place-items: center;
+      background: #ffffff;
+      border: none;
+      box-shadow: 0 6px 16px rgba(0,0,0,.10);
+    }
+
+    .native-scroll .car.more .more-inner {
+      display: grid;
+      place-items: center;
+      gap: 6px;
+      text-align: center;
+    }
+
+    .native-scroll .car.more .more-text {
+      font-weight: 950;
+      color: #dc3545;
+    }
+
+    .native-scroll .car.more .more-count {
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: #dc3545;
+      opacity: 0.9;
+    }
+
+    @media (min-width: 768px) {
+      .native-scroll { gap: 12px; }
+      .native-scroll .car { flex: 0 0 20%; }
+    }
   }
 }

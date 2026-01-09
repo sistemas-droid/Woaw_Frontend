@@ -1,11 +1,5 @@
 <section class="home-servicios-ios">
 
-  <!-- TÍTULO -->
-  <!-- <div class="contenedor_titulo"> -->
-    <!-- <img class="logo-goautos2" src="/assets/icon/logo4.png" alt="Go Autos" /> -->
-    <!-- <h2 class="titulo_principal">Explora, compara y estrena</h2>
-  </div> -->
-
   <!-- =========================
        WEB / NO NATIVO (MAIN)
   ========================== -->
@@ -143,102 +137,116 @@
   </ion-grid>
 
   <!-- =========================
-       NATIVO / iOS (IOS BRANCH)
+       NATIVO / iOS (iOS branch + skeleton main)
   ========================== -->
   <ion-grid class="contenedor_native" *ngIf="isNative">
 
-    <!-- SCROLL CATEGORÍAS (más grandes) -->
-    <div class="native-cats">
+    <!-- SCROLL CATEGORÍAS -->
+    <div class="native-cats" #catsNative (scroll)="onNativeCatsScroll()">
 
       <!-- USADOS -->
       <ion-card class="cat used" button (click)="redirecion('/usados')">
-        <ion-img src="/assets/home/cartasHome3.webp" class="bg-card card-1"></ion-img>
+        <div class="img-skeleton" *ngIf="!catsLoaded.usados"></div>
+        <ion-img
+          src="/assets/home/cartasHome3.webp"
+          class="bg-card card-1"
+          [class.img-loaded]="catsLoaded.usados"
+          (ionImgDidLoad)="catsLoaded.usados = true"
+          (ionError)="catsLoaded.usados = true">
+        </ion-img>
         <ion-card-header>
           <ion-card-subtitle>Autos</ion-card-subtitle>
-          <ion-card-title>
-            Usados
-            <ion-icon name="arrow-forward"></ion-icon>
-          </ion-card-title>
+          <ion-card-title>Usados <ion-icon name="arrow-forward"></ion-icon></ion-card-title>
         </ion-card-header>
       </ion-card>
 
       <!-- SEMINUEVOS -->
       <ion-card class="cat semi" button (click)="redirecion('/seminuevos')">
-        <ion-img src="/assets/home/cartasHome2.webp" class="bg-card card-1"></ion-img>
+        <div class="img-skeleton" *ngIf="!catsLoaded.seminuevos"></div>
+        <ion-img
+          src="/assets/home/cartasHome2.webp"
+          class="bg-card card-1"
+          [class.img-loaded]="catsLoaded.seminuevos"
+          (ionImgDidLoad)="catsLoaded.seminuevos = true"
+          (ionError)="catsLoaded.seminuevos = true">
+        </ion-img>
         <ion-card-header>
           <ion-card-subtitle>Autos</ion-card-subtitle>
-          <ion-card-title>
-            Seminuevos
-            <ion-icon name="arrow-forward"></ion-icon>
-          </ion-card-title>
+          <ion-card-title>Seminuevos <ion-icon name="arrow-forward"></ion-icon></ion-card-title>
         </ion-card-header>
       </ion-card>
 
       <!-- NUEVOS -->
       <ion-card class="cat new" button (click)="redirecion('/nuevos')">
-        <ion-img src="/assets/home/cartasHome1.webp" class="bg-card card-1"></ion-img>
+        <div class="img-skeleton" *ngIf="!catsLoaded.nuevos"></div>
+        <ion-img
+          src="/assets/home/cartasHome1.webp"
+          class="bg-card card-1"
+          [class.img-loaded]="catsLoaded.nuevos"
+          (ionImgDidLoad)="catsLoaded.nuevos = true"
+          (ionError)="catsLoaded.nuevos = true">
+        </ion-img>
         <ion-card-header>
           <ion-card-subtitle>Autos</ion-card-subtitle>
-          <ion-card-title>
-            Nuevos
-            <ion-icon name="arrow-forward"></ion-icon>
-          </ion-card-title>
+          <ion-card-title>Nuevos <ion-icon name="arrow-forward"></ion-icon></ion-card-title>
         </ion-card-header>
       </ion-card>
 
       <!-- SEGUROS -->
       <ion-card class="cat seg" button (click)="redirecion('/seguros/disponibles')">
-        <ion-img src="/assets/home/se.png" class="bg-card card-2"></ion-img>
+        <div class="img-skeleton" *ngIf="!catsLoaded.seguros"></div>
+        <ion-img src="/assets/home/se.png" class="bg-card card-2" [class.img-loaded]="catsLoaded.seguros"
+          (ionImgDidLoad)="catsLoaded.seguros = true" (ionError)="catsLoaded.seguros = true">
+        </ion-img>
         <ion-card-header>
-          <ion-card-title>
-            Seguros
-            <ion-icon name="arrow-forward"></ion-icon>
-          </ion-card-title>
+          <ion-card-title>Seguros <ion-icon name="arrow-forward"></ion-icon></ion-card-title>
         </ion-card-header>
       </ion-card>
 
       <!-- MOTOS -->
       <ion-card class="cat motos" button (click)="redirecion('/m-nuevos')">
-        <ion-img src="/assets/home/mto.png" class="bg-card card-2"></ion-img>
+        <div class="img-skeleton" *ngIf="!catsLoaded.motos"></div>
+        <ion-img src="/assets/home/mto.png" class="bg-card card-2" [class.img-loaded]="catsLoaded.motos"
+          (ionImgDidLoad)="catsLoaded.motos = true" (ionError)="catsLoaded.motos = true">
+        </ion-img>
         <ion-card-header>
-          <ion-card-title>
-            Motos
-            <ion-icon name="arrow-forward"></ion-icon>
-          </ion-card-title>
+          <ion-card-title>Motos <ion-icon name="arrow-forward"></ion-icon></ion-card-title>
         </ion-card-header>
       </ion-card>
 
       <!-- CAMIONES -->
       <ion-card class="cat cam" button (click)="redirecion('/camiones/todos')">
-        <ion-img src="/assets/home/A3.webp" class="bg-card card-2"></ion-img>
+        <div class="img-skeleton" *ngIf="!catsLoaded.camiones"></div>
+        <ion-img src="/assets/home/A3.webp" class="bg-card card-2" [class.img-loaded]="catsLoaded.camiones"
+          (ionImgDidLoad)="catsLoaded.camiones = true" (ionError)="catsLoaded.camiones = true">
+        </ion-img>
         <ion-card-header>
-          <ion-card-title>
-            Camiones
-            <ion-icon name="arrow-forward"></ion-icon>
-          </ion-card-title>
+          <ion-card-title>Camiones <ion-icon name="arrow-forward"></ion-icon></ion-card-title>
         </ion-card-header>
       </ion-card>
 
       <!-- ARRENDAMIENTO -->
       <ion-card class="cat arr" button (click)="redirecion('/arrendamiento')">
-        <ion-img src="/assets/home/ca.png" class="bg-card card-2"></ion-img>
+        <div class="img-skeleton" *ngIf="!catsLoaded.arr"></div>
+        <ion-img src="/assets/home/ca.png" class="bg-card card-2" [class.img-loaded]="catsLoaded.arr"
+          (ionImgDidLoad)="catsLoaded.arr = true" (ionError)="catsLoaded.arr = true">
+        </ion-img>
         <ion-card-header>
-          <ion-card-title>
-            Arrendamiento
-            <ion-icon name="arrow-forward"></ion-icon>
-          </ion-card-title>
+          <ion-card-title>Arrendamiento <ion-icon name="arrow-forward"></ion-icon></ion-card-title>
         </ion-card-header>
       </ion-card>
 
     </div>
 
-    <!-- ✅ PUNTITOS ROJOS (solo indicador visual de scroll) -->
+    <!-- ✅ DOTS iOS -->
     <div class="native-cats-dots" aria-hidden="true">
-      <span class="dot is-active"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
+      <span class="dot" [class.is-active]="nativeCatIndex === 0"></span>
+      <span class="dot" [class.is-active]="nativeCatIndex === 1"></span>
+      <span class="dot" [class.is-active]="nativeCatIndex === 2"></span>
+      <span class="dot" [class.is-active]="nativeCatIndex === 3"></span>
+      <span class="dot" [class.is-active]="nativeCatIndex === 4"></span>
+      <span class="dot" [class.is-active]="nativeCatIndex === 5"></span>
+      <span class="dot" [class.is-active]="nativeCatIndex === 6"></span>
     </div>
 
     <!-- ===================== USADOS ===================== -->
@@ -251,17 +259,40 @@
       </div>
 
       <div class="native-scroll">
-        <ion-card class="car" button *ngFor="let a of (autosUsados | slice:0:7); trackBy: trackById"
-          (click)="irAFichaAuto(a._id)">
-          <div class="media">
-            <ion-img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
-              [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'"></ion-img>
-          </div>
-          <ion-card-content class="body">
-            <div class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</div>
-            <div class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
-          </ion-card-content>
-        </ion-card>
+
+        <!-- SKELETON -->
+        <ng-container *ngIf="carsLoading.usados">
+          <ion-card class="car skeleton" *ngFor="let _ of [1,2,3,4]">
+            <div class="media skeleton-box"></div>
+            <ion-card-content class="body">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
+
+        <!-- DATA -->
+        <ng-container *ngIf="!carsLoading.usados">
+          <ion-card class="car" button *ngFor="let a of (autosUsados | slice:0:7); trackBy: trackById"
+            (click)="irAFichaAuto(a._id)">
+
+            <div class="media">
+              <div class="skeleton-box" *ngIf="!imagenesCargadas.has(a._id)"></div>
+
+              <ion-img
+                [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
+                (ionImgDidLoad)="onImgLoad(a._id)"
+                (ionError)="onImgError($event, a)"
+                [class.img-hidden]="!imagenesCargadas.has(a._id)">
+              </ion-img>
+            </div>
+
+            <ion-card-content class="body">
+              <div class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</div>
+              <div class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
 
         <ion-card class="car more" button (click)="redirecion('usados')">
           <ion-card-content class="more-inner">
@@ -270,6 +301,7 @@
             <div class="more-count">{{ conUsados }} disponibles</div>
           </ion-card-content>
         </ion-card>
+
       </div>
     </div>
 
@@ -283,16 +315,40 @@
       </div>
 
       <div class="native-scroll">
-        <ion-card class="car" button *ngFor="let a of (autosSeminuevos | slice:0:7); trackBy: trackById"
-          (click)="irAFichaAuto(a._id)">
-          <div class="media">
-            <ion-img [src]="getImagen(a)" [alt]="a.marca + ' ' + a.modelo" (ionError)="onImgError($event, a)"></ion-img>
-          </div>
-          <ion-card-content class="body">
-            <div class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</div>
-            <div class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
-          </ion-card-content>
-        </ion-card>
+
+        <!-- SKELETON -->
+        <ng-container *ngIf="carsLoading.seminuevos">
+          <ion-card class="car skeleton" *ngFor="let _ of [1,2,3,4]">
+            <div class="media skeleton-box"></div>
+            <ion-card-content class="body">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
+
+        <!-- DATA -->
+        <ng-container *ngIf="!carsLoading.seminuevos">
+          <ion-card class="car" button *ngFor="let a of (autosSeminuevos | slice:0:7); trackBy: trackById"
+            (click)="irAFichaAuto(a._id)">
+
+            <div class="media">
+              <div class="skeleton-box" *ngIf="!imagenesCargadas.has(a._id)"></div>
+
+              <ion-img
+                [src]="getImagen(a)"
+                (ionImgDidLoad)="onImgLoad(a._id)"
+                (ionError)="onImgError($event, a)"
+                [class.img-hidden]="!imagenesCargadas.has(a._id)">
+              </ion-img>
+            </div>
+
+            <ion-card-content class="body">
+              <div class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</div>
+              <div class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
 
         <ion-card class="car more" button (click)="redirecion('seminuevos')">
           <ion-card-content class="more-inner">
@@ -301,6 +357,7 @@
             <div class="more-count">{{ conSeminuevos }} disponibles</div>
           </ion-card-content>
         </ion-card>
+
       </div>
     </div>
 
@@ -314,17 +371,40 @@
       </div>
 
       <div class="native-scroll">
-        <ion-card class="car" button *ngFor="let a of (autosNuevos | slice:0:7); trackBy: trackById"
-          (click)="irAFichaAuto(a._id)">
-          <div class="media">
-            <ion-img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
-              [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'"></ion-img>
-          </div>
-          <ion-card-content class="body">
-            <div class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</div>
-            <div class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
-          </ion-card-content>
-        </ion-card>
+
+        <!-- SKELETON -->
+        <ng-container *ngIf="carsLoading.nuevos">
+          <ion-card class="car skeleton" *ngFor="let _ of [1,2,3,4]">
+            <div class="media skeleton-box"></div>
+            <ion-card-content class="body">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
+
+        <!-- DATA -->
+        <ng-container *ngIf="!carsLoading.nuevos">
+          <ion-card class="car" button *ngFor="let a of (autosNuevos | slice:0:7); trackBy: trackById"
+            (click)="irAFichaAuto(a._id)">
+
+            <div class="media">
+              <div class="skeleton-box" *ngIf="!imagenesCargadas.has(a._id)"></div>
+
+              <ion-img
+                [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
+                (ionImgDidLoad)="onImgLoad(a._id)"
+                (ionError)="onImgError($event, a)"
+                [class.img-hidden]="!imagenesCargadas.has(a._id)">
+              </ion-img>
+            </div>
+
+            <ion-card-content class="body">
+              <div class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</div>
+              <div class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
 
         <ion-card class="car more" button (click)="redirecion('nuevos')">
           <ion-card-content class="more-inner">
@@ -333,11 +413,69 @@
             <div class="more-count">{{ conNuevos }} disponibles</div>
           </ion-card-content>
         </ion-card>
+
+      </div>
+    </div>
+
+    <!-- ===================== MOTOS ===================== -->
+    <div class="native-section">
+      <div class="native-head">
+        <ion-text><h2>Motos</h2></ion-text>
+        <ion-button fill="clear" color="danger" size="small" (click)="redirecion('motos')">
+          Ver más <ion-icon name="caret-forward-circle-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="native-scroll">
+
+        <!-- SKELETON -->
+        <ng-container *ngIf="carsLoading.motos">
+          <ion-card class="car skeleton" *ngFor="let _ of [1,2,3,4]">
+            <div class="media skeleton-box"></div>
+            <ion-card-content class="body">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
+
+        <!-- DATA -->
+        <ng-container *ngIf="!carsLoading.motos">
+          <ion-card class="car" button *ngFor="let a of (MotosAll | slice:0:7); trackBy: trackById"
+            (click)="irAFichaAuto(a._id, 'moto')">
+
+            <div class="media">
+              <div class="skeleton-box" *ngIf="!imagenesCargadas.has(a._id)"></div>
+
+              <ion-img
+                [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
+                (ionImgDidLoad)="onImgLoad(a._id)"
+                (ionError)="onImgError($event, a)"
+                [class.img-hidden]="!imagenesCargadas.has(a._id)">
+              </ion-img>
+            </div>
+
+            <ion-card-content class="body">
+              <div class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</div>
+              <div class="price">{{ getPrecio(a) | currency:'MXN':'symbol-narrow':'1.0-0' }}</div>
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
+
+        <ion-card class="car more" button (click)="redirecion('m-nuevos')">
+          <ion-card-content class="more-inner">
+            <ion-icon name="arrow-forward-outline" color="danger"></ion-icon>
+            <div class="more-text">Ver más</div>
+            <div class="more-count">{{ conMotos }} disponibles</div>
+          </ion-card-content>
+        </ion-card>
+
       </div>
     </div>
 
   </ion-grid>
 
+  <!-- GRID CATEGORÍAS (MAIN) -->
   <section class="grid-categorias">
     <div class="grid-categorias__wrap">
 
@@ -374,7 +512,7 @@
           <span class="cat-card__title">Camiones & carga</span>
           <span class="cat-card__subtitle">de carga para tu negocio</span>
         </div>
-        <img class="cat-card__img" src="/assets/home/A3.webp" alt="Seguros" />
+        <img class="cat-card__img" src="/assets/home/A3.webp" alt="Camiones" />
       </a>
 
     </div>

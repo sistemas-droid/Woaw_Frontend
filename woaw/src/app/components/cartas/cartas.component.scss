@@ -17,6 +17,7 @@
   cursor: pointer;
   transition: transform .18s ease, box-shadow .18s ease;
 
+
   /* 👇 CLAVE: toda la carta es un flex vertical y llena la celda */
   display: flex;
   flex-direction: column;
@@ -25,6 +26,7 @@
   &:active {
     transform: scale(.97);
   }
+
 }
 
 /* Imagen principal – tamaño FIJO */

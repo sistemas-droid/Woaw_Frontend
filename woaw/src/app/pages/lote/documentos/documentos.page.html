@@ -1,9 +1,9 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true" class="docs-ios">
+<ion-content [fullscreen]="true" class="docs-ios" mode="ios">
   <div class="page-wrap">
 
-    <!-- PASO 1: RFC -->
+    <!-- ===================== PASO 1: RFC ===================== -->
     <section class="step-card" *ngIf="!yaIngresoRFC">
       <div class="step-head">
         <h1 class="step-title">Validar RFC del Lote</h1>
@@ -15,6 +15,7 @@
       <div class="step-body">
         <div class="ios-field">
           <label class="ios-label">RFC del Lote</label>
+
           <ion-item lines="none" class="ios-item">
             <ion-input
               [(ngModel)]="rfc"
@@ -45,7 +46,7 @@
       </div>
     </section>
 
-    <!-- PASO 2: DOCUMENTOS -->
+    <!-- ===================== PASO 2: DOCUMENTOS ===================== -->
     <section *ngIf="yaIngresoRFC">
 
       <!-- HEADER + PROGRESO -->
@@ -58,18 +59,38 @@
         </div>
 
         <div class="progress-body">
-          <div class="progress-top">
-            <p class="progress-count">
-              Progreso: <strong>{{ getUploadedCount() }}</strong>/<strong>{{ getTotalDocsRequeridos() }}</strong>
-            </p>
-            <p class="progress-percent">{{ getProgressPercentage() }}%</p>
+
+          <!-- Head progreso -->
+          <div class="steps-head">
+            <div class="steps-title">PROGRESO</div>
+
+            <span class="steps-count">
+              {{ getUploadedCount() }}/{{ getTotalDocsRequeridos() }}
+            </span>
+
+            <div class="steps-meta">
+              <span class="steps-percent">{{ getProgressPercentage() }}%</span>
+            </div>
           </div>
 
-          <ion-progress-bar
-            [value]="getProgressPercentage() / 100"
-            color="danger"
-            class="progress-bar-ios"
-          ></ion-progress-bar>
+          <!-- Línea + bolitas con palomitas -->
+          <div
+            class="steps-line"
+            [style.--total]="getTotalDocsRequeridos()"
+            [style.--done]="getUploadedCount()"
+          >
+            <div class="line-track"></div>
+            <div class="line-fill"></div>
+
+            <div
+              class="step"
+              *ngFor="let _ of [].constructor(getTotalDocsRequeridos()); let i = index"
+              [class.done]="i < getUploadedCount()"
+            >
+              <ion-icon *ngIf="i < getUploadedCount()" name="checkmark"></ion-icon>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -78,7 +99,7 @@
         <ion-row class="docs-row-ios">
 
           <ng-container *ngFor="let doc of documents">
-            <!-- ✅ SOLO SE FILTRA ACTA CONSTITUTIVA -->
+            <!-- ✅ SOLO FILTRA ACTA CONSTITUTIVA SI NO ES MORAL -->
             <ion-col
               *ngIf="doc.tipo !== 'acta-constitutiva' || tipoPersona === 'moral'"
               size="12" size-sm="6" size-md="4" size-lg="3"
@@ -91,31 +112,37 @@
               >
                 <ion-card-header class="doc-card-header">
                   <div class="doc-title-row">
-                    <ion-icon [name]="getStatusIcon(doc)" class="doc-icon"></ion-icon>
+
+                    <ion-icon
+                      [name]="getStatusIcon(doc)"
+                      class="doc-icon"
+                    ></ion-icon>
+
                     <div class="doc-title-text">
                       <h2 class="doc-title">{{ doc.name }}</h2>
                       <p class="doc-subtitle">{{ doc.subtitle }}</p>
                     </div>
+
                   </div>
                 </ion-card-header>
 
                 <ion-card-content class="doc-card-body">
 
-                  <!-- Badge subida -->
+                  <!-- ✅ Badge ÚNICO -->
                   <ion-badge
-                    [color]="doc.uploaded ? 'success' : 'warning'"
-                    class="badge-pill"
+                    class="badge-estado"
+                    [ngClass]="{
+                      'badge-vacio': !doc.uploaded,
+                      'badge-revision': doc.uploaded && (!doc.status || doc.status === 'pendiente'),
+                      'badge-aprobado': doc.status === 'aprobado',
+                      'badge-rechazado': doc.status === 'rechazado'
+                    }"
                   >
-                    {{ doc.uploaded ? 'Completado' : 'Pendiente' }}
-                  </ion-badge>
-
-                  <!-- Estado -->
-                  <ion-badge
-                    *ngIf="doc.status"
-                    [color]="doc.status === 'aprobado' ? 'success' : doc.status === 'rechazado' ? 'danger' : 'warning'"
-                    class="badge-pill badge-status"
-                  >
-                    {{ doc.status | titlecase }}
+                    {{
+                      !doc.uploaded ? 'SIN SUBIR' :
+                      (doc.status === 'aprobado' ? 'APROBADO' :
+                      (doc.status === 'rechazado' ? 'RECHAZADO' : 'EN REVISIÓN'))
+                    }}
                   </ion-badge>
 
                   <!-- Comentario rechazo -->

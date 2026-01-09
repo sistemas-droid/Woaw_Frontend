@@ -22,7 +22,7 @@ import { IonSelect } from '@ionic/angular';
 })
 export class UpdateCarPage implements OnInit {
   auto: any = null;
-  seccionActiva: 'datos' | 'imagenes' = 'datos';
+  seccionActiva: 'datos' | 'imagenes' | 'ubicacion' = 'datos';
   urlsImagenes: string[] = [];
   imagenes: File[] = [];
   urlsImagenesExistentes: string[] = [];
@@ -44,7 +44,7 @@ export class UpdateCarPage implements OnInit {
   direccionCompleta: string = "Obteniendo ubicación...";
   public tipo_veiculo: string = "";
   ubicacionesLoteLegibles: string[] = [];
-  imagenPrincipal_sinFondo: File | string | null = null;
+  imagenPrincipal: File | string | null = null;
   imagenPrincipalMostrada: string = "";
   opciones = [
     { label: "Blanco" },
@@ -88,6 +88,26 @@ export class UpdateCarPage implements OnInit {
   @ViewChild("inputArchivo", { static: false }) inputArchivo!: ElementRef;
   private initializing = true;
   private initialComparable: any = null;
+
+
+  // 🔥 RECORTE INLINE
+  modoRecorte = false;
+  imageChangedEvent: Event | null = null;
+
+  croppedBlob: Blob | null = null;
+
+  // tamaño final fijo
+  FINAL_WIDTH = 950;
+  FINAL_HEIGHT = 680;
+  aspectRatio = this.FINAL_WIDTH / this.FINAL_HEIGHT;
+
+  ZOOM_MIN: number = 1; 
+  ZOOM_MAX: number = 2;
+
+  // zoom
+  zoom = 1;
+  transform = { scale: 1 };
+
 
   constructor(
     private route: ActivatedRoute,
@@ -593,64 +613,95 @@ export class UpdateCarPage implements OnInit {
 
   selecionarUnaExistente(nuevaImagen: string) {
     this.imagenPrincipalMostrada = nuevaImagen;
-    this.imagenPrincipal_sinFondo = nuevaImagen; // string (URL)
+    this.imagenPrincipal = nuevaImagen; // string (URL)
     this.markDirtyFromUI();
   }
 
   seleccionarImagen() {
     this.inputArchivo.nativeElement.click();
   }
+
+  // Principal 
+  // async cargarNuevaImagen(event: Event) {
+  //   const input = event.target as HTMLInputElement;
+  //   const file: File | null = input.files?.[0] || null;
+
+  //   if (!file) return;
+
+  //   const maxSize = 10 * 1024 * 1024;
+  //   if (file.size > maxSize) {
+  //     this.generalService.alert(
+  //       "Imagen demasiado grande",
+  //       "La imagen principal no debe exceder los 10 MB.",
+  //       "warning"
+  //     );
+  //     return;
+  //   }
+
+  //   const extension = file.name.split(".").pop()?.toLowerCase();
+  //   const heicExtensions = ["heic", "heif"];
+  //   if (extension && heicExtensions.includes(extension)) {
+  //     this.generalService.alert(
+  //       "Formato no compatible",
+  //       "Por favor selecciona una imagen en formato JPG, PNG o similar.",
+  //       "warning"
+  //     );
+  //     return;
+  //   }
+
+  //   try {
+  //     const comprimidoBlob = await imageCompression(file, {
+  //       maxSizeMB: 2,
+  //       maxWidthOrHeight: 1600,
+  //       useWebWorker: true,
+  //     });
+
+  //     // 🔥 Convertir a File
+  //     const comprimido = new File(
+  //       [comprimidoBlob],
+  //       file.name,
+  //       { type: comprimidoBlob.type }
+  //     );
+
+  //     const previewUrl = URL.createObjectURL(comprimido);
+  //     this.imagenPrincipalMostrada = previewUrl;
+  //     this.imagenPrincipal = comprimido; 
+  //     this.markDirtyFromUI();
+  //     this.generalService.alert(
+  //       "¡Listo!",
+  //       "La imagen principal fue agregada correctamente.",
+  //       "success"
+  //     );
+  //   } catch (error) {
+  //     console.error("Error al procesar la imagen:", error);
+  //     this.generalService.alert(
+  //       "Error",
+  //       "No se pudo procesar la imagen.",
+  //       "danger"
+  //     );
+  //   }
+  // } 
+
   async cargarNuevaImagen(event: Event) {
     const input = event.target as HTMLInputElement;
-    const file: File | null = input.files?.[0] || null;
-
+    const file = input.files?.[0];
     if (!file) return;
 
-    const maxSize = 10 * 1024 * 1024; // 10MB
+    const maxSize = 10 * 1024 * 1024;
     if (file.size > maxSize) {
       this.generalService.alert(
-        "Imagen demasiado grande",
-        "La imagen principal no debe exceder los 10 MB.",
-        "warning"
+        'Imagen demasiado grande',
+        'Máximo 10 MB.',
+        'warning'
       );
       return;
     }
 
-    const extension = file.name.split(".").pop()?.toLowerCase();
-    const heicExtensions = ["heic", "heif"];
-    if (extension && heicExtensions.includes(extension)) {
-      this.generalService.alert(
-        "Formato no compatible",
-        "Por favor selecciona una imagen en formato JPG, PNG o similar.",
-        "warning"
-      );
-      return;
-    }
+    // 🔥 activar recorte inline
+    this.imageChangedEvent = event;
+    this.modoRecorte = true;
 
-    try {
-      const comprimido = await imageCompression(file, {
-        maxSizeMB: 2,
-        maxWidthOrHeight: 1600,
-        useWebWorker: true,
-      });
-
-      const previewUrl = URL.createObjectURL(comprimido);
-      this.imagenPrincipalMostrada = previewUrl;
-      this.imagenPrincipal_sinFondo = comprimido; // File comprimido
-      this.markDirtyFromUI();
-      this.generalService.alert(
-        "¡Listo!",
-        "La imagen fue agregada exitosamente.",
-        "success"
-      );
-    } catch (error) {
-      console.error("Error al procesar la imagen:", error);
-      this.generalService.alert(
-        "Error",
-        "No se pudo procesar la imagen.",
-        "danger"
-      );
-    }
+    // ❌ NO limpiar aquí
   }
 
   async agregarImagen(event: Event) {
@@ -836,13 +887,13 @@ export class UpdateCarPage implements OnInit {
   private async generarFormDataImagenes(): Promise<FormData> {
     const formData = new FormData();
 
-    if (this.imagenPrincipal_sinFondo instanceof File) {
-      formData.append("imagenPrincipal", this.imagenPrincipal_sinFondo);
+    if (this.imagenPrincipal instanceof File) {
+      formData.append("imagenPrincipal", this.imagenPrincipal);
     } else if (
-      typeof this.imagenPrincipal_sinFondo === "string" &&
-      this.imagenPrincipal_sinFondo.trim()
+      typeof this.imagenPrincipal === "string" &&
+      this.imagenPrincipal.trim()
     ) {
-      formData.append("imagenPrincipal", this.imagenPrincipal_sinFondo);
+      formData.append("imagenPrincipal", this.imagenPrincipal);
     }
 
     for (const file of this.imagenes) {
@@ -1301,7 +1352,7 @@ export class UpdateCarPage implements OnInit {
   async restablecerDatos() {
     this.restablecer = false;
     this.imagenPrincipalMostrada = this.auto.imagenPrincipal;
-    this.imagenPrincipal_sinFondo = null;
+    this.imagenPrincipal = null;
     this.urlsImagenes = [...this.auto.imagenes];
     this.urlsImagenesExistentes = [...this.auto.imagenes];
     this.imagenes = [];
@@ -1527,4 +1578,105 @@ export class UpdateCarPage implements OnInit {
     }
     this.restablecerDatos();
   }
+
+
+
+  // RECORTE IMAGEN 
+  onImageCropped(event: any) {
+    this.croppedBlob = event.blob || null;
+  }
+
+  onZoomChange(event: any) {
+    this.zoom = event.detail.value;
+    this.transform = { scale: this.zoom };
+  }
+
+  cancelarRecorte() {
+    this.modoRecorte = false;
+    this.imageChangedEvent = null;
+    this.croppedBlob = null;
+  }
+
+  async confirmarRecorte() {
+    if (!this.croppedBlob) return;
+
+    const file = new File(
+      [this.croppedBlob],
+      `imagen-principal.jpg`,
+      { type: 'image/jpeg' }
+    );
+
+    const comprimidoBlob = await imageCompression(file, {
+      maxSizeMB: 2,
+      maxWidthOrHeight: this.FINAL_WIDTH,
+      useWebWorker: true,
+    });
+
+    const preview = URL.createObjectURL(comprimidoBlob);
+
+
+    // 🔥 Convertir a File
+    const comprimido = new File(
+      [comprimidoBlob],
+      file.name,
+      { type: comprimidoBlob.type }
+    );
+
+    this.imagenPrincipalMostrada = preview;
+    this.imagenPrincipal = comprimido; // File FINAL
+    this.modoRecorte = false;
+
+    this.markDirtyFromUI();
+
+    this.generalService.alert(
+      "Imagen lista",
+      "La imagen principal fue recortada correctamente.",
+      "success"
+    );
+  }
+
+
+  async editarImagenActual() {
+    if (!this.imagenPrincipalMostrada) return;
+
+    try {
+      // 🔥 1. Convertir URL a Blob
+      const response = await fetch(this.imagenPrincipalMostrada);
+      const blob = await response.blob();
+
+      // 🔥 2. Convertir Blob a File
+      const file = new File(
+        [blob],
+        'imagen-principal-editar.jpg',
+        { type: blob.type || 'image/jpeg' }
+      );
+
+      // 🔥 3. Crear input fake para image-cropper
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+
+      const fakeInput = document.createElement('input');
+      fakeInput.type = 'file';
+      fakeInput.files = dataTransfer.files;
+
+      // 🔥 4. Simular evento
+      this.imageChangedEvent = {
+        target: fakeInput
+      } as unknown as Event;
+
+      // 🔥 5. Activar recorte
+      this.modoRecorte = true;
+
+    } catch (error) {
+      console.error('Error al preparar imagen para edición', error);
+      this.generalService.alert(
+        'Error',
+        'No se pudo editar la imagen.',
+        'danger'
+      );
+    }
+  }
+
+
+
 }
