@@ -13,6 +13,7 @@
   <ion-content class="ion-padding">
     <app-spinner *ngIf="mostrar_spinnet"></app-spinner>
     <ion-list>
+
       <!-- Administración (solo Admin) -->
       <div *ngIf="isAdmin" class="menu-section" [class.expanded]="expandedSections.admin"
         (click)="toggleSection('admin')" [attr.aria-expanded]="expandedSections.admin">
@@ -34,7 +35,6 @@
       </div>
 
       <!-- Servicios (para todos) -->
-
       <div class="menu-section" [class.expanded]="expandedSections.servicios" (click)="toggleSection('servicios')"
         [attr.aria-expanded]="expandedSections.servicios">
         <span>Servicios</span>
@@ -89,7 +89,6 @@
       </div>
 
       <!-- Mis publicaciones (solo roles permitidos) -->
-
       <div *ngIf="isPublisher" class="menu-section" [class.expanded]="expandedSections.publicaciones"
         (click)="toggleSection('publicaciones')" [attr.aria-expanded]="expandedSections.publicaciones">
         <span>Mis publicaciones</span>
@@ -127,8 +126,21 @@
         </ion-item>
       </div>
 
-      <!-- Cuenta (solo si hay sesión) -->
+      <!-- ✅ ASESOR (solo rol asesor) -->
+      <div *ngIf="isAsesor" class="menu-section" [class.expanded]="expandedSections.asesor"
+        (click)="toggleSection('asesor')" [attr.aria-expanded]="expandedSections.asesor">
+        <span>Asesor</span>
+        <ion-icon [name]="expandedSections.asesor ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+      </div>
 
+      <div *ngIf="isAsesor" class="menu-items" [class.expanded]="expandedSections.asesor">
+        <ion-item (click)="redirecion('perfil')" button lines="none">
+          <ion-icon name="person-circle-outline" color="danger"></ion-icon>
+          <ion-label>Mi perfil</ion-label>
+        </ion-item>
+      </div>
+
+      <!-- Cuenta (solo si hay sesión) -->
       <div *ngIf="isLoggedIn" class="menu-section" [class.expanded]="expandedSections.configuracion"
         (click)="toggleSection('configuracion')" [attr.aria-expanded]="expandedSections.configuracion">
         <span>Cuenta</span>
@@ -136,7 +148,14 @@
       </div>
 
       <div *ngIf="isLoggedIn" class="menu-items" [class.expanded]="expandedSections.configuracion">
-        <ion-item (click)="abrirModalPerfil()" button lines="none">
+        <!-- Para asesor: mejor ir a la page -->
+        <ion-item *ngIf="isAsesor" (click)="redirecion('perfil')" button lines="none">
+          <ion-icon name="person-circle-outline" color="danger"></ion-icon>
+          <ion-label>Perfil</ion-label>
+        </ion-item>
+
+        <!-- Para otros roles: modal -->
+        <ion-item *ngIf="!isAsesor" (click)="abrirModalPerfil()" button lines="none">
           <ion-icon name="person-circle-outline" color="danger"></ion-icon>
           <ion-label>Perfil</ion-label>
         </ion-item>
@@ -186,13 +205,19 @@
         <ion-accordion *ngIf="isAdmin" value="admin">
           <ion-item slot="header" lines="none" detail="false" class="accordion-header-danger">
             <ion-icon slot="start" color="danger" name="settings-outline"></ion-icon>
-            <ion-label  color="danger" >Administración</ion-label>
+            <ion-label color="danger">Administración</ion-label>
           </ion-item>
 
           <div slot="content">
             <ion-item button lines="none" (click)="redirecion('lote/lote-verificacion')">
               <ion-icon slot="start" name="document-text-outline"></ion-icon>
               <ion-label>Verificación de Lotes</ion-label>
+            </ion-item>
+
+            <!-- ✅ NUEVA PAGE: Asesores -->
+            <ion-item button lines="none" (click)="redirecion('asesores')">
+              <ion-icon slot="start" name="people-outline"></ion-icon>
+              <ion-label>Asesores</ion-label>
             </ion-item>
           </div>
         </ion-accordion>
@@ -292,6 +317,21 @@
           </div>
         </ion-accordion>
 
+        <!-- ✅ ASESOR (solo asesor) -->
+        <ion-accordion *ngIf="isAsesor" value="asesor">
+          <ion-item slot="header" lines="none" detail="false" class="accordion-header-danger">
+            <ion-icon slot="start" name="person-circle-outline"></ion-icon>
+            <ion-label>Asesor</ion-label>
+          </ion-item>
+
+          <div slot="content">
+            <ion-item button lines="none" (click)="redirecion('perfil')">
+              <ion-icon slot="start" name="id-card-outline"></ion-icon>
+              <ion-label>Mi perfil</ion-label>
+            </ion-item>
+          </div>
+        </ion-accordion>
+
         <!-- CUENTA -->
         <ion-accordion *ngIf="isLoggedIn" value="cuenta">
           <ion-item slot="header" lines="none" detail="false" class="accordion-header-danger">
@@ -300,7 +340,14 @@
           </ion-item>
 
           <div slot="content">
-            <ion-item button lines="none" (click)="abrirModalPerfil()">
+            <!-- Asesor: page -->
+            <ion-item *ngIf="isAsesor" button lines="none" (click)="redirecion('perfil')">
+              <ion-icon slot="start" name="id-card-outline"></ion-icon>
+              <ion-label>Perfil</ion-label>
+            </ion-item>
+
+            <!-- Otros: modal -->
+            <ion-item *ngIf="!isAsesor" button lines="none" (click)="abrirModalPerfil()">
               <ion-icon slot="start" name="id-card-outline"></ion-icon>
               <ion-label>Perfil</ion-label>
             </ion-item>

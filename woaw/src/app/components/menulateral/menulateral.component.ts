@@ -7,15 +7,16 @@ import { Subscription } from "rxjs";
 import { SpinnerComponent } from "../../components/spinner/spinner.component";
 import { GeneralService } from "../../services/general.service";
 import { PerfilComponent } from "../modal/perfil/perfil.component";
-import { Capacitor } from '@capacitor/core';
+import { Capacitor } from "@capacitor/core";
 
-// ✅ AGREGA 'admin'
+// ✅ AGREGA 'asesor'
 type SectionKey =
   | "configuracion"
   | "servicios"
   | "publicaciones"
   | "reservas"
-  | "admin";
+  | "admin"
+  | "asesor";
 
 @Component({
   selector: "app-menulateral",
@@ -33,7 +34,7 @@ export class MenulateralComponent implements OnInit, OnDestroy {
   private readonly MENU_CLOSE_DELAY_MS = 250;
   private subs: Subscription[] = [];
 
-    public isNative = Capacitor.isNativePlatform();
+  public isNative = Capacitor.isNativePlatform();
 
   private readonly ALLOWED_ROLES = new Set(["admin", "vendedor", "lotero"]);
 
@@ -42,9 +43,14 @@ export class MenulateralComponent implements OnInit, OnDestroy {
     return this.isLoggedIn && this.ALLOWED_ROLES.has(this.MyRole || "");
   }
 
-  // ✔️ Nuevo getter para ADMIN
+  // ✔️ Admin
   get isAdmin(): boolean {
     return this.MyRole === "admin";
+  }
+
+  // ✅ Asesor
+  get isAsesor(): boolean {
+    return this.isLoggedIn && this.MyRole === "asesor";
   }
 
   // ✔️ Estado inicial de todas las secciones
@@ -54,6 +60,7 @@ export class MenulateralComponent implements OnInit, OnDestroy {
     publicaciones: false,
     reservas: false,
     admin: false,
+    asesor: false, // ✅ nuevo
   };
 
   constructor(
@@ -78,6 +85,7 @@ export class MenulateralComponent implements OnInit, OnDestroy {
             publicaciones: false,
             reservas: false,
             admin: false,
+            asesor: false,
           });
           return;
         }
@@ -89,6 +97,7 @@ export class MenulateralComponent implements OnInit, OnDestroy {
             publicaciones: false,
             reservas: false,
             admin: false,
+            asesor: false,
           });
           return;
         }
@@ -100,7 +109,7 @@ export class MenulateralComponent implements OnInit, OnDestroy {
       this.generalService.tipoRol$.subscribe((rol) => {
         this.MyRole = rol;
 
-        // Si no es publisher, aseguramos que la sección no se abra
+        // Si no es publisher, cerramos publicaciones
         if (!this.isPublisher) {
           this.setSections({ publicaciones: false });
         }
@@ -108,6 +117,11 @@ export class MenulateralComponent implements OnInit, OnDestroy {
         // Si NO es admin, cerramos admin
         if (!this.isAdmin) {
           this.setSections({ admin: false });
+        }
+
+        // ✅ Si NO es asesor, cerramos asesor
+        if (!this.isAsesor) {
+          this.setSections({ asesor: false });
         }
       })
     );

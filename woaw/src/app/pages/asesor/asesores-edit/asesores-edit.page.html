@@ -1,0 +1,157 @@
+<app-navbar></app-navbar>
+
+<ion-content [fullscreen]="true" class="bg-asesores">
+
+  <div class="contenedor-asesores">
+
+    <!-- Encabezado -->
+    <div class="encabezado-asesores">
+      <div class="heading-left">
+        <h1>Editar asesor</h1>
+        <p>Actualiza tus datos. Sin dramas, sin perder tiempo.</p>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading" *ngIf="cargando">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando perfil…</p>
+    </div>
+
+    <!-- Error -->
+    <div class="error" *ngIf="error">
+      <p>No se pudo cargar el perfil.</p>
+      <ion-button size="small" (click)="cargarAsesor()">Reintentar</ion-button>
+    </div>
+
+    <!-- Form -->
+    <ion-card *ngIf="!cargando && !error" class="card-form">
+      <ion-card-content>
+
+        <!-- Avatar -->
+        <div class="perfil-header">
+
+          <div class="asesor-avatar grande">
+
+            <!-- FOTO -->
+            <img *ngIf="form.foto" [src]="form.foto" alt="Foto asesor" class="avatar-img" />
+
+            <!-- INICIALES (fallback) -->
+            <span *ngIf="!form.foto">
+              {{ getIniciales(nombreCompleto) }}
+            </span>
+
+          </div>
+
+          <div class="perfil-meta">
+            <h2>{{ nombreCompleto || 'Asesor' }}</h2>
+            <p class="rol">Actualiza tu información</p>
+          </div>
+
+        </div>
+
+        <ion-item lines="none" class="input-item">
+          <ion-label position="stacked">Nombre</ion-label>
+          <ion-input [(ngModel)]="form.nombre" placeholder="Ej: Leo"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="input-item">
+          <ion-label position="stacked">Apellidos</ion-label>
+          <ion-input [(ngModel)]="form.apellidos" placeholder="Ej: López"></ion-input>
+        </ion-item>
+
+        <!-- TELÉFONO -->
+        <div class="telefono-row">
+
+          <!-- ✅ NUEVO: Selector LADA con bandera -->
+          <ion-item lines="none" class="input-item lada lada-select" (click)="abrirModalLadas()">
+            <ion-label position="stacked">Lada</ion-label>
+
+            <div class="lada-chip">
+              <img [src]="'https://flagcdn.com/w40/' + ladaSeleccionada.bandera + '.png'" class="flag-img"
+                alt="bandera" />
+              <span class="lada-text">{{ ladaSeleccionada.codigo }}</span>
+              <ion-icon name="chevron-down-outline" class="chev"></ion-icon>
+            </div>
+          </ion-item>
+
+          <ion-item lines="none" class="input-item tel">
+            <ion-label position="stacked">Teléfono</ion-label>
+            <ion-input [(ngModel)]="form.telefono" inputmode="tel" placeholder="10 dígitos"></ion-input>
+          </ion-item>
+
+        </div>
+
+        <!-- FOTO (archivo) -->
+        <ion-item lines="none" class="input-item">
+          <ion-label position="stacked">Foto de perfil</ion-label>
+
+          <div class="foto-row">
+            <input type="file" accept="image/png,image/jpeg,image/webp" (change)="onFotoSelected($event)" />
+
+            <ion-button *ngIf="form.foto" size="small" fill="outline" color="danger" class="btn-quitar"
+              (click)="limpiarFoto()" [disabled]="guardando">
+              <ion-icon name="trash-outline" slot="start"></ion-icon>
+              Quitar
+            </ion-button>
+
+          </div>
+
+          <p class="hint">JPG/PNG/WEBP. Máx recomendado: 1–2 MB.</p>
+        </ion-item>
+
+        <!-- PREVIEW -->
+        <div class="foto-preview" *ngIf="form.foto">
+          <img [src]="form.foto" alt="Preview foto " />
+        </div>
+
+        <!-- Botones -->
+        <div class="acciones">
+          <ion-button fill="outline" (click)="cancelar()" [disabled]="guardando">
+            Cancelar
+          </ion-button>
+
+          <ion-button (click)="guardar()" [disabled]="guardando">
+            <ion-icon name="save-outline" slot="start"></ion-icon>
+            Guardar
+          </ion-button>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+  <!-- ✅ MODAL LADAS (con buscador) -->
+  <ion-modal [isOpen]="mostrarModal" (didDismiss)="cerrarModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="dark">
+          <ion-title>Selecciona tu lada</ion-title>
+          <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="cerrarModal()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+
+        <ion-toolbar>
+          <ion-searchbar placeholder="Buscar país..." [(ngModel)]="filtroPais"
+            (ionInput)="filtrarPaises()"></ion-searchbar>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <ion-list>
+          <ion-item button *ngFor="let pais of paisesFiltrados" (click)="seleccionarLada(pais)">
+            <img [src]="pais.banderaUrl" class="flag-img" alt="flag" />
+            <ion-label>
+              <div style="font-weight:800;">{{ pais.nombre }}</div>
+              <div style="opacity:.7;">{{ pais.codigo }}</div>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <app-footer></app-footer>
+</ion-content>

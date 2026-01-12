@@ -6,11 +6,11 @@
     <!-- ENCABEZADO -->
     <div class="encabezado-asesores">
       <div class="heading-left">
-        <span class="eyebrow">Atención personalizada</span>
         <h1>Nuestros asesores</h1>
         <p>Selecciona al asesor que se encargará de brindarte la mejor atención.</p>
       </div>
     </div>
+
     <!-- LOADING -->
     <div class="loading" *ngIf="cargando">
       <ion-spinner name="crescent"></ion-spinner>
@@ -26,16 +26,17 @@
     <!-- GRID DE ASESORES -->
     <ion-grid class="grid-asesores">
       <ion-row>
-        <ion-col size="12" sizeMd="6" sizeLg="4" *ngFor="let asesor of asesores">
+        <ion-col size="12" sizeMd="10" sizeLg="8" sizeXl="6" class="col-asesor" *ngFor="let asesor of asesores">
+
           <div class="tarjeta-asesor">
-            <!-- AVATAR / INICIALES -->
+
             <div class="asesor-avatar">
-              <span>{{ getIniciales(asesor.nombreCompleto) }}</span>
+              <img *ngIf="asesor?.foto" [src]="asesor.foto" alt="Foto asesor" class="avatar-img" />
+              <span *ngIf="!asesor?.foto">{{ getIniciales(nombreCompleto(asesor)) }}</span>
             </div>
 
-            <!-- INFO -->
             <div class="asesor-info">
-              <h2>{{ asesor.nombreCompleto }}</h2>
+              <h2>{{ nombreCompleto(asesor) }}</h2>
               <p class="rol">{{ asesor.rol || 'Asesor Comercial' }}</p>
 
               <p class="dato" *ngIf="asesor.telefono">
@@ -43,28 +44,88 @@
                 {{ asesor.telefono }}
               </p>
 
-              <p class="dato" *ngIf="asesor.correo">
+              <p class="dato" *ngIf="asesor.email">
                 <ion-icon name="mail-outline"></ion-icon>
-                {{ asesor.correo }}
+                {{ asesor.email }}
               </p>
             </div>
 
-            <!-- QR / LINK -->
+            <!-- SOLO QR aquí -->
             <div class="asesor-qr">
-              <div class="qr-wrapper" *ngIf="asesor.qrUrl">
-                <img [src]="asesor.qrUrl" alt="Código QR de {{ asesor.nombreCompleto }}" />
+              <div class="qr-wrapper">
+                <img src="/assets/autos/QR.png" [alt]="'Código QR de ' + nombreCompleto(asesor)" />
               </div>
+            </div>
 
-              <button type="button" class="btn-link-qr" (click)="abrirLink(asesor.link)">
+            <!-- BOTONES abajo -->
+            <div class="acciones-asesor">
+              <button type="button" class="btn-link-qr" (click)="abrirLink(asesor.telefono)"
+                [disabled]="!asesor.telefono">
                 <ion-icon name="link-outline"></ion-icon>
                 <span>Ver enlace</span>
               </button>
+
+              <button type="button" class="btn-editar-asesor" (click)="editarAsesor(asesor)" [disabled]="!asesor._id">
+                <ion-icon name="create-outline"></ion-icon>
+                <span>Editar</span>
+              </button>
+
+              <button *ngIf="isAdmin" type="button" class="btn-eliminar-asesor" (click)="confirmarEliminar(asesor)"
+                [disabled]="!asesor._id || eliminandoId === asesor._id" aria-label="Eliminar asesor">
+                <ion-icon name="trash-outline"></ion-icon>
+                <span *ngIf="eliminandoId !== asesor._id">Eliminar</span>
+                <span *ngIf="eliminandoId === asesor._id">Eliminando…</span>
+              </button>
             </div>
+
           </div>
+
+
         </ion-col>
       </ion-row>
     </ion-grid>
+
   </div>
+
+  <ion-modal [isOpen]="modalEliminarOpen" (didDismiss)="cerrarModalEliminar()" cssClass="woaw-modal-eliminar">
+    <ng-template>
+      <div class="woaw-modal-center">
+        <div class="modal-card">
+          <div class="modal-head">
+            <div class="title-wrap">
+              <h3>Eliminar asesor</h3>
+              <span class="badge-danger">Acción crítica</span>
+            </div>
+
+            <button type="button" class="x-btn" (click)="cerrarModalEliminar()" aria-label="Cerrar">
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <p>
+              Vas a eliminar a
+              <strong>{{ asesorAEliminar ? nombreCompleto(asesorAEliminar) : 'este asesor' }}</strong>.
+            </p>
+            <p class="warn">Esta acción no se puede deshacer.</p>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-modal btn-cancel" (click)="cerrarModalEliminar()">
+              Cancelar
+            </button>
+
+            <button type="button" class="btn-modal btn-danger" (click)="confirmarEliminarModal()"
+              [disabled]="!asesorAEliminar?._id || eliminandoId === asesorAEliminar?._id">
+              <ion-icon name="trash-outline"></ion-icon>
+              <span *ngIf="eliminandoId !== asesorAEliminar?._id">Eliminar</span>
+              <span *ngIf="eliminandoId === asesorAEliminar?._id">Eliminando…</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
 
   <app-footer></app-footer>
 </ion-content>

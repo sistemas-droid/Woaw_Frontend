@@ -7,22 +7,33 @@
     --woaw-muted-dark: rgba(15, 23, 42, 0.65);
 }
 
-.toolbar-woaw {
-    position: relative;
+/* ===============================
+   NAVBAR / TOOLBAR
+   =============================== */
+ion-header ion-toolbar.toolbar-woaw {
+    --min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
+.toolbar-woaw {
     ion-title {
-        padding-right: 56px;
-        /* deja espacio pa' que no choque con el logo */
+        padding: 0 !important;
+        margin-left: 12px;
+        text-align: left;
+        font-weight: 900;
+        letter-spacing: .2px;
     }
 
     ion-buttons[slot="end"] {
-        margin-right: 10px;
+        margin-right: 12px;
         display: flex;
         align-items: center;
     }
 
     .logo {
-        width: 42x;
+        width: 42px;
         height: 42px;
         object-fit: contain;
         border-radius: 8px;
@@ -32,7 +43,6 @@
     }
 }
 
-/* si en algún móvil se ve grande, lo bajamos tantito */
 @media (max-width: 380px) {
     .toolbar-woaw .logo {
         width: 30px;
@@ -40,30 +50,57 @@
     }
 
     .toolbar-woaw ion-title {
-        padding-right: 50px;
+        margin-left: 10px;
+    }
+
+    .toolbar-woaw ion-buttons[slot="end"] {
+        margin-right: 10px;
     }
 }
 
-
-/* ===== FONDO (OPCIÓN A PREMIUM CLARO) ===== */
+/* ===============================
+   FONDO
+   =============================== */
 ion-content {
     --background:
         radial-gradient(900px 600px at 15% 10%, rgba(255, 255, 255, 0.14) 0%, transparent 55%),
         radial-gradient(800px 520px at 90% 25%, rgba(255, 255, 255, 0.06) 0%, transparent 60%),
         linear-gradient(180deg, #f7f8fc 0%, #eef1f7 55%, #f7f8fc 100%);
+
+    --padding-top: 10px;
+    --padding-bottom: 18px;
 }
 
-/* ===== WRAPPER ===== */
+/* ===============================
+   WRAPPER
+   =============================== */
 .wrap {
     max-width: 520px;
     margin: 0 auto;
-    padding: 18px 16px 28px;
+
+    padding: 14px 14px 18px;
+    gap: 12px;
+
+    min-height: calc(100vh - 56px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-/* ===== HERO / HEADER ===== */
+@media (min-width: 992px) {
+    .wrap {
+        min-height: unset;
+        justify-content: flex-start;
+        padding-top: 22px;
+    }
+}
+
+/* ===============================
+   HERO / HEADER
+   =============================== */
 .hero {
     text-align: center;
-    padding: 10px 8px 14px;
+    padding: 10px 8px 10px;
 
     .titulo {
         margin: 6px 0 6px;
@@ -71,10 +108,7 @@ ion-content {
         font-weight: 900;
         letter-spacing: -0.6px;
         text-transform: uppercase;
-        background: linear-gradient(135deg,
-                #0f172a 0%,
-                #0f172a 20%,
-                var(--woaw-red) 100%);
+        background: linear-gradient(135deg, #0f172a 0%, #0f172a 20%, var(--woaw-red) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
@@ -152,17 +186,40 @@ ion-content {
     }
 }
 
-/* ===== CARD ===== */
-.card {
-    margin-top: 12px;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid var(--woaw-border-dark);
-    box-shadow: 0 18px 46px rgba(2, 6, 23, 0.14);
-    backdrop-filter: blur(10px);
+@media (max-width: 430px) {
+    .hero {
+        padding-bottom: 6px;
+
+        .titulo {
+            font-size: 24px;
+        }
+
+        .steps .step {
+            padding: 7px 8px;
+            gap: 6px;
+
+            .label {
+                font-size: 11px;
+            }
+        }
+    }
 }
 
-/* ===== PANEL ===== */
+/* ===============================
+   CARD
+   =============================== */
+.card {
+    margin-top: 10px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid rgba(2, 6, 23, 0.10);
+    box-shadow: 0 14px 28px rgba(2, 6, 23, 0.10);
+    backdrop-filter: none;
+}
+
+/* ===============================
+   PANEL
+   =============================== */
 .panel {
     .panel-title {
         margin: 0 0 6px;
@@ -178,29 +235,56 @@ ion-content {
     }
 }
 
-/* ===== INPUTS ===== */
+/* ===============================
+   INPUTS (menos “altos”)
+   =============================== */
 .i {
     margin: 10px 0;
     border-radius: 14px;
     --background: rgba(2, 6, 23, 0.04);
     border: 1px solid rgba(2, 6, 23, 0.08);
+    --min-height: 48px;
 
     ion-input {
         --color: var(--woaw-text-dark);
         --placeholder-color: rgba(15, 23, 42, 0.45);
+        --padding-top: 10px;
+        --padding-bottom: 10px;
+        font-size: 14px;
     }
 }
 
+/* ===============================
+   ROW (Lada vs Teléfono)
+   =============================== */
 .row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
+    align-items: start;
 
     .half {
-        flex: 1;
+        width: 100%;
     }
 }
 
-/* ===== BOTONES ===== */
+@media (max-width: 430px) {
+    .row {
+        grid-template-columns: 0.65fr 1.35fr;
+        /* ✅ Lada chico / Tel grande */
+    }
+}
+
+@media (max-width: 360px) {
+    .row {
+        grid-template-columns: 0.60fr 1.40fr;
+        /* ✅ más marcado */
+    }
+}
+
+/* ===============================
+   BOTONES
+   =============================== */
 .btn {
     margin-top: 14px;
     height: 46px;
@@ -210,7 +294,6 @@ ion-content {
 
     --border-radius: 14px;
     --background: linear-gradient(90deg, var(--woaw-red), #ff4161);
-    --box-shadow: 0 10px 24px rgba(255, 0, 51, 0.22);
 
     ion-spinner {
         width: 18px;
@@ -220,11 +303,13 @@ ion-content {
 
     &.success {
         --background: linear-gradient(90deg, #ff0000, #a31616);
-        --box-shadow: 0 10px 24px rgba(36, 209, 126, 0.20);
+        --box-shadow: none;
     }
 }
 
-/* ===== ACCIONES ===== */
+/* ===============================
+   ACCIONES
+   =============================== */
 .actions {
     display: flex;
     align-items: center;
@@ -242,9 +327,28 @@ ion-content {
     }
 }
 
-/* ===== FOOTER ===== */
+@media (max-width: 430px) {
+    .actions {
+        flex-direction: column;
+        align-items: stretch;
+
+        ion-button.btn,
+        .btn-ghost {
+            width: 100%;
+        }
+
+        .btn-ghost {
+            order: 2;
+            justify-content: center;
+        }
+    }
+}
+
+/* ===============================
+   FOOTER
+   =============================== */
 .foot {
-    margin-top: 12px;
+    margin-top: 10px;
     text-align: center;
 
     .mini {
@@ -252,5 +356,208 @@ ion-content {
         font-size: 12px;
         letter-spacing: 0.6px;
         text-transform: uppercase;
+    }
+}
+
+/* ===============================
+   SELECTOR DE LADA (compacto)
+   =============================== */
+.lada-select {
+    cursor: pointer;
+    --padding-start: 10px;
+    --inner-padding-end: 8px;
+
+    ion-label {
+        font-weight: 800;
+        color: rgba(15, 23, 42, 0.75);
+        margin-bottom: 4px;
+        font-size: 12px;
+        letter-spacing: .2px;
+    }
+}
+
+.lada-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    border-radius: 0;
+}
+
+.flag-img,
+.lada-select .flag-img {
+    width: 20px;
+    height: 14px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.lada-text {
+    font-weight: 900;
+    font-size: 14px;
+    color: var(--woaw-text-dark);
+    letter-spacing: 0.2px;
+}
+
+.chev {
+    margin-left: auto;
+    font-size: 18px;
+    opacity: 0.55;
+}
+
+/* ===============================
+   MODAL LADAS – BLANCO WOAW
+   (deja color="dark" en el HTML)
+   =============================== */
+
+ion-modal {
+    --width: 480px;
+    --max-width: 92vw;
+    --height: 78vh;
+    --border-radius: 18px;
+}
+
+ion-modal::part(backdrop) {
+    background: rgba(0, 0, 0, 0.45);
+}
+
+ion-modal::part(content) {
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid rgba(2, 6, 23, 0.12);
+    overflow: hidden;
+}
+
+/* Header negro WOAW */
+ion-modal ion-toolbar[color="dark"] {
+    --background: #0b0b0f;
+    --color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    position: relative;
+}
+
+/* línea roja sutil abajo */
+ion-modal ion-toolbar[color="dark"]::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--woaw-red), rgba(255, 0, 51, 0));
+}
+
+ion-modal ion-title {
+    font-weight: 900;
+    letter-spacing: .3px;
+}
+
+/* Botón cerrar */
+ion-modal ion-toolbar[color="dark"] ion-button {
+    --color: #ffffff;
+    font-weight: 800;
+    letter-spacing: .2px;
+}
+
+ion-modal ion-toolbar[color="dark"] ion-button:hover {
+    --color: var(--woaw-red);
+}
+
+/* Toolbar del searchbar (blanca) */
+ion-modal ion-toolbar:not([color="dark"]) {
+    --background: #ffffff;
+    border-bottom: 1px solid rgba(2, 6, 23, 0.08);
+}
+
+/* Searchbar claro */
+ion-modal ion-searchbar {
+    --background: #f4f5f7;
+    --border-radius: 14px;
+    --box-shadow: none;
+
+    --color: #0f172a;
+    --placeholder-color: rgba(15, 23, 42, 0.45);
+    --icon-color: rgba(15, 23, 42, 0.55);
+
+    padding: 10px 12px;
+}
+
+ion-modal ion-content {
+    --background: #ffffff;
+}
+
+ion-modal ion-list {
+    padding: 6px 12px 12px;
+}
+
+/* items blancos, elegantes */
+ion-modal ion-item {
+    --padding-start: 12px;
+    --inner-padding-end: 12px;
+    --min-height: 56px;
+
+    --background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid rgba(2, 6, 23, 0.08);
+
+    margin-bottom: 10px;
+}
+
+ion-modal ion-item:hover {
+    --background: rgba(255, 0, 51, 0.05);
+    border-color: rgba(255, 0, 51, 0.35);
+}
+
+ion-modal ion-item:active {
+    --background: rgba(255, 0, 51, 0.10);
+}
+
+ion-modal ion-item img.flag-img {
+    width: 28px;
+    height: 20px;
+    border-radius: 4px;
+    margin-right: 12px;
+    object-fit: cover;
+    border: 1px solid rgba(2, 6, 23, 0.10);
+}
+
+ion-modal ion-item ion-label div:first-child {
+    font-weight: 900;
+    color: #0f172a;
+}
+
+ion-modal ion-item ion-label div:last-child {
+    font-size: 13px;
+    color: rgba(15, 23, 42, 0.65);
+}
+
+/* Scrollbar opcional */
+ion-modal ion-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+ion-modal ion-content::-webkit-scrollbar-thumb {
+    background: rgba(2, 6, 23, 0.18);
+    border-radius: 10px;
+}
+
+/* ===============================
+   MÓVIL: título siempre arriba
+   =============================== */
+@media (max-width: 768px) {
+    .wrap {
+        justify-content: flex-start;
+        padding-top: 12px;
+    }
+
+    .hero {
+        margin-bottom: 8px;
+    }
+
+    .card {
+        margin-top: 12px;
     }
 }

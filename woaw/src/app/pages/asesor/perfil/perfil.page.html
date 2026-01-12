@@ -1,0 +1,73 @@
+<app-navbar></app-navbar>
+
+<ion-content [fullscreen]="true" class="bg-perfil">
+  <div class="contenedor-perfil">
+
+    <div class="encabezado-perfil">
+      <div class="heading-left">
+        <h1>Mi perfil</h1>
+        <p>Revisa tu información. Si algo está mal, lo editas y listo.</p>
+      </div>
+    </div>
+
+    <div class="loading" *ngIf="cargando">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando perfil…</p>
+    </div>
+
+    <div class="error" *ngIf="error">
+      <p>No se pudo cargar tu perfil.</p>
+      <ion-button size="small" (click)="cargarPerfil()">Reintentar</ion-button>
+    </div>
+
+    <div class="perfil-card" *ngIf="!cargando && !error && asesor">
+
+      <div class="perfil-top">
+        <div class="avatar">
+          <img *ngIf="asesor?.foto" [src]="asesor.foto" alt="Foto asesor" />
+          <span *ngIf="!asesor?.foto">{{ getIniciales(nombreCompleto(asesor)) }}</span>
+        </div>
+
+        <div class="info">
+          <h2>{{ nombreCompleto(asesor) }}</h2>
+          <p class="rol">{{ asesor?.rol || 'Asesor Comercial' }}</p>
+        </div>
+
+        <button type="button" class="btn-editar" (click)="irEditar()" [disabled]="!asesor?._id">
+          <ion-icon name="create-outline"></ion-icon>
+          <span>Editar</span>
+        </button>
+      </div>
+
+      <div class="perfil-datos">
+
+        <div class="dato" *ngIf="asesor?.email">
+          <div class="dato-left">
+            <ion-icon name="mail-outline"></ion-icon>
+            <div>
+              <span class="label">Correo</span>
+              <span class="value">{{ asesor.email }}</span>
+            </div>
+          </div>
+          <button type="button" class="btn-mini" (click)="copiar(asesor.email)">Copiar</button>
+        </div>
+
+        <div class="dato" *ngIf="asesor?.telefono">
+          <div class="dato-left">
+            <ion-icon name="call-outline"></ion-icon>
+            <div>
+              <span class="label">Teléfono</span>
+              <span class="value">{{ asesor.telefono }}</span>
+            </div>
+          </div>
+          <button type="button" class="btn-mini" (click)="copiar(asesor.telefono)">Copiar</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <app-footer></app-footer>
+</ion-content>

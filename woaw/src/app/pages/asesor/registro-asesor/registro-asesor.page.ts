@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AsesoresService } from 'src/app/services/asesores.service';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 type Paso = 1 | 2 | 3;
 
@@ -11,7 +12,8 @@ type Paso = 1 | 2 | 3;
   styleUrls: ['./registro-asesor.page.scss'],
   standalone: false,
 })
-export class RegistroAsesorPage {
+export class RegistroAsesorPage implements OnInit {
+
   form: any = {
     nombre: '',
     apellidos: '',
@@ -26,11 +28,27 @@ export class RegistroAsesorPage {
   paso: Paso = 1;
   cargando = false;
 
+  // ✅ LADAS
+  paises: any[] = [];
+  paisesFiltrados: any[] = [];
+  mostrarModal = false;
+  filtroPais = '';
+
+  ladaSeleccionada = {
+    codigo: '+52',
+    bandera: 'mx',
+  };
+
   constructor(
     private asesoresService: AsesoresService,
     private toastCtrl: ToastController,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) { }
+
+  ngOnInit(): void {
+    this.apiBanderas();
+  }
 
   async toast(msg: string) {
     const t = await this.toastCtrl.create({
@@ -54,11 +72,95 @@ export class RegistroAsesorPage {
   }
 
   get progress(): number {
-    // 1 -> 0.33, 2 -> 0.66, 3 -> 1
     return this.paso / 3;
   }
 
+  // =========================
+  // ✅ LADAS / PAISES
+  // =========================
+  apiBanderas() {
+    this.http
+      .get<any[]>(
+        'https://restcountries.com/v3.1/all?fields=idd,flags,name,cca2'
+      )
+      .subscribe({
+        next: (data) => {
+          this.paises = (data || [])
+            .filter((p) => p.idd && p.idd.root)
+            .map((p) => {
+              const code = String(p.cca2 || '').toLowerCase();
+              return {
+                nombre: p.name?.common || 'Sin nombre',
+                codigo: `${p.idd.root}${p.idd.suffixes?.[0] || ''}`,
+                bandera: this.getEmojiFlag(p.cca2),
+                banderaUrl: `https://flagcdn.com/w40/${code}.png`,
+              };
+            })
+            .sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+          this.paisesFiltrados = [...this.paises];
+
+          // ✅ Asegurar que el form tenga la lada del selector
+          this.form.lada = this.ladaSeleccionada.codigo;
+        },
+        error: () => {
+          // fallback: no truena el flujo si falla API
+          this.paises = [];
+          this.paisesFiltrados = [];
+        }
+      });
+  }
+
+  getEmojiFlag(countryCode: string): string {
+    return String(countryCode || '')
+      .toUpperCase()
+      .replace(/./g, (char) =>
+        String.fromCodePoint(127397 + char.charCodeAt(0))
+      );
+  }
+
+  abrirModalLadas() {
+    this.mostrarModal = true;
+    this.filtroPais = '';
+    this.paisesFiltrados = [...this.paises];
+  }
+
+  cerrarModal() {
+    this.mostrarModal = false;
+  }
+
+  filtrarPaises() {
+    const q = (this.filtroPais || '').toLowerCase().trim();
+    if (!q) {
+      this.paisesFiltrados = [...this.paises];
+      return;
+    }
+
+    this.paisesFiltrados = this.paises.filter((p) => {
+      const nombre = String(p.nombre || '').toLowerCase();
+      const codigo = String(p.codigo || '').toLowerCase();
+      return nombre.includes(q) || codigo.includes(q);
+    });
+  }
+
+  seleccionarLada(pais: any) {
+    const banderaCode =
+      pais?.banderaUrl?.split('/').pop()?.split('.')[0] || 'mx';
+
+    this.ladaSeleccionada = {
+      codigo: pais.codigo,
+      bandera: banderaCode,
+    };
+
+    // ✅ sincroniza con tu form (lo que mandas al backend)
+    this.form.lada = this.ladaSeleccionada.codigo;
+
+    this.mostrarModal = false;
+  }
+
+  // =========================
   // --- PASO 1: enviar código ---
+  // =========================
   enviarCodigo() {
     if (this.cargando) return;
 
@@ -101,7 +203,9 @@ export class RegistroAsesorPage {
     });
   }
 
+  // =========================
   // --- PASO 2: validar código ---
+  // =========================
   validarCodigo() {
     if (this.cargando) return;
 
@@ -128,7 +232,9 @@ export class RegistroAsesorPage {
     });
   }
 
+  // =========================
   // --- PASO 3: crear cuenta ---
+  // =========================
   crearCuenta() {
     if (this.cargando) return;
 
@@ -155,13 +261,11 @@ export class RegistroAsesorPage {
       password,
     }).subscribe({
       next: (res) => {
-        // 🔐 guardar sesión
         localStorage.setItem('token', res.token);
         localStorage.setItem('user', JSON.stringify(res.user));
 
         this.toast('Registro exitoso');
 
-        // 🔥 resetear app y entrar a home
         setTimeout(() => {
           window.location.href = '/home';
         }, 300);
@@ -173,7 +277,9 @@ export class RegistroAsesorPage {
     });
   }
 
+  // =========================
   // opcional: botón “atrás”
+  // =========================
   volverPasoAnterior() {
     if (this.cargando) return;
     if (this.paso === 2) {
