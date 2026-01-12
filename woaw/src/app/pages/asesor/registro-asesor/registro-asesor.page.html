@@ -8,7 +8,6 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content [fullscreen]="true">
   <div class="wrap">
 
@@ -56,14 +55,24 @@
           </ion-item>
 
           <div class="row">
-            <ion-item class="i half" lines="none">
-              <ion-input label="Lada" labelPlacement="stacked" [(ngModel)]="form.lada"></ion-input>
+
+            <!-- ✅ SELECTOR LADA -->
+            <ion-item class="i half lada-select" lines="none" (click)="abrirModalLadas()">
+              <ion-label position="stacked">Lada</ion-label>
+
+              <div class="lada-chip">
+                <img [src]="'https://flagcdn.com/w40/' + ladaSeleccionada.bandera + '.png'" class="flag-img"
+                  alt="bandera" />
+                <span class="lada-text">{{ ladaSeleccionada.codigo }}</span>
+                <ion-icon name="chevron-down-outline" class="chev"></ion-icon>
+              </div>
             </ion-item>
 
             <ion-item class="i half" lines="none">
               <ion-input label="Teléfono" labelPlacement="stacked" inputmode="tel"
                 [(ngModel)]="form.telefono"></ion-input>
             </ion-item>
+
           </div>
 
           <ion-button class="btn" expand="block" [disabled]="cargando" (click)="enviarCodigo()">
@@ -79,8 +88,7 @@
 
           <ion-item class="i" lines="none">
             <ion-input label="Código de verificación" labelPlacement="stacked" inputmode="numeric" maxlength="6"
-              [(ngModel)]="form.code">
-            </ion-input>
+              [(ngModel)]="form.code"></ion-input>
           </ion-item>
 
           <div class="actions">
@@ -101,13 +109,13 @@
           <p class="panel-sub">Ya casi. Una contraseña y vámonos.</p>
 
           <ion-item class="i" lines="none">
-            <ion-input label="Contraseña" labelPlacement="stacked" type="password" [(ngModel)]="form.password">
-            </ion-input>
+            <ion-input label="Contraseña" labelPlacement="stacked" type="password"
+              [(ngModel)]="form.password"></ion-input>
           </ion-item>
+
           <ion-item class="i" lines="none">
             <ion-input label="Confirmar contraseña" labelPlacement="stacked" type="password"
-              [(ngModel)]="form.confirmPassword">
-            </ion-input>
+              [(ngModel)]="form.confirmPassword"></ion-input>
           </ion-item>
 
           <div class="actions">
@@ -130,4 +138,36 @@
     </div>
 
   </div>
+
+  <!-- ✅ MODAL LADAS (con buscador) -->
+  <ion-modal [isOpen]="mostrarModal" (didDismiss)="cerrarModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="dark">
+          <ion-title>Selecciona tu lada</ion-title>
+          <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="cerrarModal()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+
+        <ion-toolbar>
+          <ion-searchbar placeholder="Buscar país..." [(ngModel)]="filtroPais"
+            (ionInput)="filtrarPaises()"></ion-searchbar>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <ion-list>
+          <ion-item button *ngFor="let pais of paisesFiltrados" (click)="seleccionarLada(pais)">
+            <img [src]="pais.banderaUrl" class="flag-img" alt="flag" />
+            <ion-label>
+              <div style="font-weight:800;">{{ pais.nombre }}</div>
+              <div style="opacity:.7;">{{ pais.codigo }}</div>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  
 </ion-content>

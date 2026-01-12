@@ -408,6 +408,16 @@ const routes: Routes = [
       },
 
       {
+        path: 'asesores-edit/:id',
+        loadChildren: () => import('./pages/asesor/asesores-edit/asesores-edit.module').then(m => m.AsesoresEditPageModule)
+      },
+
+      {
+        path: 'perfil',
+        loadChildren: () => import('./pages/asesor/perfil/perfil.module').then(m => m.PerfilPageModule)
+      },
+
+      {
         path: 'publicar',
         loadChildren: () => import('./pages/coches/publicar/publicar.module').then(m => m.PublicarPageModule)
       },
