@@ -3,31 +3,25 @@
     <ion-buttons slot="start">
       <div class="perfil-header">
         <button class="btn-regresar" (click)="regresar()">
-          <ion-icon name="arrow-back-outline"></ion-icon>
+          <ion-icon name="chevron-back-outline"></ion-icon>
+          <div class="titulo-editar">
+            <h1>
+          <ion-icon name="build-outline"></ion-icon>
+              <span>Edita <span class="car-name">tu auto</span></span>
+            </h1>
+          </div>
         </button>
-
-        <img src="/assets/icon/logo4.png" alt="Go Autos" class="logo" />
         <span *ngIf="auto" class="titulo-perfil">
           {{ auto.marca }} {{ auto.modelo }} {{ auto.anio }}
         </span>
       </div>
     </ion-buttons>
 
-    <ion-buttons slot="end">
-      <ion-button (click)="regresar()">
-        <ion-icon name="close-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+   
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="titulo-editar">
-    <h1>
-      <ion-icon name="build-outline"></ion-icon>
-      <span>Edita <span class="car-name">tu auto</span></span>
-    </h1>
-  </div>
 
   <div class="contenedor">
     <div class="barra-secciones">
@@ -502,11 +496,9 @@
 
                 <div class="contenedor-imagen">
 
-                  <!-- 🔴 MODO NORMAL --><img *ngIf="!modoRecorte" [src]="imagenPrincipalMostrada"
+                  <img *ngIf="!modoRecorte" [src]="imagenPrincipalMostrada"
                     alt="Imagen principal del auto" class="imagen-principal-editable" (click)="editarImagenActual()" />
 
-
-                  <!-- ✂️ MODO RECORTE INLINE -->
                   <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
                     [aspectRatio]="aspectRatio" [resizeToWidth]="FINAL_WIDTH" [cropperMinWidth]="FINAL_WIDTH"
                     [cropperMaxWidth]="FINAL_WIDTH" [cropperMinHeight]="FINAL_HEIGHT" [cropperMaxHeight]="FINAL_HEIGHT"
@@ -516,21 +508,13 @@
 
                 </div>
 
-                <!-- 🔍 ZOOM -->
                 <ion-range *ngIf="modoRecorte" color="danger" min="0.5" max="2" step="0.02" [value]="zoom"
                   (ionChange)="onZoomChange($event)">
                 </ion-range>
 
+                <p *ngIf="!modoRecorte" class="texto_css">Selecciona una imagen para remover el fondo</p>
 
-                <!-- 🎯 BOTONES -->
-                <div *ngIf="modoRecorte" class="acciones-recorte">
-                  <ion-button color="medium" (click)="cancelarRecorte()">Cancelar</ion-button>
-                  <ion-button color="danger" (click)="confirmarRecorte()">Guardar</ion-button>
-                </div>
-
-                <p class="texto_css">Selecciona una imagen para remover el fondo</p>
-
-                <div class="galeria-scroll" *ngIf="urlsImagenes.length">
+                <div class="galeria-scroll" *ngIf="urlsImagenes.length && !modoRecorte">
                   <img *ngFor="let img of urlsImagenes" [src]="img" alt="Imagen del auto"
                     (click)="actualizarImagenPrincipal(img)" />
                 </div>
@@ -540,7 +524,7 @@
 
           </ion-col>
 
-          <ion-col size="12" size-md="6">
+          <ion-col size="12" size-md="6" *ngIf="!modoRecorte">
             <ion-card>
               <ion-card-header>
                 <ion-card-title>Imágenes de mi auto</ion-card-title>
@@ -575,16 +559,12 @@
 
   <!-- 🔸 BOTONES FINALES -->
   <div class="action-bar">
-    <div class="action-buttons">
+
+    <div class="action-buttons" *ngIf="!modoRecorte">
       <ion-button fill="outline" color="light" (click)="regresar()">
         <ion-icon name="close-outline"></ion-icon>
         <span>Cancelar</span>
       </ion-button>
-
-      <!-- <ion-button fill="outline" color="warning" (click)="onRestablecerClick()" [disabled]="!restablecer">
-          <ion-icon name="refresh-outline"></ion-icon>
-          <span>Restablecer</span>
-        </ion-button> -->
 
       <ion-button fill="outline" color="danger" (click)="alert(auto?._id)" [disabled]="!auto?._id">
         <ion-icon name="trash-outline"></ion-icon>
@@ -596,6 +576,19 @@
         <span>Guardar</span>
       </ion-button>
     </div>
+
+
+    <div class="action-buttons" *ngIf="modoRecorte">
+      <ion-button color="medium" (click)="cancelarRecorte()">
+        <ion-icon name="close-outline"></ion-icon>
+        <span>Cancelar</span>
+      </ion-button>
+      <ion-button color="danger" (click)="confirmarRecorte()">
+        <ion-icon name="save-outline"></ion-icon>
+        Guardar
+      </ion-button>
+    </div>
+
   </div>
 
   <app-footer></app-footer>

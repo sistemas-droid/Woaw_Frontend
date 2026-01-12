@@ -91,7 +91,6 @@ export class UpdateCarPage implements OnInit {
   private initialComparable: any = null;
 
 
-  // 🔥 RECORTE INLINE
   modoRecorte = false;
   imageChangedEvent: Event | null = null;
 

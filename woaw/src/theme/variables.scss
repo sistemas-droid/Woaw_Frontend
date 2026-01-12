@@ -39,7 +39,6 @@ ion-title {
     background: transparent;
     border: none;
     color: white;
-    font-size: 1.5rem;
     padding: 6px;
     cursor: pointer;
     display: flex;
@@ -62,6 +61,7 @@ ion-title {
 
   .titulo-perfil {
     margin-left: 20px;
+    font-size: 20px;
     font-weight: 500;
     color: white;
   }

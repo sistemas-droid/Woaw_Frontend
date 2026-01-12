@@ -578,6 +578,7 @@ ion-col ion-item {
   background: #fff;
   border-bottom: 2px solid #e5e7eb;
   margin-bottom: 18px;
+  margin-top: 10px;
   padding: 10px 0;
   gap: 20px;
 
@@ -627,36 +628,43 @@ ion-col ion-item {
 
 .titulo-editar {
   text-align: center;
-  padding: 24px 12px 8px;
-  background: #fff;
-  border-bottom: 2px solid #e5e7eb;
+  padding: 0px;
+  background: transparent;
 
   h1 {
-    font-size: clamp(22px, 4vw, 30px);
+    font-size: 20px;
     font-weight: 900;
-    color: #000000;
-    /* rojo WOAW */
+    color: #ffffff;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 0px;
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 
+    @media (max-width: 720px) {
+      font-size: 13px;
+    }
+
     ion-icon {
-      font-size: 26px;
-      color: #000000;
+      font-size: 17px;
+      color: #ffffff;
+      padding: 10px;
+
+      @media (max-width: 720px) {
+        display: none;
+      }
     }
   }
 
   p {
     font-size: 14px;
     color: #555;
-    margin-top: 6px;
+    margin-top: 0px;
   }
 }
 
 .car-name {
-    color: var(--ion-color-danger);
-    font-weight: 900;
+  color: var(--ion-color-danger);
+  font-weight: 900;
 }

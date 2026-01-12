@@ -40,8 +40,9 @@ export class FotosVeiculoComponent implements OnInit {
   private colaSecundarias: File[] = [];
 
   // ✅ salida final fija (lo que quieres)
-  FINAL_WIDTH = 950;
-  FINAL_HEIGHT = 580;
+
+  FINAL_WIDTH = 840;
+  FINAL_HEIGHT = 570;
 
   // ✅ proporción fija 600/500 = 1.2
   aspectRatio = this.FINAL_WIDTH / this.FINAL_HEIGHT;
@@ -145,7 +146,8 @@ export class FotosVeiculoComponent implements OnInit {
     const files: FileList | null = input.files;
     if (!files || files.length === 0) return;
 
-    if (files.length + this.imagenesSecundarias_sinFondo.length > 10) {
+    const disponibles = 10 - this.imagenesSecundarias_sinFondo.length;
+    if (disponibles <= 0) {
       this.generalService.alert('Límite excedido', 'Máximo 10 imágenes secundarias', 'warning');
       input.value = '';
       return;
@@ -153,12 +155,20 @@ export class FotosVeiculoComponent implements OnInit {
 
     const heicExtensions = ['heic', 'heif'];
 
-    for (let i = 0; i < files.length; i++) {
+    // Solo tomamos las que caben
+    const totalAProcesar = Math.min(files.length, disponibles);
+
+    for (let i = 0; i < totalAProcesar; i++) {
       const file = files[i];
       const extension = file.name.split('.').pop()?.toLowerCase();
 
-      if (file.size > 10 * 1024 * 1024 || (extension && heicExtensions.includes(extension))) {
-        this.generalService.alert('Imagen no válida', 'Debe pesar menos de 10 MB y no ser HEIC', 'warning');
+      if (file.size > 10 * 1024 * 1024) {
+        this.generalService.alert('Imagen no válida', 'Debe pesar menos de 10 MB', 'warning');
+        continue;
+      }
+
+      if (extension && heicExtensions.includes(extension)) {
+        this.generalService.alert('Formato no compatible', 'No se aceptan HEIC/HEIF', 'warning');
         continue;
       }
 
@@ -167,15 +177,14 @@ export class FotosVeiculoComponent implements OnInit {
         continue;
       }
 
-      this.colaSecundarias.push(file);
+      // ✅ Guardar TAL CUAL, sin cropper, sin compresión, sin tocarla
+      this.imagenesSecundarias_sinFondo.push(file);
+      this.imagenesSecundariasMostradas.push(URL.createObjectURL(file));
     }
 
     input.value = '';
-
-    if (!this.imagenParaRecortar && this.colaSecundarias.length > 0) {
-      this.abrirSiguienteRecorteSecundaria();
-    }
   }
+
 
   private abrirSiguienteRecorteSecundaria() {
     if (this.colaSecundarias.length === 0) return;
@@ -209,14 +218,11 @@ export class FotosVeiculoComponent implements OnInit {
     this.modoRecorte = null;
     this.croppedBlob = null;
     this.cropperReady = false;
-
-    if (this.colaSecundarias.length > 0) {
-      this.abrirSiguienteRecorteSecundaria();
-    }
   }
 
+
   async aplicarRecorte() {
-    if (!this.croppedBlob || !this.imagenParaRecortar || !this.modoRecorte) {
+    if (!this.croppedBlob || !this.imagenParaRecortar || this.modoRecorte !== 'principal') {
       this.generalService.alert('Falta recorte', 'Ajusta la imagen antes de guardar', 'warning');
       return;
     }
@@ -243,26 +249,14 @@ export class FotosVeiculoComponent implements OnInit {
         useWebWorker: true,
       });
 
-      if (this.modoRecorte === 'principal') {
-        this.imagenPrincipal_sinFondo = comprimido;
-        this.imagenPrincipalMostrada = URL.createObjectURL(comprimido);
-        this.cancelarRecorte();
-        return;
-      }
-
-      if (this.imagenesSecundarias_sinFondo.length >= 10) {
-        this.generalService.alert('Límite excedido', 'Máximo 10 imágenes secundarias', 'warning');
-        this.cancelarRecorte();
-        return;
-      }
-
-      this.imagenesSecundarias_sinFondo.push(comprimido);
-      this.imagenesSecundariasMostradas.push(URL.createObjectURL(comprimido));
+      this.imagenPrincipal_sinFondo = comprimido;
+      this.imagenPrincipalMostrada = URL.createObjectURL(comprimido);
       this.cancelarRecorte();
     } catch (error) {
       this.generalService.alert('Error', 'No se pudo procesar la imagen recortada', 'danger');
     }
   }
+
 
   confirmar() {
     if (!this.imagenPrincipal_sinFondo) {
