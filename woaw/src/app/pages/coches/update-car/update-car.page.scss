@@ -427,17 +427,6 @@
 }
 
 
-:host ::ng-deep ion-alert.alert-rojo {
-  --background: #1a1a1a !important;
-  --color: #ffffff !important;
-  --backdrop-opacity: 0.95 !important;
-  --border-radius: 14px !important;
-  --width: 90%;
-  --max-width: 400px;
-  border: 1px solid #e11b22 !important;
-  box-shadow: 0 0 25px rgba(225, 17, 34, 0.5) !important;
-}
-
 ion-alert.alert-rojo .alert-head,
 ion-alert.alert-rojo .alert-title,
 ion-alert.alert-rojo .alert-message {
@@ -667,4 +656,142 @@ ion-col ion-item {
 .car-name {
   color: var(--ion-color-danger);
   font-weight: 900;
+}
+
+
+
+
+
+
+
+
+
+
+
+.cropper-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* BASE para todas las líneas */
+.guide-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 0, 0, 0.385);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* horizontales */
+.guide-h-center {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.guide-h-60 {
+  top: 60%;
+}
+
+.guide-h-65 {
+  top: 65%;
+}
+
+.guide-h-70 {
+  top: 70%;
+}
+
+.guide-h-75 {
+  top: 75%;
+}
+
+
+/* vertical */
+.guide-v-center {
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.zoom-panel {
+  margin-top: 10px;
+  padding: 12px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(10px);
+
+
+  .zoom-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .zoom-title {
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .zoom-value {
+    font-weight: 900;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .zoom-controls {
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .zoom-btn {
+    --border-radius: 12px;
+    height: 42px;
+  }
+
+  .zoom-range {
+    --bar-height: 6px;
+    --knob-size: 22px;
+    --pin-background: #d50000;
+    --pin-color: #fff;
+
+    /* en iOS se ve mejor con un poco de padding */
+    padding: 0 2px;
+  }
+
+  .zoom-quick {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: 6px;
+
+    ion-button {
+      --padding-start: 8px;
+      --padding-end: 8px;
+      font-weight: 800;
+    }
+  }
 }

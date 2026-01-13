@@ -96,8 +96,8 @@
             </div>
           </div>
 
-          <!-- Miniaturas -->
-          <div class="galeria-inferior" *ngIf="galeriaImagenes.length && tipo !== 'nuevo'">
+          <!-- Miniaturas.   && tipo !== 'nuevo' -->
+          <div class="galeria-inferior" *ngIf="galeriaImagenes.length">
             <div class="miniaturas-horizontal">
 
               <ng-container *ngFor="let img of galeriaImagenes; let i = index">

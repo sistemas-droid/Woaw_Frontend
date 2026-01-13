@@ -6,7 +6,7 @@
           <ion-icon name="chevron-back-outline"></ion-icon>
           <div class="titulo-editar">
             <h1>
-          <ion-icon name="build-outline"></ion-icon>
+              <ion-icon name="build-outline"></ion-icon>
               <span>Edita <span class="car-name">tu auto</span></span>
             </h1>
           </div>
@@ -17,7 +17,7 @@
       </div>
     </ion-buttons>
 
-   
+
   </ion-toolbar>
 </ion-header>
 
@@ -482,8 +482,8 @@
 
             <ion-card>
               <ion-card-header>
-                <ion-card-title>Imagen principal del auto</ion-card-title>
-                <ion-card-subtitle>Selecciona una imagen para remover el fondo</ion-card-subtitle>
+                <ion-card-title *ngIf="cropTarget == 'principal'">Imagen principal del auto</ion-card-title>
+                <ion-card-title *ngIf="cropTarget == 'secundaria'">Imagen del auto</ion-card-title>
               </ion-card-header>
               <ion-card-content>
                 <div class="botons">
@@ -496,21 +496,69 @@
 
                 <div class="contenedor-imagen">
 
-                  <img *ngIf="!modoRecorte" [src]="imagenPrincipalMostrada"
-                    alt="Imagen principal del auto" class="imagen-principal-editable" (click)="editarImagenActual()" />
+                  <img *ngIf="!modoRecorte" [src]="imagenPrincipalMostrada" alt="Imagen principal del auto"
+                    class="imagen-principal-editable" (click)="editarImagenActual()" />
 
-                  <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-                    [aspectRatio]="aspectRatio" [resizeToWidth]="FINAL_WIDTH" [cropperMinWidth]="FINAL_WIDTH"
-                    [cropperMaxWidth]="FINAL_WIDTH" [cropperMinHeight]="FINAL_HEIGHT" [cropperMaxHeight]="FINAL_HEIGHT"
-                    format="png" outputType="blob" [backgroundColor]="'rgba(0,0,0,0)'" [transform]="transform"
-                    (imageCropped)="onImageCropped($event)">
-                  </image-cropper>
+                  <div class="cropper-wrapper" *ngIf="modoRecorte">
+                    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                      [aspectRatio]="aspectRatio" [resizeToWidth]="FINAL_WIDTH"
+                      [cropperMinWidth]="FINAL_WIDTH" [cropperMaxWidth]="FINAL_WIDTH" [cropperMinHeight]="FINAL_HEIGHT"
+                      [cropperMaxHeight]="FINAL_HEIGHT" format="png" outputType="blob"
+                      [backgroundColor]="'rgba(0,0,0,0)'" [transform]="transform"
+                      (imageCropped)="onImageCropped($event)">
+                    </image-cropper>
+
+                    <!-- cruz -->
+                    <div class="guide-line guide-h-center"></div>
+                    <div class="guide-line guide-v-center"></div>
+
+                    <!-- líneas extra -->
+                    <div class="guide-line guide-h-60"></div>
+                    <div class="guide-line guide-h-65"></div>
+                    <div class="guide-line guide-h-70"></div>
+                    <div class="guide-line guide-h-75"></div>
+                  </div>
 
                 </div>
 
-                <ion-range *ngIf="modoRecorte" color="danger" min="0.5" max="2" step="0.02" [value]="zoom"
-                  (ionChange)="onZoomChange($event)">
-                </ion-range>
+                <div *ngIf="modoRecorte" class="zoom-panel">
+                  <div class="zoom-header">
+                    <div class="zoom-title">Zoom</div>
+                    <div class="zoom-value">{{ zoom | number:'1.0-2' }}x</div>
+                  </div>
+
+                  <div class="zoom-controls">
+                    <ion-button class="zoom-btn" fill="solid" color="danger" (click)="stepZoom(-1)"
+                      [disabled]="zoom <= ZOOM_MIN">
+                      <ion-icon name="remove-outline"></ion-icon>
+                    </ion-button>
+
+                    <ion-range class="zoom-range" color="danger" [min]="ZOOM_MIN" [max]="ZOOM_MAX" [step]="ZOOM_STEP"
+                      [value]="zoom" (ionChange)="onZoomChange($event)">
+                    </ion-range>
+
+                    <ion-button class="zoom-btn" fill="solid" color="danger" (click)="stepZoom(1)"
+                      [disabled]="zoom >= ZOOM_MAX">
+                      <ion-icon name="add-outline"></ion-icon>
+                    </ion-button>
+                  </div>
+
+                  <div class="zoom-quick">
+                    <ion-button size="small" fill="clear" color="danger" (click)="setZoom(1)">
+                      1x
+                    </ion-button>
+                    <ion-button size="small" fill="clear" color="danger" (click)="setZoom(1.25)">
+                      1.25x
+                    </ion-button>
+                    <ion-button size="small" fill="clear" color="danger" (click)="setZoom(1.5)">
+                      1.5x
+                    </ion-button>
+                    <ion-button size="small" fill="clear" color="danger" (click)="setZoom(2)">
+                      2x
+                    </ion-button>
+                  </div>
+                </div>
+
 
                 <p *ngIf="!modoRecorte" class="texto_css">Selecciona una imagen para remover el fondo</p>
 
@@ -538,8 +586,9 @@
                 </label>
 
                 <div class="galeria-scroll-big" *ngIf="urlsImagenes.length">
-                  <div class="img-wrapper" *ngFor="let img of urlsImagenes">
-                    <img [src]="img" alt="Imagen del auto" />
+
+                  <div class="img-wrapper" *ngFor="let img of urlsImagenes; let i = index">
+                    <img [src]="img" alt="Imagen del auto" (click)="editarImagenSecundaria(i)" />
                     <div class="overlay-botones">
                       <button class="btn-accion eliminar" (click)="eliminarImagen_visual(img)">
                         <ion-icon name="trash-outline"></ion-icon>
@@ -547,6 +596,7 @@
                       </button>
                     </div>
                   </div>
+
                 </div>
               </ion-card-content>
             </ion-card>
@@ -576,7 +626,6 @@
         <span>Guardar</span>
       </ion-button>
     </div>
-
 
     <div class="action-buttons" *ngIf="modoRecorte">
       <ion-button color="medium" (click)="cancelarRecorte()">
