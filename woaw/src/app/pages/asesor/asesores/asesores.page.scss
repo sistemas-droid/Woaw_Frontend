@@ -680,3 +680,167 @@
     width: 100%;
   }
 }
+
+/* ===== Admin Invite (WOAW pro) ===== */
+.admin-invite {
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+/* Botones alineados y sin “brinco” */
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+
+  ion-button {
+    --border-radius: 12px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    height: 36px;
+    font-weight: 800;
+    letter-spacing: .2px;
+    text-transform: none;
+  }
+
+  ion-button[fill="outline"] {
+    --border-width: 1px;
+  }
+}
+
+/* Caja del link */
+.invite-box {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 14px;
+  padding: 12px;
+  max-width: 720px;
+
+  /* que no “grite” sobre el título */
+  box-shadow: 0 6px 16px rgba(2, 6, 23, 0.06);
+}
+
+/* Encabezado de la caja */
+.invite-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.invite-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+  color: #0f172a;
+
+  ion-icon {
+    font-size: 18px;
+    color: #dc2626;
+    /* rojo WOAW sin neón */
+  }
+}
+
+/* URL: ya no rompe nada */
+.invite-url {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #0f172a;
+
+  background: rgba(2, 6, 23, 0.04);
+  border: 1px dashed rgba(15, 23, 42, 0.18);
+  border-radius: 12px;
+  padding: 10px;
+
+  /* 🔥 clave: no se desborda y se corta bonito */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Responsive: que no se rompa en mobile */
+@media (max-width: 520px) {
+  .invite-box {
+    max-width: 100%;
+  }
+
+  .invite-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .invite-url {
+    white-space: normal;
+    word-break: break-word;
+  }
+}
+
+/* ===== Link + Copy aligned ===== */
+.invite-url-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Link ocupa todo el espacio */
+.invite-url {
+  flex: 1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #0f172a;
+
+  background: rgba(2, 6, 23, 0.04);
+  border: 1px dashed rgba(15, 23, 42, 0.18);
+  border-radius: 12px;
+  padding: 10px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Botón copiar minimal y elegante */
+.btn-copy-link {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  cursor: pointer;
+
+  transition: transform .15s ease, background .15s ease;
+
+  ion-icon {
+    font-size: 18px;
+    color: #0f172a;
+  }
+
+  &:hover {
+    background: rgba(15, 23, 42, 0.04);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+/* Mobile: que el link pueda partirse */
+@media (max-width: 520px) {
+  .invite-url {
+    white-space: normal;
+    word-break: break-word;
+  }
+}

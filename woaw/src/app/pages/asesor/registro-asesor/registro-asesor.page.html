@@ -11,136 +11,155 @@
 <ion-content [fullscreen]="true">
   <div class="wrap">
 
-    <!-- HEADER / STEPPER -->
-    <div class="hero">
-      <h1 class="titulo">Únete como Asesor</h1>
-      <p class="subtitulo">3 pasos y te subimos al barco</p>
+    <div *ngIf="bloqueado" class="invite-expired">
+      <div class="expired-card">
+        <div class="expired-icon">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+        </div>
 
-      <ion-progress-bar [value]="progress"></ion-progress-bar>
+        <h2 class="expired-title">Link expirado</h2>
+        <p class="expired-text">{{ motivoBloqueo }}</p>
 
-      <div class="steps">
-        <div class="step" [class.active]="paso===1" [class.done]="paso>1">
-          <span class="dot">1</span>
-          <span class="label">Datos</span>
-        </div>
-        <div class="step" [class.active]="paso===2" [class.done]="paso>2">
-          <span class="dot">2</span>
-          <span class="label">Código</span>
-        </div>
-        <div class="step" [class.active]="paso===3">
-          <span class="dot">3</span>
-          <span class="label">Cuenta</span>
-        </div>
       </div>
     </div>
 
-    <!-- CARD -->
-    <ion-card class="card">
-      <ion-card-content>
 
-        <!-- PASO 1 -->
-        <div *ngIf="paso === 1" class="panel">
-          <h2 class="panel-title">Tus datos</h2>
+    <!-- ✅ TODO EL FORMULARIO SOLO SI NO ESTÁ BLOQUEADO -->
+    <ng-container *ngIf="!bloqueado">
 
-          <ion-item class="i" lines="none">
-            <ion-input label="Nombre" labelPlacement="stacked" [(ngModel)]="form.nombre"></ion-input>
-          </ion-item>
+      <!-- HEADER / STEPPER -->
+      <div class="hero">
+        <h1 class="titulo">Únete como Asesor</h1>
+        <p class="subtitulo">3 pasos y te subimos al barco</p>
 
-          <ion-item class="i" lines="none">
-            <ion-input label="Apellidos" labelPlacement="stacked" [(ngModel)]="form.apellidos"></ion-input>
-          </ion-item>
+        <ion-progress-bar [value]="progress"></ion-progress-bar>
 
-          <ion-item class="i" lines="none">
-            <ion-input label="Correo" type="email" labelPlacement="stacked" [(ngModel)]="form.email"></ion-input>
-          </ion-item>
+        <div class="steps">
+          <div class="step" [class.active]="paso===1" [class.done]="paso>1">
+            <span class="dot">1</span>
+            <span class="label">Datos</span>
+          </div>
+          <div class="step" [class.active]="paso===2" [class.done]="paso>2">
+            <span class="dot">2</span>
+            <span class="label">Código</span>
+          </div>
+          <div class="step" [class.active]="paso===3">
+            <span class="dot">3</span>
+            <span class="label">Cuenta</span>
+          </div>
+        </div>
+      </div>
 
-          <div class="row">
+      <!-- CARD -->
+      <ion-card class="card">
+        <ion-card-content>
 
-            <!-- ✅ SELECTOR LADA -->
-            <ion-item class="i half lada-select" lines="none" (click)="abrirModalLadas()">
-              <ion-label position="stacked">Lada</ion-label>
+          <!-- PASO 1 -->
+          <div *ngIf="paso === 1" class="panel">
+            <h2 class="panel-title">Tus datos</h2>
 
-              <div class="lada-chip">
-                <img [src]="'https://flagcdn.com/w40/' + ladaSeleccionada.bandera + '.png'" class="flag-img"
-                  alt="bandera" />
-                <span class="lada-text">{{ ladaSeleccionada.codigo }}</span>
-                <ion-icon name="chevron-down-outline" class="chev"></ion-icon>
-              </div>
+            <ion-item class="i" lines="none">
+              <ion-input label="Nombre" labelPlacement="stacked" [(ngModel)]="form.nombre"></ion-input>
             </ion-item>
 
-            <ion-item class="i half" lines="none">
-              <ion-input label="Teléfono" labelPlacement="stacked" inputmode="tel"
-                [(ngModel)]="form.telefono"></ion-input>
+            <ion-item class="i" lines="none">
+              <ion-input label="Apellidos" labelPlacement="stacked" [(ngModel)]="form.apellidos"></ion-input>
             </ion-item>
 
-          </div>
+            <ion-item class="i" lines="none">
+              <ion-input label="Correo" type="email" labelPlacement="stacked" [(ngModel)]="form.email"></ion-input>
+            </ion-item>
 
-          <ion-button class="btn" expand="block" [disabled]="cargando" (click)="enviarCodigo()">
-            <ion-spinner *ngIf="cargando" name="crescent"></ion-spinner>
-            <span *ngIf="!cargando">Enviar código</span>
-          </ion-button>
-        </div>
+            <div class="row">
 
-        <!-- PASO 2 -->
-        <div *ngIf="paso === 2" class="panel">
-          <h2 class="panel-title">Verifica tu correo</h2>
-          <p class="panel-sub">Enviamos un código a: <strong>{{ form.email }}</strong></p>
+              <!-- ✅ SELECTOR LADA -->
+              <ion-item class="i half lada-select" lines="none" (click)="abrirModalLadas()">
+                <ion-label position="stacked">Lada</ion-label>
 
-          <ion-item class="i" lines="none">
-            <ion-input label="Código de verificación" labelPlacement="stacked" inputmode="numeric" maxlength="6"
-              [(ngModel)]="form.code"></ion-input>
-          </ion-item>
+                <div class="lada-chip">
+                  <img [src]="'https://flagcdn.com/w40/' + ladaSeleccionada.bandera + '.png'" class="flag-img"
+                    alt="bandera" />
+                  <span class="lada-text">{{ ladaSeleccionada.codigo }}</span>
+                  <ion-icon name="chevron-down-outline" class="chev"></ion-icon>
+                </div>
+              </ion-item>
 
-          <div class="actions">
-            <ion-button fill="clear" class="btn-ghost" [disabled]="cargando" (click)="volverPasoAnterior()">
-              Cambiar datos
-            </ion-button>
+              <ion-item class="i half" lines="none">
+                <ion-input label="Teléfono" labelPlacement="stacked" inputmode="tel"
+                  [(ngModel)]="form.telefono"></ion-input>
+              </ion-item>
 
-            <ion-button class="btn" [disabled]="cargando" (click)="validarCodigo()">
+            </div>
+
+            <ion-button class="btn" expand="block" [disabled]="cargando || bloqueado" (click)="enviarCodigo()">
               <ion-spinner *ngIf="cargando" name="crescent"></ion-spinner>
-              <span *ngIf="!cargando">Validar código</span>
+              <span *ngIf="!cargando">Enviar código</span>
             </ion-button>
           </div>
-        </div>
 
-        <!-- PASO 3 -->
-        <div *ngIf="paso === 3" class="panel">
-          <h2 class="panel-title">Crea tu cuenta</h2>
-          <p class="panel-sub">Ya casi. Una contraseña y vámonos.</p>
+          <!-- PASO 2 -->
+          <div *ngIf="paso === 2" class="panel">
+            <h2 class="panel-title">Verifica tu correo</h2>
+            <p class="panel-sub">Enviamos un código a: <strong>{{ form.email }}</strong></p>
 
-          <ion-item class="i" lines="none">
-            <ion-input label="Contraseña" labelPlacement="stacked" type="password"
-              [(ngModel)]="form.password"></ion-input>
-          </ion-item>
+            <ion-item class="i" lines="none">
+              <ion-input label="Código de verificación" labelPlacement="stacked" inputmode="numeric" maxlength="6"
+                [(ngModel)]="form.code"></ion-input>
+            </ion-item>
 
-          <ion-item class="i" lines="none">
-            <ion-input label="Confirmar contraseña" labelPlacement="stacked" type="password"
-              [(ngModel)]="form.confirmPassword"></ion-input>
-          </ion-item>
+            <div class="actions">
+              <ion-button fill="clear" class="btn-ghost" [disabled]="cargando || bloqueado"
+                (click)="volverPasoAnterior()">
+                Cambiar datos
+              </ion-button>
 
-          <div class="actions">
-            <ion-button fill="clear" class="btn-ghost" [disabled]="cargando" (click)="volverPasoAnterior()">
-              Regresar
-            </ion-button>
-
-            <ion-button class="btn success" [disabled]="cargando" (click)="crearCuenta()">
-              <ion-spinner *ngIf="cargando" name="crescent"></ion-spinner>
-              <span *ngIf="!cargando">Crear cuenta</span>
-            </ion-button>
+              <ion-button class="btn" [disabled]="cargando || bloqueado" (click)="validarCodigo()">
+                <ion-spinner *ngIf="cargando" name="crescent"></ion-spinner>
+                <span *ngIf="!cargando">Validar código</span>
+              </ion-button>
+            </div>
           </div>
-        </div>
 
-      </ion-card-content>
-    </ion-card>
+          <!-- PASO 3 -->
+          <div *ngIf="paso === 3" class="panel">
+            <h2 class="panel-title">Crea tu cuenta</h2>
+            <p class="panel-sub">Ya casi. Una contraseña y vámonos.</p>
 
-    <div class="foot">
-      <span class="mini">WOAW • Asesores</span>
-    </div>
+            <ion-item class="i" lines="none">
+              <ion-input label="Contraseña" labelPlacement="stacked" type="password"
+                [(ngModel)]="form.password"></ion-input>
+            </ion-item>
 
+            <ion-item class="i" lines="none">
+              <ion-input label="Confirmar contraseña" labelPlacement="stacked" type="password"
+                [(ngModel)]="form.confirmPassword"></ion-input>
+            </ion-item>
+
+            <div class="actions">
+              <ion-button fill="clear" class="btn-ghost" [disabled]="cargando || bloqueado"
+                (click)="volverPasoAnterior()">
+                Regresar
+              </ion-button>
+
+              <ion-button class="btn success" [disabled]="cargando || bloqueado" (click)="crearCuenta()">
+                <ion-spinner *ngIf="cargando" name="crescent"></ion-spinner>
+                <span *ngIf="!cargando">Crear cuenta</span>
+              </ion-button>
+            </div>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+
+      <div class="foot">
+        <span class="mini">WOAW • Asesores</span>
+      </div>
+
+    </ng-container>
   </div>
 
-  <!-- ✅ MODAL LADAS (con buscador) -->
-  <ion-modal [isOpen]="mostrarModal" (didDismiss)="cerrarModal()">
+  <!-- ✅ MODAL LADAS (solo si NO está bloqueado) -->
+  <ion-modal *ngIf="!bloqueado" [isOpen]="mostrarModal" (didDismiss)="cerrarModal()">
     <ng-template>
       <ion-header>
         <ion-toolbar color="dark">
@@ -169,5 +188,5 @@
       </ion-content>
     </ng-template>
   </ion-modal>
-  
+
 </ion-content>

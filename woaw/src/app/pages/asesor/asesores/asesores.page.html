@@ -8,6 +8,38 @@
       <div class="heading-left">
         <h1>Nuestros asesores</h1>
         <p>Selecciona al asesor que se encargará de brindarte la mejor atención.</p>
+
+        <!-- ✅ ADMIN: GENERAR LINK TEMPORAL -->
+        <div *ngIf="isAdmin" class="admin-invite">
+          <div class="admin-actions">
+            <ion-button size="small" color="danger" (click)="generarLinkInvitacion()" [disabled]="generandoLink">
+              <ion-icon name="link-outline" slot="start"></ion-icon>
+              <span *ngIf="!generandoLink">Generar link de registro</span>
+              <span *ngIf="generandoLink">Generando…</span>
+            </ion-button>
+          </div>
+
+          <div *ngIf="inviteLink" class="invite-box">
+            <div class="invite-head">
+              <div class="invite-title">
+                <ion-icon name="time-outline"></ion-icon>
+                <span>Link temporal</span>
+              </div>
+            </div>
+
+            <div class="invite-url-row">
+              <div class="invite-url" title="{{ inviteLink }}">
+                {{ inviteLink }}
+              </div>
+
+              <button type="button" class="btn-copy-link" (click)="copiarInvite()">
+                <ion-icon name="copy-outline"></ion-icon>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -79,7 +111,6 @@
             </div>
 
           </div>
-
 
         </ion-col>
       </ion-row>
