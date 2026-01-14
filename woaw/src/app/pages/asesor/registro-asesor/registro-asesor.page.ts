@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AsesoresService } from 'src/app/services/asesores.service';
 import { ToastController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-
 type Paso = 1 | 2 | 3;
 
 @Component({
@@ -24,36 +23,42 @@ export class RegistroAsesorPage implements OnInit {
     password: '',
     confirmPassword: '',
   };
-
   paso: Paso = 1;
   cargando = false;
-
-  // ✅ LADAS
   paises: any[] = [];
   paisesFiltrados: any[] = [];
   mostrarModal = false;
   filtroPais = '';
-
   ladaSeleccionada = {
     codigo: '+52',
     bandera: 'mx',
   };
+  inviteToken: string | null = null;
+  invitePayload: any | null = null;
+  bloqueado = true;
+  motivoBloqueo = 'Validando invitación...';
+  serverNowMs: number | null = null;
+  openedAtMs: number | null = null;
+  registerDeadlineMs: number | null = null;
+  usedKey: string | null = null;
 
   constructor(
     private asesoresService: AsesoresService,
     private toastCtrl: ToastController,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.apiBanderas();
+    this.initInviteFlow();
   }
 
   async toast(msg: string) {
     const t = await this.toastCtrl.create({
       message: msg,
-      duration: 2000,
+      duration: 2200,
       position: 'top',
     });
     t.present();
@@ -75,9 +80,179 @@ export class RegistroAsesorPage implements OnInit {
     return this.paso / 3;
   }
 
-  // =========================
-  // ✅ LADAS / PAISES
-  // =========================
+  private extraerMs(res: any): number | null {
+    const cands = [
+      res?.fechaHoraServidor,      // ✅ tu backend real
+      res?.data?.fechaHoraServidor,
+      res?.now, res?.timestamp, res?.ms,
+      res?.data?.now, res?.data?.timestamp, res?.data?.ms,
+      res?.horaServidor, res?.fecha, res?.date,
+      res?.data?.horaServidor, res?.data?.fecha, res?.data?.date,
+    ];
+
+    for (const c of cands) {
+      if (!c) continue;
+      if (typeof c === 'number') return c;
+      if (typeof c === 'string') {
+        const t = Date.parse(c);
+        if (!Number.isNaN(t)) return t;
+      }
+    }
+    return null;
+  }
+
+  private fetchServerNow(): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.asesoresService.getHoraServidor().subscribe({
+        next: (res: any) => {
+          const ms = this.extraerMs(res);
+          if (!ms) return reject(new Error('No pude leer hora servidor'));
+          this.serverNowMs = ms;
+          resolve(ms);
+        },
+        error: () => reject(new Error('No pude obtener hora servidor'))
+      });
+    });
+  }
+
+  private b64urlDecode(invite: string): any | null {
+    try {
+      const b64 = invite.replace(/-/g, '+').replace(/_/g, '/');
+      const pad = '='.repeat((4 - (b64.length % 4)) % 4);
+      const json = decodeURIComponent(escape(atob(b64 + pad)));
+      return JSON.parse(json);
+    } catch {
+      return null;
+    }
+  }
+
+  private getSessionKey(nonce: string) {
+    return `woaw_invite_opened_${nonce}`;
+  }
+  private getUsedKey(nonce: string) {
+    return `woaw_invite_used_${nonce}`;
+  }
+
+  private async initInviteFlow() {
+    this.inviteToken = this.route.snapshot.queryParamMap.get('invite');
+
+    if (!this.inviteToken) {
+      this.bloqueado = true;
+      this.motivoBloqueo = 'Este registro requiere un link de invitación.';
+      this.toast(this.motivoBloqueo);
+      return;
+    }
+
+    const payload = this.b64urlDecode(this.inviteToken);
+
+    if (!payload || payload?.purpose !== 'asesor_register' || !payload?.nonce || !payload?.expOpen || !payload?.expMax) {
+      this.bloqueado = true;
+      this.motivoBloqueo = 'Link inválido.';
+      this.toast(this.motivoBloqueo);
+      return;
+    }
+
+    this.invitePayload = payload;
+    this.usedKey = this.getUsedKey(payload.nonce);
+
+    if (localStorage.getItem(this.usedKey) === '1') {
+      this.bloqueado = true;
+      this.motivoBloqueo = 'Este link ya fue usado.';
+      this.toast(this.motivoBloqueo);
+      return;
+    }
+
+    try {
+      const now = await this.fetchServerNow();
+
+      if (now > Number(payload.expOpen)) {
+        this.bloqueado = true;
+        this.motivoBloqueo = 'Link expirado. Pídele al admin uno nuevo.';
+        this.toast(this.motivoBloqueo);
+        return;
+      }
+
+      const openedKey = this.getSessionKey(payload.nonce);
+      const storedOpened = sessionStorage.getItem(openedKey);
+
+      if (storedOpened) {
+        this.openedAtMs = Number(storedOpened);
+      } else {
+        this.openedAtMs = now;
+        sessionStorage.setItem(openedKey, String(now));
+      }
+
+      const windowMin = Number(payload.windowMin || 30);
+      const deadline = this.openedAtMs + windowMin * 60_000;
+      this.registerDeadlineMs = Math.min(deadline, Number(payload.expMax));
+
+      if (now > this.registerDeadlineMs) {
+        this.bloqueado = true;
+        this.motivoBloqueo = 'Se acabó tu ventana de registro (30 min). Pide un link nuevo.';
+        this.toast(this.motivoBloqueo);
+        return;
+      }
+
+      this.bloqueado = false;
+      this.motivoBloqueo = '';
+    } catch (e: any) {
+      this.bloqueado = true;
+      this.motivoBloqueo = 'No pude validar el link (hora del servidor).';
+      this.toast(this.motivoBloqueo);
+    }
+  }
+
+  private async asegurarNoExpirado(): Promise<boolean> {
+    if (!this.invitePayload || !this.invitePayload.nonce) {
+      this.bloqueado = true;
+      this.motivoBloqueo = 'Link inválido.';
+      return false;
+    }
+
+    const usedKey = this.getUsedKey(this.invitePayload.nonce);
+    if (localStorage.getItem(usedKey) === '1') {
+      this.bloqueado = true;
+      this.motivoBloqueo = 'Este link ya fue usado.';
+      this.toast(this.motivoBloqueo);
+      return false;
+    }
+
+    try {
+      const now = await this.fetchServerNow();
+
+      if (!this.registerDeadlineMs) {
+        const openedKey = this.getSessionKey(this.invitePayload.nonce);
+        const storedOpened = sessionStorage.getItem(openedKey);
+        const openedAt = storedOpened ? Number(storedOpened) : now;
+        const deadline = openedAt + 30 * 60_000;
+        this.registerDeadlineMs = Math.min(deadline, Number(this.invitePayload.expMax));
+      }
+
+      if (now > this.registerDeadlineMs) {
+        this.bloqueado = true;
+        this.motivoBloqueo = 'Se acabó tu ventana de registro. Pide un link nuevo.';
+        this.toast(this.motivoBloqueo);
+        return false;
+      }
+
+      this.bloqueado = false;
+      this.motivoBloqueo = '';
+      return true;
+
+    } catch {
+      this.bloqueado = true;
+      this.motivoBloqueo = 'No pude validar el tiempo del link.';
+      this.toast(this.motivoBloqueo);
+      return false;
+    }
+  }
+
+  private marcarUsadoLocal() {
+    if (!this.invitePayload?.nonce) return;
+    const usedKey = this.getUsedKey(this.invitePayload.nonce);
+    localStorage.setItem(usedKey, '1');
+  }
+
   apiBanderas() {
     this.http
       .get<any[]>(
@@ -99,12 +274,9 @@ export class RegistroAsesorPage implements OnInit {
             .sort((a, b) => a.nombre.localeCompare(b.nombre));
 
           this.paisesFiltrados = [...this.paises];
-
-          // ✅ Asegurar que el form tenga la lada del selector
           this.form.lada = this.ladaSeleccionada.codigo;
         },
         error: () => {
-          // fallback: no truena el flujo si falla API
           this.paises = [];
           this.paisesFiltrados = [];
         }
@@ -120,6 +292,7 @@ export class RegistroAsesorPage implements OnInit {
   }
 
   abrirModalLadas() {
+    if (this.bloqueado) return;
     this.mostrarModal = true;
     this.filtroPais = '';
     this.paisesFiltrados = [...this.paises];
@@ -146,23 +319,18 @@ export class RegistroAsesorPage implements OnInit {
   seleccionarLada(pais: any) {
     const banderaCode =
       pais?.banderaUrl?.split('/').pop()?.split('.')[0] || 'mx';
-
     this.ladaSeleccionada = {
       codigo: pais.codigo,
       bandera: banderaCode,
     };
 
-    // ✅ sincroniza con tu form (lo que mandas al backend)
     this.form.lada = this.ladaSeleccionada.codigo;
-
     this.mostrarModal = false;
   }
 
-  // =========================
-  // --- PASO 1: enviar código ---
-  // =========================
-  enviarCodigo() {
+  async enviarCodigo() {
     if (this.cargando) return;
+    if (!(await this.asegurarNoExpirado())) return;
 
     const nombre = (this.form.nombre || '').trim();
     const apellidos = (this.form.apellidos || '').trim();
@@ -183,7 +351,6 @@ export class RegistroAsesorPage implements OnInit {
     }
 
     this.cargando = true;
-
     this.asesoresService.preRegister({
       nombre,
       apellidos,
@@ -203,11 +370,9 @@ export class RegistroAsesorPage implements OnInit {
     });
   }
 
-  // =========================
-  // --- PASO 2: validar código ---
-  // =========================
-  validarCodigo() {
+  async validarCodigo() {
     if (this.cargando) return;
+    if (!(await this.asegurarNoExpirado())) return;
 
     const email = (this.form.email || '').trim();
     const code = (this.form.code || '').trim();
@@ -218,7 +383,6 @@ export class RegistroAsesorPage implements OnInit {
     }
 
     this.cargando = true;
-
     this.asesoresService.verifyCode({ email, code }).subscribe({
       next: () => {
         this.cargando = false;
@@ -232,11 +396,9 @@ export class RegistroAsesorPage implements OnInit {
     });
   }
 
-  // =========================
-  // --- PASO 3: crear cuenta ---
-  // =========================
-  crearCuenta() {
+  async crearCuenta() {
     if (this.cargando) return;
+    if (!(await this.asegurarNoExpirado())) return;
 
     const password = (this.form.password || '').trim();
     if (!this.passwordValida(password)) {
@@ -251,7 +413,6 @@ export class RegistroAsesorPage implements OnInit {
     }
 
     this.cargando = true;
-
     this.asesoresService.register({
       nombre: (this.form.nombre || '').trim(),
       apellidos: (this.form.apellidos || '').trim(),
@@ -263,9 +424,8 @@ export class RegistroAsesorPage implements OnInit {
       next: (res) => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('user', JSON.stringify(res.user));
-
+        this.marcarUsadoLocal();
         this.toast('Registro exitoso');
-
         setTimeout(() => {
           window.location.href = '/home';
         }, 300);
@@ -277,9 +437,6 @@ export class RegistroAsesorPage implements OnInit {
     });
   }
 
-  // =========================
-  // opcional: botón “atrás”
-  // =========================
   volverPasoAnterior() {
     if (this.cargando) return;
     if (this.paso === 2) {

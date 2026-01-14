@@ -84,4 +84,9 @@ export class AsesoresService {
       Authorization: `Bearer ${token}`,
     });
   }
+
+  getHoraServidor(): Observable<any> {
+    return this.http.get(`${environment.api_key}/cron/hora-servidor`);
+  }
+
 }
