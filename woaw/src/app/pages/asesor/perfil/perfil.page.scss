@@ -265,3 +265,43 @@
         }
     }
 }
+
+/* ===== LINK DE COMISIÓN ===== */
+.perfil-datos {
+
+    .dato.link-comision {
+        border: 1.5px dashed rgba(185, 28, 28, .45);
+        background:
+            linear-gradient(180deg, rgba(255, 0, 51, .03), rgba(255, 255, 255, .95));
+
+        .dato-left {
+
+            ion-icon {
+                color: var(--woaw-red);
+            }
+
+            .label {
+                color: rgba(185, 28, 28, .75);
+            }
+
+            .value {
+                font-size: 13px;
+                font-weight: 900;
+                color: #7f1d1d;
+                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+                word-break: break-all;
+            }
+        }
+
+        .btn-mini {
+            border-color: var(--woaw-red);
+            color: var(--woaw-red);
+            background: #fff;
+
+            &:hover {
+                background: rgba(255, 0, 51, .08);
+                border-color: var(--woaw-red);
+            }
+        }
+    }
+}
