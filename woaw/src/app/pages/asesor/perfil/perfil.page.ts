@@ -14,7 +14,7 @@ export class PerfilPage implements OnInit {
 
   public isLoggedIn: boolean = false;
   public MyRole: string | null = null;
-
+  linkComision: string = '';
   cargando = false;
   error = false;
 
@@ -59,6 +59,15 @@ export class PerfilPage implements OnInit {
       null
     );
   }
+  private buildBaseUrl(): string {
+    const origin = window?.location?.origin || '';
+    return origin.includes('http') ? origin : 'https://woaw.mx';
+  }
+
+  private buildLinkComision(code: string): string {
+    const base = this.buildBaseUrl();
+    return `${base}/home?code=${encodeURIComponent(code)}`;
+  }
 
   cargarPerfil() {
     this.cargando = true;
@@ -78,6 +87,8 @@ export class PerfilPage implements OnInit {
     this.asesoresService.getAsesorById(id, token).subscribe({
       next: (res: any) => {
         this.asesor = res?.asesor || res || null;
+        const code = this.asesor?.asesorUid;
+        this.linkComision = code ? this.buildLinkComision(code) : '';
         this.cargando = false;
       },
       error: () => {

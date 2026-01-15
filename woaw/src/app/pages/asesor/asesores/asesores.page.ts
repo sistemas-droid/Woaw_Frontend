@@ -27,15 +27,10 @@ export class AsesoresPage implements OnInit {
   asesores: Asesor[] = [];
   cargando = true;
   error = false;
-
   isAdmin = false;
   eliminandoId: string | null = null;
-
-  // ✅ Modal eliminar (HTML)
   modalEliminarOpen = false;
   asesorAEliminar: Asesor | null = null;
-
-  // ✅ INVITE LINK (ADMIN)
   inviteLink: string = '';
   inviteExpira: Date | null = null;
   generandoLink = false;
@@ -74,7 +69,6 @@ export class AsesoresPage implements OnInit {
   cargarAsesores() {
     this.cargando = true;
     this.error = false;
-
     const token = localStorage.getItem('token');
     if (!token) {
       this.error = true;
@@ -87,6 +81,7 @@ export class AsesoresPage implements OnInit {
         const lista: Asesor[] = res?.asesores ?? [];
         this.asesores = lista;
         this.cargando = false;
+        console.log('✅ Asesores cargados:', this.asesores);
       },
       error: (err) => {
         console.error('❌ Error getAsesores:', err);
@@ -136,11 +131,9 @@ export class AsesoresPage implements OnInit {
       res?.ms,
       res?.fechaHoraServidor,      // ✅ ESTA ES LA BUENA
       res?.data?.fechaHoraServidor,
-
       res?.horaServidor,
       res?.fecha,
       res?.date,
-
       res?.data?.now,
       res?.data?.timestamp,
       res?.data?.ms,
@@ -169,7 +162,6 @@ export class AsesoresPage implements OnInit {
     if (this.generandoLink) return;
 
     this.generandoLink = true;
-
     this.asesoresService.getHoraServidor().subscribe({
       next: (res: any) => {
         const serverNow = this.extraerMs(res);
@@ -182,12 +174,10 @@ export class AsesoresPage implements OnInit {
 
         const expOpen = serverNow + 15 * 60_000; // 15 min para abrir
         const expMax = serverNow + 45 * 60_000;  // cap duro 45 min desde generación
-
         const payload = {
           v: 1,
           purpose: 'asesor_register',
           nonce: this.randomNonce(22),
-
           iat: serverNow,
           expOpen,     // si no se abre antes de esto, muere
           expMax,      // límite máximo duro
@@ -195,13 +185,9 @@ export class AsesoresPage implements OnInit {
         };
 
         const invite = this.b64urlEncode(payload);
-
-        // ⚠️ Si estás en web, esto va perfecto. Si es native, pon tu dominio real.
         const origin = window.location.origin || 'https://wo-aw.com';
-
         this.inviteLink = `${origin}/registro-asesor?invite=${invite}`;
         this.inviteExpira = new Date(expOpen);
-
         this.generandoLink = false;
         this.toast('Link generado (15 min). Al abrir: 30 min para registrarse.', 'success');
       },
@@ -224,9 +210,6 @@ export class AsesoresPage implements OnInit {
     }
   }
 
-  // ==========================
-  // ✅ ELIMINAR (MODAL EN HTML)
-  // ==========================
   confirmarEliminar(a: Asesor) {
     if (!this.isAdmin) {
       this.toast('Solo el admin puede eliminar asesores.', 'danger');
@@ -259,7 +242,6 @@ export class AsesoresPage implements OnInit {
     }
 
     this.eliminandoId = id;
-
     this.asesoresService.deleteAsesor(id, token).subscribe({
       next: () => {
         this.asesores = this.asesores.filter(a => a._id !== id);
