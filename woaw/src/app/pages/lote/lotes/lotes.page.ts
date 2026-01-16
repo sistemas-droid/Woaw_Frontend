@@ -144,7 +144,7 @@ export class LotesPage implements OnInit {
       }))
     );
   }
-  
+
   async getLotes() {
     try {
       this.mostrar_spinner = true;
@@ -180,8 +180,16 @@ export class LotesPage implements OnInit {
         promesaVendidos
       ]);
 
-      // Resto del código igual...
       this.lotesAll = this.ordenarDesc(resAll?.lotes || []);
+      // 🔒 Ranking GLOBAL (solo una vez)
+      this.generarRankingCompetitivo(this.lotesAll);
+
+      // Inyectar ranking dentro del lote
+      this.lotesAll = this.lotesAll.map((lote, index) => ({
+        ...lote,
+        ranking: this.ranking[index]
+      }));
+
 
       if (this.MyRole === 'admin' || this.MyRole === 'lotero') {
         this.lotesMine = this.ordenarDesc(resMine?.lotes || []);
@@ -222,7 +230,6 @@ export class LotesPage implements OnInit {
     this.activeTab = tab;
     const base = (tab === 'mios') ? this.lotesMine : this.lotesAll;
     this.lotes = this.ordenarDesc(base);
-    this.generarRankingCompetitivo(this.lotes);
     this.filtrarLotes();
   }
 
@@ -249,7 +256,6 @@ export class LotesPage implements OnInit {
 
     if (!termino) {
       this.lotesFiltrados = this.ordenarDesc(base);
-      this.generarRankingCompetitivo(this.lotesFiltrados);
       this.totalLotes = this.lotesFiltrados.length;
       return;
     }
@@ -268,7 +274,6 @@ export class LotesPage implements OnInit {
     });
 
     this.lotesFiltrados = this.ordenarDesc(this.lotesFiltrados);
-    this.generarRankingCompetitivo(this.lotesFiltrados);
     this.totalLotes = this.lotesFiltrados.length;
   }
 
