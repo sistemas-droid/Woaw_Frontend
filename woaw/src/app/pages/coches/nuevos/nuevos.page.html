@@ -43,7 +43,7 @@
         <div class="catalogo-autos">
 
           <!-- ✅ Mensaje vacío SOLO cuando NO está cargando -->
-          <div *ngIf="!mostrar_spinner && autosPaginados?.length === 0" class="mensaje-vacio">
+          <div *ngIf="!mostrar_spinner && autosPaginados.length === 0" class="mensaje-vacio">
             <ion-icon name="car-sport-outline" class="icono-mensaje"></ion-icon><br />
             No se encontraron vehículos para esta sección.
           </div>
