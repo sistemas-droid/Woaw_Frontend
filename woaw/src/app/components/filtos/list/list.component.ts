@@ -1,8 +1,8 @@
+// list.component.ts
 import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, PopoverController } from '@ionic/angular';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
 import { GeneralService } from '../../../services/general.service';
 import { CarsService } from '../../../services/cars.service';
 import { MotosService } from '../../../services/motos.service';
@@ -19,7 +19,7 @@ export class ListComponent implements OnInit {
   @Input() tipo: string = '';
   @Input() extra?: string;
 
-  // ✅ lista de autos para construir opciones dinámicas (si se pasa desde el Page)
+  // ✅ lista de autos/motos para construir opciones dinámicas (si se pasa desde el Page)
   @Input() autos?: any[];
 
   query: string = '';
@@ -34,6 +34,7 @@ export class ListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // ---------- PRECIO ----------
     if (this.tipo === 'precio') {
       if (this.extra === 'renta') {
         this.opcionesBase = [
@@ -62,10 +63,12 @@ export class ListComponent implements OnInit {
           { label: 'Más de $1,000,000', rango: [1000000, Infinity] },
         ];
       }
+
       this.applyFilter();
       return;
     }
 
+    // ---------- AÑO ----------
     if (this.tipo === 'anio') {
       const anioActual = new Date().getFullYear();
       const url = window.location.pathname;
@@ -77,10 +80,12 @@ export class ListComponent implements OnInit {
       } else {
         this.opcionesBase = this.generarRangoAnios(anioActual, 1950);
       }
+
       this.applyFilter();
       return;
     }
 
+    // ---------- COLOR ----------
     if (this.tipo === 'color') {
       this.opcionesBase = [
         { label: 'Blanco' }, { label: 'Negro' }, { label: 'Gris' }, { label: 'Plateado' },
@@ -91,10 +96,28 @@ export class ListComponent implements OnInit {
         { label: 'Azul cielo' }, { label: 'Grafito' }, { label: 'Champagne' }, { label: 'Titanio' },
         { label: 'Cobre' }, { label: 'Camaleón' }, { label: 'Otro' },
       ];
+
       this.applyFilter();
       return;
     }
 
+    // ---------- TIPO VENTA (Nuevo / Seminuevo / Usado) ----------
+    if (this.tipo === 'tipoVenta') {
+      // Fijo y confiable. Si quieres dinámico, abajo te dejo el helper listo.
+      this.opcionesBase = [
+        { label: 'Nuevo', key: 'nuevo' },
+        { label: 'Seminuevo', key: 'seminuevo' },
+        { label: 'Usado', key: 'usado' },
+      ];
+
+      // Si prefieres dinámico (según lo que venga en autos), descomenta:
+      // this.opcionesBase = this.buildTipoVentaOptionsFromAutos(this.autos);
+
+      this.applyFilter();
+      return;
+    }
+
+    // ---------- MARCA ----------
     if (this.tipo === 'marca') {
       if (this.extra === 'motos') {
         this.getMarcas_motos();
@@ -102,16 +125,14 @@ export class ListComponent implements OnInit {
         this.opcionesBase = [];
         this.applyFilter();
       } else {
-        this.getMarcas_cohes();
+        this.getMarcas_coches();
       }
       return;
     }
 
+    // ---------- TIPO (SUV, Sedán, etc.) ----------
     if (this.tipo === 'tipo') {
-      if (this.extra === 'motos') {
-        this.opcionesBase = [];
-        this.applyFilter();
-      } else if (this.extra === 'camiones') {
+      if (this.extra === 'motos' || this.extra === 'camiones') {
         this.opcionesBase = [];
         this.applyFilter();
       } else {
@@ -120,35 +141,39 @@ export class ListComponent implements OnInit {
       return;
     }
 
-    // ✅ NUEVO: filtro general de vehículo (Coche / Moto)
+    // ---------- VEHÍCULO GENERAL (coche/moto) ----------
     if (this.tipo === 'tipoVehiculoGeneral') {
       const dinamicas = this.buildVehiculoGeneralOptionsFromAutos(this.autos);
       const base = dinamicas.length ? dinamicas : this.buildVehiculoGeneralFallback();
 
-      // ✅ orden fijo: coche primero siempre
-      this.opcionesBase = base.sort((a, b) => {
-        const ra = a.key === 'coche' ? 0 : a.key === 'moto' ? 1 : 9;
-        const rb = b.key === 'coche' ? 0 : b.key === 'moto' ? 1 : 9;
-        if (ra !== rb) return ra - rb;
-        return String(a.label).localeCompare(String(b.label));
-      });
+      // coche primero
+      this.opcionesBase = base
+        .map((x) => ({ key: x.key, label: x.label ?? this.capitalizar(x.key) }))
+        .sort((a, b) => {
+          const ra = a.key === 'coche' ? 0 : 1;
+          const rb = b.key === 'coche' ? 0 : 1;
+          return ra - rb;
+        });
 
       this.applyFilter();
       return;
     }
 
+    // ---------- DEFAULT ----------
     this.opcionesBase = [];
     this.applyFilter();
   }
 
-  // ✅ label bonito para el HTML (Coches/Motos) sin romper el key (coche/moto)
+  // ✅ Icono para tipoVehiculoGeneral
+  getVehiculoIcon(opcion: any): string {
+    const k = this.normalize(opcion?.key ?? opcion?.label);
+    if (k === 'coche') return 'car-sport-outline';
+    if (k === 'moto') return 'bicycle-outline'; // si tienes 'motorcycle-outline' cámbialo
+    return 'help-circle-outline';
+  }
+
   getOpcionLabel(opcion: any): string {
-    if (this.tipo === 'tipoVehiculoGeneral') {
-      const k = this.normalize(opcion?.key ?? opcion?.label);
-      if (k === 'coche') return 'Coches';
-      if (k === 'moto') return 'Motos';
-    }
-    return opcion?.label ?? '';
+    return opcion?.label ?? opcion?.key ?? '';
   }
 
   onSearchChange(ev: any) {
@@ -205,10 +230,9 @@ export class ListComponent implements OnInit {
     return colores[nombre] || '#cccccc';
   }
 
-  getMarcas_cohes() {
+  getMarcas_coches() {
     this.carsService.getMarcas_all().subscribe({
       next: (res: any[]) => {
-        this.generalService.loadingDismiss();
         this.opcionesBase = (res || [])
           .map((marca) => ({
             label: marca.nombre,
@@ -230,7 +254,6 @@ export class ListComponent implements OnInit {
   getMarcas_motos() {
     this.motosService.getMarcas_all().subscribe({
       next: (res: any[]) => {
-        this.generalService.loadingDismiss();
         this.opcionesBase = (res || [])
           .map((marca) => ({
             label: marca.nombre,
@@ -252,7 +275,6 @@ export class ListComponent implements OnInit {
   getTipos_coches() {
     this.carsService.gatTiposVeiculos().subscribe({
       next: (res: any[]) => {
-        this.generalService.loadingDismiss();
         this.opcionesBase = (res || [])
           .map((tipo) => ({
             label: tipo,
@@ -272,7 +294,6 @@ export class ListComponent implements OnInit {
 
   trackByKey = (_: number, item: any) => item?.key ?? item?.label ?? item;
 
-  // ✅ options dinámicas para coche/moto desde autos
   private buildVehiculoGeneralOptionsFromAutos(autos?: any[]): any[] {
     if (!Array.isArray(autos) || autos.length === 0) return [];
 
@@ -283,30 +304,52 @@ export class ListComponent implements OnInit {
       let v = this.normalize(raw);
       if (!v) continue;
 
-      // normalizaciones comunes
       if (v === 'carro' || v === 'auto' || v === 'automovil') v = 'coche';
       if (v === 'motocicleta' || v === 'motos') v = 'moto';
 
-      // solo aceptamos coche/moto
       if (v === 'coche' || v === 'moto') set.add(v);
     }
 
-    return Array.from(set).map((v) => ({
-      label: v === 'coche' ? 'Coche' : 'Moto',
-      key: v,
-    }));
+    return Array.from(set).map((v) => ({ key: v, label: this.capitalizar(v) }));
+  }
+
+  // (Opcional) dinámico para tipoVenta, si algún día te llega algo distinto
+  private buildTipoVentaOptionsFromAutos(autos?: any[]): any[] {
+    if (!Array.isArray(autos) || autos.length === 0) {
+      return [
+        { label: 'Nuevo', key: 'nuevo' },
+        { label: 'Seminuevo', key: 'seminuevo' },
+        { label: 'Usado', key: 'usado' },
+      ];
+    }
+
+    const set = new Set<string>();
+    for (const a of autos) {
+      const tv = (a?.tipoVenta ?? '').toString().trim();
+      if (tv) set.add(tv);
+    }
+
+    return Array.from(set)
+      .map((v) => ({ label: v, key: this.normalize(v) }))
+      .sort((a, b) => a.label.localeCompare(b.label));
   }
 
   private buildVehiculoGeneralFallback(): any[] {
     return [
-      { label: 'Coche', key: 'coche' },
-      { label: 'Moto', key: 'moto' },
+      { key: 'coche', label: 'Coche' },
+      { key: 'moto', label: 'Moto' },
     ];
+  }
+
+  private capitalizar(s: string): string {
+    if (!s) return '';
+    return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
   private normalize(v: any): string {
     return (v ?? '')
       .toString()
+      .trim()
       .toLowerCase()
       .normalize('NFD')
       .replace(/\p{Diacritic}/gu, '');

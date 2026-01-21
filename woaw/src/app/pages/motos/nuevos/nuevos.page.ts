@@ -1,3 +1,4 @@
+// nuevos.page.ts
 import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { GeneralService } from '../../../services/general.service';
@@ -30,13 +31,17 @@ export class NuevosPage implements OnInit {
     { label: 'Color', tipo: 'color' },
     // { label: 'Año', tipo: 'anio' },
     { label: 'Marca', tipo: 'marca' },
+    { label: 'Condición', tipo: 'tipoVenta' }, // 👈 NUEVO
   ];
+
   filtrosAplicados: any = {
     precio: null,
     anio: null,
     color: null,
     marca: null,
+    tipoVenta: null, // 👈 NUEVO
   };
+
   public motosFiltradas: any[] = [];
 
   // ------
@@ -48,11 +53,11 @@ export class NuevosPage implements OnInit {
   @ViewChild('pageContent', { static: false }) pageContent!: IonContent;
   // ------
 
-
-    public mostrar_spinner: boolean = false;
+  public mostrar_spinner: boolean = false;
   public tipo_spinner: number = 0;
   public texto_spinner: string = 'Cargando...';
   public textoSub_spinner: string = 'Espere un momento';
+
   constructor(
     private menu: MenuController,
     public generalService: GeneralService,
@@ -68,43 +73,62 @@ export class NuevosPage implements OnInit {
     this.generalService.dispositivo$.subscribe((tipo) => {
       this.esDispositivoMovil = tipo === 'telefono' || tipo === 'tablet';
     });
+
     this.generalService.valorGlobal$.subscribe((valor) => {
       this.itemsPorPagina = valor;
       this.misMotos();
     });
   }
+
+  private normalize(v: any): string {
+    return (v ?? '')
+      .toString()
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '');
+  }
+
   async misMotos() {
-    this.mostrar_spinner= true;
+    this.mostrar_spinner = true;
+
     this.motosService.getMotos().subscribe({
       next: (res: any) => {
-         const moto = res?.motos || []
+        const moto = res?.motos || [];
+
         this.MisMotos = moto;
         this.motosFiltradas = [...moto];
-        // console.log('FILTRADA:', this.motosFiltradas);
-        this.totalMotos = this.MisMotos.length;
+
+        // Si esta pantalla es "Nuevos" y quieres que SIEMPRE arranque filtrada en Nuevo:
+        // (si no lo quieres, comenta estas 2 líneas)
+        this.filtrosAplicados.tipoVenta = { label: 'Nuevo', key: 'nuevo' };
+        this.aplicarFiltros();
+
+        this.totalMotos = this.motosFiltradas.length;
         this.calcularPaginacion();
         this.getCarsFavoritos();
         this.misAutosid();
-        this.mostrar_spinner= false;
+        this.mostrar_spinner = false;
       },
       error: (err) => {
-        this.mostrar_spinner= false;
-        const mensaje =
-          err?.error?.message || 'Error al obtener tus vehículos.';
+        this.mostrar_spinner = false;
+        const mensaje = err?.error?.message || 'Error al obtener tus vehículos.';
         if (mensaje === 'No se encontraron vehículos para este usuario') {
           this.MisMotos = [];
+          this.motosFiltradas = [];
+          this.totalMotos = 0;
+          this.calcularPaginacion();
         } else {
           console.warn(mensaje);
         }
       },
     });
   }
+
   getCarsFavoritos() {
     this.carsService.getCarsFavoritos().subscribe({
       next: (res: any) => {
-        const vehicleIds = res.vehicles.map(
-          (vehicle: any) => vehicle.vehicleId
-        );
+        const vehicleIds = res.vehicles.map((vehicle: any) => vehicle.vehicleId);
         this.autosFavoritosIds = new Set(vehicleIds);
       },
       error: (err) => {
@@ -112,6 +136,7 @@ export class NuevosPage implements OnInit {
       },
     });
   }
+
   misAutosid() {
     this.carsService.misAutosId().subscribe({
       next: (res: any) => {
@@ -122,8 +147,7 @@ export class NuevosPage implements OnInit {
         }
       },
       error: (err) => {
-        const mensaje =
-          err?.error?.message || 'Error al obtener tus vehículos.';
+        const mensaje = err?.error?.message || 'Error al obtener tus vehículos.';
         if (mensaje === 'No se encontraron vehículos para este usuario') {
           this.idsMisMotos = [];
         } else {
@@ -136,9 +160,11 @@ export class NuevosPage implements OnInit {
   regresar() {
     this.router.navigate(['/home']);
   }
+
   handleRefrescarAutos(ubicacion: string) {
     this.misMotos();
   }
+
   // -----
   calcularPaginacion() {
     const total = this.motosFiltradas.length;
@@ -147,11 +173,13 @@ export class NuevosPage implements OnInit {
     this.paginaActual = 1;
     this.actualizarMotosPaginadas();
   }
+
   actualizarMotosPaginadas() {
     const inicio = (this.paginaActual - 1) * this.itemsPorPagina;
     const fin = inicio + this.itemsPorPagina;
     this.motosPaginadas = this.motosFiltradas.slice(inicio, fin);
   }
+
   cambiarPagina(pagina: number) {
     this.paginaActual = pagina;
     this.actualizarMotosPaginadas();
@@ -159,6 +187,7 @@ export class NuevosPage implements OnInit {
       this.pageContent?.scrollToTop(400);
     }, 100);
   }
+
   ordenarAutos(criterio: string) {
     if (!this.MisMotos || this.MisMotos.length === 0) return;
 
@@ -175,20 +204,24 @@ export class NuevosPage implements OnInit {
       this.pageContent?.scrollToTop(400);
     }, 100);
   }
+
   // ## ----- Filtro ☢️☢️☢️☢️
   async mostrarOpciones(ev: Event, tipo: string) {
     const popover = await this.popoverCtrl.create({
       component: ListComponent,
       event: ev,
       translucent: true,
-      componentProps: { tipo, extra: 'motos' },
+      componentProps: {
+        tipo,
+        extra: 'motos',
+        autos: this.MisMotos, // 👈 importante para opciones dinámicas (si las usas)
+      },
     });
 
     await popover.present();
     const { data } = await popover.onDidDismiss();
 
     if (data === null) {
-      // Se seleccionó "Quitar filtro"
       this.filtrosAplicados[tipo] = null;
     } else {
       this.filtrosAplicados[tipo] = data;
@@ -196,13 +229,15 @@ export class NuevosPage implements OnInit {
 
     this.aplicarFiltros();
   }
-  aplicarFiltros() {
-    this.motosFiltradas = this.MisMotos.filter((moto) => {
-      const filtroPrecio = this.filtrosAplicados.precio;
-      const filtroAnio = this.filtrosAplicados.anio;
-      const filtroColor = this.filtrosAplicados.color;
-      const filtroMarca = this.filtrosAplicados.marca;
 
+  aplicarFiltros() {
+    const filtroPrecio = this.filtrosAplicados.precio;
+    const filtroAnio = this.filtrosAplicados.anio;
+    const filtroColor = this.filtrosAplicados.color;
+    const filtroMarca = this.filtrosAplicados.marca;
+    const filtroTipoVenta = this.filtrosAplicados.tipoVenta;
+
+    this.motosFiltradas = this.MisMotos.filter((moto) => {
       const coincidePrecio =
         !filtroPrecio ||
         (Array.isArray(filtroPrecio.rango) &&
@@ -215,39 +250,51 @@ export class NuevosPage implements OnInit {
       const coincideColor =
         !filtroColor ||
         (Array.isArray(moto.color) &&
-          moto.color.some(
-            (c: string) =>
-              c.toLowerCase().trim() === filtroColor.label.toLowerCase().trim()
-          ));
+          moto.color.some((c: string) => this.normalize(c) === this.normalize(filtroColor.label)));
 
       const coincideMarca =
-        !filtroMarca ||
-        moto.marca.toLowerCase().trim() ===
-          filtroMarca.label.toLowerCase().trim();
+        !filtroMarca || this.normalize(moto.marca) === this.normalize(filtroMarca.label);
 
-      return coincidePrecio && coincideAnio && coincideColor && coincideMarca;
+      const tipoVentaSeleccionado =
+        filtroTipoVenta?.label ?? filtroTipoVenta?.key ?? filtroTipoVenta;
+
+      const coincideTipoVenta =
+        !filtroTipoVenta ||
+        this.normalize(moto.tipoVenta) === this.normalize(tipoVentaSeleccionado);
+
+      return (
+        coincidePrecio &&
+        coincideAnio &&
+        coincideColor &&
+        coincideMarca &&
+        coincideTipoVenta
+      );
     });
 
     this.totalMotos = this.motosFiltradas.length;
     this.paginaActual = 1;
     this.calcularPaginacion();
   }
+
   resetearFiltros() {
     this.filtrosAplicados = {
       precio: null,
       anio: null,
       color: null,
       marca: null,
+      tipoVenta: null,
     };
     this.aplicarFiltros();
   }
+
   esNumero(valor: any): valor is number {
     return typeof valor === 'number';
   }
+
   get paginasReducidas(): (number | string)[] {
     const total = this.totalPaginas;
     const actual = this.paginaActual;
-    const rango = 1; // ±2 alrededor
+    const rango = 1;
 
     if (total <= 2) return this.paginas;
 

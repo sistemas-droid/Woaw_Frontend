@@ -13,7 +13,7 @@
     <!-- botón X (quitar filtro) -->
     <button
       class="icon-clear"
-      (click)="seleccionar({ quitar: true, label: 'Quitar filtro X' })"
+      (click)="seleccionar({ quitar: true })"
       title="Quitar filtro"
       aria-label="Quitar filtro">
       <ion-icon name="close-outline"></ion-icon>
@@ -24,30 +24,50 @@
 
   <div class="contenedor-scroll-marcas">
     <ion-list>
-      <ion-item *ngFor="let opcion of opcionesFiltradas; trackBy: trackByKey" (click)="seleccionar(opcion)">
+      <ion-item
+        *ngFor="let opcion of opcionesFiltradas; trackBy: trackByKey"
+        (click)="seleccionar(opcion)">
+
         <ng-container *ngIf="!opcion.quitar; else quitar">
+
+          <!-- Dot de color -->
           <div
             *ngIf="tipo === 'color'"
             class="color-dot"
             [ngStyle]="{ 'background-color': obtenerColorHex(opcion.label) }">
           </div>
 
+          <!-- Logo de marca -->
           <img
             *ngIf="tipo === 'marca' && opcion.imageUrl"
             [src]="opcion.imageUrl"
-            alt="{{ opcion.label }}"
+            alt=""
             class="logo-marca"
             (error)="ocultarImagen($event)" />
 
-          <!-- ✅ label bonito para Vehículo -->
-          <ion-label>
-            {{ getOpcionLabel(opcion) }}
-          </ion-label>
+          <!-- ✅ SOLO ICONO para tipoVehiculoGeneral -->
+          <ng-container *ngIf="tipo === 'tipoVehiculoGeneral'; else textoNormal">
+            <ion-icon
+              class="vehiculo-icon"
+              [name]="getVehiculoIcon(opcion)">
+            </ion-icon>
+          </ng-container>
+
+          <!-- Texto normal para el resto -->
+          <ng-template #textoNormal>
+            <ion-label>
+              {{ getOpcionLabel(opcion) }}
+            </ion-label>
+          </ng-template>
+
         </ng-container>
 
         <ng-template #quitar>
-          <ion-label color="danger"><strong>{{ opcion.label }}</strong></ion-label>
+          <ion-label color="danger">
+            <strong>Quitar filtro</strong>
+          </ion-label>
         </ng-template>
+
       </ion-item>
 
       <ion-item *ngIf="opcionesFiltradas.length === 0">

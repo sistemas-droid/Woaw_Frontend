@@ -2,11 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuController, IonContent, PopoverController, ModalController } from '@ionic/angular';
 import { GeneralService } from '../../../services/general.service';
 import { CarsService } from '../../../services/cars.service';
-import { MotosService } from '../../../services/motos.service';
 import { ListComponent } from '../../../components/filtos/list/list.component';
 import { PasosArrendamientoComponent } from '../../../components/modal/pasos-arrendamiento/pasos-arrendamiento.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, of } from 'rxjs';
+import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Component({
@@ -18,19 +17,17 @@ import { catchError } from 'rxjs/operators';
 export class NuevosPage implements OnInit {
   esDispositivoMovil: boolean = false;
 
-  autosStorage: any[] = [];          // ✅ ahora aquí guardamos coches + motos
+  autosStorage: any[] = [];          // ✅ ahora aquí guardamos SOLO coches
   public totalAutos: number = 0;
   public autosFiltrados: any[] = [];
   autosPaginados: any[] = [];
 
   filtros = [
-    { label: 'Vehículo', tipo: 'tipoVehiculoGeneral' }, // ✅ NUEVO
     { label: 'Precio', tipo: 'precio' },
     { label: 'Marca', tipo: 'marca' },
   ];
 
   filtrosAplicados: any = {
-    tipoVehiculoGeneral: null, // ✅ NUEVO
     precio: null,
     anio: null,
     color: null,
@@ -64,7 +61,6 @@ export class NuevosPage implements OnInit {
     public generalService: GeneralService,
     private popoverCtrl: PopoverController,
     public carsService: CarsService,
-    private motosService: MotosService,
     private modalCtrl: ModalController,
     private router: Router,
     private route: ActivatedRoute
@@ -114,7 +110,7 @@ export class NuevosPage implements OnInit {
       }
     }
 
-    // motos u otros
+    // fallback
     const p =
       typeof item?.precio === 'number'
         ? item.precio
@@ -125,59 +121,17 @@ export class NuevosPage implements OnInit {
     return { precioDesde: p, precioHasta: p };
   }
 
-  // ✅ ORDEN estable: coche primero cuando NO hay filtro
-  private ordenarPorTipoVehiculo(arr: any[]): any[] {
-    const rank = (t: any) => {
-      const x = this.norm(t);
-      if (x === 'coche') return 0;
-      if (x === 'moto') return 1;
-      return 9;
-    };
-
-    return arr
-      .map((item, idx) => ({ item, idx }))
-      .sort((a, b) => {
-        const ra = rank(a.item?.tipoVehiculoGeneral);
-        const rb = rank(b.item?.tipoVehiculoGeneral);
-        if (ra !== rb) return ra - rb;
-        return a.idx - b.idx;
-      })
-      .map((x) => x.item);
-  }
-
-  // ✅ lee selección del filtro vehículo
-  private getVehiculoSeleccionado(): string {
-    const fvg = this.filtrosAplicados?.tipoVehiculoGeneral;
-    const raw = fvg && typeof fvg === 'object' ? (fvg.key ?? fvg.label) : fvg;
-    const v = this.norm(raw);
-
-    if (v === 'carro' || v === 'auto' || v === 'automovil') return 'coche';
-    if (v === 'motocicleta' || v === 'motos') return 'moto';
-    return v; // 'coche' | 'moto' | ''
-  }
-
-  // ---------- CARGA COCHES + MOTOS ----------
+  // ---------- CARGA SOLO COCHES ----------
   getCatalogoNuevos() {
     this.mostrar_spinner = true;
 
-    forkJoin({
-      // COCHES NUEVOS
-      carsRes: this.carsService.getCarsNews().pipe(
-        catchError((err) => {
-          console.warn('getCarsNews falló:', err);
-          return of(null);
-        })
-      ),
-
-      // MOTOS (si quieres “motos nuevas” y tienes otro endpoint, cámbialo aquí)
-      motosRes: this.motosService.getMotos().pipe(
-        catchError((err) => {
-          console.warn('getMotos falló:', err);
-          return of(null);
-        })
-      ),
-    }).subscribe({
-      next: ({ carsRes, motosRes }: any) => {
+    this.carsService.getCarsNews().pipe(
+      catchError((err) => {
+        console.warn('getCarsNews falló:', err);
+        return of(null);
+      })
+    ).subscribe({
+      next: (carsRes: any) => {
         // ---- COCHES ----
         const cochesRaw = carsRes?.coches || [];
         const coches = (cochesRaw || []).map((auto: any) => {
@@ -192,30 +146,13 @@ export class NuevosPage implements OnInit {
           };
         });
 
-        // ---- MOTOS ----
-        const motosRaw = motosRes?.motos || motosRes || [];
-        const motos = (Array.isArray(motosRaw) ? motosRaw : []).map((m: any) => {
-          const { precioDesde, precioHasta } = this.calcularPrecioDesdeHasta(m);
-          return {
-            ...m,
-            tipoVehiculoGeneral: 'moto',
-            estadoVehiculo: m.estadoVehiculo || 'disponible',
-            imagen: m.imagenPrincipal || '/assets/default-car.webp',
-            precioDesde,
-            precioHasta,
-          };
-        });
-
-        // ✅ UNIR (y si no hay filtro, coche primero)
-        const unidos = this.ordenarPorTipoVehiculo([...coches, ...motos]);
-
-        this.autosStorage = unidos;
+        this.autosStorage = coches;
 
         // favoritos + filtros + paginación
         this.totalAutos = this.autosStorage.length;
         this.getCarsFavoritos();
 
-        // aplica filtros actuales (incluye “vehículo” estricto)
+        // aplica filtros actuales
         this.aplicarFiltros();
 
         this.mostrar_spinner = false;
@@ -253,7 +190,6 @@ export class NuevosPage implements OnInit {
 
     // ✅ reseteo limpio
     this.filtrosAplicados = {
-      tipoVehiculoGeneral: null,
       precio: null,
       anio: null,
       color: null,
@@ -269,7 +205,6 @@ export class NuevosPage implements OnInit {
       component: ListComponent,
       event: ev,
       translucent: true,
-      // ✅ le paso autos para que el popover pueda mostrar Coche/Moto si quieres dinámico
       componentProps: { tipo, autos: this.autosStorage },
     });
 
@@ -283,15 +218,9 @@ export class NuevosPage implements OnInit {
   aplicarFiltros() {
     let base = [...this.autosStorage];
 
-    const selectedVehiculo = this.getVehiculoSeleccionado(); // 'coche' | 'moto' | ''
     const { precio, anio, color, marca } = this.filtrosAplicados;
 
-    // ✅ 1) VEHÍCULO ESTRICTO
-    if (selectedVehiculo) {
-      base = base.filter((a) => this.norm(a?.tipoVehiculoGeneral) === selectedVehiculo);
-    }
-
-    // ✅ 2) PRECIO
+    // ✅ 1) PRECIO
     if (precio?.rango && Array.isArray(precio.rango) && precio.rango.length === 2) {
       base = base.filter((a) => {
         const p = typeof a?.precioDesde === 'number' ? a.precioDesde : (a?.precio ?? 0);
@@ -299,24 +228,19 @@ export class NuevosPage implements OnInit {
       });
     }
 
-    // ✅ 3) AÑO (si lo usas después)
+    // ✅ 2) AÑO (si lo usas después)
     if (anio?.anio) {
       base = base.filter((a) => a.anio === anio.anio);
     }
 
-    // ✅ 4) COLOR (si existe en tu data)
+    // ✅ 3) COLOR (si existe en tu data)
     if (color?.label) {
       base = base.filter((a) => this.norm(a.color) === this.norm(color.label));
     }
 
-    // ✅ 5) MARCA
+    // ✅ 4) MARCA
     if (marca?.label) {
       base = base.filter((a) => this.norm(a.marca) === this.norm(marca.label));
-    }
-
-    // ✅ si NO hay filtro de vehículo, coche primero
-    if (!selectedVehiculo) {
-      base = this.ordenarPorTipoVehiculo(base);
     }
 
     this.autosFiltrados = base;
@@ -329,7 +253,6 @@ export class NuevosPage implements OnInit {
 
   resetearFiltros() {
     this.filtrosAplicados = {
-      tipoVehiculoGeneral: null,
       precio: null,
       anio: null,
       color: null,
@@ -364,7 +287,6 @@ export class NuevosPage implements OnInit {
   ordenarAutos(criterio: string) {
     this.ordenActivo = criterio;
 
-    const selectedVehiculo = this.getVehiculoSeleccionado();
     const base = [...(this.autosFiltrados.length ? this.autosFiltrados : this.autosStorage)];
 
     switch (criterio) {
@@ -379,12 +301,7 @@ export class NuevosPage implements OnInit {
         break;
     }
 
-    // ✅ si NO hay filtro de vehículo, coche primero
-    if (!selectedVehiculo) {
-      this.autosFiltrados = this.ordenarPorTipoVehiculo(base);
-    } else {
-      this.autosFiltrados = base; // ya está estricto
-    }
+    this.autosFiltrados = base;
 
     this.totalAutos = this.autosFiltrados.length;
     this.calcularPaginacion();

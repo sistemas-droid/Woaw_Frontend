@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { MenuController, PopoverController, ModalController, IonContent } from '@ionic/angular';
 import { GeneralService } from '../../../services/general.service';
 import { CarsService } from '../../../services/cars.service';
 import { ListComponent } from '../../../components/filtos/list/list.component';
-import { PopoverController } from '@ionic/angular';
-import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
-
-import { IonContent } from '@ionic/angular';
 import { ViewChild } from '@angular/core';
 
 interface Auto {
@@ -29,8 +25,8 @@ export class UsadosPage implements OnInit {
   esDispositivoMovil: boolean = false;
   autosStorage: any[] = [];
 
+  // ✅ ORIGINAL: sin filtro de Vehículo (coche/moto)
   filtros = [
-    { label: 'Vehículo', tipo: 'tipoVehiculoGeneral' }, // 👈 NUEVO (coche / moto)
     { label: 'Marca', tipo: 'marca' },
     { label: 'Precio', tipo: 'precio' },
     { label: 'Tipo', tipo: 'tipo' }, // SUV, Sedán, etc.
@@ -40,14 +36,13 @@ export class UsadosPage implements OnInit {
 
   @ViewChild('pageContent') content!: IonContent;
 
-  // ## ----- ☢️☢️☢️☢️
+  // ✅ ORIGINAL: sin tipoVehiculoGeneral
   filtrosAplicados: any = {
-    tipoVehiculoGeneral: null, // 👈 NUEVO (coche / moto)
     precio: null,
     anio: null,
     color: null,
     marca: null,
-    tipo: null, // 👈 (SUV, Sedán, etc.)
+    tipo: null,
   };
 
   public autosFiltrados: any[] = [];
@@ -108,6 +103,7 @@ export class UsadosPage implements OnInit {
 
     this.generalService.valorGlobal$.subscribe((valor) => {
       this.itemsPorPagina = valor;
+      if (this.autosStorage.length) this.calcularPaginacion();
     });
 
     this.misAutos();
@@ -123,24 +119,25 @@ export class UsadosPage implements OnInit {
 
     this.carsService.misAutosId().subscribe({
       next: (res: any) => {
-        if (res && Array.isArray(res.vehicleIds) && res.vehicleIds.length > 0) {
-          this.idsMisAutos = res.vehicleIds;
-        } else {
-          this.idsMisAutos = [];
-        }
-
+        this.idsMisAutos = res && Array.isArray(res.vehicleIds) ? res.vehicleIds : [];
         this.mostrar_spinner = false;
       },
       error: (err) => {
         this.mostrar_spinner = false;
         const mensaje = err?.error?.message || 'Error al obtener tus vehículos.';
-        if (mensaje === 'No se encontraron vehículos para este usuario') {
-          this.idsMisAutos = [];
-        } else {
-          console.warn(mensaje);
-        }
+        if (mensaje === 'No se encontraron vehículos para este usuario') this.idsMisAutos = [];
+        else console.warn(mensaje);
       },
     });
+  }
+
+  // Helpers para normalizar strings
+  private norm(s: any): string {
+    return String(s || '')
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '');
   }
 
   getCarsUsados() {
@@ -173,6 +170,9 @@ export class UsadosPage implements OnInit {
         this.getCarsFavoritos();
         this.calcularPaginacion();
 
+        // ✅ aplica filtros actuales (marca/precio/tipo/año/etc)
+        this.aplicarFiltros();
+
         this.mostrar_spinner = false;
       },
       error: (err) => {
@@ -183,15 +183,16 @@ export class UsadosPage implements OnInit {
     });
   }
 
-  // ## ----- Ver descripción de aúto
+  // Ver descripción
   async ficha(auto: any) {
     localStorage.setItem('autoFicha', JSON.stringify(auto));
     this.router.navigate(['/ficha', auto._id]);
   }
 
-  // ## ----- Calculación de paginación
+  // Paginación
   calcularPaginacion() {
-    this.totalPaginas = Math.ceil(this.autosStorage.length / this.itemsPorPagina);
+    const base = this.autosFiltrados.length ? this.autosFiltrados : [...this.autosStorage];
+    this.totalPaginas = Math.ceil(base.length / this.itemsPorPagina) || 1;
     this.paginas = Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
     this.mostrarPagina(this.paginaActual);
   }
@@ -200,7 +201,6 @@ export class UsadosPage implements OnInit {
     this.paginaActual = pagina;
 
     const base = this.autosFiltrados.length ? this.autosFiltrados : [...this.autosStorage];
-
     const inicio = (pagina - 1) * this.itemsPorPagina;
     const fin = inicio + this.itemsPorPagina;
 
@@ -209,10 +209,7 @@ export class UsadosPage implements OnInit {
 
   cambiarPagina(pagina: number) {
     this.mostrarPagina(pagina);
-
-    setTimeout(() => {
-      this.content.scrollToTop(400);
-    }, 100);
+    setTimeout(() => this.content.scrollToTop(400), 100);
   }
 
   doRefresh(event: any) {
@@ -224,60 +221,30 @@ export class UsadosPage implements OnInit {
     }, 1500);
   }
 
-  // ## ----- Filtro ☢️☢️☢️☢️
+  // Filtros
   async mostrarOpciones(ev: Event, tipo: string) {
     const popover = await this.popoverCtrl.create({
       component: ListComponent,
       event: ev,
       translucent: true,
-      // 👇 le paso tipo y autos por si ListComponent quiere armar categorías dinámicas
       componentProps: { tipo, autos: this.autosStorage },
     });
 
     await popover.present();
     const { data } = await popover.onDidDismiss();
 
-    if (data === null) {
-      this.filtrosAplicados[tipo] = null;
-    } else {
-      this.filtrosAplicados[tipo] = data;
-    }
-
+    this.filtrosAplicados[tipo] = data === null ? null : data;
     this.aplicarFiltros();
   }
 
-  // Helpers para normalizar strings
-  private norm(s: any): string {
-    return String(s || '').trim().toLowerCase();
-  }
-
-  // ## ----- ☢️☢️☢️☢️
   aplicarFiltros() {
     let autosFiltrados = [...this.autosStorage];
 
-    const { precio, anio, color, marca, tipo, tipoVehiculoGeneral } = this.filtrosAplicados;
+    const { precio, anio, color, marca, tipo } = this.filtrosAplicados;
 
-    // 🚗🏍️ FILTRO COCHE / MOTO (nuevo)
-    // Soporta diferentes nombres de campo por si tu backend usa otro:
-    // auto.tipo (ideal) || auto.categoria || auto.tipoVehiculoGeneral
-    if (tipoVehiculoGeneral?.label) {
-      const wanted = this.norm(tipoVehiculoGeneral.label);
-
-      autosFiltrados = autosFiltrados.filter((auto) => {
-        const candidato =
-          this.norm(auto?.tipo) ||
-          this.norm(auto?.categoria) ||
-          this.norm(auto?.tipoVehiculoGeneral);
-
-        return candidato === wanted;
-      });
-    }
-
-    if (precio) {
+    if (precio?.rango && Array.isArray(precio.rango) && precio.rango.length === 2) {
       autosFiltrados = autosFiltrados.filter(
-        (auto) =>
-          auto.precioDesde >= precio.rango[0] &&
-          auto.precioDesde <= precio.rango[1]
+        (auto) => auto.precioDesde >= precio.rango[0] && auto.precioDesde <= precio.rango[1]
       );
     }
 
@@ -297,7 +264,7 @@ export class UsadosPage implements OnInit {
       );
     }
 
-    // "Tipo" (SUV, Sedán, etc.) — tu filtro original, lo dejo igual nomás con norm por seguridad
+    // Tipo (SUV, Sedán, etc.)
     if (tipo?.label) {
       autosFiltrados = autosFiltrados.filter(
         (auto) => this.norm(auto.tipoVehiculo) === this.norm(tipo.label)
@@ -305,10 +272,12 @@ export class UsadosPage implements OnInit {
     }
 
     this.autosFiltrados = autosFiltrados;
-    this.totalPaginas = Math.ceil(autosFiltrados.length / this.itemsPorPagina);
+    this.totalAutos = autosFiltrados.length;
+
+    this.totalPaginas = Math.ceil(autosFiltrados.length / this.itemsPorPagina) || 1;
     this.paginas = Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
     this.autosPaginados = autosFiltrados.slice(0, this.itemsPorPagina);
-    this.paginaActual = 1; // para que no te quedes en página muerta
+    this.paginaActual = 1;
   }
 
   getCarsFavoritos() {
@@ -318,9 +287,7 @@ export class UsadosPage implements OnInit {
         this.autosFavoritosIds = new Set(vehicleIds);
         this.mostrarPagina(this.paginaActual);
       },
-      error: (err) => {
-        const mensaje = err?.error?.message || 'Ocurrió un error inesperado';
-      },
+      error: (_err) => {},
     });
   }
 
@@ -335,7 +302,6 @@ export class UsadosPage implements OnInit {
       return;
     }
 
-    // Mostrar spinner
     await this.generalService.loading('Agregando a favoritos...');
 
     this.carsService.agregarFavorito(autoId).subscribe({
@@ -346,8 +312,7 @@ export class UsadosPage implements OnInit {
       error: async (err) => {
         await this.generalService.loadingDismiss();
         const mensaje =
-          err.error?.message ||
-          'No se pudo agregar el auto a favoritos. Intenta más tarde.';
+          err.error?.message || 'No se pudo agregar el auto a favoritos. Intenta más tarde.';
         await this.generalService.alert('Error', mensaje, 'danger');
       },
     });
@@ -377,7 +342,7 @@ export class UsadosPage implements OnInit {
     }
 
     this.autosFiltrados = base;
-    this.totalPaginas = Math.ceil(base.length / this.itemsPorPagina);
+    this.totalPaginas = Math.ceil(base.length / this.itemsPorPagina) || 1;
     this.paginas = Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
     this.autosPaginados = base.slice(0, this.itemsPorPagina);
     this.paginaActual = 1;
@@ -385,7 +350,6 @@ export class UsadosPage implements OnInit {
 
   resetearFiltros() {
     this.filtrosAplicados = {
-      tipoVehiculoGeneral: null,
       precio: null,
       anio: null,
       color: null,
@@ -408,15 +372,10 @@ export class UsadosPage implements OnInit {
     if (total <= 2) return this.paginas;
 
     const paginas: (number | string)[] = [];
-
     paginas.push(1);
 
     if (actual - rango > 2) paginas.push('...');
-    for (
-      let i = Math.max(2, actual - rango);
-      i <= Math.min(total - 1, actual + rango);
-      i++
-    ) {
+    for (let i = Math.max(2, actual - rango); i <= Math.min(total - 1, actual + rango); i++) {
       paginas.push(i);
     }
     if (actual + rango < total - 1) paginas.push('...');
