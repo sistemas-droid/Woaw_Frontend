@@ -73,7 +73,13 @@ export class FichaAutoPage implements OnInit {
     'hyundai',
     'fiat',
     'lexus',
-    'bestune'
+    'bestune',
+    'lincoln',
+    'cupra',
+    'audi',
+    'volkswagen',
+    'byd',
+    'acura'
   ];
 
 

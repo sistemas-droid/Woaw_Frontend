@@ -28,13 +28,16 @@ export class PerfilComponent implements OnInit {
   verActual: boolean = true;
   verNuevas: boolean = true;
 
+  public MyRole: string | null = null;
+  // public MyRole: 'admin' | 'lotero' | 'vendedor' | 'cliente' | 'asesor' | null = null;
+
   constructor(
     private modalCtrl: ModalController,
     private registroService: RegistroService,
     private generalService: GeneralService,
     private fb: FormBuilder,
     private alertCtrl: AlertController,
-    private router: Router // ⟵ inyectado Router
+    private router: Router
   ) {
     this.formCambio = this.fb.group({
       password: ["", [Validators.required]],
@@ -43,42 +46,47 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-ngOnInit() {
-  const storage = localStorage.getItem("user");
-  if (storage) {
-    try {
-      this.usuario = JSON.parse(storage);
-      this.fotoPerfil = this.getFotoFromUser(this.usuario);
+  ngOnInit() {
+    const storage = localStorage.getItem("user");
+    if (storage) {
+      try {
+        this.usuario = JSON.parse(storage);
+        this.fotoPerfil = this.getFotoFromUser(this.usuario);
 
-      // Si no hay imagen personalizada
-      if (!this.fotoPerfil || this.fotoPerfil.trim() === "") {
-        const nombre = this.usuario?.nombre?.trim().toLowerCase() || "";
+        // Si no hay imagen personalizada
+        if (!this.fotoPerfil || this.fotoPerfil.trim() === "") {
+          const nombre = this.usuario?.nombre?.trim().toLowerCase() || "";
 
-        // Detecta automáticamente si es nombre femenino
-        const esMujer =
-          nombre.endsWith("a") ||
-          nombre.endsWith("ia") ||
-          nombre.endsWith("na") ||
-          nombre.endsWith("ra") ||
-          nombre.endsWith("ta") ||
-          nombre.endsWith("sa") ||
-          nombre.endsWith("la") ||
-          nombre.endsWith("za");
+          // Detecta automáticamente si es nombre femenino
+          const esMujer =
+            nombre.endsWith("a") ||
+            nombre.endsWith("ia") ||
+            nombre.endsWith("na") ||
+            nombre.endsWith("ra") ||
+            nombre.endsWith("ta") ||
+            nombre.endsWith("sa") ||
+            nombre.endsWith("la") ||
+            nombre.endsWith("za");
 
-        this.fotoPerfil = esMujer
-          ? "assets/icon/woalf2.png"
-          : "assets/icon/woalf1.png";
+          this.fotoPerfil = esMujer
+            ? "assets/icon/woalf2.png"
+            : "assets/icon/woalf1.png";
+        }
+      } catch {
+        this.usuario = null;
+        this.fotoPerfil = "assets/icon/woalf.png";
       }
-    } catch {
-      this.usuario = null;
-      this.fotoPerfil = "assets/icon/woalf.png";
+    } else {
+      this.fotoPerfil = "assets/icon/woalf1.png";
     }
-  } else {
-    this.fotoPerfil = "assets/icon/woalf1.png";
+
+
+    this.generalService.tipoRol$.subscribe((rol) => {
+      this.MyRole = rol;
+    });
   }
-}
   // ⟵ NUEVO: usar en (click) del ion-card de "Eliminar cuenta"
- async goEliminarCuenta() {
+  async goEliminarCuenta() {
     try {
       // Si el modal está abierto, lo cerramos con pequeña espera
       await this.modalCtrl.dismiss();
@@ -161,10 +169,10 @@ ngOnInit() {
     return regex.test(valor)
       ? null
       : {
-          passwordInvalida: {
-            mensaje:
-              "Debe tener mínimo 6 caracteres, una mayúscula, un número y un carácter especial.",
-          },
-        };
+        passwordInvalida: {
+          mensaje:
+            "Debe tener mínimo 6 caracteres, una mayúscula, un número y un carácter especial.",
+        },
+      };
   }
 }

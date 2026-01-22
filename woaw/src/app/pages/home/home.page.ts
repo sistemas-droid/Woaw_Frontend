@@ -66,6 +66,7 @@ export class HomePage implements OnInit, OnDestroy {
   // Array de imágenes para rotación
   imagenesPrincipales: string[] = [
     // '/assets/home/P6.png',
+    '/assets/home/P6.png',
     '/assets/home/P1.webp',
     '/assets/home/P3.webp',
     '/assets/home/P4.webp',

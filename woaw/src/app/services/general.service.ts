@@ -16,6 +16,9 @@ import { NgZone } from '@angular/core';
 
 import { Capacitor } from '@capacitor/core';
 
+const WOAW_ASESOR_CODE_KEY = 'woaw_asesor_code';
+const WOAW_ASESOR_CODE_AT_KEY = 'woaw_asesor_code_at';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -23,6 +26,7 @@ export class GeneralService {
   toast(arg0: string, arg1: string) {
     throw new Error('Method not implemented.');
   }
+
   private popoverActivo?: HTMLIonPopoverElement;
   private preloadCache = new Map<string, Promise<void>>();
   public esMovil = new BehaviorSubject<boolean>(false);
@@ -39,6 +43,11 @@ export class GeneralService {
   private tokenSubject = new BehaviorSubject<boolean>(this.hasToken());
   public tokenExistente$ = this.tokenSubject.asObservable();
 
+
+  private asesorAsignadoSubject = new BehaviorSubject<boolean>(this.hasAsesor());
+  public asesorAsignado$ = this.asesorAsignadoSubject.asObservable();
+
+
   private valorGlobalSubject = new BehaviorSubject<number>(8);
   public valorGlobal$ = this.valorGlobalSubject.asObservable();
 
@@ -54,6 +63,7 @@ export class GeneralService {
 
   // Evitar dobles navegaciones a autenticación
   private redirigiendoTelefono = false;
+
 
   constructor(
     private platform: Platform,
@@ -144,10 +154,41 @@ export class GeneralService {
     }
   }
 
+  // ---- ASESOR ----
+  hasAsesor(): boolean {
+    try {
+      return !!localStorage.getItem(WOAW_ASESOR_CODE_KEY);
+    } catch {
+      return false;
+    }
+  }
+
+  // setAsesor(code: string) {
+  //   try {
+  //     let rol: string | null = this.obtenerRol();
+  //     if (rol === 'asesor' || rol === 'admin') {
+  //       return;
+  //     }
+  //     // console.log('Guardando asesor code:', code);  
+  //     localStorage.setItem(WOAW_ASESOR_CODE_KEY, code);
+  //     localStorage.setItem(WOAW_ASESOR_CODE_AT_KEY, new Date().toISOString());
+  //   } catch { }
+  //   this.asesorAsignadoSubject.next(true);
+  // }
+
+  clearAsesor() {
+    try {
+      localStorage.removeItem(WOAW_ASESOR_CODE_KEY);
+      localStorage.removeItem(WOAW_ASESOR_CODE_AT_KEY);
+    } catch { }
+    this.asesorAsignadoSubject.next(false);
+  }
+
+
+
   guardarCredenciales(token: string, user: any): void {
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
-    // localStorage.setItem('sesionActiva', '2025-10-01T17:30:57.727Z');  
     localStorage.setItem('sesionActiva', new Date().toISOString());
 
     this.tokenSubject.next(true);
@@ -156,18 +197,18 @@ export class GeneralService {
     const telefono = this.getTelefonoUsuario(user);
     const rutaActual = (this.router.url || '').split('?')[0] || '/inicio';
 
-    if (!telefono) {
-      const next = rutaActual || '/inicio';
-      this.router.navigate(
-        ['/autenticacion-user'],
-        { queryParams: { next }, replaceUrl: true }
-      );
-    } else {
+    // if (!telefono) {
+    //   const next = rutaActual || '/inicio';
+    //   this.router.navigate(
+    //     ['/autenticacion-user'],
+    //     { queryParams: { next }, replaceUrl: true }
+    //   );
+    // } else {
 
-      if (rutaActual !== '/inicio') {
-        this.router.navigate(['/inicio'], { replaceUrl: true });
-      }
-    }
+    // if (rutaActual !== '/inicio') {
+    this.router.navigate(['/inicio'], { replaceUrl: true });
+    // }
+    // }
   }
 
   // === Helper robusto para extraer/validar el teléfono del usuario ===
@@ -530,7 +571,7 @@ export class GeneralService {
     const killer = new Promise<never>((_, rej) =>
       t = setTimeout(() => {
         if (key) this.preloadCache.delete(key);
-        rej(new Error('timeout'));
+        // rej(new Error('timeout'));Z
       }, ms)
     );
     return Promise.race([p, killer]).finally(() => clearTimeout(t));
@@ -553,7 +594,7 @@ export class GeneralService {
           resolve();
         } catch { resolve(); }
       };
-      img.onerror = () => reject(new Error('img error'));
+      // img.onerror = () => reject(new Error('img error'));
     });
 
     const guarded = this.withTimeout(job, timeoutMs, url)

@@ -33,11 +33,16 @@ export class HeadersService {
   async obtenerToken(): Promise<string | null> {
     return localStorage.getItem('token');
   }
+  
+  obtenerCodeAsesor(): string {
+    return localStorage.getItem('woaw_asesor_code') ?? '';
+  }
 
   //  Cabeceras para JSON
   getJsonHeaders(token: string | null): HttpHeaders {
     return new HttpHeaders({
       Authorization: `Bearer ${token ?? ''}`,
+      Asesor: `${this.obtenerCodeAsesor() ?? ''}`,
       'Content-Type': 'application/json',
       'x-api-key': environment.public_key,
       "x-ambiente": environment.crabi_status,
@@ -49,6 +54,7 @@ export class HeadersService {
   getFormDataHeaders(token: string | null): HttpHeaders {
     return new HttpHeaders({
       Authorization: `Bearer ${token ?? ''}`,
+      Asesor: `${this.obtenerCodeAsesor() ?? ''}`,
       "x-ambiente": environment.crabi_status,
     });
   }

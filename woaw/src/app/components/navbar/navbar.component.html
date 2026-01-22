@@ -5,9 +5,9 @@
 
     <ion-buttons slot="start">
       <div class="logo_content">
-        <ion-button fill="clear"  (click)="regresar()" >
+        <ion-button fill="clear" (click)="regresar()">
           <ion-icon name="chevron-back-outline" *ngIf="!estaEnHome && esDispositivoMovil"></ion-icon>
-          <img src="/assets/icon/logo4.png" loading="lazy" alt="WOAW" class="logo"  />
+          <img src="/assets/icon/logo4.png" loading="lazy" alt="WOAW" class="logo" />
         </ion-button>
 
 
@@ -43,6 +43,10 @@
     </ion-buttons>
 
     <ion-buttons slot="end">
+      
+    <ion-badge aria-label="Estado asesor" (click)="eliminarAsesor()" mode="ios" class="asesor-dot" [color]="tieneAsesor ? 'success' : 'danger'">
+    </ion-badge>
+
       <ng-container *ngIf="!esDispositivoMovil">
         <ion-button fill="clear" [ngClass]="{ 'activo': isActive('home') }" (click)="redirecion('home')">
           inicio
@@ -149,5 +153,8 @@
         </span>
       </ion-button>
     </ion-buttons>
+
+
+
   </ion-toolbar>
 </ion-header>
