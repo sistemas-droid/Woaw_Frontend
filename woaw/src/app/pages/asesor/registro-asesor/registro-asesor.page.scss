@@ -561,3 +561,69 @@ ion-modal ion-content::-webkit-scrollbar-thumb {
         margin-top: 12px;
     }
 }
+
+/* ===== Pantalla de link expirado (centrada y grande) ===== */
+.invite-expired {
+    min-height: calc(100vh - 56px);
+    /* 56px aprox toolbar */
+    display: grid;
+    place-items: center;
+    padding: 24px;
+}
+
+.expired-card {
+    width: 100%;
+    max-width: 560px;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 22px 20px;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    box-shadow: 0 10px 24px rgba(2, 6, 23, 0.08);
+    text-align: center;
+}
+
+.expired-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 10px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    background: rgba(220, 38, 38, 0.12);
+    border: 1px solid rgba(220, 38, 38, 0.25);
+
+    ion-icon {
+        font-size: 30px;
+        color: #dc2626;
+    }
+}
+
+.expired-title {
+    margin: 6px 0 6px;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: .2px;
+    color: #0f172a;
+}
+
+.expired-text {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(15, 23, 42, 0.75);
+    line-height: 1.4;
+}
+
+.expired-actions {
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    ion-button.btn-back {
+        --border-radius: 12px;
+        height: 40px;
+        font-weight: 800;
+        text-transform: none;
+    }
+}

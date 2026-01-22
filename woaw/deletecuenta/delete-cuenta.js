@@ -1,6 +1,6 @@
 // ====== Config API ======
 const BASE_API = "https://woaw-backend-507962515113.us-central1.run.app/api";
-const PRE_DELETE_URL = `${BASE_API}/account/pre-delete`; 
+const PRE_DELETE_URL = `${BASE_API}/account/pre-delete`;
 const CONFIRM_DELETE_URL = `${BASE_API}/account/confirm-delete`;
 // `  `
 // ====== Selección de elementos ======
@@ -24,8 +24,8 @@ function setStatus(msg, type = "info") {
     type === "success"
       ? "var(--success)"
       : type === "error"
-      ? "var(--red)"
-      : "var(--muted)";
+        ? "var(--red)"
+        : "var(--muted)";
 }
 
 function sanitizeCode(v) {
@@ -154,30 +154,30 @@ async function onConfirmDelete() {
 
     setStatus(
       resp?.message ||
-        "✅ Tu cuenta se eliminó de forma segura. Todos tus datos han sido eliminados.",
+      "✅ Tu cuenta se eliminó de forma segura. Todos tus datos han sido eliminados.",
       "success"
     );
 
     // ✅ Ocultar todo excepto el logo y el mensaje verde
-const titleEl = document.querySelector('h1');
-const descEl  = document.querySelector('p');
+    const titleEl = document.querySelector('h1');
+    const descEl = document.querySelector('p');
 
-if (titleEl) titleEl.style.display = 'none';
-if (descEl)  descEl.style.display  = 'none';
+    if (titleEl) titleEl.style.display = 'none';
+    if (descEl) descEl.style.display = 'none';
 
-emailInput.style.display = 'none';
-confirmEmailInput.style.display = 'none';
-deleteBtn.style.display = 'none';
+    emailInput.style.display = 'none';
+    confirmEmailInput.style.display = 'none';
+    deleteBtn.style.display = 'none';
 
-if (codeWrap)   codeWrap.style.display   = 'none';
-if (confirmBtn) confirmBtn.style.display = 'none';
+    if (codeWrap) codeWrap.style.display = 'none';
+    if (confirmBtn) confirmBtn.style.display = 'none';
 
-// Asegura que el mensaje quede visible y en verde
-messageDiv.style.display = 'block';
-messageDiv.style.color = 'var(--success)';
+    // Asegura que el mensaje quede visible y en verde
+    messageDiv.style.display = 'block';
+    messageDiv.style.color = 'var(--success)';
 
-// (Opcional) centra un poco el mensaje
-messageDiv.style.marginTop = '0.75rem';
+    // (Opcional) centra un poco el mensaje
+    messageDiv.style.marginTop = '0.75rem';
 
 
     // Limpieza UI
@@ -214,7 +214,7 @@ deleteBtn.addEventListener("click", async () => {
 
       setStatus(
         resp?.message ||
-          "Te enviamos un código de 4 dígitos a tu correo. Escríbelo para confirmar.",
+        "Te enviamos un código de 4 dígitos a tu correo. Escríbelo para confirmar.",
         "success"
       );
 
@@ -223,7 +223,7 @@ deleteBtn.addEventListener("click", async () => {
       step = 2;
 
       emailInput.style.display = "none";
-confirmEmailInput.style.display = "none";
+      confirmEmailInput.style.display = "none";
 
       deleteBtn.textContent = "Reenviar código";
       deleteBtn.disabled = false; // permitir reenviar inmediatamente si lo desea
@@ -247,7 +247,7 @@ confirmEmailInput.style.display = "none";
       deleteBtn.disabled = true;
       setStatus("Reenviando código a tu correo...", "info");
 
-const resp = await fetchPostJSON(CONFIRM_DELETE_URL, { email, code });
+      const resp = await fetchPostJSON(CONFIRM_DELETE_URL, { email, code, purpose: '' });
 
       setStatus(
         resp?.message || "Código reenviado. Revisa tu correo.",
@@ -293,4 +293,4 @@ try {
   if (typeof mediaQuery.addEventListener === "function") {
     mediaQuery.addEventListener("change", validateEmails);
   }
-} catch (_) {}
+} catch (_) { }

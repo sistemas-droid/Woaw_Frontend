@@ -284,10 +284,10 @@ export class RegistroComponent implements OnInit {
     this.generalService.confirmarAccion(
       "Perderás los datos ingresados en esta sección.",
       "¿Deseas regresar?",
-      async () => { 
-            this.Seccionamostrar = 1;
+      async () => {
+        this.Seccionamostrar = 1;
       }
-    );  
+    );
   }
 
   // VALIDAR SECCIÓN DE CÓDIGO
@@ -298,7 +298,7 @@ export class RegistroComponent implements OnInit {
     // Asegurar que el código sean 6 dígitos
     const code = String(control?.value ?? '').replace(/\D/g, '').slice(0, 6);
     if (!code || code.length !== 6) {
-      
+
       await this.generalService.alert(
         'Código inválido',
         'El código debe tener 6 dígitos.',
@@ -309,7 +309,8 @@ export class RegistroComponent implements OnInit {
 
     const datos = {
       email: this.registroForm.value.email,
-      code
+      code,
+      purpose: 'register',
     };
 
     // mostramos loader
@@ -343,7 +344,7 @@ export class RegistroComponent implements OnInit {
 
   // REGISTRO DESPUES DE VALIDAR PASSWORD, EMAIL,  TELEFONO Y NOMBRE
   async EnvioRegistro() {
-    
+
     const campos = ['usuario', 'apellidos', 'email', 'telefono'];
     let valido = true;
 
@@ -549,6 +550,7 @@ export class RegistroComponent implements OnInit {
       const datos = {
         nombre: this.registroForm.value.usuario,
         email: this.registroForm.value.email,
+        purpose: 'register',
       };
 
       this.registroService.renvioCodigo(datos).subscribe({

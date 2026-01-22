@@ -48,13 +48,13 @@
 
         <!-- 🥇🥈🥉 RANKING -->
         <div class="ranking-badge"
-          *ngIf="activeTab === 'todos' && (ranking[i] === 1 || ranking[i] === 2 || ranking[i] === 3)">
+          *ngIf="activeTab === 'todos' && (lote.ranking === 1 || lote.ranking === 2 || lote.ranking === 3)">
           <span [ngClass]="{
-              gold: ranking[i] === 1,
-              silver: ranking[i] === 2,
-              bronze: ranking[i] === 3
+              gold: lote.ranking === 1,
+              silver: lote.ranking === 2,
+              bronze: lote.ranking === 3
             }">
-            {{ ranking[i] }}
+            {{ lote.ranking }}
           </span>
         </div>
 

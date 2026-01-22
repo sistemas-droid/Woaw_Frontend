@@ -24,6 +24,36 @@ import { MotosService } from '../../services/motos.service';
 import { CamionesService } from '../../services/camiones.service';
 import { Capacitor } from '@capacitor/core';
 
+
+interface Ubicacion {
+  ciudad?: string;
+  estado?: string;
+  lat?: number;
+  lng?: number;
+}
+interface Version {
+  Precio?: number | string;
+  precio?: number | string;
+  [k: string]: any;
+}
+
+interface AutoCard {
+  _id: string;
+  marca: string;
+  modelo: string;
+  anio: number;
+  tipoVenta: "nuevo" | "seminuevo" | "usado";
+  imagenPrincipal?: string;
+  imagenes?: string[];
+  ubicacion?: Ubicacion;
+  version?: Version[];
+  precio?: number | string | null;
+  transmision?: string;
+  combustible?: string;
+  kilometraje?: number | null;
+  [k: string]: any;
+}
+
 @Component({
   selector: 'app-cartas',
   templateUrl: './cartas.component.html',
@@ -47,6 +77,9 @@ export class CartasComponent implements OnInit {
 
   imagenCargada = false;
   verificadorCarga: any;
+
+  carsLoaded: Record<string, boolean> = {};
+  imagenesCargadas = new Set<string>();
 
   public isNative = Capacitor.isNativePlatform();
 
@@ -90,9 +123,24 @@ export class CartasComponent implements OnInit {
       }
     }, 200);
 
-
     // console.log(this.auto)
     // imagen: auto.imagenPrincipal || '/assets/default-car.webp',
+  }
+  public getImagen(a: AutoCard): string {
+    const principal = (a?.imagenPrincipal || '').trim();
+    if (principal) return principal;
+
+    const first = (a?.imagenes?.[0] || '').trim();
+    if (first) return first;
+
+    return '/assets/home/no-image.jpeg';
+  }
+
+  markCarLoaded(id: string) {
+    this.carsLoaded[id] = true;
+  }
+  onImgLoad(id: string) {
+    this.imagenesCargadas.add(id);
   }
   onImagenCargada() {
     this.imagenCargada = true;
@@ -115,7 +163,21 @@ export class CartasComponent implements OnInit {
       console.warn('Tipo de vehículo no reconocido:', auto.vehiculo);
     }
   }
+  public onImgError(event: Event, auto: AutoCard) {
+    const img = event.target as HTMLImageElement;
 
+    if (img.dataset['fallbackTried'] === '1') {
+      img.src = '/assets/home/no-image.jpeg';
+      return;
+    }
+    img.dataset['fallbackTried'] = '1';
+
+    if (auto.imagenes && auto.imagenes.length > 0) {
+      img.src = auto.imagenes[0];
+    } else {
+      img.src = '/assets/home/no-image.jpeg';
+    }
+  }
   async agregarAFavoritos(vehicleId: string) {
     if (!this.isLoggedIn) {
       this.router.navigate(['/inicio']);

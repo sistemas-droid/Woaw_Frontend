@@ -23,13 +23,14 @@
   </div>
 
   <div class="imagen-container">
-    <img [src]="auto.imagenPrincipal" [alt]="auto.modelo" loading="lazy" (load)="onImagenCargada()"
-      (error)="imagenCargada = true" [class.oculta]="!imagenCargada" />
+    <ion-img [src]="getImagen(auto)" (ionImgDidLoad)="markCarLoaded(auto._id)"
+      (ionError)="onImgError($event, auto); markCarLoaded(auto._id)" [class.img-hidden]="!carsLoaded[auto._id]">
+    </ion-img>
 
     <!-- Capa de oscurecimiento si está vendido -->
     <div class="overlay" *ngIf="auto.estadoVehiculo === 'vendido'"></div>
 
-    <div class="loader" *ngIf="!imagenCargada">
+    <div class="loader" *ngIf="!carsLoaded[auto._id]">
       <div class="spinner"></div>
       <span>Cargando...</span>
     </div>

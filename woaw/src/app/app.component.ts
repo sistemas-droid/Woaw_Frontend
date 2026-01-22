@@ -14,13 +14,21 @@ import {
   AlertController,
   MenuController,
 } from '@ionic/angular';
+import { firstValueFrom } from 'rxjs';
 import { App } from '@capacitor/app';
 import { PushService } from './services/push.service';
 import { AppUpdate, AppUpdateAvailability } from '@capawesome/capacitor-app-update';
+import { RegistroService } from 'src/app/services/registro.service';
 
 declare let gtag: Function;
 
 const WOALF_STORAGE_KEY = 'woalf_last_shown';
+
+// variables asesores 
+const WOAW_ASESOR_CODE_KEY = 'woaw_asesor_code';
+const WOAW_ASESOR_CODE_AT_KEY = 'woaw_asesor_code_at';
+const WOAW_ASESOR_DATA_KEY = 'woaw_asesor_data';
+
 
 // Helper: reemplazo de Object.fromEntries para TS < ES2019
 function paramsToObject(sp: URLSearchParams): Record<string, string> {
@@ -63,6 +71,7 @@ export class AppComponent {
     private actionSheetCtrl: ActionSheetController,
     private alertCtrl: AlertController,
     private push: PushService,
+    private registroService: RegistroService
   ) {
     this.initializeApp();
 
@@ -76,11 +85,11 @@ export class AppComponent {
       }
     });
 
+    this.setDynamicTitle();
+
     this.router.events.subscribe(() => {
       this.currentUrl = this.router.url;
     });
-
-    this.setDynamicTitle();
 
     this.generalService.tokenExistente$.subscribe((estado) => {
       this.isLoggedIn = estado;
@@ -122,28 +131,26 @@ export class AppComponent {
       }
     });
 
+
+    this.initAsesorCapture();
+
   }
 
   get mostrarTabs(): boolean {
     const rutasSinTabs = [
-      '/update-car/', '/usados', '/nuevos', '/seminuevos', '/publicar', '/fichas/autos',
+      '/update-car/', '/usados', '/nuevos', '/seminuevos', '/publicar', '/fichas/autos/',
       '/m-nuevos', '/mis-motos', '/seguros/poliza', '/mis-autos',
       '/seguros/autos', '/seguros/cotiza/', '/seguros/cotizar-manual',
-      '/renta-coches', '/seguros/persona', '/search/vehiculos/', '/add-lote', 
+      '/renta-coches', '/seguros/persona', '/search/vehiculos/', '/add-lote',
       '/renta/add-coche', '/camiones/todos', '/soporte', '/registro-asesor'
     ];
     return this.esDispositivoMovil && !rutasSinTabs.some((r) => this.currentUrl.startsWith(r));
   }
 
-  get mostrarBtnAll(): boolean {
-    const rutasSinTabs = ['/update-car/', '/arrendamiento', '/lote-edit/'];
-    const rutaActual = this.router.url;
-    return !rutasSinTabs.some(ruta => rutaActual.startsWith(ruta));
-  }
 
   get mostrarWoalft(): boolean {
-    const rutasSinWoalft = ['/soporte', '/usados', '/nuevos', '/seminuevos', '/fichas/autos', '/update-car/autos/',
-      '/m-nuevos', '/mis-motos', '/mis-autos', '/camiones/todos', '/registro-asesor'];
+    const rutasSinWoalft = ['/soporte', '/usados', '/nuevos', '/seminuevos', '/fichas/autos/', '/update-car/autos/',
+      '/m-nuevos', '/mis-motos', '/mis-autos', '/camiones/todos', '/registro-asesor', '/ficha/motos'];
     return !rutasSinWoalft.some(r => this.currentUrl.startsWith(r));
   }
 
@@ -238,6 +245,11 @@ export class AppComponent {
   }
 
 
+
+
+
+
+
   // ===== Deep Links (custom scheme + universal links) =====
 
   private async registerDeepLinks() {
@@ -305,14 +317,20 @@ export class AppComponent {
     }
   }
 
+
+
+
+
+
+
+
+  // REVISA ACTUALIZACIONES NATIVAS ---- ---- 
   private startUpdateCheckLoop() {
     // Cada 40 segundos revisa si hay actualización disponible
     this.updateCheckInterval = setInterval(() => {
       this.checkForAppUpdateNative();
     }, 40000);
   }
-
-
   private async checkForAppUpdateNative() {
     if (!this.platform.is('android')) return;
 
@@ -358,5 +376,103 @@ export class AppComponent {
       console.error('[App] Error al comprobar actualización nativa', err);
     }
   }
+
+
+
+
+
+
+  // ASESORES .....
+  // Llama esto una sola vez (constructor o ngOnInit) después de inyectar router/platform/zone/generalService
+  private initAsesorCapture() {
+    // 1) Angular router (web + navegación interna en app)
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => this.captureAsesorFromAnyUrl(this.router.url));
+
+    // 2) Primer load (por si ya entró con query antes del primer NavigationEnd)
+    queueMicrotask(() => this.captureAsesorFromAnyUrl(this.router.url));
+
+    // 3) Capacitor app links (solo si es app)
+    this.platform.ready().then(async () => {
+      // cold start
+      try {
+        const launch = await App.getLaunchUrl();
+        if (launch?.url) this.captureAsesorFromAnyUrl(launch.url);
+      } catch { }
+
+      // warm start
+      App.addListener('appUrlOpen', ({ url }) => this.captureAsesorFromAnyUrl(url));
+    });
+  }
+
+
+
+
+  private async captureAsesorFromAnyUrl(urlLike: string) {
+    try {
+      if (!urlLike.includes('code=')) return;
+
+      const u =
+        urlLike.startsWith('http') || urlLike.startsWith('woaw:')
+          ? new URL(urlLike)
+          : new URL(urlLike, window.location.origin);
+
+      if (u.pathname !== '/home') return;
+
+      const code = u.searchParams.get('code');
+      if (!code) return;
+
+      const rol = this.generalService.obtenerRol();
+      if (rol === 'asesor' || rol === 'admin') return;
+
+      // 1) Guardar + verificar storage
+      await this.guardarAsesorEnStorage(code);
+
+      // 2) Después hacer la petición
+      try {
+        const res: any = await firstValueFrom(this.registroService.datos_asesor());
+
+        if (res?.asesor) {
+          localStorage.setItem(
+            WOAW_ASESOR_DATA_KEY,
+            JSON.stringify(res.asesor)
+          );
+        }
+
+        console.log('Datos asesor guardados:', res?.asesor);
+      } catch (err) {
+        console.warn('Error datos_asesor:', err);
+      }
+
+
+      // 3) Limpiar query param si es navegación Angular
+      if (!urlLike.startsWith('http') && !urlLike.startsWith('woaw:')) {
+        this.zone.run(() => {
+          this.router.navigateByUrl('/home', { replaceUrl: true });
+        });
+      }
+    } catch (e) {
+      console.warn('[WOAW] No se pudo capturar asesor code', e);
+    }
+  }
+
+  private async guardarAsesorEnStorage(code: string): Promise<void> {
+    localStorage.setItem(WOAW_ASESOR_CODE_KEY, code);
+    localStorage.setItem(WOAW_ASESOR_CODE_AT_KEY, new Date().toISOString());
+
+    const saved = localStorage.getItem(WOAW_ASESOR_CODE_KEY);
+    if (saved !== code) {
+      throw new Error('No se pudo persistir el asesor code en localStorage');
+    }
+  }
+
+
+
+
+
+
+
+
 
 }

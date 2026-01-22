@@ -10,9 +10,9 @@
       <div class="overlay" [class.loaded]="overlayLoaded" [ngStyle]="overlayLoaded ? {
          'background-image': 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff00 100%), url(' + imgenPrincipal + ')',
          'background-size': 'cover',
-         'opacity': '1',
          'background-position': '50% 95%',
-         'background-repeat': 'no-repeat'
+         'background-repeat': 'no-repeat',
+         'opacity': '1',
        } : {}">
       </div>
 
@@ -139,7 +139,8 @@
         </div>
 
         <div class="brand" (click)="irABusqueda('mercedes')">
-          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/mercedes_benz-1752250726653.png" alt="Mercedes-Benz" />
+          <img src="https://storage.googleapis.com/wo-aw/uploads/marcas/mercedes_benz-1752250726653.png"
+            alt="Mercedes-Benz" />
         </div>
 
         <div class="brand" (click)="irABusqueda('audi')">
@@ -162,35 +163,12 @@
     </div>
   </section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <app-principal #principal></app-principal>
 
   <!-- <app-precentacion></app-precentacion> -->
   <br *ngIf="isNative"><br *ngIf="isNative">
   <section class="video-wrap">
-    <video #videoEl class="video" [src]="videoSrc" autoplay muted loop playsinline preload="auto"
-      poster="assets/img/poster.jpg">
+    <video #videoEl class="video" [src]="videoSrc" autoplay muted loop playsinline preload="auto">
     </video>
     <div class="overlay">
       <img src="assets/icon/logo4.png" alt="Logo woaw" class="logo-goautos2" loading="lazy" />
@@ -250,8 +228,6 @@
   <button class="btn-flotante" *ngIf="mostrarBotonFlotante && !esDispositivoMovil" (click)="scrollAPrincipal()">
     {{ botonFlotanteTexto }}
   </button>
-
-
 
   <app-footer></app-footer>
 </ion-content>

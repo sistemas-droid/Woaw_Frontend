@@ -63,6 +63,17 @@
           <button type="button" class="btn-mini" (click)="copiar(asesor.telefono)">Copiar</button>
         </div>
 
+        <div class="dato link-comision" *ngIf="asesor?.asesorUid">
+          <div class="dato-left">
+            <ion-icon name="link-outline"></ion-icon>
+            <div>
+              <span class="label">Link de comisión</span>
+              <span class="value">{{ linkComision }}</span>
+            </div>
+          </div>
+          <button type="button" class="btn-mini" (click)="copiar(linkComision)">Copiar</button>
+        </div>
+
       </div>
 
     </div>

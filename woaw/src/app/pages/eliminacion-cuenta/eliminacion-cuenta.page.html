@@ -29,32 +29,17 @@
 
       <!--  Debe marcarse para habilitar el botón -->
       <div class="confirm-box">
-        <ion-checkbox
-          class="confirm"
-          labelPlacement="end"
-          [(ngModel)]="confirmed"
-        >
+        <ion-checkbox class="confirm" labelPlacement="end" [(ngModel)]="confirmed">
           Confirmo que entiendo las consecuencias.
         </ion-checkbox>
       </div>
 
       <div class="actions">
-        <ion-button
-          expand="block"
-          class="delete-btn"
-          [disabled]="!confirmed || loading"
-          (click)="onDelete()"
-        >
+        <ion-button expand="block" class="delete-btn" [disabled]="!confirmed || loading" (click)="onDelete()">
           {{ loading ? 'Eliminando…' : 'Eliminar definitivamente' }}
         </ion-button>
 
-        <ion-button
-          routerLink="/home"
-          expand="block"
-          fill="clear"
-          class="cancel-btn"
-          [disabled]="loading"
-        >
+        <ion-button routerLink="/home" expand="block" fill="clear" class="cancel-btn" [disabled]="loading">
           Cancelar
         </ion-button>
       </div>

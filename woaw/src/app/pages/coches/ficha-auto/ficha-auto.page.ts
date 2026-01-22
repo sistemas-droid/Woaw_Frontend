@@ -68,11 +68,19 @@ export class FichaAutoPage implements OnInit {
   marcasConFondoNuevo: string[] = [
     'honda',
     'chirey',
-    'suzuki', 
+    'suzuki',
     'chevrolet',
     'hyundai',
+    'fiat',
+    'lexus',
+    'bestune',
     'lincoln',
-
+    'cupra',
+    'audi',
+    'volkswagen',
+    'byd',
+    'acura',
+    'King Long'
   ];
 
 

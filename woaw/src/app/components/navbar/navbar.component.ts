@@ -42,6 +42,8 @@ export class NavbarComponent implements OnInit {
   terminoBusquedaURL: string = "";
   mostrarBuscador = false;
 
+  public tieneAsesor: boolean = false;
+
   constructor(
     private menu: MenuController,
     private router: Router,
@@ -75,6 +77,10 @@ export class NavbarComponent implements OnInit {
       if (this.router.url.includes("/search/vehiculos") && params["termino"]) {
         this.terminoBusquedaURL = decodeURIComponent(params["termino"]);
       }
+    });
+
+    this.generalService.asesorAsignado$.subscribe((estado) => {
+      this.tieneAsesor = estado;
     });
 
     // Leer usuario/foto del storage
@@ -253,5 +259,9 @@ export class NavbarComponent implements OnInit {
       return;
     }
     this.router.navigate(["/home"]);
+  }
+
+  public eliminarAsesor() {
+    this.generalService.clearAsesor();
   }
 }

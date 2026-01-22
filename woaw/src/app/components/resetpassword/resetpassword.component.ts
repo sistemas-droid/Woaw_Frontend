@@ -58,7 +58,7 @@ export class ResetpasswordComponent implements OnInit {
       }
     );
   }
-  ngOnInit() {}
+  ngOnInit() { }
   // REGISTRO DESPUES DE VALIDAR PASSWORD, EMAIL,  TELEFONO Y NOMBRE
   async EnvioRegistro() {
     const campos = ['contrasena', 'email'];
@@ -235,6 +235,7 @@ export class ResetpasswordComponent implements OnInit {
       const datos = {
         email: this.registroForm.value.email,
         code: String(this.registroForm.value.numeroConfirm),
+        purpose: 'recovery',
       };
 
       this.registroService.recuperacioCodigo(datos).subscribe({

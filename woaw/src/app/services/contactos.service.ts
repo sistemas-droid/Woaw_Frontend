@@ -117,27 +117,10 @@ export class ContactosService {
     const url = `https://api.whatsapp.com/send?phone=${this.telefonoFijo}&text=${mensaje}`;
     window.open(url, '_blank');
   }
+
+
+
   async contactarWOAW(
-    auto: any,
-    tipo_veiculo: string
-  ): Promise<void> {
-    // const popUp = localStorage.getItem('popUp') === 'true';
-    // if (!popUp) {
-    //   const modal = await this.modalCtrl.create({
-    //     component: PopUpComponent,
-    //     backdropDismiss: false,
-    //     showBackdrop: true,
-    //   });
-
-    //   await modal.present();
-
-    //   const { data } = await modal.onDidDismiss();
-    //   this.popUpAceptado(data, marca, modelo, anio, id, tipo);
-    // }
-
-    this.popUpAceptado(auto, tipo_veiculo);
-  }
-  async popUpAceptado(
     auto: any,
     tipo_veiculo: string
   ) {
@@ -253,91 +236,93 @@ export class ContactosService {
       },
     });
   }
+
+
   llamar() {
     window.location.href = `tel:${this.telefonoFijo}`;
   }
 
   // Añade estas helpers dentro de la clase ContactosService (arriba del método compartirAuto)
-private hasWebShare(): boolean {
-  return typeof navigator !== 'undefined' 
-    && 'share' in navigator 
-    && typeof (navigator as any).share === 'function';
-}
+  private hasWebShare(): boolean {
+    return typeof navigator !== 'undefined'
+      && 'share' in navigator
+      && typeof (navigator as any).share === 'function';
+  }
 
-private async copyToClipboardSafe(text: string): Promise<boolean> {
-  try {
-    if (typeof navigator !== 'undefined' 
-        && 'clipboard' in navigator 
+  private async copyToClipboardSafe(text: string): Promise<boolean> {
+    try {
+      if (typeof navigator !== 'undefined'
+        && 'clipboard' in navigator
         && typeof navigator.clipboard?.writeText === 'function') {
-      await navigator.clipboard.writeText(text);
-      return true;
-    }
-  } catch { /* noop */ }
-  return false;
-}
-
-// --- COMPARTIR (nativo iOS/Android + Web + fallback) ---
-async compartirAuto(auto: any, tipo: string) {
-  const url = `https://wo-aw.com/ficha/${tipo}/${auto._id}`;
-  const esNuevo = auto?.tipoVenta === 'nuevo';
-
-  let versionesTexto = '';
-  if (Array.isArray(auto?.version) && auto.version.length > 1) {
-    versionesTexto = auto.version
-      .map((v: { Name: string; Precio?: number }) =>
-        v?.Precio != null ? `- ${v.Name}: $${v.Precio.toLocaleString('es-MX')}` : `- ${v.Name}`
-      )
-      .join('\n');
-  } else if (Array.isArray(auto?.version) && auto.version.length === 1) {
-    versionesTexto = auto.version[0].Name;
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch { /* noop */ }
+    return false;
   }
 
-  const precioTexto =
-    auto?.precioDesde && auto?.precioHasta
-      ? esNuevo
-        ? `💰 Precio: desde $${auto.precioDesde.toLocaleString('es-MX')} hasta $${auto.precioHasta.toLocaleString('es-MX')}`
-        : `💰 Precio: $${auto.precioDesde.toLocaleString('es-MX')}`
-      : `💰 Precio: $${(auto?.precio ?? 0).toLocaleString('es-MX')}`;
+  // --- COMPARTIR (nativo iOS/Android + Web + fallback) ---
+  async compartirAuto(auto: any, tipo: string) {
+    const url = `https://wo-aw.com/ficha/${tipo}/${auto._id}`;
+    const esNuevo = auto?.tipoVenta === 'nuevo';
 
-  const titulo = `${auto?.marca ?? ''} ${auto?.modelo ?? ''} ${auto?.anio ?? ''}`.trim();
-  const texto =
-    `🚗 *${titulo}*\n` +
-    (versionesTexto ? `🧩 Versiones:\n${versionesTexto}\n` : '') +
-    `${precioTexto}\n` +
-    `🔗 Ver en WOAW: ${url}`;
-
-  try {
-    // 1) App nativa (Capacitor) — iOS/Android
-    const can = await Share.canShare();
-    if (can?.value) {
-      await Share.share({
-        title: titulo || 'Woaw',
-        text: texto,
-        url,
-        dialogTitle: 'Compartir vehículo',
-      });
-      return;
+    let versionesTexto = '';
+    if (Array.isArray(auto?.version) && auto.version.length > 1) {
+      versionesTexto = auto.version
+        .map((v: { Name: string; Precio?: number }) =>
+          v?.Precio != null ? `- ${v.Name}: $${v.Precio.toLocaleString('es-MX')}` : `- ${v.Name}`
+        )
+        .join('\n');
+    } else if (Array.isArray(auto?.version) && auto.version.length === 1) {
+      versionesTexto = auto.version[0].Name;
     }
 
-    // 2) Web Share API (Safari/Chrome móviles, PWA) — evita TS2774
-    if (this.hasWebShare()) {
-      await (navigator as any).share({ title: titulo || 'Woaw', text: texto, url });
-      return;
-    }
+    const precioTexto =
+      auto?.precioDesde && auto?.precioHasta
+        ? esNuevo
+          ? `💰 Precio: desde $${auto.precioDesde.toLocaleString('es-MX')} hasta $${auto.precioHasta.toLocaleString('es-MX')}`
+          : `💰 Precio: $${auto.precioDesde.toLocaleString('es-MX')}`
+        : `💰 Precio: $${(auto?.precio ?? 0).toLocaleString('es-MX')}`;
 
-    // 3) Fallback web: copiar al portapapeles (blindeado)
-    const copied = await this.copyToClipboardSafe(`${titulo}\n${texto}`);
-    if (copied) {
-      this.generalService?.presentToast?.('Enlace copiado al portapapeles', 'info');
-    } else {
-      // último recurso: abrir la URL para que el usuario la comparta manualmente
-      window.open(url, '_blank');
+    const titulo = `${auto?.marca ?? ''} ${auto?.modelo ?? ''} ${auto?.anio ?? ''}`.trim();
+    const texto =
+      `🚗 *${titulo}*\n` +
+      (versionesTexto ? `🧩 Versiones:\n${versionesTexto}\n` : '') +
+      `${precioTexto}\n` +
+      `🔗 Ver en WOAW: ${url}`;
+
+    try {
+      // 1) App nativa (Capacitor) — iOS/Android
+      const can = await Share.canShare();
+      if (can?.value) {
+        await Share.share({
+          title: titulo || 'Woaw',
+          text: texto,
+          url,
+          dialogTitle: 'Compartir vehículo',
+        });
+        return;
+      }
+
+      // 2) Web Share API (Safari/Chrome móviles, PWA) — evita TS2774
+      if (this.hasWebShare()) {
+        await (navigator as any).share({ title: titulo || 'Woaw', text: texto, url });
+        return;
+      }
+
+      // 3) Fallback web: copiar al portapapeles (blindeado)
+      const copied = await this.copyToClipboardSafe(`${titulo}\n${texto}`);
+      if (copied) {
+        this.generalService?.presentToast?.('Enlace copiado al portapapeles', 'info');
+      } else {
+        // último recurso: abrir la URL para que el usuario la comparta manualmente
+        window.open(url, '_blank');
+      }
+    } catch (err) {
+      // console.error('[Share] compartirAuto error', err);
+      // this.generalService?.alert?.('Error', 'No se pudo abrir el panel de compartir.', 'danger');
     }
-  } catch (err) {
-   // console.error('[Share] compartirAuto error', err);
-   // this.generalService?.alert?.('Error', 'No se pudo abrir el panel de compartir.', 'danger');
   }
-}
 
   contactarPorPublicacionParticular(
     anioAuto: number | string,
@@ -382,9 +367,6 @@ async compartirAuto(auto: any, tipo: string) {
     const url = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
   }
-
-
-
 
   // ARRENDAMIENTO
   enviarWhatsappInteresGeneral(): void {
@@ -515,6 +497,7 @@ async compartirAuto(auto: any, tipo: string) {
 
     window.open(url, '_blank');
   }
+
   envio_solicitus_credito(data: {
     coche: any;
     precio: any;
@@ -591,6 +574,7 @@ async compartirAuto(auto: any, tipo: string) {
       catchError((error) => this.headersService.handleError(error))
     );
   }
+
   Arrendamiento_enviarPorWhatsApp(body: any): void {
     const baseUrl = `${environment.api_key}/arrendamiento`;
     const key = 'arr_whats_count';
@@ -641,7 +625,6 @@ async compartirAuto(auto: any, tipo: string) {
     const url = `https://api.whatsapp.com/send?phone=${this.telefonoArrendamiento}&text=${mensaje}`;
     window.open(url, '_blank');
   }
-
 
   cotizaSeguro(data: {
     tipo?: string;
