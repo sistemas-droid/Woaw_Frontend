@@ -79,7 +79,8 @@ export class FichaAutoPage implements OnInit {
     'audi',
     'volkswagen',
     'byd',
-    'acura'
+    'acura',
+    'King Long'
   ];
 
 
