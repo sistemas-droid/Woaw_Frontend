@@ -578,6 +578,26 @@ export class CarsService {
       catchError((error) => this.headersService.handleError(error))
     );
   }
+
+  get_Img_Editar(_id: any, url: any): Observable<Blob> {
+    return from(this.headersService.obtenerToken()).pipe(
+      switchMap((token) => {
+        const headers = this.headersService.getJsonHeaders(token);
+
+        return this.http.get(
+          `${environment.api_key}/cars/vehiculos/${_id}/imagen`,
+          {
+            headers,
+            params: { url },
+            responseType: 'blob'
+          }
+        );
+      }),
+      catchError((error) => this.headersService.handleError(error))
+    );
+  }
+
+
 }
 
 /**
@@ -592,7 +612,7 @@ export class CarsService {
         /vehiculos?
 
 
-exports.removeBackgroundBuffer = async (req, res) => {
+exports.removeBackgroundBuffer = async (req, res) => 
   try {
     let bufferOriginal = null;
 

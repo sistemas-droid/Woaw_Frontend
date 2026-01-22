@@ -1,6 +1,7 @@
 <app-navbar></app-navbar>
 
-<ion-content #pageContent [fullscreen]="true" class="contenido-ios">
+<ion-content #pageContent [fullscreen]="true" class="contenido-ios" mode="ios">
+  <!-- Refresher (mezcla: config HEAD + refresher main) -->
   <ion-refresher
     slot="fixed"
     (ionRefresh)="doRefresh($event)"
@@ -17,25 +18,25 @@
     </ion-refresher-content>
   </ion-refresher>
 
+  <!-- Header/Orden -->
   <app-acomodo
     [totalAutos]="totalAutos"
     (ordenCambio)="ordenarAutos($event)"
     [titulo]="'Nuevos'"
   ></app-acomodo>
 
-  <app-spinner *ngIf="mostrar_spinner" [tipo]="tipo_spinner" [text]="texto_spinner" [sub_text]="textoSub_spinner"></app-spinner>
+  <!-- Spinner -->
+  <app-spinner
+    *ngIf="mostrar_spinner"
+    [tipo]="tipo_spinner"
+    [text]="texto_spinner"
+    [sub_text]="textoSub_spinner"
+  ></app-spinner>
 
   <ion-grid class="contenedor-catalogo-ios">
     <ion-row>
       <!-- Columna lateral de filtros -->
-      <ion-col size="12" size-md="3">
-        <!--
-        <button class="btn-transparente" (click)="abrirModalArrendamiento()">
-          ¿Cómo arrendar un coche?
-          <ion-icon name="information-circle-outline"></ion-icon>
-        </button>
-        <br>
-        -->
+      <ion-col size="12" size-md="3" class="col-filtros-ios">
         <app-menu
           [filtros]="filtros"
           *ngIf="!mostrarInfo"
@@ -47,28 +48,28 @@
       </ion-col>
 
       <!-- Columna de catálogo -->
-      <ion-col size="12" size-md="9">
-        <!-- 👇 clase condicional para centrar vacío -->
+      <ion-col size="12" size-md="9" class="col-catalogo-ios">
+        <!-- clase condicional para centrar vacío -->
         <div
           class="catalogo-autos-ios"
-          [class.sin-autos]="!autosPaginados || autosPaginados.length === 0"
+          [class.sin-autos]="!mostrar_spinner && (!autosPaginados || autosPaginados.length === 0)"
         >
-          <!-- Estado vacío -->
+          <!-- Estado vacío (solo si NO está cargando) -->
           <div
-            *ngIf="!autosPaginados || autosPaginados.length === 0"
+            *ngIf="!mostrar_spinner && (!autosPaginados || autosPaginados.length === 0)"
             class="mensaje-vacio-ios"
           >
             <ion-icon name="car-sport-outline" class="icono-mensaje"></ion-icon>
-            <p>No se encontraron autos para esta sección.</p>
+            <p>No se encontraron vehículos para esta sección.</p>
           </div>
 
-          <!-- Listado de autos -->
+          <!-- Cards -->
           <ng-container *ngIf="autosPaginados && autosPaginados.length > 0">
             <ng-container *ngFor="let auto of autosPaginados">
               <app-cartas
                 [auto]="auto"
                 [autosFavoritosIds]="autosFavoritosIds"
-                [ubicacion]="'nuevos'"
+                [ubicacion]="auto?.tipoVehiculoGeneral === 'moto' ? 'm-nuevos' : 'nuevos'"
                 (refrescarAutos)="handleRefrescarAutos($event)"
                 [esMio]="idsMisAutos.includes(auto._id)"
               >
@@ -100,6 +101,7 @@
                 >
                   {{ i }}
                 </button>
+
                 <span *ngIf="!esNumero(i)" class="ellipsis-ios">...</span>
               </ng-container>
 
@@ -114,7 +116,10 @@
             </div>
           </div>
         </div>
+
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <app-footer></app-footer>
 </ion-content>

@@ -13,6 +13,7 @@
   <ion-header>
     <ion-toolbar mode="ios" class="menu-toolbar-ios">
       <ion-title>Menú</ion-title>
+
       <ion-buttons slot="end">
         <ion-button
           (click)="cerrarMenu()"
@@ -30,8 +31,9 @@
     <app-spinner *ngIf="mostrar_spinnet"></app-spinner>
 
     <ion-list class="menu-list-ios">
-
-      <!-- Administración (solo Admin) -->
+      <!-- =========================
+           ADMIN (solo Admin)
+      ========================= -->
       <div
         *ngIf="isAdmin"
         class="menu-section"
@@ -66,7 +68,9 @@
         </ion-item>
       </div>
 
-      <!-- Servicios (para todos) -->
+      <!-- =========================
+           SERVICIOS (para todos)
+      ========================= -->
       <div
         class="menu-section"
         [class.expanded]="expandedSections.servicios"
@@ -131,7 +135,9 @@
         </ion-item>
       </div>
 
-      <!-- Mis publicaciones (solo roles permitidos) -->
+      <!-- =========================
+           MIS PUBLICACIONES (roles permitidos)
+      ========================= -->
       <div
         *ngIf="isPublisher"
         class="menu-section"
@@ -166,7 +172,9 @@
         </ion-item>
       </div>
 
-      <!-- Reservas (solo si hay sesión) -->
+      <!-- =========================
+           RESERVAS (solo si hay sesión)
+      ========================= -->
       <div
         *ngIf="isLoggedIn"
         class="menu-section"
@@ -191,7 +199,36 @@
         </ion-item>
       </div>
 
-      <!-- Cuenta (solo si hay sesión) -->
+      <!-- =========================
+           ✅ ASESOR (solo rol asesor)
+      ========================= -->
+      <div
+        *ngIf="isAsesor"
+        class="menu-section"
+        [class.expanded]="expandedSections.asesor"
+        (click)="toggleSection('asesor')"
+        [attr.aria-expanded]="expandedSections.asesor"
+      >
+        <span>Asesor</span>
+        <ion-icon
+          [name]="expandedSections.asesor ? 'chevron-up-outline' : 'chevron-down-outline'"
+        ></ion-icon>
+      </div>
+
+      <div
+        *ngIf="isAsesor"
+        class="menu-items"
+        [class.expanded]="expandedSections.asesor"
+      >
+        <ion-item (click)="redirecion('perfil')" button lines="none">
+          <ion-icon name="person-circle-outline" color="danger"></ion-icon>
+          <ion-label>Mi perfil</ion-label>
+        </ion-item>
+      </div>
+
+      <!-- =========================
+           CUENTA (solo si hay sesión)
+      ========================= -->
       <div
         *ngIf="isLoggedIn"
         class="menu-section"
@@ -210,8 +247,15 @@
         class="menu-items"
         [class.expanded]="expandedSections.configuracion"
       >
-        <ion-item (click)="abrirModalPerfil()" button lines="none">
-          <ion-icon name="person-circle-outline"></ion-icon>
+        <!-- Para asesor: mejor ir a la page -->
+        <ion-item *ngIf="isAsesor" (click)="redirecion('perfil')" button lines="none">
+          <ion-icon name="person-circle-outline" color="danger"></ion-icon>
+          <ion-label>Perfil</ion-label>
+        </ion-item>
+
+        <!-- Para otros roles: modal -->
+        <ion-item *ngIf="!isAsesor" (click)="abrirModalPerfil()" button lines="none">
+          <ion-icon name="person-circle-outline" color="danger"></ion-icon>
           <ion-label>Perfil</ion-label>
         </ion-item>
 
@@ -225,7 +269,6 @@
           <ion-label>Cerrar sesión</ion-label>
         </ion-item>
       </div>
-
     </ion-list>
   </ion-content>
 
@@ -244,7 +287,6 @@
   </ion-footer>
 </ion-menu>
 
-
 <!-- =========================
      MENU NATIVO (iOS/Android)
 ========================= -->
@@ -258,26 +300,25 @@
   *ngIf="isNative"
 >
   <ion-header>
-    <ion-toolbar>
+    <ion-toolbar mode="ios">
       <ion-title>Menú</ion-title>
       <ion-buttons slot="end">
-        <ion-button fill="clear" (click)="cerrarMenu()" aria-label="Cerrar menú">
+        <ion-button fill="clear" (click)="cerrarMenu()" aria-label="Cerrar menú" mode="ios">
           <ion-icon name="close-outline"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
 
-  <ion-content>
+  <ion-content mode="ios">
     <app-spinner *ngIf="mostrar_spinnet"></app-spinner>
 
     <ion-list inset="true">
       <ion-accordion-group
-  [multiple]="true"
-  [value]="accordionValue"
-  (ionChange)="onAccordionChange($event)"
->
-
+        [multiple]="true"
+        [value]="accordionValue"
+        (ionChange)="onAccordionChange($event)"
+      >
         <!-- ADMIN (solo admin) -->
         <ion-accordion *ngIf="isAdmin" value="admin">
           <ion-item slot="header" lines="none" detail="false" class="accordion-header-danger">
@@ -291,7 +332,7 @@
               <ion-label>Verificación de Lotes</ion-label>
             </ion-item>
 
-            <!-- ✅ si también lo quieres aquí en nativo -->
+            <!-- ✅ NUEVA PAGE: Asesores -->
             <ion-item button lines="none" (click)="redirecion('asesores')">
               <ion-icon slot="start" name="people-outline"></ion-icon>
               <ion-label>Asesores</ion-label>
@@ -394,6 +435,21 @@
           </div>
         </ion-accordion>
 
+        <!-- ✅ ASESOR (solo asesor) -->
+        <ion-accordion *ngIf="isAsesor" value="asesor">
+          <ion-item slot="header" lines="none" detail="false" class="accordion-header-danger">
+            <ion-icon slot="start" name="person-circle-outline"></ion-icon>
+            <ion-label>Asesor</ion-label>
+          </ion-item>
+
+          <div slot="content">
+            <ion-item button lines="none" (click)="redirecion('perfil')">
+              <ion-icon slot="start" name="id-card-outline"></ion-icon>
+              <ion-label>Mi perfil</ion-label>
+            </ion-item>
+          </div>
+        </ion-accordion>
+
         <!-- CUENTA -->
         <ion-accordion *ngIf="isLoggedIn" value="cuenta">
           <ion-item slot="header" lines="none" detail="false" class="accordion-header-danger">
@@ -402,7 +458,14 @@
           </ion-item>
 
           <div slot="content">
-            <ion-item button lines="none" (click)="abrirModalPerfil()">
+            <!-- Asesor: page -->
+            <ion-item *ngIf="isAsesor" button lines="none" (click)="redirecion('perfil')">
+              <ion-icon slot="start" name="id-card-outline"></ion-icon>
+              <ion-label>Perfil</ion-label>
+            </ion-item>
+
+            <!-- Otros: modal -->
+            <ion-item *ngIf="!isAsesor" button lines="none" (click)="abrirModalPerfil()">
               <ion-icon slot="start" name="id-card-outline"></ion-icon>
               <ion-label>Perfil</ion-label>
             </ion-item>
@@ -418,14 +481,13 @@
             </ion-item>
           </div>
         </ion-accordion>
-
       </ion-accordion-group>
     </ion-list>
   </ion-content>
 
   <!-- CTA invitado -->
   <ion-footer *ngIf="!isLoggedIn">
-    <ion-toolbar>
+    <ion-toolbar mode="ios">
       <ion-button color="danger" expand="block" (click)="redirecion('inicio')">
         <ion-icon slot="start" name="log-in-outline"></ion-icon>
         Iniciar sesión

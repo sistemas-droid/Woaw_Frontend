@@ -11,6 +11,7 @@ import { MapaComponent } from "../../../components/modal/mapa/mapa.component";
 import { CamionesService } from "../../../services/camiones.service";
 import { firstValueFrom } from "rxjs";
 import { filter } from "rxjs/operators";
+
 import { AfterViewInit, ViewChildren, QueryList } from '@angular/core';
 import { IonSelect } from '@ionic/angular';
 
@@ -90,19 +91,18 @@ export class UpdateCarPage implements OnInit {
   private initialComparable: any = null;
 
 
-  // 🔥 RECORTE INLINE
   modoRecorte = false;
   imageChangedEvent: Event | null = null;
 
   croppedBlob: Blob | null = null;
 
   // tamaño final fijo
-  FINAL_WIDTH = 950;
-  FINAL_HEIGHT = 680;
+  FINAL_WIDTH = 840;
+  FINAL_HEIGHT = 570;
   aspectRatio = this.FINAL_WIDTH / this.FINAL_HEIGHT;
 
-  ZOOM_MIN: number = 1; 
-  ZOOM_MAX: number = 2;
+  // ZOOM_MIN: number = 1;
+  // ZOOM_MAX: number = 2;
 
   // zoom
   zoom = 1;
@@ -614,6 +614,7 @@ export class UpdateCarPage implements OnInit {
   selecionarUnaExistente(nuevaImagen: string) {
     this.imagenPrincipalMostrada = nuevaImagen;
     this.imagenPrincipal = nuevaImagen; // string (URL)
+    console.log("Imagen principal actualizada a existente:", nuevaImagen);
     this.markDirtyFromUI();
   }
 
@@ -697,11 +698,8 @@ export class UpdateCarPage implements OnInit {
       return;
     }
 
-    // 🔥 activar recorte inline
     this.imageChangedEvent = event;
     this.modoRecorte = true;
-
-    // ❌ NO limpiar aquí
   }
 
   async agregarImagen(event: Event) {
@@ -710,60 +708,43 @@ export class UpdateCarPage implements OnInit {
     if (!file) return;
 
     if (this.urlsImagenes.length >= 10) {
-      this.generalService.alert(
-        "Límite alcanzado",
-        "Solo puedes agregar hasta 10 imágenes.",
-        "warning"
-      );
+      this.generalService.alert("Límite alcanzado", "Solo puedes agregar hasta 10 imágenes.", "warning");
       return;
     }
 
-    const maxSize = 10 * 1024 * 1024; // 10MB
+    const maxSize = 10 * 1024 * 1024;
     if (file.size > maxSize) {
-      this.generalService.alert(
-        "Imagen demasiado grande",
-        "Cada imagen no debe exceder los 10 MB.",
-        "warning"
-      );
+      this.generalService.alert("Imagen demasiado grande", "Cada imagen no debe exceder los 10 MB.", "warning");
       return;
     }
 
     const extension = file.name.split(".").pop()?.toLowerCase();
-    const heicExtensions = ["heic", "heif"];
-    if (extension && heicExtensions.includes(extension)) {
-      this.generalService.alert(
-        "Formato no compatible",
-        "Por favor selecciona una imagen en formato JPG, PNG o similar.",
-        "warning"
-      );
+    if (extension && ["heic", "heif"].includes(extension)) {
+      this.generalService.alert("Formato no compatible", "Selecciona JPG/PNG u otro formato compatible.", "warning");
       return;
     }
 
-    try {
-      const comprimido = await imageCompression(file, {
-        maxSizeMB: 2,
-        maxWidthOrHeight: 1600,
-        useWebWorker: true,
-      });
+    // Pre-comprime un poco antes del cropper para no matar el rendimiento
+    const pre = await imageCompression(file, {
+      maxSizeMB: 3,
+      maxWidthOrHeight: 2200,
+      useWebWorker: true,
+    });
 
-      const previewUrl = URL.createObjectURL(comprimido);
-      this.urlsImagenes.push(previewUrl);
-      this.imagenes.push(comprimido); // guardamos el File comprimido
-      this.markDirtyFromUI();
-      this.generalService.alert(
-        "¡Listo!",
-        "La imagen fue agregada exitosamente.",
-        "success"
-      );
-    } catch (error) {
-      console.error("Error al procesar la imagen:", error);
-      this.generalService.alert(
-        "Error",
-        "No se pudo procesar la imagen.",
-        "danger"
-      );
-    }
+    const preFile = new File([pre], file.name, { type: pre.type });
+
+    this.cropTarget = 'secundaria';
+    this.cropIndex = null; // null significa "insertar nueva"
+    this.imageChangedEvent = this.buildImageChangedEventFromFile(preFile);
+    this.modoRecorte = true;
+    this.zoom = 1;
+    this.transform = { scale: 1 };
+
+    // limpia el input para que elegir el mismo archivo vuelva a disparar change
+    input.value = '';
   }
+
+
 
   dividirImagenes(imagenes: string[], columnas: number): string[][] {
     if (!imagenes || imagenes.length === 0) return [];
@@ -1579,102 +1560,195 @@ export class UpdateCarPage implements OnInit {
     this.restablecerDatos();
   }
 
-
-
   // RECORTE IMAGEN 
+  public cropTarget: 'principal' | 'secundaria' = 'principal';
+  private cropIndex: number | null = null;
+  private objectUrlsToRevoke: string[] = [];
+
+
+  private buildImageChangedEventFromFile(file: File): Event {
+    const dt = new DataTransfer();
+    dt.items.add(file);
+
+    const fakeInput = document.createElement('input');
+    fakeInput.type = 'file';
+    fakeInput.files = dt.files;
+
+    return { target: fakeInput } as unknown as Event;
+  }
+
+  private trackObjectUrl(url: string) {
+    this.objectUrlsToRevoke.push(url);
+  }
+
+  async editarImagenSecundaria(index: number) {
+    const src = this.urlsImagenes[index];
+    if (!src) return;
+
+    try {
+      let file: File;
+
+      // Caso 1: ya es preview blob/local (blob:...)
+      if (src.startsWith('blob:')) {
+        const blob = await fetch(src).then(r => r.blob());
+        file = new File([blob], `secundaria-${index}.jpg`, { type: blob.type || 'image/jpeg' });
+      } else {
+        // Caso 2: URL del servidor (si tu backend requiere auth, mejor crea endpoint tipo get_Img_Editar)
+        const blob = await fetch(src).then(r => r.blob());
+        file = new File([blob], `secundaria-${index}.jpg`, { type: blob.type || 'image/jpeg' });
+      }
+
+      this.cropTarget = 'secundaria';
+      this.cropIndex = index;
+      this.imageChangedEvent = this.buildImageChangedEventFromFile(file);
+      this.modoRecorte = true;
+      this.zoom = 1;
+      this.transform = { scale: 1 };
+    } catch (e) {
+      this.generalService.alert('Error', 'No se pudo cargar la imagen para recortar.', 'danger');
+    }
+  }
+
   onImageCropped(event: any) {
     this.croppedBlob = event.blob || null;
   }
 
-  onZoomChange(event: any) {
-    this.zoom = event.detail.value;
-    this.transform = { scale: this.zoom };
+  // onZoomChange(event: any) {
+  //   this.zoom = event.detail.value;
+  //   this.transform = { scale: this.zoom };
+  // }
+
+    onZoomChange(event: any) {
+    const raw = Number(event?.detail?.value ?? this.zoom);
+    this.setZoom(raw);
   }
 
   cancelarRecorte() {
     this.modoRecorte = false;
     this.imageChangedEvent = null;
     this.croppedBlob = null;
+    this.cropTarget = 'principal';
   }
 
   async confirmarRecorte() {
     if (!this.croppedBlob) return;
 
-    const file = new File(
-      [this.croppedBlob],
-      `imagen-principal.jpg`,
-      { type: 'image/jpeg' }
-    );
+    const croppedFile = new File([this.croppedBlob], `crop.png`, { type: 'image/png' });
 
-    const comprimidoBlob = await imageCompression(file, {
+    const compressedBlob = await imageCompression(croppedFile, {
       maxSizeMB: 2,
       maxWidthOrHeight: this.FINAL_WIDTH,
       useWebWorker: true,
     });
 
-    const preview = URL.createObjectURL(comprimidoBlob);
+    const finalFile = new File([compressedBlob], croppedFile.name, { type: compressedBlob.type });
+    const previewUrl = URL.createObjectURL(compressedBlob);
+    this.trackObjectUrl(previewUrl);
 
+    if (this.cropTarget === 'principal') {
+      this.imagenPrincipalMostrada = previewUrl;
+      this.imagenPrincipal = finalFile;
+    } else {
+      // secundaria
+      if (this.cropIndex === null) {
+        // insertar nueva
+        this.urlsImagenes.push(previewUrl);
+        this.imagenes.push(finalFile);
+      } else {
+        // reemplazar existente (puede ser existente del servidor o nueva)
+        const idx = this.cropIndex;
 
-    // 🔥 Convertir a File
-    const comprimido = new File(
-      [comprimidoBlob],
-      file.name,
-      { type: comprimidoBlob.type }
-    );
+        const existingPos = this.urlsImagenesExistentes.indexOf(this.urlsImagenes[idx]);
 
-    this.imagenPrincipalMostrada = preview;
-    this.imagenPrincipal = comprimido; // File FINAL
+        this.urlsImagenes[idx] = previewUrl;
+
+        if (existingPos !== -1) {
+          // era existente: quítala de existentes y agrega el nuevo file a "imagenes"
+          this.urlsImagenesExistentes.splice(existingPos, 1);
+          this.imagenes.push(finalFile);
+        } else {
+          const newIdx = this.imagenes.length ? Math.min(idx, this.imagenes.length - 1) : -1;
+          if (newIdx >= 0) this.imagenes[newIdx] = finalFile;
+          else this.imagenes.push(finalFile);
+        }
+      }
+    }
+
     this.modoRecorte = false;
+    this.imageChangedEvent = null;
+    this.croppedBlob = null;
+    this.cropIndex = null;
 
     this.markDirtyFromUI();
 
-    this.generalService.alert(
-      "Imagen lista",
-      "La imagen principal fue recortada correctamente.",
-      "success"
-    );
+    this.generalService.alert("Imagen lista", "La imagen fue recortada correctamente.", "success");
   }
 
 
   async editarImagenActual() {
     if (!this.imagenPrincipalMostrada) return;
 
-    try {
-      // 🔥 1. Convertir URL a Blob
-      const response = await fetch(this.imagenPrincipalMostrada);
-      const blob = await response.blob();
+    const id = this.route.snapshot.paramMap.get("id");
+    if (!id) return;
+    // console.log(this.imagenPrincipalMostrada);
+    this.carsService.get_Img_Editar(id, this.imagenPrincipalMostrada).subscribe({
+      next: (blob: Blob) => {
+        // 🔥 1. Convertir Blob a File
+        const file = new File(
+          [blob],
+          'imagen-principal-editar.jpg',
+          { type: blob.type || 'image/jpeg' }
+        );
 
-      // 🔥 2. Convertir Blob a File
-      const file = new File(
-        [blob],
-        'imagen-principal-editar.jpg',
-        { type: blob.type || 'image/jpeg' }
-      );
+        // 🔥 2. Crear DataTransfer (truco clave)
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
 
-      // 🔥 3. Crear input fake para image-cropper
-      const dataTransfer = new DataTransfer();
-      dataTransfer.items.add(file);
+        // 🔥 3. Input falso
+        const fakeInput = document.createElement('input');
+        fakeInput.type = 'file';
+        fakeInput.files = dataTransfer.files;
 
-      const fakeInput = document.createElement('input');
-      fakeInput.type = 'file';
-      fakeInput.files = dataTransfer.files;
+        // 🔥 4. Simular evento para el cropper
+        this.imageChangedEvent = {
+          target: fakeInput
+        } as unknown as Event;
 
-      // 🔥 4. Simular evento
-      this.imageChangedEvent = {
-        target: fakeInput
-      } as unknown as Event;
+        // 🔥 5. Activar modo recorte
+        this.modoRecorte = true;
+      },
+      error: () => {
+        this.generalService.alert(
+          'Error',
+          'No se pudo cargar la imagen para editar.',
+          'danger'
+        );
+      }
+    });
+  }
 
-      // 🔥 5. Activar recorte
-      this.modoRecorte = true;
 
-    } catch (error) {
-      console.error('Error al preparar imagen para edición', error);
-      this.generalService.alert(
-        'Error',
-        'No se pudo editar la imagen.',
-        'danger'
-      );
-    }
+
+
+  // ZOOM 
+  ZOOM_MIN = 0.5;
+  ZOOM_MAX = 2;
+  ZOOM_STEP = 0.02;      // step del slider
+  ZOOM_BTN_STEP = 0.05;  // step de los botones (+/-) más cómodo
+
+  private clamp(n: number, min: number, max: number) {
+    return Math.min(max, Math.max(min, n));
+  }
+
+  setZoom(value: number) {
+    const z = this.clamp(value, this.ZOOM_MIN, this.ZOOM_MAX);
+    this.zoom = z;
+    this.transform = { ...this.transform, scale: this.zoom };
+  }
+
+  stepZoom(dir: 1 | -1) {
+    const z = this.zoom + (dir * this.ZOOM_BTN_STEP);
+    this.setZoom(z);
   }
 
 

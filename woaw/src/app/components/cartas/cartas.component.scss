@@ -1,4 +1,3 @@
-/* Que el host de la carta pueda estirarse dentro de la grid */
 :host {
   display: block;
   height: 100%;
@@ -10,123 +9,17 @@
   background: #ffffff;
   border-radius: 22px;
   padding: 12px;
-  box-shadow:
-    0 8px 22px rgba(0,0,0,0.10),
-    0 0 0 0.4px rgba(255,255,255,0.9);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.10), 0 0 0 0.4px rgba(255,255,255,0.9);
   border: 1px solid rgba(0,0,0,0.04);
   cursor: pointer;
   transition: transform .18s ease, box-shadow .18s ease;
 
-
-  /* 👇 CLAVE: toda la carta es un flex vertical y llena la celda */
   display: flex;
   flex-direction: column;
   height: 100%;
 
   &:active {
     transform: scale(.97);
-  }
-
-}
-
-/* Imagen principal – tamaño FIJO */
-.img-box {
-  position: relative;
-  width: 100%;
-  height: 190px;          /* 🔥 todas las fotos misma altura desktop */
-  border-radius: 18px;
-  overflow: hidden;
-  background: #f2f2f7;
-  flex: 0 0 190px;        /* fija ese alto en el flex */
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;    /* recorta pero mantiene proporción */
-    display: block;
-  }
-
-  .loading {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f2f2f7;
-  }
-}
-
-@media (max-width: 768px) {
-  .img-box {
-    height: 170px;        /* mismo alto en móvil */
-    flex: 0 0 170px;
-  }
-}
-
-/* Favorito iOS */
-.fav-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 3;
-
-  border: none;
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(6px);
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-
-  ion-icon {
-    font-size: 17px;
-    color: #ff3b30;
-  }
-
-  &.delete ion-icon {
-    color: #333;
-  }
-}
-
-/* Info – que rellene lo que queda y pegue specs abajo */
-.info-box {
-  margin-top: 10px;
-  flex: 1;                          /* 🔥 esto hace que todas midan igual */
-  display: flex;
-  flex-direction: column;
-
-  .title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #111827;
-    margin: 0 0 6px;
-  }
-
-  .price {
-    margin: 0 0 8px;
-    font-size: 15px;
-    font-weight: 800;
-    color: #ff3b30;
-  }
-}
-
-/* Specs iOS pills */
-.specs {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-top: auto;      /* 👈 empuja las pastillas al fondo de la carta */
-
-  span {
-    background: #f2f2f7;
-    padding: 4px 8px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 600;
-    color: #374151;
   }
 }
 
@@ -135,19 +28,231 @@
   position: absolute;
   top: 10px;
   left: 10px;
-  z-index: 4;
+  z-index: 6;
 
   padding: 4px 10px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   border-radius: 999px;
 
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
   color: #111827;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  border: 1px solid rgba(0,0,0,0.06);
 
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.35px;
+}
+
+/* Favorito iOS (catálogo normal) */
+.fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 6;
+
+  border: none;
+  background: rgba(255,255,255,0.86);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  border: 1px solid rgba(0,0,0,0.06);
+
+  ion-icon {
+    font-size: 18px;
+    color: #ff3b30;
+  }
+
+  &:active {
+    transform: scale(.96);
+  }
+
+  &.delete ion-icon {
+    color: #111827;
+  }
+}
+
+/* Imagen principal */
+.img-box {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #f2f2f7;
+  flex: 0 0 190px;
+
+  ion-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    --object-fit: cover;
+  }
+
+  .img-hidden {
+    opacity: 0;
+  }
+
+  /* Overlay vendido */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.62);
+    background-image: url('/assets/icon/vendido.png');
+    background-repeat: no-repeat;
+    background-position: center 35%;
+    background-size: 68%;
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 4;
+  }
+
+  .loader {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    background: #f2f2f7;
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .spinner {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 3px solid rgba(17,24,39,0.12);
+    border-top-color: rgba(17,24,39,0.55);
+    animation: spin 0.9s linear infinite;
+  }
+}
+
+@media (max-width: 768px) {
+  .img-box {
+    height: 170px;
+    flex: 0 0 170px;
+
+    .overlay {
+      background-size: 58%;
+      background-position: center 40%;
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .img-box .overlay {
+    background-size: 52%;
+    background-position: center 42%;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Info */
+.info-box {
+  margin-top: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 6px;
+}
+
+.price {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 900;
+  color: #ff3b30;
+}
+
+/* ✅ Estado centrado (reemplaza specs en MIS vehículos) */
+.estado-center {
+  margin-top: auto;              /* empuja al fondo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 6px;
+}
+
+.estado-btn-inline {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-width: 170px;              /* se ve “centrado” y con presencia */
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.25px;
+
+  background: #f3f4f6;
+  color: #111827;
+
+  box-shadow: 0 6px 16px rgba(0,0,0,0.10);
+  border: 1px solid rgba(0,0,0,0.06);
+
+  .icono-switch {
+    font-size: 20px;
+  }
+
+  &.disponible {
+    background: rgba(16, 185, 129, 0.12);
+    color: #065f46;
+
+    .icono-switch { color: #10b981; }
+  }
+
+  &.vendido {
+    background: rgba(249, 115, 22, 0.14);
+    color: #7c2d12;
+
+    .icono-switch { color: #f97316; }
+  }
+
+  &:active {
+    transform: scale(.98);
+  }
+}
+
+/* Specs (solo catálogo normal) */
+.specs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: auto;
+
+  span {
+    background: #f2f2f7;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #374151;
+  }
 }

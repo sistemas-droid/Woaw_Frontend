@@ -1,70 +1,237 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true" class="bg-asesores">
+<ion-content [fullscreen]="true" class="asesores-page" mode="ios">
+  <!-- Background decor (iOS) -->
+  <div class="bg-decor" aria-hidden="true"></div>
 
-  <div class="contenedor-asesores">
-    <!-- ENCABEZADO -->
-    <div class="encabezado-asesores">
-      <div class="heading-left">
-        <span class="eyebrow">Atención personalizada</span>
+  <div class="wrap">
+    <!-- Header iOS -->
+    <header class="ios-header">
+      <div class="title-block">
+        <div class="eyebrow">WOAW</div>
         <h1>Nuestros asesores</h1>
         <p>Selecciona al asesor que se encargará de brindarte la mejor atención.</p>
       </div>
-    </div>
-    <!-- LOADING -->
-    <div class="loading" *ngIf="cargando">
+
+      <!-- ✅ ADMIN: GENERAR LINK TEMPORAL -->
+      <section *ngIf="isAdmin" class="admin-card" aria-label="Herramientas de administrador">
+        <div class="admin-top">
+          <div class="admin-title">
+            <ion-icon name="shield-checkmark-outline"></ion-icon>
+            <div class="admin-text">
+              <strong>Acciones de administrador</strong>
+              <span>Genera un link temporal para registro.</span>
+            </div>
+          </div>
+
+          <ion-button
+            size="small"
+            color="danger"
+            class="btn-admin"
+            (click)="generarLinkInvitacion()"
+            [disabled]="generandoLink"
+          >
+            <ion-icon name="link-outline" slot="start"></ion-icon>
+            <span *ngIf="!generandoLink">Generar link</span>
+            <span *ngIf="generandoLink">Generando…</span>
+          </ion-button>
+        </div>
+
+        <div *ngIf="inviteLink" class="invite-box">
+          <div class="invite-head">
+            <div class="invite-label">
+              <ion-icon name="time-outline"></ion-icon>
+              <span>Link temporal</span>
+            </div>
+
+            <span class="chip">
+              <ion-icon name="sparkles-outline"></ion-icon>
+              activo
+            </span>
+          </div>
+
+          <div class="invite-row">
+            <div class="invite-url" [title]="inviteLink">
+              {{ inviteLink }}
+            </div>
+
+            <button
+              type="button"
+              class="btn-copy"
+              (click)="copiarInvite()"
+              aria-label="Copiar link"
+            >
+              <ion-icon name="copy-outline"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <!-- Loading -->
+    <section class="state-card" *ngIf="cargando" aria-live="polite">
       <ion-spinner name="crescent"></ion-spinner>
       <p>Cargando asesores…</p>
-    </div>
+    </section>
 
-    <!-- ERROR -->
-    <div class="error" *ngIf="error">
-      <p>No se pudieron cargar los asesores.</p>
-      <ion-button size="small" (click)="cargarAsesores()">Reintentar</ion-button>
-    </div>
+    <!-- Error -->
+    <section class="state-card error" *ngIf="error" aria-live="assertive">
+      <div class="error-top">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <p>No se pudieron cargar los asesores.</p>
+      </div>
+      <ion-button size="small" fill="outline" (click)="cargarAsesores()">
+        Reintentar
+      </ion-button>
+    </section>
 
-    <!-- GRID DE ASESORES -->
-    <ion-grid class="grid-asesores">
-      <ion-row>
-        <ion-col size="12" sizeMd="6" sizeLg="4" *ngFor="let asesor of asesores">
-          <div class="tarjeta-asesor">
-            <!-- AVATAR / INICIALES -->
-            <div class="asesor-avatar">
-              <span>{{ getIniciales(asesor.nombreCompleto) }}</span>
-            </div>
-
-            <!-- INFO -->
-            <div class="asesor-info">
-              <h2>{{ asesor.nombreCompleto }}</h2>
-              <p class="rol">{{ asesor.rol || 'Asesor Comercial' }}</p>
-
-              <p class="dato" *ngIf="asesor.telefono">
-                <ion-icon name="call-outline"></ion-icon>
-                {{ asesor.telefono }}
-              </p>
-
-              <p class="dato" *ngIf="asesor.correo">
-                <ion-icon name="mail-outline"></ion-icon>
-                {{ asesor.correo }}
-              </p>
-            </div>
-
-            <!-- QR / LINK -->
-            <div class="asesor-qr">
-              <div class="qr-wrapper" *ngIf="asesor.qrUrl">
-                <img [src]="asesor.qrUrl" alt="Código QR de {{ asesor.nombreCompleto }}" />
+    <!-- Grid iOS -->
+    <ion-grid class="grid" fixed>
+      <ion-row class="row">
+        <ion-col
+          class="col"
+          size="12"
+          sizeSm="6"
+          sizeMd="6"
+          sizeLg="4"
+          sizeXl="3"
+          *ngFor="let asesor of asesores"
+        >
+          <article class="card" [attr.aria-label]="'Asesor ' + nombreCompleto(asesor)">
+            <!-- Top -->
+            <div class="card-top">
+              <div class="avatar" [attr.aria-label]="'Avatar de ' + nombreCompleto(asesor)">
+                <img
+                  *ngIf="asesor?.foto"
+                  [src]="asesor.foto"
+                  alt="Foto asesor"
+                  class="avatar-img"
+                  loading="lazy"
+                />
+                <span *ngIf="!asesor?.foto">{{ getIniciales(nombreCompleto(asesor)) }}</span>
               </div>
 
-              <button type="button" class="btn-link-qr" (click)="abrirLink(asesor.link)">
+              <div class="info">
+                <h2 class="name">{{ nombreCompleto(asesor) }}</h2>
+                <p class="role">{{ asesor.rol || 'Asesor Comercial' }}</p>
+
+                <p class="meta" *ngIf="asesor.telefono">
+                  <ion-icon name="call-outline"></ion-icon>
+                  <span>{{ asesor.telefono }}</span>
+                </p>
+
+                <p class="meta" *ngIf="asesor.email">
+                  <ion-icon name="mail-outline"></ion-icon>
+                  <span class="truncate">{{ asesor.email }}</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- QR -->
+            <div class="qr">
+              <div class="qr-box">
+                <img
+                  src="/assets/autos/QR.png"
+                  [alt]="'Código QR de ' + nombreCompleto(asesor)"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions" role="group" aria-label="Acciones del asesor">
+              <button
+                type="button"
+                class="btn primary"
+                (click)="abrirLink(asesor.telefono)"
+                [disabled]="!asesor.telefono"
+              >
                 <ion-icon name="link-outline"></ion-icon>
                 <span>Ver enlace</span>
               </button>
+
+              <button
+                type="button"
+                class="btn"
+                (click)="editarAsesor(asesor)"
+                [disabled]="!asesor._id"
+              >
+                <ion-icon name="create-outline"></ion-icon>
+                <span>Editar</span>
+              </button>
+
+              <button
+                *ngIf="isAdmin"
+                type="button"
+                class="btn danger"
+                (click)="confirmarEliminar(asesor)"
+                [disabled]="!asesor._id || eliminandoId === asesor._id"
+                aria-label="Eliminar asesor"
+              >
+                <ion-icon name="trash-outline"></ion-icon>
+                <span *ngIf="eliminandoId !== asesor._id">Eliminar</span>
+                <span *ngIf="eliminandoId === asesor._id">Eliminando…</span>
+              </button>
             </div>
-          </div>
+          </article>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
+
+  <!-- Modal eliminar -->
+  <ion-modal
+    [isOpen]="modalEliminarOpen"
+    (didDismiss)="cerrarModalEliminar()"
+    cssClass="woaw-modal-eliminar"
+  >
+    <ng-template>
+      <div class="modal-center">
+        <div class="modal-card">
+          <div class="modal-head">
+            <div class="title-wrap">
+              <h3>Eliminar asesor</h3>
+              <span class="badge-danger">Acción crítica</span>
+            </div>
+
+            <button
+              type="button"
+              class="x-btn"
+              (click)="cerrarModalEliminar()"
+              aria-label="Cerrar"
+            >
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <p>
+              Vas a eliminar a
+              <strong>{{ asesorAEliminar ? nombreCompleto(asesorAEliminar) : 'este asesor' }}</strong>.
+            </p>
+            <p class="warn">Esta acción no se puede deshacer.</p>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-modal btn-cancel" (click)="cerrarModalEliminar()">
+              Cancelar
+            </button>
+
+            <button
+              type="button"
+              class="btn-modal btn-danger"
+              (click)="confirmarEliminarModal()"
+              [disabled]="!asesorAEliminar?._id || eliminandoId === asesorAEliminar?._id"
+            >
+              <ion-icon name="trash-outline"></ion-icon>
+              <span *ngIf="eliminandoId !== asesorAEliminar?._id">Eliminar</span>
+              <span *ngIf="eliminandoId === asesorAEliminar?._id">Eliminando…</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
 
   <app-footer></app-footer>
 </ion-content>

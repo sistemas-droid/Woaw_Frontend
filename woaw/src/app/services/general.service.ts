@@ -72,6 +72,7 @@ export class GeneralService {
     this.resizeSub = fromEvent(window, 'resize')
       .pipe(debounceTime(150))
       .subscribe(() => this.detectarDispositivoSinze());
+
   }
   ngOnDestroy(): void {
     this.resizeSub?.unsubscribe();
@@ -288,11 +289,11 @@ export class GeneralService {
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('app:reset'));
       }
-        this.alert(
-          "¡Saliste de tu sesión!",
-          "¡Hasta pronto!",
-          "info"
-        );
+      this.alert(
+        "¡Saliste de tu sesión!",
+        "¡Hasta pronto!",
+        "info"
+      );
     } catch (error) {
       console.error('Error recargando app:', error);
       if (this.router.url !== '/home') {

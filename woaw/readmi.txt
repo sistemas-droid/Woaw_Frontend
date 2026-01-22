@@ -62,3 +62,21 @@ firebase hosting:channel:deploy mi-feature
 npm install @capawesome/capacitor-app-update  
 npm install ngx-image-cropper
 
+
+crearUrlYIr() {
+  this.http
+    .get<any>('https://worldtimeapi.org/api/timezone/America/Mexico_City')
+    .subscribe(res => {
+      // res.datetime trae ISO con offset, por ejemplo "2026-01-13T12:34:56.789-06:00"
+      const now = new Date(res.datetime);
+
+      const fecha = now.toISOString().slice(0, 10);   // YYYY-MM-DD (en UTC)
+      const hora  = now.toTimeString().slice(0, 8);   // HH:mm:ss (en local del Date parseado)
+
+      const token = encodeURIComponent(this.jwt);
+      const url = `https://tusitio.com/recibir?fecha=${fecha}&hora=${hora}&token=${token}`;
+      console.log(url);
+
+      window.location.href = url;
+    });
+}

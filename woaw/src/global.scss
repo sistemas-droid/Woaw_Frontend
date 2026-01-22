@@ -215,3 +215,15 @@ ion-alert::part(button) {
 .ios textarea::placeholder {
   font-size: 16px !important;
 }
+/* Radios (por si en algún select usas single) */
+ion-alert::part(radio) {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+
+
+
+
+
+

@@ -25,34 +25,37 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ios-content">
-  <div class="titulo-editar">
-    <h1>
-      <ion-icon name="build-outline"></ion-icon>
-      <span>Edita <span class="car-name">tu auto</span></span>
-    </h1>
-  </div>
-
   <div class="contenedor">
+    <!-- Segmented iOS -->
     <div class="barra-secciones">
-      <button [class.activa]="seccionActiva === 'datos'" (click)="seccionActiva = 'datos'">
+      <button
+        [class.activa]="seccionActiva === 'datos'"
+        (click)="seccionActiva = 'datos'">
         <ion-icon name="create-outline"></ion-icon>
         Datos
       </button>
-      <button [class.activa]="seccionActiva === 'ubicacion'" (click)="seccionActiva = 'ubicacion'">
+
+      <button
+        [class.activa]="seccionActiva === 'ubicacion'"
+        (click)="seccionActiva = 'ubicacion'">
         <ion-icon name="pin"></ion-icon>
         Ubicación
       </button>
-      <button [class.activa]="seccionActiva === 'imagenes'" (click)="seccionActiva = 'imagenes'">
+
+      <button
+        [class.activa]="seccionActiva === 'imagenes'"
+        (click)="seccionActiva = 'imagenes'">
         <ion-icon name="images-outline"></ion-icon>
         Imágenes
       </button>
     </div>
 
+    <!-- ===================== -->
     <!-- 🔸 SECCIÓN DATOS -->
+    <!-- ===================== -->
     <div *ngIf="seccionActiva === 'datos'">
       <div class="layout-dos-columnas">
         <div class="columna-datos">
-
           <!-- 🚗 AUTOS -->
           <ion-grid *ngIf="(tipo_veiculo === 'autos' || tipo_veiculo === 'renta') && auto">
             <ion-row *ngIf="auto?.version?.length > 1">
@@ -65,16 +68,29 @@
             </ion-row>
 
             <ion-row class="row-versiones" *ngIf="auto?.version?.length > 1">
-              <ion-col *ngFor="let v of auto.version; let i = index" class="version-col" size="6" size-sm="6"
+              <ion-col
+                *ngFor="let v of auto.version; let i = index"
+                class="version-col"
+                size="6"
+                size-sm="6"
                 size-md="4">
                 <div class="contenedor-input-version">
                   <label class="titulo-version">{{ v.Name }}</label>
+
                   <ion-item lines="none">
                     <ion-label position="floating">Precio</ion-label>
-                    <ion-input type="number" [(ngModel)]="auto.version[i].Precio"
-                      (ionInput)="verificarCambiosPrecio()"></ion-input>
-                    <ion-button *ngIf="auto.tipoVenta == 'nuevo'" fill="clear" color="danger"
-                      (click)="eliminarVersion(i)" slot="end">
+                    <ion-input
+                      type="number"
+                      [(ngModel)]="auto.version[i].Precio"
+                      (ionInput)="verificarCambiosPrecio()">
+                    </ion-input>
+
+                    <ion-button
+                      *ngIf="auto.tipoVenta == 'nuevo'"
+                      fill="clear"
+                      color="danger"
+                      (click)="eliminarVersion(i)"
+                      slot="end">
                       <ion-icon name="trash-outline"></ion-icon>
                     </ion-button>
                   </ion-item>
@@ -93,24 +109,37 @@
               <ion-col size="12" size-md="6" *ngIf="auto?.version?.length === 1">
                 <ion-item>
                   <ion-label position="stacked">Precio</ion-label>
-                  <ion-input type="number" [(ngModel)]="auto.version[0].Precio"
-                    (ionInput)="verificarCambiosPrecio()"></ion-input>
+                  <ion-input
+                    type="number"
+                    [(ngModel)]="auto.version[0].Precio"
+                    (ionInput)="verificarCambiosPrecio()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6" *ngIf="!isNuevo">
                 <ion-item>
                   <ion-label position="stacked">Kilometraje</ion-label>
-                  <ion-input type="number" inputmode="numeric" pattern="\\d*" placeholder="Ej. 45000"
-                    [(ngModel)]="auto.kilometraje" (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    type="number"
+                    inputmode="numeric"
+                    pattern="\\d*"
+                    placeholder="Ej. 45000"
+                    [(ngModel)]="auto.kilometraje"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Color</ion-label>
-                  <ion-select placeholder="Selecciona un color" [(ngModel)]="auto.color" (ionChange)="markDirty()"
-                    interface="alert" [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
+                  <ion-select
+                    placeholder="Selecciona un color"
+                    [(ngModel)]="auto.color"
+                    (ionChange)="markDirty()"
+                    interface="alert"
+                    [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
                     <ion-select-option *ngFor="let opcion of opciones" [value]="opcion.label">
                       {{ opcion.label }}
                     </ion-select-option>
@@ -121,7 +150,10 @@
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Moneda</ion-label>
-                  <ion-select [(ngModel)]="auto.moneda" (ionChange)="markDirty()" interface="alert"
+                  <ion-select
+                    [(ngModel)]="auto.moneda"
+                    (ionChange)="markDirty()"
+                    interface="alert"
                     [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
                     <ion-select-option value="MXN">MXN - Pesos mexicanos</ion-select-option>
                     <ion-select-option value="USD">USD - Dólares estadounidenses</ion-select-option>
@@ -132,15 +164,24 @@
               <ion-col size="12" size-md="6" *ngIf="!isNuevo">
                 <ion-item>
                   <ion-label position="stacked">Placas (opcional)</ion-label>
-                  <ion-input placeholder="Ej. UVY-123-A" [(ngModel)]="auto.placas" (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    placeholder="Ej. UVY-123-A"
+                    [(ngModel)]="auto.placas"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12">
                 <ion-item lines="none">
                   <ion-label position="stacked">Descripción del vehículo</ion-label>
-                  <ion-textarea auto-grow="true" rows="4" placeholder="Ej. Auto en excelente estado, único dueño..."
-                    [(ngModel)]="auto.descripcion" (ionInput)="markDirty()"></ion-textarea>
+                  <ion-textarea
+                    auto-grow="true"
+                    rows="4"
+                    placeholder="Ej. Auto en excelente estado, único dueño..."
+                    [(ngModel)]="auto.descripcion"
+                    (ionInput)="markDirty()">
+                  </ion-textarea>
                 </ion-item>
               </ion-col>
             </ion-row>
@@ -154,7 +195,11 @@
                   <label class="titulo-version">Precio</label>
                   <ion-item lines="none">
                     <ion-label position="floating">Precio</ion-label>
-                    <ion-input type="number" [(ngModel)]="precioMoto" (ionInput)="verificarCambiosPrecio()"></ion-input>
+                    <ion-input
+                      type="number"
+                      [(ngModel)]="precioMoto"
+                      (ionInput)="verificarCambiosPrecio()">
+                    </ion-input>
                   </ion-item>
                 </div>
               </ion-col>
@@ -164,23 +209,35 @@
               <ion-col size="12" size-md="6" *ngIf="!isNuevo">
                 <ion-item>
                   <ion-label position="stacked">Placas (opcional)</ion-label>
-                  <ion-input placeholder="Ej. UVY-123-A" [(ngModel)]="auto.placas" (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    placeholder="Ej. UVY-123-A"
+                    [(ngModel)]="auto.placas"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6" *ngIf="!isNuevo">
                 <ion-item>
                   <ion-label position="stacked">Kilometraje</ion-label>
-                  <ion-input type="number" placeholder="Ej. 45000" [(ngModel)]="auto.kilometraje"
-                    (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    type="number"
+                    placeholder="Ej. 45000"
+                    [(ngModel)]="auto.kilometraje"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Color</ion-label>
-                  <ion-select placeholder="Selecciona un color" [(ngModel)]="auto.color" (ionChange)="markDirty()"
-                    interface="alert" [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
+                  <ion-select
+                    placeholder="Selecciona un color"
+                    [(ngModel)]="auto.color"
+                    (ionChange)="markDirty()"
+                    interface="alert"
+                    [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
                     <ion-select-option *ngFor="let opcion of opciones" [value]="opcion.label">
                       {{ opcion.label }}
                     </ion-select-option>
@@ -191,7 +248,10 @@
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Moneda</ion-label>
-                  <ion-select [(ngModel)]="auto.moneda" (ionChange)="markDirty()" interface="alert"
+                  <ion-select
+                    [(ngModel)]="auto.moneda"
+                    (ionChange)="markDirty()"
+                    interface="alert"
                     [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
                     <ion-select-option value="MXN">MXN - Pesos mexicanos</ion-select-option>
                     <ion-select-option value="USD">USD - Dólares estadounidenses</ion-select-option>
@@ -202,55 +262,79 @@
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Tipo de Motor (opcional)</ion-label>
-                  <ion-input placeholder="Ej. 4 tiempos, eléctrico..." [(ngModel)]="auto.tipoMotor"
-                    (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    placeholder="Ej. 4 tiempos, eléctrico..."
+                    [(ngModel)]="auto.tipoMotor"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Cilindrada</ion-label>
-                  <ion-input placeholder="Ej. 150cc" [(ngModel)]="auto.cilindrada" (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    placeholder="Ej. 150cc"
+                    [(ngModel)]="auto.cilindrada"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Transmisión</ion-label>
-                  <ion-input placeholder="Ej. manual, CVT, etc." [(ngModel)]="auto.transmision"
-                    (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    placeholder="Ej. manual, CVT, etc."
+                    [(ngModel)]="auto.transmision"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Combustible (opcional)</ion-label>
-                  <ion-input placeholder="Ej. gasolina, eléctrico..." [(ngModel)]="auto.combustible"
-                    (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    placeholder="Ej. gasolina, eléctrico..."
+                    [(ngModel)]="auto.combustible"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Frenos (opcional)</ion-label>
-                  <ion-input placeholder="Ej. disco, tambor, ABS..." [(ngModel)]="auto.frenos"
-                    (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    placeholder="Ej. disco, tambor, ABS..."
+                    [(ngModel)]="auto.frenos"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Suspensión (opcional)</ion-label>
-                  <ion-input placeholder="Ej. telescópica, mono-shock" [(ngModel)]="auto.suspension"
-                    (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    placeholder="Ej. telescópica, mono-shock"
+                    [(ngModel)]="auto.suspension"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12">
                 <ion-item lines="none">
                   <ion-label position="stacked">Descripción de la motocicleta</ion-label>
-                  <ion-textarea auto-grow="true" rows="4" placeholder="Ej. Moto en excelente estado, único dueño..."
-                    [(ngModel)]="auto.descripcion" (ionInput)="markDirty()"></ion-textarea>
+                  <ion-textarea
+                    auto-grow="true"
+                    rows="4"
+                    placeholder="Ej. Moto en excelente estado, único dueño..."
+                    [(ngModel)]="auto.descripcion"
+                    (ionInput)="markDirty()">
+                  </ion-textarea>
                 </ion-item>
               </ion-col>
             </ion-row>
@@ -268,16 +352,29 @@
             </ion-row>
 
             <ion-row class="row-versiones" *ngIf="auto?.version?.length > 1">
-              <ion-col *ngFor="let v of auto.version; let i = index" class="version-col" size="6" size-sm="6"
+              <ion-col
+                *ngFor="let v of auto.version; let i = index"
+                class="version-col"
+                size="6"
+                size-sm="6"
                 size-md="4">
                 <div class="contenedor-input-version">
                   <label class="titulo-version">{{ v.Name }}</label>
+
                   <ion-item lines="none">
                     <ion-label position="floating">Precio</ion-label>
-                    <ion-input type="number" [(ngModel)]="auto.version[i].Precio"
-                      (ionInput)="verificarCambiosPrecio()"></ion-input>
-                    <ion-button *ngIf="auto.tipoVenta == 'nuevo'" fill="clear" color="danger"
-                      (click)="eliminarVersion(i)" slot="end">
+                    <ion-input
+                      type="number"
+                      [(ngModel)]="auto.version[i].Precio"
+                      (ionInput)="verificarCambiosPrecio()">
+                    </ion-input>
+
+                    <ion-button
+                      *ngIf="auto.tipoVenta == 'nuevo'"
+                      fill="clear"
+                      color="danger"
+                      (click)="eliminarVersion(i)"
+                      slot="end">
                       <ion-icon name="trash-outline"></ion-icon>
                     </ion-button>
                   </ion-item>
@@ -296,31 +393,48 @@
               <ion-col size="12" size-md="6" *ngIf="auto?.version?.length === 1">
                 <ion-item>
                   <ion-label position="stacked">Precio</ion-label>
-                  <ion-input type="number" [(ngModel)]="auto.version[0].Precio"
-                    (ionInput)="verificarCambiosPrecio()"></ion-input>
+                  <ion-input
+                    type="number"
+                    [(ngModel)]="auto.version[0].Precio"
+                    (ionInput)="verificarCambiosPrecio()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6" *ngIf="!auto?.version?.length">
                 <ion-item>
                   <ion-label position="stacked">Precio</ion-label>
-                  <ion-input type="number" [(ngModel)]="auto.precio" (ionInput)="verificarCambiosPrecio()"></ion-input>
+                  <ion-input
+                    type="number"
+                    [(ngModel)]="auto.precio"
+                    (ionInput)="verificarCambiosPrecio()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6" *ngIf="!isNuevo">
                 <ion-item>
                   <ion-label position="stacked">Kilometraje</ion-label>
-                  <ion-input type="number" inputmode="numeric" pattern="\\d*" placeholder="Ej. 120000"
-                    [(ngModel)]="auto.kilometraje" (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    type="number"
+                    inputmode="numeric"
+                    pattern="\\d*"
+                    placeholder="Ej. 120000"
+                    [(ngModel)]="auto.kilometraje"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Color</ion-label>
-                  <ion-select placeholder="Selecciona un color" [(ngModel)]="auto.color" (ionChange)="markDirty()"
-                    interface="alert" [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
+                  <ion-select
+                    placeholder="Selecciona un color"
+                    [(ngModel)]="auto.color"
+                    (ionChange)="markDirty()"
+                    interface="alert"
+                    [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
                     <ion-select-option *ngFor="let opcion of opciones" [value]="opcion.label">
                       {{ opcion.label }}
                     </ion-select-option>
@@ -331,7 +445,10 @@
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Moneda</ion-label>
-                  <ion-select [(ngModel)]="auto.moneda" (ionChange)="markDirty()" interface="alert"
+                  <ion-select
+                    [(ngModel)]="auto.moneda"
+                    (ionChange)="markDirty()"
+                    interface="alert"
                     [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
                     <ion-select-option value="MXN">MXN - Pesos mexicanos</ion-select-option>
                     <ion-select-option value="USD">USD - Dólares estadounidenses</ion-select-option>
@@ -342,31 +459,47 @@
               <ion-col size="12" size-md="6" *ngIf="!isNuevo">
                 <ion-item>
                   <ion-label position="stacked">Placas (opcional)</ion-label>
-                  <ion-input placeholder="Ej. 12-AB-345" [(ngModel)]="auto.placas" (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    placeholder="Ej. 12-AB-345"
+                    [(ngModel)]="auto.placas"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Capacidad de carga (kg)</ion-label>
-                  <ion-input type="number" placeholder="Ej. 8000" [(ngModel)]="auto.capacidadCarga"
-                    (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    type="number"
+                    placeholder="Ej. 8000"
+                    [(ngModel)]="auto.capacidadCarga"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Ejes</ion-label>
-                  <ion-input type="number" placeholder="Ej. 2" [(ngModel)]="auto.ejes"
-                    (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    type="number"
+                    placeholder="Ej. 2"
+                    [(ngModel)]="auto.ejes"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Tipo de cabina</ion-label>
-                  <ion-select [(ngModel)]="auto.tipoCabina" placeholder="Selecciona" (ionChange)="markDirty()"
-                    interface="alert" [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
+                  <ion-select
+                    [(ngModel)]="auto.tipoCabina"
+                    placeholder="Selecciona"
+                    (ionChange)="markDirty()"
+                    interface="alert"
+                    [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
                     <ion-select-option value="Cabina sencilla">Cabina sencilla</ion-select-option>
                     <ion-select-option value="Doble cabina">Doble cabina</ion-select-option>
                     <ion-select-option value="Cabover">Cabover</ion-select-option>
@@ -380,16 +513,23 @@
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Transmisión</ion-label>
-                  <ion-input placeholder="Ej. manual, automática" [(ngModel)]="auto.transmision"
-                    (ionInput)="markDirty()"></ion-input>
+                  <ion-input
+                    placeholder="Ej. manual, automática"
+                    [(ngModel)]="auto.transmision"
+                    (ionInput)="markDirty()">
+                  </ion-input>
                 </ion-item>
               </ion-col>
 
               <ion-col size="12" size-md="6">
                 <ion-item>
                   <ion-label position="stacked">Combustible</ion-label>
-                  <ion-select [(ngModel)]="auto.combustible" placeholder="Selecciona" (ionChange)="markDirty()"
-                    interface="alert" [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
+                  <ion-select
+                    [(ngModel)]="auto.combustible"
+                    placeholder="Selecciona"
+                    (ionChange)="markDirty()"
+                    interface="alert"
+                    [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
                     <ion-select-option value="Diésel">Diésel</ion-select-option>
                     <ion-select-option value="Gasolina">Gasolina</ion-select-option>
                     <ion-select-option value="Gas Natural">Gas Natural</ion-select-option>
@@ -403,31 +543,40 @@
               <ion-col size="12">
                 <ion-item lines="none">
                   <ion-label position="stacked">Descripción del camión</ion-label>
-                  <ion-textarea auto-grow="true" rows="4" placeholder="Ej. Tracto en excelente estado, único dueño..."
-                    [(ngModel)]="auto.descripcion" (ionInput)="markDirty()"></ion-textarea>
+                  <ion-textarea
+                    auto-grow="true"
+                    rows="4"
+                    placeholder="Ej. Tracto en excelente estado, único dueño..."
+                    [(ngModel)]="auto.descripcion"
+                    (ionInput)="markDirty()">
+                  </ion-textarea>
                 </ion-item>
               </ion-col>
             </ion-row>
           </ion-grid>
-
         </div>
       </div>
     </div>
 
+    <!-- ===================== -->
+    <!-- 🔸 SECCIÓN UBICACIÓN -->
+    <!-- ===================== -->
     <div *ngIf="seccionActiva === 'ubicacion'">
-      <!-- 📍 Columna derecha (ubicación y tipo) -->
       <div class="columna-ubicacion">
         <div class="contenedor_ubicaciones">
-
           <div class="opciones-vehiculo">
-            <div class="casilla" [class.activa]="tipoSeleccionado === 'particular'"
+            <div
+              class="casilla"
+              [class.activa]="tipoSeleccionado === 'particular'"
               (click)="seleccionarTipo('particular')">
               <img src="assets/img/particular.png" alt="Particular" />
               <p>Particular</p>
               <ion-icon name="checkmark-circle-outline" class="icono-check"></ion-icon>
             </div>
 
-            <div class="casilla" [class.activa]="tipoSeleccionado === 'lote'"
+            <div
+              class="casilla"
+              [class.activa]="tipoSeleccionado === 'lote'"
               *ngIf="auto && (auto.tipoVenta?.toLowerCase() !== 'nuevo') && (MyRole === 'admin' || MyRole === 'lotero')"
               (click)="seleccionarTipo('lote')">
               <img src="assets/img/lote.png" alt="Lote" />
@@ -436,12 +585,16 @@
             </div>
           </div>
 
-          <div class="contenedor_version"
+          <div
+            class="contenedor_version"
             *ngIf="tipoSeleccionado === 'lote' && (MyRole == 'admin' || MyRole == 'lotero')">
             <ion-item>
               <ion-label position="stacked">Lote</ion-label>
-              <ion-select [(ngModel)]="loteSeleccionado" placeholder="Selecciona un lote"
-                (ionChange)="seleccionarLote($event.detail.value)" interface="alert"
+              <ion-select
+                [(ngModel)]="loteSeleccionado"
+                placeholder="Selecciona un lote"
+                (ionChange)="seleccionarLote($event.detail.value)"
+                interface="alert"
                 [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
                 <ion-select-option *ngFor="let lote of lotes" [value]="lote._id">
                   {{ lote.nombre || 'Lote sin nombre' }}
@@ -451,10 +604,14 @@
 
             <ion-item *ngIf="ubicacionesLoteSeleccionado.length > 1">
               <ion-label position="stacked">Ubicación</ion-label>
-              <ion-select [(ngModel)]="direccionSeleccionada" placeholder="Selecciona una ubicación"
-                (ionChange)="onUbicacionChange($event)" interface="alert"
+              <ion-select
+                [(ngModel)]="direccionSeleccionada"
+                placeholder="Selecciona una ubicación"
+                (ionChange)="onUbicacionChange($event)"
+                interface="alert"
                 [interfaceOptions]="{ cssClass: 'select-lote-rojo' }">
-                <ion-select-option *ngFor="let direccion of ubicacionesLoteSeleccionado; let i = index"
+                <ion-select-option
+                  *ngFor="let direccion of ubicacionesLoteSeleccionado; let i = index"
                   [value]="direccion">
                   {{ ubicacionesLoteLegibles[i] || 'Obteniendo dirección...' }}
                 </ion-select-option>
@@ -466,7 +623,8 @@
             </ion-item>
           </div>
 
-          <div class="bloque-ubicacion"
+          <div
+            class="bloque-ubicacion"
             *ngIf="tipoSeleccionado === 'particular' && (MyRole == 'admin' || MyRole == 'vendedor' || MyRole == 'lotero')">
             <button class="btn_ubicacion" type="button" (click)="seleccionarUbicacion()">
               <ion-icon name="location-outline" class="icono"></ion-icon>
@@ -482,17 +640,19 @@
       </div>
     </div>
 
+    <!-- ===================== -->
     <!-- 🔸 SECCIÓN IMÁGENES -->
+    <!-- ===================== -->
     <div *ngIf="seccionActiva === 'imagenes'">
       <ion-grid>
         <ion-row>
-
           <ion-col size="12" size-md="6">
             <ion-card class="card-ios">
               <ion-card-header>
-                <ion-card-title>Imagen principal del auto</ion-card-title>
-                <ion-card-subtitle>Selecciona una imagen para remover el fondo</ion-card-subtitle>
+                <ion-card-title *ngIf="cropTarget == 'principal'">Imagen principal del auto</ion-card-title>
+                <ion-card-title *ngIf="cropTarget == 'secundaria'">Imagen del auto</ion-card-title>
               </ion-card-header>
+
               <ion-card-content>
                 <div class="botons">
                   <button class="button-nuevo" (click)="seleccionarImagen()">
@@ -503,50 +663,96 @@
                 </div>
 
                 <div class="contenedor-imagen">
+                  <img
+                    *ngIf="!modoRecorte"
+                    [src]="imagenPrincipalMostrada"
+                    alt="Imagen principal del auto"
+                    class="imagen-principal-editable"
+                    (click)="editarImagenActual()" />
 
-                  <!-- 🔴 MODO NORMAL --><img *ngIf="!modoRecorte" [src]="imagenPrincipalMostrada"
-                    alt="Imagen principal del auto" class="imagen-principal-editable" (click)="editarImagenActual()" />
+                  <div class="cropper-wrapper" *ngIf="modoRecorte">
+                    <image-cropper
+                      [imageChangedEvent]="imageChangedEvent"
+                      [maintainAspectRatio]="true"
+                      [aspectRatio]="aspectRatio"
+                      [resizeToWidth]="FINAL_WIDTH"
+                      [cropperMinWidth]="FINAL_WIDTH"
+                      [cropperMaxWidth]="FINAL_WIDTH"
+                      [cropperMinHeight]="FINAL_HEIGHT"
+                      [cropperMaxHeight]="FINAL_HEIGHT"
+                      format="png"
+                      outputType="blob"
+                      [backgroundColor]="'rgba(0,0,0,0)'"
+                      [transform]="transform"
+                      (imageCropped)="onImageCropped($event)">
+                    </image-cropper>
 
-
-                  <!-- ✂️ MODO RECORTE INLINE -->
-                  <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-                    [aspectRatio]="aspectRatio" [resizeToWidth]="FINAL_WIDTH" [cropperMinWidth]="FINAL_WIDTH"
-                    [cropperMaxWidth]="FINAL_WIDTH" [cropperMinHeight]="FINAL_HEIGHT" [cropperMaxHeight]="FINAL_HEIGHT"
-                    format="jpeg" outputType="blob" [transform]="transform" (imageCropped)="onImageCropped($event)">
-                  </image-cropper>
-
+                    <div class="guide-line guide-h-center"></div>
+                    <div class="guide-line guide-v-center"></div>
+                    <div class="guide-line guide-h-60"></div>
+                    <div class="guide-line guide-h-65"></div>
+                    <div class="guide-line guide-h-70"></div>
+                    <div class="guide-line guide-h-75"></div>
+                  </div>
                 </div>
 
-                <!-- 🔍 ZOOM -->
-                <ion-range *ngIf="modoRecorte" color="danger" [min]="ZOOM_MIN" [max]="ZOOM_MAX" step="0.02"
-                  [value]="zoom" (ionChange)="onZoomChange($event)">
-                </ion-range>
+                <div *ngIf="modoRecorte" class="zoom-panel">
+                  <div class="zoom-header">
+                    <div class="zoom-title">Zoom</div>
+                    <div class="zoom-value">{{ zoom | number:'1.0-2' }}x</div>
+                  </div>
 
+                  <div class="zoom-controls">
+                    <ion-button class="zoom-btn" fill="solid" color="danger" (click)="stepZoom(-1)" [disabled]="zoom <= ZOOM_MIN">
+                      <ion-icon name="remove-outline"></ion-icon>
+                    </ion-button>
 
-                <!-- 🎯 BOTONES -->
-                <div *ngIf="modoRecorte" class="acciones-recorte">
-                  <ion-button color="medium" (click)="cancelarRecorte()">Cancelar</ion-button>
-                  <ion-button color="danger" (click)="confirmarRecorte()">Guardar</ion-button>
+                    <ion-range
+                      class="zoom-range"
+                      color="danger"
+                      [min]="ZOOM_MIN"
+                      [max]="ZOOM_MAX"
+                      [step]="ZOOM_STEP"
+                      [value]="zoom"
+                      (ionChange)="onZoomChange($event)">
+                    </ion-range>
+
+                    <ion-button class="zoom-btn" fill="solid" color="danger" (click)="stepZoom(1)" [disabled]="zoom >= ZOOM_MAX">
+                      <ion-icon name="add-outline"></ion-icon>
+                    </ion-button>
+                  </div>
+
+                  <div class="zoom-quick">
+                    <ion-button size="small" fill="clear" color="danger" (click)="setZoom(1)">1x</ion-button>
+                    <ion-button size="small" fill="clear" color="danger" (click)="setZoom(1.25)">1.25x</ion-button>
+                    <ion-button size="small" fill="clear" color="danger" (click)="setZoom(1.5)">1.5x</ion-button>
+                    <ion-button size="small" fill="clear" color="danger" (click)="setZoom(2)">2x</ion-button>
+                  </div>
                 </div>
 
-                <p class="texto_css">Selecciona una imagen para remover el fondo</p>
+                <p *ngIf="!modoRecorte" class="texto_css">
+                  Selecciona una imagen para remover el fondo
+                </p>
 
-                <div class="galeria-scroll" *ngIf="urlsImagenes.length">
-                  <img *ngFor="let img of urlsImagenes" [src]="img" alt="Imagen del auto"
+                <div class="galeria-scroll" *ngIf="urlsImagenes.length && !modoRecorte">
+                  <img
+                    *ngFor="let img of urlsImagenes"
+                    [src]="img"
+                    alt="Imagen del auto"
                     (click)="actualizarImagenPrincipal(img)" />
                 </div>
               </ion-card-content>
             </ion-card>
-
-
           </ion-col>
 
-          <ion-col size="12" size-md="6">
+          <!-- Galería grande (oculta cuando recortas) -->
+          <ion-col size="12" size-md="6" *ngIf="!modoRecorte">
             <ion-card class="card-ios">
               <ion-card-header>
                 <ion-card-title>Imágenes de mi auto</ion-card-title>
                 <ion-card-subtitle>Agrega máximo 10 imágenes</ion-card-subtitle>
               </ion-card-header>
+
               <ion-card-content>
                 <label class="btn-agregar">
                   <ion-icon name="add-outline"></ion-icon>
@@ -555,8 +761,8 @@
                 </label>
 
                 <div class="galeria-scroll-big" *ngIf="urlsImagenes.length">
-                  <div class="img-wrapper" *ngFor="let img of urlsImagenes">
-                    <img [src]="img" alt="Imagen del auto" />
+                  <div class="img-wrapper" *ngFor="let img of urlsImagenes; let i = index">
+                    <img [src]="img" alt="Imagen del auto" (click)="editarImagenSecundaria(i)" />
                     <div class="overlay-botones">
                       <button class="btn-accion eliminar" (click)="eliminarImagen_visual(img)">
                         <ion-icon name="trash-outline"></ion-icon>
@@ -571,21 +777,15 @@
         </ion-row>
       </ion-grid>
     </div>
-
   </div>
 
-  <!-- 🔸 BOTONES FINALES -->
+  <!-- Action bar iOS -->
   <div class="action-bar">
-    <div class="action-buttons">
+    <div class="action-buttons" *ngIf="!modoRecorte">
       <ion-button fill="outline" color="light" (click)="regresar()">
         <ion-icon name="close-outline"></ion-icon>
         <span>Cancelar</span>
       </ion-button>
-
-      <!-- <ion-button fill="outline" color="warning" (click)="onRestablecerClick()" [disabled]="!restablecer">
-          <ion-icon name="refresh-outline"></ion-icon>
-          <span>Restablecer</span>
-        </ion-button> -->
 
       <ion-button fill="outline" color="danger" (click)="alert(auto?._id)" [disabled]="!auto?._id">
         <ion-icon name="trash-outline"></ion-icon>
@@ -597,6 +797,16 @@
         <span>Guardar</span>
       </ion-button>
     </div>
-  </div>
 
+    <div class="action-buttons" *ngIf="modoRecorte">
+      <ion-button color="medium" (click)="cancelarRecorte()">
+        <ion-icon name="close-outline"></ion-icon>
+        <span>Cancelar</span>
+      </ion-button>
+      <ion-button color="danger" (click)="confirmarRecorte()">
+        <ion-icon name="save-outline"></ion-icon>
+        Guardar
+      </ion-button>
+    </div>
+  </div>
 </ion-content>

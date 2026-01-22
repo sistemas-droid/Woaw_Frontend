@@ -1,6 +1,7 @@
 <app-navbar></app-navbar>
 
-<ion-content #pageContent [fullscreen]="true" class="contenido-ios">
+<ion-content #pageContent [fullscreen]="true" class="contenido-ios" mode="ios">
+  <!-- Refresher (mezcla HEAD + main) -->
   <ion-refresher
     slot="fixed"
     (ionRefresh)="doRefresh($event)"
@@ -17,19 +18,26 @@
     </ion-refresher-content>
   </ion-refresher>
 
-
+  <!-- Acomodo (main) -->
   <app-acomodo
     [totalAutos]="totalAutos"
     (ordenCambio)="ordenarAutos($event)"
     [titulo]="'Seminuevos'"
   ></app-acomodo>
 
-    <app-spinner *ngIf="mostrar_spinner" [tipo]="tipo_spinner" [text]="texto_spinner" [sub_text]="textoSub_spinner"></app-spinner>
+  <!-- Spinner (main) -->
+  <app-spinner
+    *ngIf="mostrar_spinner"
+    [tipo]="tipo_spinner"
+    [text]="texto_spinner"
+    [sub_text]="textoSub_spinner"
+  ></app-spinner>
 
   <ion-grid class="contenedor-catalogo-ios">
     <ion-row>
-      <!-- Columna lateral de filtros -->
-      <ion-col size="12" size-md="3">
+
+      <!-- Filtros -->
+      <ion-col size="12" size-md="3" class="col-filtros-ios">
         <app-menu
           [filtros]="filtros"
           [filtrosAplicados]="filtrosAplicados"
@@ -39,23 +47,23 @@
         </app-menu>
       </ion-col>
 
-      <!-- Columna de catálogo -->
-      <ion-col size="12" size-md="9">
-        <!-- 👇 OJO: clase condicional para estado vacío -->
+      <!-- Catálogo -->
+      <ion-col size="12" size-md="9" class="col-catalogo-ios">
+
         <div
           class="catalogo-autos-ios"
-          [class.sin-autos]="!autosPaginados || autosPaginados.length === 0"
+          [class.sin-autos]="!mostrar_spinner && (!autosPaginados || autosPaginados.length === 0)"
         >
-          <!-- Estado vacío -->
+          <!-- Vacío (solo cuando NO carga) -->
           <div
-            *ngIf="!autosPaginados || autosPaginados.length === 0"
+            *ngIf="!mostrar_spinner && (!autosPaginados || autosPaginados.length === 0)"
             class="mensaje-vacio-ios"
           >
             <ion-icon name="car-sport-outline" class="icono-mensaje"></ion-icon>
             <p>No se encontraron autos para esta sección.</p>
           </div>
 
-          <!-- Listado de autos -->
+          <!-- Cards -->
           <ng-container *ngIf="autosPaginados && autosPaginados.length > 0">
             <ng-container *ngFor="let auto of autosPaginados">
               <app-cartas
@@ -68,13 +76,14 @@
               </app-cartas>
             </ng-container>
           </ng-container>
+
         </div>
 
         <!-- Paginación iOS roja -->
         <div class="contenedor-paginacion-ios" *ngIf="totalPaginas > 1">
           <div class="paginacion-scroll-ios">
             <div class="paginacion-ios">
-              <!-- Flecha anterior -->
+
               <button
                 class="pagina-ios"
                 (click)="cambiarPagina(paginaActual - 1)"
@@ -83,7 +92,6 @@
                 ‹
               </button>
 
-              <!-- Botones dinámicos -->
               <ng-container *ngFor="let i of paginasReducidas">
                 <button
                   *ngIf="esNumero(i)"
@@ -93,10 +101,10 @@
                 >
                   {{ i }}
                 </button>
+
                 <span *ngIf="!esNumero(i)" class="ellipsis-ios">...</span>
               </ng-container>
 
-              <!-- Flecha siguiente -->
               <button
                 class="pagina-ios"
                 (click)="cambiarPagina(paginaActual + 1)"
@@ -104,6 +112,7 @@
               >
                 ›
               </button>
+
             </div>
           </div>
         </div>
@@ -111,4 +120,6 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <app-footer></app-footer>
 </ion-content>

@@ -21,6 +21,8 @@ import { AppUpdate, AppUpdateAvailability } from '@capawesome/capacitor-app-upda
 declare let gtag: Function;
 
 const WOALF_STORAGE_KEY = 'woalf_last_shown';
+const WOAW_ASESOR_CODE_KEY = 'woaw_asesor_code';
+const WOAW_ASESOR_CODE_AT_KEY = 'woaw_asesor_code_at';
 
 // Helper: reemplazo de Object.fromEntries para TS < ES2019
 function paramsToObject(sp: URLSearchParams): Record<string, string> {
@@ -77,8 +79,11 @@ export class AppComponent {
       }
     });
 
-    this.router.events.subscribe(() => {
+    this.router.events.subscribe((event) => {
       this.currentUrl = this.router.url;
+      if (event instanceof NavigationEnd) {
+        this.captureAsesorCodeFromUrl(event.urlAfterRedirects);
+      }
     });
 
     this.setDynamicTitle();
@@ -373,4 +378,27 @@ export class AppComponent {
       console.error('[App] Error al comprobar actualización nativa', err);
     }
   }
+  private captureAsesorCodeFromUrl(url: string) {
+    try {
+      // url viene tipo: /home?code=XXXX
+      const qIndex = url.indexOf('?');
+      if (qIndex === -1) return;
+
+      const qs = url.substring(qIndex + 1);
+      const sp = new URLSearchParams(qs);
+      const code = sp.get('code');
+
+      if (!code) return;
+
+      // Guarda “quién te trajo”
+      localStorage.setItem(WOAW_ASESOR_CODE_KEY, code);
+      localStorage.setItem(WOAW_ASESOR_CODE_AT_KEY, new Date().toISOString());
+
+      // opcional: log
+      console.log('[WOAW] Asesor code capturado:', code);
+    } catch (e) {
+      console.warn('[WOAW] No se pudo capturar asesor code', e);
+    }
+  }
+
 }

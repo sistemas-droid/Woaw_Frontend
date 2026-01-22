@@ -1,0 +1,497 @@
+:host {
+  --woaw-red: #ff0033;
+  --woaw-black: #0b0b0f;
+
+  --text: #0f172a;
+  --muted: rgba(15, 23, 42, 0.68);
+  --line: rgba(15, 23, 42, 0.10);
+
+  --card: rgba(255, 255, 255, 0.82);
+  --card-strong: rgba(255, 255, 255, 0.94);
+  --shadow: 0 18px 60px rgba(2, 6, 23, 0.10);
+  --shadow-strong: 0 26px 90px rgba(2, 6, 23, 0.16);
+
+  --r-xl: 22px;
+  --r-lg: 18px;
+  --r-md: 14px;
+  --pill: 999px;
+}
+
+/* Fondo iOS */
+.editar-asesor {
+  --background: linear-gradient(180deg, #f6f7fb 0%, #eef1f7 55%, #f6f7fb 100%);
+  position: relative;
+}
+
+.bg-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 600px at 16% 8%, rgba(255, 255, 255, 0.26) 0%, transparent 58%),
+    radial-gradient(860px 520px at 90% 22%, rgba(255, 0, 51, 0.08) 0%, transparent 62%),
+    radial-gradient(720px 520px at 70% 90%, rgba(11, 11, 15, 0.05) 0%, transparent 60%);
+  filter: saturate(1.05);
+}
+
+.wrap {
+  position: relative;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 16px 14px 90px;
+  box-sizing: border-box;
+}
+
+/* ===== Header iOS (Large title) ===== */
+.ios-header {
+  padding-top: env(safe-area-inset-top, 0);
+  margin-bottom: 12px;
+}
+
+.title-card {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: var(--r-xl);
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 0, 51, 0.78);
+  margin-bottom: 6px;
+}
+
+.title-card h1 {
+  margin: 0;
+  font-weight: 1000;
+  letter-spacing: -0.9px;
+  line-height: 1.05;
+  font-size: clamp(30px, 4vw, 44px);
+  background: linear-gradient(135deg, #0f172a 0%, #280207 40%, var(--woaw-red) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
+  max-width: 700px;
+}
+
+/* ===== States ===== */
+.state-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  margin: 12px 0 14px;
+  padding: 14px;
+  border-radius: var(--r-lg);
+
+  background: var(--card);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  box-shadow: 0 10px 28px rgba(2, 6, 23, 0.06);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.state-card p {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.state-card.error {
+  border-color: rgba(255, 0, 51, 0.18);
+}
+
+.error-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.error-left ion-icon {
+  font-size: 18px;
+  color: rgba(255, 0, 51, 0.85);
+}
+
+/* ===== Form Card ===== */
+.form-card {
+  margin-top: 14px;
+  border-radius: var(--r-xl);
+  background: var(--card);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  box-shadow: var(--shadow);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+ion-card-content {
+  padding: 16px;
+}
+
+/* Perfil header */
+.perfil-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 25%, #26262f 0%, #0b0b0f 55%, #050508 100%);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.avatar.grande {
+  width: 72px;
+  height: 72px;
+}
+
+.avatar span {
+  color: #fff;
+  font-weight: 950;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+}
+
+.avatar.grande span {
+  font-size: 22px;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.perfil-meta {
+  min-width: 0;
+}
+
+.perfil-meta h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 950;
+  color: #111827;
+  letter-spacing: -0.2px;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.perfil-meta .rol {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: rgba(15, 23, 42, 0.56);
+  font-weight: 850;
+}
+
+/* Fields wrapper */
+.fields {
+  display: grid;
+  gap: 10px;
+}
+
+/* iOS inputs */
+.ios-input {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --min-height: 0;
+
+  border-radius: var(--r-md);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 10px 12px;
+
+  transition: border-color 0.14s ease, transform 0.14s ease, background 0.14s ease;
+}
+
+.ios-input ion-label {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  color: rgba(15, 23, 42, 0.70);
+}
+
+.ios-input ion-input {
+  font-size: 14px;
+  font-weight: 650;
+  --padding-top: 4px;
+  --padding-bottom: 4px;
+  color: #111827;
+}
+
+/* Focus style (sin romper ionic) */
+.ios-input:focus-within {
+  border-color: rgba(255, 0, 51, 0.26);
+  background: rgba(255, 255, 255, 0.98);
+  transform: translateY(-1px);
+}
+
+/* Teléfono row */
+.telefono-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 10px;
+}
+
+/* Lada chip */
+.lada-select {
+  cursor: pointer;
+}
+
+.lada-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px;
+  border-radius: var(--pill);
+  background: rgba(2, 6, 23, 0.04);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  user-select: none;
+}
+
+.flag-img {
+  width: 24px;
+  height: 18px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+}
+
+.lada-text {
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: #111827;
+}
+
+.chev {
+  opacity: 0.7;
+}
+
+/* File input */
+.file-input .foto-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.file-input input[type="file"] {
+  flex: 1 1 auto;
+  width: 100%;
+  font-size: 13px;
+  padding: 10px 10px;
+  border-radius: var(--r-md);
+  border: 1px dashed rgba(15, 23, 42, 0.22);
+  background: rgba(255, 255, 255, 0.96);
+  color: #111827;
+  cursor: pointer;
+}
+
+.btn-quitar {
+  --border-radius: var(--pill);
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hint {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: rgba(15, 23, 42, 0.55);
+  font-weight: 750;
+}
+
+/* Preview */
+.preview {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: var(--r-lg);
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.94);
+  max-width: 340px;
+}
+
+.preview img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-md);
+  display: block;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+ion-button {
+  --border-radius: var(--pill);
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+ion-button[fill="outline"] {
+  --border-color: rgba(15, 23, 42, 0.22);
+  --color: #111827;
+  --background: rgba(255, 255, 255, 0.92);
+}
+
+ion-button:not([fill="outline"]) {
+  --background: linear-gradient(135deg, rgba(255, 0, 51, 0.92) 0%, rgba(255, 79, 120, 0.92) 100%);
+  --color: #ffffff;
+}
+
+/* ===== Modal iOS ===== */
+::ng-deep ion-modal.ios-ladas-modal {
+  --width: min(720px, 94vw);
+  --height: min(86vh, 860px);
+  --border-radius: 22px;
+  --backdrop-opacity: 0.55;
+}
+
+::ng-deep ion-modal.ios-ladas-modal::part(backdrop) {
+  background: rgba(2, 6, 23, 0.68) !important;
+}
+
+::ng-deep ion-modal.ios-ladas-modal::part(content) {
+  border-radius: 22px !important;
+  overflow: hidden !important;
+  box-shadow: 0 28px 120px rgba(2, 6, 23, 0.45) !important;
+}
+
+/* Toolbars del modal */
+.modal-toolbar {
+  --background: rgba(11, 11, 15, 0.96);
+  --color: #fff;
+}
+
+.search-toolbar {
+  --background: rgba(255, 255, 255, 0.92);
+}
+
+.modal-content {
+  --background: rgba(246, 247, 251, 1);
+}
+
+.modal-list {
+  background: transparent;
+  padding: 10px;
+}
+
+.modal-item {
+  --background: rgba(255, 255, 255, 0.92);
+  --border-radius: 16px;
+  --padding-start: 12px;
+  --inner-padding-end: 12px;
+
+  margin-bottom: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  box-shadow: 0 10px 24px rgba(2, 6, 23, 0.06);
+}
+
+.pais-nombre {
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.pais-codigo {
+  opacity: 0.7;
+  font-weight: 800;
+}
+
+/* ===== Media Queries ===== */
+@media (max-width: 900px) {
+  .wrap {
+    max-width: 760px;
+  }
+}
+
+@media (max-width: 720px) {
+  .wrap {
+    padding: 14px 12px 84px;
+  }
+
+  .title-card {
+    padding: 14px;
+  }
+
+  .title-card h1 {
+    font-size: clamp(28px, 7vw, 36px);
+  }
+
+  .telefono-row {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .preview {
+    max-width: 100%;
+  }
+
+  .file-input .foto-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 420px) {
+  ion-card-content {
+    padding: 14px;
+  }
+
+  .perfil-header {
+    gap: 12px;
+  }
+
+  .avatar.grande {
+    width: 68px;
+    height: 68px;
+  }
+
+  .lada-chip {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 360px) {
+  .perfil-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

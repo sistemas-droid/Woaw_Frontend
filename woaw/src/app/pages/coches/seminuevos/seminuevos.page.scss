@@ -1,12 +1,12 @@
-/* ============================= */
-/*   BASE / FONDO                */
-/* ============================= */
+/* =============================
+   BASE / FONDO iOS
+============================= */
 .contenido-ios {
   --background: #f2f2f7;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif;
 }
 
-/* (header-ios lo dejamos por si luego le metes header en esta vista) */
+/* (header-ios lo dejo por si luego metes header aquí) */
 .header-ios {
   --background: rgba(249, 249, 249, 0.94);
   --border-color: rgba(0, 0, 0, 0.08);
@@ -31,17 +31,11 @@
   font-weight: 500;
   cursor: pointer;
 
-  ion-icon {
-    font-size: 18px;
-  }
+  ion-icon { font-size: 18px; }
 
-  span {
-    transform: translateY(-0.5px);
-  }
+  span { transform: translateY(-0.5px); }
 
-  &:active {
-    background: rgba(0, 0, 0, 0.08);
-  }
+  &:active { background: rgba(0, 0, 0, 0.08); }
 }
 
 .logo-ios {
@@ -49,19 +43,24 @@
   width: auto;
 }
 
-/* ============================= */
-/*   GRID / CONTENEDOR           */
-/* ============================= */
+/* =============================
+   CONTENEDOR / GRID
+============================= */
 .contenedor-catalogo-ios {
   max-width: 1100px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 12px 20px;
+  padding: 0 12px 22px;
 }
 
-/* ============================= */
-/*   CATÁLOGO – TARJETAS         */
-/* ============================= */
+.col-filtros-ios,
+.col-catalogo-ios {
+  padding: 8px 6px;
+}
+
+/* =============================
+   CATÁLOGO – TARJETAS iOS
+============================= */
 .catalogo-autos-ios {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -79,34 +78,30 @@
     gap: 8px;
   }
 
-  app-cartas {
-    display: block;
-  }
+  app-cartas { display: block; }
 }
 
-/* 💡 Cuando NO hay autos: centrar mensaje tipo app nativa */
+/* Vacío centrado tipo app nativa */
 .catalogo-autos-ios.sin-autos {
-  display: flex; /* sobreescribe el grid cuando está vacío */
+  display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 0;
   margin-bottom: 0;
-  /* resta navbar + acomodo aprox, ajustas fino si quieres */
-  min-height: calc(100vh - 200px);
+  min-height: calc(100vh - 210px);
 }
 
 @media (max-width: 768px) {
   .catalogo-autos-ios.sin-autos {
-    min-height: calc(100vh - 180px);
+    min-height: calc(100vh - 185px);
   }
 }
 
-/* ============================= */
-/*   MENSAJE VACÍO iOS           */
-/* ============================= */
+/* =============================
+   MENSAJE VACÍO iOS
+============================= */
 .mensaje-vacio-ios {
   width: 100%;
-  /* ya no usamos min-height, el alto lo controla .sin-autos */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -115,9 +110,8 @@
   text-align: center;
   color: #8e8e93;
   font-size: 15px;
-  margin-top: 0;
 
-  ion-icon {
+  ion-icon.icono-mensaje {
     font-size: 60px;
     margin-bottom: 10px;
     color: #b3b3b9;
@@ -127,13 +121,13 @@
     margin: 0;
     max-width: 320px;
     line-height: 1.45;
-    font-weight: 500;
+    font-weight: 600;
   }
 }
 
-/* ============================= */
-/*   PAGINACIÓN – iOS ROJA       */
-/* ============================= */
+/* =============================
+   PAGINACIÓN – iOS ROJA
+============================= */
 .contenedor-paginacion-ios {
   width: 100%;
   display: flex;
@@ -142,15 +136,6 @@
   justify-content: center;
   margin-top: 18px;
   padding-bottom: 10px;
-}
-
-.titulo-paginacion-ios {
-  margin: 0 0 6px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #6b7280;
 }
 
 .paginacion-scroll-ios {
@@ -163,9 +148,7 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(148, 163, 184, 0.9) transparent;
 
-  &::-webkit-scrollbar {
-    height: 5px;
-  }
+  &::-webkit-scrollbar { height: 5px; }
   &::-webkit-scrollbar-thumb {
     background: rgba(148, 163, 184, 0.9);
     border-radius: 999px;
@@ -188,7 +171,6 @@
     0 0 0 0.5px rgba(255, 255, 255, 0.9);
 }
 
-/* Botones redondos rojos, igual que Mis autos */
 .pagina-ios {
   min-width: 32px;
   height: 32px;
@@ -203,15 +185,11 @@
   justify-content: center;
 
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: #111827;
   background: transparent;
 
-  transition:
-    background 0.18s ease,
-    color 0.18s ease,
-    transform 0.16s ease,
-    box-shadow 0.16s ease;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.16s ease, box-shadow 0.16s ease;
 
   &:disabled {
     opacity: 0.35;
@@ -224,7 +202,7 @@
   }
 
   &.activa {
-    background: #ff3b30; /* rojo iOS */
+    background: #ff3b30;
     color: #ffffff;
     box-shadow: 0 8px 18px rgba(255, 59, 48, 0.55);
     transform: translateY(-1px);
@@ -235,20 +213,18 @@
   padding: 0 6px;
   font-size: 14px;
   color: #9ca3af;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-/* ============================= */
-/*   EXTRAS (favs, filtros, estado) */
-/* ============================= */
-
+/* =============================
+   EXTRAS (los dejo por compat)
+============================= */
 .btn-fav {
   position: absolute;
   top: 10px;
   right: 10px;
 }
 
-/* Filtros */
 .filtros-row {
   --ion-grid-column-padding: 4px;
   --ion-grid-padding: 0;
@@ -262,7 +238,6 @@
   border-radius: 18px;
 }
 
-/* Estado del vehículo */
 .estado-vehiculo {
   display: inline-block;
   padding: 4px 10px;

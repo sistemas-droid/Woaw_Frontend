@@ -1,0 +1,461 @@
+:host {
+  --woaw-red: #ff0033;
+  --woaw-black: #0b0b0f;
+
+  --text: #0f172a;
+  --muted: rgba(15, 23, 42, 0.68);
+  --line: rgba(15, 23, 42, 0.10);
+
+  --card: rgba(255, 255, 255, 0.82);
+  --card-strong: rgba(255, 255, 255, 0.94);
+
+  --shadow: 0 18px 60px rgba(2, 6, 23, 0.10);
+  --shadow-strong: 0 26px 90px rgba(2, 6, 23, 0.16);
+
+  --r-xl: 22px;
+  --r-lg: 18px;
+  --r-md: 14px;
+  --pill: 999px;
+}
+
+/* Fondo iOS */
+.perfil-ios {
+  --background: linear-gradient(180deg, #f6f7fb 0%, #eef1f7 55%, #f6f7fb 100%);
+  position: relative;
+}
+
+/* decor */
+.bg-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 600px at 16% 8%, rgba(255, 255, 255, 0.26) 0%, transparent 58%),
+    radial-gradient(860px 520px at 90% 22%, rgba(255, 0, 51, 0.08) 0%, transparent 62%),
+    radial-gradient(720px 520px at 70% 90%, rgba(11, 11, 15, 0.05) 0%, transparent 60%);
+  filter: saturate(1.05);
+}
+
+.contenedor-perfil {
+  position: relative;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 16px 14px 70px;
+  box-sizing: border-box;
+}
+
+/* ===== Header iOS (large title vibes) ===== */
+.encabezado-perfil {
+  padding-top: env(safe-area-inset-top, 0);
+  margin-bottom: 14px;
+}
+
+.encabezado-perfil .heading-left {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: var(--r-xl);
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.encabezado-perfil .eyebrow {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 0, 51, 0.78);
+  margin-bottom: 6px;
+}
+
+.encabezado-perfil h1 {
+  margin: 0;
+  text-align: left;
+  font-weight: 1000;
+  letter-spacing: -0.9px;
+  line-height: 1.05;
+  font-size: clamp(30px, 4vw, 44px);
+  background: linear-gradient(135deg, #0f172a 0%, #280207 40%, var(--woaw-red) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.encabezado-perfil p {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 720px;
+  line-height: 1.35;
+}
+
+/* ===== States ===== */
+.state-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  padding: 14px;
+  margin: 12px 0 14px;
+  border-radius: var(--r-lg);
+
+  background: var(--card);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  box-shadow: 0 10px 28px rgba(2, 6, 23, 0.06);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.state-card p {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.state-card.error {
+  border-color: rgba(255, 0, 51, 0.18);
+}
+
+.error-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.error-left ion-icon {
+  font-size: 18px;
+  color: rgba(255, 0, 51, 0.85);
+}
+
+/* ===== Perfil card (glass) ===== */
+.perfil-card {
+  border-radius: var(--r-xl);
+  background: var(--card);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Top */
+.perfil-top {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: linear-gradient(180deg, rgba(11, 11, 15, 0.03), rgba(11, 11, 15, 0));
+}
+
+/* Avatar */
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+
+  background: radial-gradient(circle at 30% 25%, #26262f 0%, #0b0b0f 55%, #050508 100%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar span {
+  color: #fff;
+  font-weight: 950;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+}
+
+/* Info */
+.info {
+  min-width: 0;
+}
+
+.info h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 950;
+  color: #111827;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.info .rol {
+  margin: 3px 0 0;
+  font-size: 12px;
+  font-weight: 850;
+  color: rgba(15, 23, 42, 0.56);
+  text-transform: lowercase;
+}
+
+/* Botón editar (pill iOS) */
+.btn-editar {
+  padding: 10px 14px;
+  border-radius: var(--pill);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.20);
+  color: #111827;
+
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  transition: transform 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+  user-select: none;
+}
+
+.btn-editar ion-icon {
+  font-size: 14px;
+}
+
+.btn-editar:hover {
+  background: rgba(15, 23, 42, 0.03);
+  border-color: rgba(15, 23, 42, 0.32);
+  transform: translateY(-1px);
+}
+
+.btn-editar:active {
+  transform: none;
+}
+
+.btn-editar:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Datos */
+.perfil-datos {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dato {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 12px 12px;
+  border-radius: var(--r-lg);
+
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.dato:hover {
+  transform: translateY(-1px);
+  border-color: rgba(15, 23, 42, 0.16);
+  box-shadow: 0 10px 22px rgba(2, 6, 23, 0.06);
+}
+
+.dato-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+
+  background: rgba(255, 0, 51, 0.06);
+  border: 1px solid rgba(255, 0, 51, 0.12);
+}
+
+.icon-wrap ion-icon {
+  font-size: 18px;
+  color: rgba(255, 0, 51, 0.85);
+}
+
+/* Texto */
+.txt {
+  min-width: 0;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(15, 23, 42, 0.55);
+}
+
+.value {
+  display: block;
+  font-size: 14px;
+  font-weight: 850;
+  color: #111827;
+  overflow-wrap: anywhere;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Botón mini */
+.btn-mini {
+  padding: 8px 12px;
+  border-radius: var(--pill);
+  border: 1px solid rgba(255, 0, 51, 0.26);
+  background: rgba(255, 255, 255, 0.96);
+  color: rgba(255, 0, 51, 0.92);
+
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  transition: transform 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.btn-mini:hover {
+  background: rgba(255, 0, 51, 0.06);
+  border-color: rgba(255, 0, 51, 0.38);
+  transform: translateY(-1px);
+}
+
+.btn-mini:active {
+  transform: none;
+}
+
+/* Link comisión “especial” */
+.dato.link-comision {
+  border: 1.5px dashed rgba(255, 0, 51, 0.40);
+  background: linear-gradient(180deg, rgba(255, 0, 51, 0.03), rgba(255, 255, 255, 0.94));
+}
+
+.dato.link-comision .icon-wrap {
+  background: rgba(255, 0, 51, 0.07);
+  border-color: rgba(255, 0, 51, 0.18);
+}
+
+.dato.link-comision .label {
+  color: rgba(185, 28, 28, 0.75);
+}
+
+.dato.link-comision .value {
+  font-size: 13px;
+  font-weight: 900;
+  color: #7f1d1d;
+  word-break: break-all;
+}
+
+.dato.link-comision .btn-mini {
+  border-color: rgba(255, 0, 51, 0.42);
+  color: rgba(255, 0, 51, 0.95);
+}
+
+.dato.link-comision .btn-mini:hover {
+  background: rgba(255, 0, 51, 0.08);
+  border-color: rgba(255, 0, 51, 0.55);
+}
+
+/* ===== Media queries ===== */
+@media (max-width: 720px) {
+  .contenedor-perfil {
+    padding: 14px 12px 64px;
+  }
+
+  .encabezado-perfil .heading-left {
+    padding: 14px;
+  }
+
+  .encabezado-perfil h1 {
+    font-size: clamp(28px, 7vw, 36px);
+  }
+
+  .perfil-top {
+    grid-template-columns: 72px 1fr;
+  }
+
+  .btn-editar {
+    width: 100%;
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+
+  .btn-mini {
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .perfil-top {
+    padding: 12px;
+  }
+
+  .perfil-datos {
+    padding: 12px;
+  }
+
+  .dato {
+    align-items: flex-start;
+  }
+
+  .dato-left {
+    align-items: flex-start;
+  }
+
+  .icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 13px;
+  }
+}
+
+@media (max-width: 360px) {
+  .perfil-top {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .avatar {
+    width: 68px;
+    height: 68px;
+  }
+
+  .btn-editar {
+    justify-content: center;
+  }
+
+  .dato {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-mini {
+    width: 100%;
+  }
+}

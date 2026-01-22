@@ -4,49 +4,77 @@ import {
   Input,
   Output,
   EventEmitter,
-  ViewChild,
-  ElementRef,
+  CUSTOM_ELEMENTS_SCHEMA,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RegistroService } from '../../services/registro.service';
-import { GeneralService } from '../../services/general.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, Validators } from '@angular/forms';
-import { LoadingController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
+
+import { GeneralService } from '../../services/general.service';
 import { CarsService } from '../../services/cars.service';
 import { ContactosService } from './../../services/contactos.service';
-import { ImagenesVehiculoComponent } from './../../components/modal/imagenes-vehiculo/imagenes-vehiculo.component';
-import { ModalController } from '@ionic/angular';
 import { MotosService } from '../../services/motos.service';
 import { CamionesService } from '../../services/camiones.service';
-import { Capacitor } from '@capacitor/core';
+import { ImagenesVehiculoComponent } from './../../components/modal/imagenes-vehiculo/imagenes-vehiculo.component';
+
+interface Ubicacion {
+  ciudad?: string;
+  estado?: string;
+  lat?: number;
+  lng?: number;
+}
+interface Version {
+  Precio?: number | string;
+  precio?: number | string;
+  [k: string]: any;
+}
+interface AutoCard {
+  _id: string;
+  marca: string;
+  modelo: string;
+  anio: number;
+  tipoVenta: 'nuevo' | 'seminuevo' | 'usado';
+  imagenPrincipal?: string;
+  imagenes?: string[];
+  ubicacion?: Ubicacion;
+  version?: Version[];
+  precio?: any;
+  transmision?: string;
+  combustible?: string;
+  kilometraje?: number | null;
+  estadoVehiculo?: 'disponible' | 'vendido';
+  vehiculo?: 'auto' | 'moto' | 'renta' | 'camion';
+  [k: string]: any;
+}
 
 @Component({
   selector: 'app-cartas',
   templateUrl: './cartas.component.html',
   styleUrls: ['./cartas.component.scss'],
-  standalone: true, // Si usando componentes independientes (standalone)
+  standalone: true,
   imports: [IonicModule, CommonModule, ReactiveFormsModule],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA], //esquema personalizado
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class CartasComponent implements OnInit {
-  @Input() auto: any;
+export class CartasComponent implements OnInit, OnChanges {
+  @Input() auto: AutoCard | any;
   @Input() autosFavoritosIds: Set<string> = new Set();
   @Input() ubicacion: string = '';
   @Input() esMio: boolean = false;
+
   @Output() refrescarAutos = new EventEmitter<string>();
+
   FormatoPrecios: boolean = false;
 
-  autosFavoritos: any[] = [];
   public mostrarPendientes: boolean = false;
   public MyRole: string | null = null;
   public isLoggedIn: boolean = false;
 
-  imagenCargada = false;
-  verificadorCarga: any;
+  carsLoaded: Record<string, boolean> = {};
 
   public isNative = Capacitor.isNativePlatform();
 
@@ -59,60 +87,70 @@ export class CartasComponent implements OnInit {
     private route: ActivatedRoute,
     public motosService: MotosService,
     public camionesService: CamionesService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.generalService.tokenExistente$.subscribe((estado) => {
       this.isLoggedIn = estado;
     });
+
     this.generalService.tipoRol$.subscribe((rol) => {
       this.MyRole = rol;
     });
+
     const storage = localStorage.getItem('user');
     if (storage) {
       const usuario = JSON.parse(storage);
       this.mostrarPendientes = usuario.email === 'glenditaa.003@gmail.com';
     }
 
-    if (this.ubicacion === 'mis_autos_renta') {
-      this.FormatoPrecios = true;
-    } else {
-      this.FormatoPrecios = false;
-    }
+    this.FormatoPrecios = this.ubicacion === 'mis_autos_renta';
+  }
 
-    this.verificadorCarga = setInterval(() => {
-      const img = new Image();
-      img.src = this.auto?.imagenes?.[0];
-
-      if (img.complete && img.naturalHeight !== 0) {
-        this.imagenCargada = true;
-        clearInterval(this.verificadorCarga);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['auto'] && this.auto?._id) {
+      if (typeof this.carsLoaded[this.auto._id] === 'undefined') {
+        this.carsLoaded[this.auto._id] = false;
       }
-    }, 200);
-
-
-    // console.log(this.auto)
-    // imagen: auto.imagenPrincipal || '/assets/default-car.webp',
+    }
   }
-  onImagenCargada() {
-    this.imagenCargada = true;
-    clearInterval(this.verificadorCarga);
+
+  // ✅ helper: detectar MIS vehículos
+  get esMisVehiculos(): boolean {
+    return (
+      this.ubicacion === 'mis_autos' ||
+      this.ubicacion === 'mis_motos' ||
+      this.ubicacion === 'mis_camiones'
+    );
   }
-  ficha(auto: any) {
-    const urlActual = this.router.url;
-    const esDesdeBusqueda = /^\/search\/vehiculos\/[^\/]+$/.test(urlActual);
-    localStorage.setItem('origenFicha', String(esDesdeBusqueda));
-    console.log('Navegando a la ficha del vehículo con ID:', auto._id, 'y tipo:', auto.vehiculo);
-    if (auto.vehiculo === 'auto') {
-      this.router.navigate(['/fichas/autos', auto._id]);
-    } else if (auto.vehiculo === 'moto') {
-      this.router.navigate(['/ficha/motos', auto._id]);
-    } else if (auto.vehiculo === 'renta') {
-      this.router.navigate(['/renta-ficha', auto._id]);
-    } else if (auto.vehiculo === 'camion') {
-      this.router.navigate(['/ficha/camiones', auto._id]);
+
+  public getImagen(a: AutoCard): string {
+    const principal = (a?.imagenPrincipal || '').trim();
+    if (principal) return principal;
+
+    const first = (a?.imagenes?.[0] || '').trim();
+    if (first) return first;
+
+    return '/assets/home/no-image.jpeg';
+  }
+
+  markCarLoaded(id: string) {
+    this.carsLoaded[id] = true;
+  }
+
+  public onImgError(event: Event, auto: AutoCard) {
+    const img = event.target as HTMLImageElement;
+
+    if (img?.dataset?.['fallbackTried'] === '1') {
+      img.src = '/assets/home/no-image.jpeg';
+      return;
+    }
+    if (img?.dataset) img.dataset['fallbackTried'] = '1';
+
+    if (auto?.imagenes && auto.imagenes.length > 0) {
+      img.src = auto.imagenes[0];
     } else {
-      console.warn('Tipo de vehículo no reconocido:', auto.vehiculo);
+      img.src = '/assets/home/no-image.jpeg';
     }
   }
 
@@ -127,7 +165,6 @@ export class CartasComponent implements OnInit {
       return;
     }
 
-    // Mostrar spinner
     await this.generalService.loading('Cargando...');
 
     this.carsService.agregarFavorito(vehicleId).subscribe({
@@ -145,6 +182,19 @@ export class CartasComponent implements OnInit {
     });
   }
 
+  eliminarDeFavoritos(autoId: string) {
+    this.carsService.eliminarFavorito(autoId).subscribe({
+      next: () => {
+        this.refrescarAutos.emit(this.ubicacion);
+      },
+      error: (_err) => {},
+      complete: () => {
+        this.generalService.loadingDismiss();
+      },
+    });
+  }
+
+  // ✅ TU FUNCIÓN TAL CUAL (respetada)
   toggleEstado(auto: any, event: Event) {
     event.stopPropagation();
 
@@ -173,27 +223,26 @@ export class CartasComponent implements OnInit {
       },
     });
   }
-  eliminarDeFavoritos(autoId: string) {
-    this.carsService.eliminarFavorito(autoId).subscribe({
-      next: () => {
-        this.autosFavoritos = this.autosFavoritos.filter(
-          (auto) => auto._id !== autoId
-        );
-        // this.actualizarPaginacion();
-        // this.getCarsFavoritos();
-        this.refrescarAutos.emit(this.ubicacion);
-      },
-      error: (err) => {
-        // this.getCarsFavoritos();
-        const mensaje = err?.error?.message || 'No se pudo eliminar';
-        // this.generalService.alert('Error', mensaje, 'danger');
-      },
-      complete: () => {
-        // this.getCarsFavoritos();
-        this.generalService.loadingDismiss();
-      },
-    });
+
+  // Navegación ficha pública
+  ficha(auto: any) {
+    const urlActual = this.router.url;
+    const esDesdeBusqueda = /^\/search\/vehiculos\/[^\/]+$/.test(urlActual);
+    localStorage.setItem('origenFicha', String(esDesdeBusqueda));
+
+    if (auto.vehiculo === 'auto') {
+      this.router.navigate(['/fichas/autos', auto._id]);
+    } else if (auto.vehiculo === 'moto') {
+      this.router.navigate(['/ficha/motos', auto._id]);
+    } else if (auto.vehiculo === 'renta') {
+      this.router.navigate(['/renta-ficha', auto._id]);
+    } else if (auto.vehiculo === 'camion') {
+      this.router.navigate(['/ficha/camiones', auto._id]);
+    } else {
+      this.router.navigate(['/ficha', auto._id]);
+    }
   }
+
   update_car(auto: any, tipo: string) {
     if (this.ubicacion === 'mis_motos') {
       this.router.navigate(['/update-car', 'motos', auto._id]);
@@ -202,38 +251,32 @@ export class CartasComponent implements OnInit {
     } else if (this.ubicacion === 'mis_autos') {
       this.router.navigate(['/update-car', 'autos', auto._id]);
     } else if (this.ubicacion === 'mis_autos_renta') {
-      this.router.navigate(['/edit-renta', auto._id]); // 👈 correcto
+      this.router.navigate(['/edit-renta', auto._id]);
     } else {
       this.router.navigate(['/update-car', 'renta', auto._id]);
     }
   }
+
   onCardClick(auto: any, event: Event): void {
     event.stopPropagation();
-    if (this.ubicacion === 'mis_autos' || this.ubicacion === 'mis_motos' || this.ubicacion === "mis_camiones") {
-      this.update_car(auto, this.ubicacion);
-      return;
-    }
 
-    if (this.ubicacion === 'mis_autos') {
+    if (this.esMisVehiculos) {
       this.update_car(auto, this.ubicacion);
       return;
     }
 
     if (this.ubicacion === 'mis_autos_renta') {
-      this.update_car(auto, this.ubicacion); // 👈 manda al editor de renta
+      this.update_car(auto, this.ubicacion);
       return;
     }
 
-    // Otros contextos → ficha pública
     this.ficha(auto);
   }
+
   async abrirModalImagen(imagenes: string[], indice: number = 0) {
     const modal = await this.modalCtrl.create({
       component: ImagenesVehiculoComponent,
-      componentProps: {
-        imagenes,
-        indice,
-      },
+      componentProps: { imagenes, indice },
       cssClass: 'modal-imagen-personalizado',
       backdropDismiss: true,
       showBackdrop: true,
@@ -241,6 +284,7 @@ export class CartasComponent implements OnInit {
 
     await modal.present();
   }
+
   obtenerPrecioMinimo(versiones: { Precio: number }[]): number {
     return Math.min(...versiones.map((v) => v.Precio));
   }

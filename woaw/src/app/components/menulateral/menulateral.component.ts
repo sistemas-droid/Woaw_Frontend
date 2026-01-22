@@ -15,7 +15,8 @@ type SectionKey =
   | "servicios"
   | "publicaciones"
   | "reservas"
-  | "admin";
+  | "admin"
+  | "asesor";
 
 // ✅ Keys para el menú NATIVO (ion-accordion-group values)
 type AccordionKey =
@@ -24,7 +25,7 @@ type AccordionKey =
   | "publicaciones"
   | "reservas"
   | "cuenta"
-  | "configuracion";
+  | "asesor";
 
 @Component({
   selector: "app-menulateral",
@@ -37,7 +38,7 @@ type AccordionKey =
 export class MenulateralComponent implements OnInit, OnDestroy {
   public isLoggedIn = false;
   public MyRole: string | null = null;
-  mostrar_spinnet: boolean = false;
+  public mostrar_spinnet: boolean = false;
 
   private readonly MENU_CLOSE_DELAY_MS = 250;
   private subs: Subscription[] = [];
@@ -47,7 +48,7 @@ export class MenulateralComponent implements OnInit, OnDestroy {
   private readonly ALLOWED_ROLES = new Set(["admin", "vendedor", "lotero"]);
 
   // =========================
-  // ✅ WEB (tu template web lo usa)
+  // ✅ WEB: estado inicial
   // =========================
   public expandedSections: Record<SectionKey, boolean> = {
     configuracion: false,
@@ -55,21 +56,27 @@ export class MenulateralComponent implements OnInit, OnDestroy {
     publicaciones: false,
     reservas: false,
     admin: false,
+    asesor: false,
   };
 
   // =========================
-  // ✅ NATIVO (tu template nativo lo usa)
+  // ✅ NATIVO: acordeones abiertos
   // =========================
-  public accordionValue: AccordionKey[] = []; // default lo seteo en applyDefaults
+  public accordionValue: AccordionKey[] = [];
 
-  // ✔️ Publisher
+  // =========================
+  // ✅ Computed roles
+  // =========================
   get isPublisher(): boolean {
     return this.isLoggedIn && this.ALLOWED_ROLES.has(this.MyRole || "");
   }
 
-  // ✔️ Admin
   get isAdmin(): boolean {
     return this.MyRole === "admin";
+  }
+
+  get isAsesor(): boolean {
+    return this.isLoggedIn && this.MyRole === "asesor";
   }
 
   constructor(
@@ -90,11 +97,10 @@ export class MenulateralComponent implements OnInit, OnDestroy {
         const before = this.isLoggedIn;
         this.isLoggedIn = estado;
 
-        // Ojo: aquí NO reseteamos el accordion mientras el usuario lo está usando,
-        // solo aseguramos defaults si hace falta.
+        // defaults suaves
         this.applyDefaults();
 
-        // Si se desloguea o loguea, en web dejamos servicios abierto (como querías)
+        // Si cambia sesión, en web dejamos servicios abierto
         if (estado === false) {
           this.setSectionsWeb({
             configuracion: false,
@@ -102,6 +108,7 @@ export class MenulateralComponent implements OnInit, OnDestroy {
             publicaciones: false,
             reservas: false,
             admin: false,
+            asesor: false,
           });
           return;
         }
@@ -113,6 +120,7 @@ export class MenulateralComponent implements OnInit, OnDestroy {
             publicaciones: false,
             reservas: false,
             admin: false,
+            asesor: false,
           });
           return;
         }
@@ -134,9 +142,15 @@ export class MenulateralComponent implements OnInit, OnDestroy {
           this.setSectionsWeb({ admin: false });
         }
 
-        // NATIVO: si no es publisher/admin, limpia acordeones inválidos
+        // WEB: si no es asesor, cierra asesor
+        if (!this.isAsesor) {
+          this.setSectionsWeb({ asesor: false });
+        }
+
+        // NATIVO: limpia acordeones inválidos por rol
         if (!this.isPublisher) this.removeAccordionNative("publicaciones");
         if (!this.isAdmin) this.removeAccordionNative("admin");
+        if (!this.isAsesor) this.removeAccordionNative("asesor");
       })
     );
   }
@@ -149,33 +163,33 @@ export class MenulateralComponent implements OnInit, OnDestroy {
   // ✅ DEFAULTS
   // =========================
   private applyDefaults() {
-    // WEB default: servicios abierto
-    this.setSectionsWeb({
-      configuracion: false,
-      servicios: true,
-      publicaciones: false,
-      reservas: false,
-      admin: false,
-    });
+    // WEB default: servicios abierto (no forzamos si el usuario ya abrió otra cosa)
+    if (!this.expandedSections) return;
 
-    // NATIVO default: al inicio (o si está vacío), abre servicios
+    // Si todo está cerrado, ponemos servicios como default.
+    const anyOpen = Object.values(this.expandedSections).some(Boolean);
+    if (!anyOpen) {
+      this.setSectionsWeb({
+        configuracion: false,
+        servicios: true,
+        publicaciones: false,
+        reservas: false,
+        admin: false,
+        asesor: false,
+      });
+    }
+
+    // NATIVO default: si está vacío, abre servicios
     this.ensureServiciosDefaultNative();
   }
 
   private ensureServiciosDefaultNative() {
     if (!this.isNative) return;
 
-    // ✅ SOLO si está vacío (o si aún no tiene servicios) lo ponemos como default.
-    // Esto permite que el usuario lo cierre y lo vuelva a abrir SIN romperse.
+    // Solo si está vacío lo seteamos, para no romper la interacción.
     if (!this.accordionValue || this.accordionValue.length === 0) {
       this.accordionValue = ["servicios"];
       return;
-    }
-
-    // Si por alguna razón no trae servicios y quieres que el default lo incluya, lo agregamos
-    // (pero NO lo forzamos cada ionChange, solo aquí).
-    if (!this.accordionValue.includes("servicios")) {
-      this.accordionValue = ["servicios", ...this.accordionValue];
     }
   }
 
@@ -187,16 +201,16 @@ export class MenulateralComponent implements OnInit, OnDestroy {
   }
 
   private closeAllWeb() {
-    (Object.keys(this.expandedSections) as SectionKey[]).forEach((k) => {
-      this.expandedSections[k] = false;
-    });
+    const next: Record<SectionKey, boolean> = { ...this.expandedSections };
+    (Object.keys(next) as SectionKey[]).forEach((k) => (next[k] = false));
+    this.expandedSections = next;
   }
 
   // ✅ Lo llama tu HTML WEB
   public toggleSection(section: SectionKey) {
     const willOpen = !this.expandedSections[section];
     this.closeAllWeb();
-    this.expandedSections[section] = willOpen;
+    this.setSectionsWeb({ [section]: willOpen } as Partial<Record<SectionKey, boolean>>);
   }
 
   // =========================
@@ -204,11 +218,10 @@ export class MenulateralComponent implements OnInit, OnDestroy {
   // =========================
   private removeAccordionNative(key: AccordionKey) {
     this.accordionValue = (this.accordionValue || []).filter((k) => k !== key);
-    // no forzamos nada aquí; si se queda vacío y quieres que regrese servicios, applyDefaults lo hará.
   }
 
   // ✅ Lo llama tu HTML NATIVO (ionChange)
-  // IMPORTANTÍSIMO: aquí YA NO forzamos "servicios" porque eso es lo que lo rompe.
+  // Importante: NO forzar "servicios" aquí, eso rompe UX del accordion.
   public onAccordionChange(ev: any) {
     const raw = ev?.detail?.value;
 
@@ -216,7 +229,6 @@ export class MenulateralComponent implements OnInit, OnDestroy {
     if (Array.isArray(raw)) next = raw as AccordionKey[];
     else if (typeof raw === "string" && raw) next = [raw as AccordionKey];
 
-    // siempre nuevo array
     this.accordionValue = [...next];
   }
 
@@ -244,8 +256,7 @@ export class MenulateralComponent implements OnInit, OnDestroy {
   cerrarMenu() {
     this.menuCtrl.close("menuLateral");
 
-    // ✅ Cuando cierres el menú, dejamos listo el default para la próxima vez:
-    // al volver a abrir, servicios estará abierto.
+    // ✅ Al cerrar, dejamos default listo para la próxima apertura (nativo)
     if (this.isNative) {
       Promise.resolve().then(() => {
         this.accordionValue = ["servicios"];

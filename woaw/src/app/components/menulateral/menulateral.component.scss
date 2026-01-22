@@ -247,7 +247,11 @@ ion-menu.menu-web {
 
       /* Estado seleccionado opcional */
       &.item-selected {
-        --background: linear-gradient(90deg, var(--accent-soft) 0%, var(--accent-softer) 100%);
+        --background: linear-gradient(
+          90deg,
+          var(--accent-soft) 0%,
+          var(--accent-softer) 100%
+        );
         border-left: 3px solid var(--accent);
 
         ion-label {

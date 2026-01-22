@@ -1,0 +1,114 @@
+<app-navbar></app-navbar>
+
+<ion-content [fullscreen]="true" class="perfil-ios" mode="ios">
+  <!-- decor -->
+  <div class="bg-decor" aria-hidden="true"></div>
+
+  <div class="contenedor-perfil">
+    <!-- Header iOS -->
+    <header class="encabezado-perfil">
+      <div class="heading-left">
+        <div class="eyebrow">WOAW</div>
+        <h1>Mi perfil</h1>
+        <p>Revisa tu información. Si algo está mal, lo editas y listo.</p>
+      </div>
+    </header>
+
+    <!-- Loading -->
+    <section class="state-card" *ngIf="cargando" aria-live="polite">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando perfil…</p>
+    </section>
+
+    <!-- Error -->
+    <section class="state-card error" *ngIf="error" aria-live="assertive">
+      <div class="error-left">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <p>No se pudo cargar tu perfil.</p>
+      </div>
+      <ion-button size="small" fill="outline" (click)="cargarPerfil()">Reintentar</ion-button>
+    </section>
+
+    <!-- Card -->
+    <section class="perfil-card" *ngIf="!cargando && !error && asesor">
+      <!-- top -->
+      <div class="perfil-top">
+        <div class="avatar">
+          <img *ngIf="asesor?.foto" [src]="asesor.foto" alt="Foto asesor" />
+          <span *ngIf="!asesor?.foto">{{ getIniciales(nombreCompleto(asesor)) }}</span>
+        </div>
+
+        <div class="info">
+          <h2>{{ nombreCompleto(asesor) }}</h2>
+          <p class="rol">{{ asesor?.rol || 'Asesor Comercial' }}</p>
+        </div>
+
+        <button
+          type="button"
+          class="btn-editar"
+          (click)="irEditar()"
+          [disabled]="!asesor?._id"
+        >
+          <ion-icon name="create-outline"></ion-icon>
+          <span>Editar</span>
+        </button>
+      </div>
+
+      <!-- datos -->
+      <div class="perfil-datos">
+        <div class="dato" *ngIf="asesor?.email">
+          <div class="dato-left">
+            <div class="icon-wrap">
+              <ion-icon name="mail-outline"></ion-icon>
+            </div>
+
+            <div class="txt">
+              <span class="label">Correo</span>
+              <span class="value">{{ asesor.email }}</span>
+            </div>
+          </div>
+
+          <button type="button" class="btn-mini" (click)="copiar(asesor.email)">
+            Copiar
+          </button>
+        </div>
+
+        <div class="dato" *ngIf="asesor?.telefono">
+          <div class="dato-left">
+            <div class="icon-wrap">
+              <ion-icon name="call-outline"></ion-icon>
+            </div>
+
+            <div class="txt">
+              <span class="label">Teléfono</span>
+              <span class="value">{{ asesor.telefono }}</span>
+            </div>
+          </div>
+
+          <button type="button" class="btn-mini" (click)="copiar(asesor.telefono)">
+            Copiar
+          </button>
+        </div>
+
+        <div class="dato link-comision" *ngIf="asesor?.asesorUid">
+          <div class="dato-left">
+            <div class="icon-wrap">
+              <ion-icon name="link-outline"></ion-icon>
+            </div>
+
+            <div class="txt">
+              <span class="label">Link de comisión</span>
+              <span class="value mono">{{ linkComision }}</span>
+            </div>
+          </div>
+
+          <button type="button" class="btn-mini" (click)="copiar(linkComision)">
+            Copiar
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <app-footer></app-footer>
+</ion-content>

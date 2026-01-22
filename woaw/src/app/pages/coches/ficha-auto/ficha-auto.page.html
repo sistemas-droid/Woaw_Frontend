@@ -1,5 +1,3 @@
-<!-- <app-navbar></app-navbar> -->
-
 <ion-header class="ios-header">
   <ion-toolbar class="ios-toolbar" mode="ios">
     <ion-buttons slot="start" class="ios-left">
@@ -53,8 +51,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ficha-auto ios-ficha" [fullscreen]="true">
-
+<ion-content class="ficha-auto ios-ficha" [fullscreen]="true" mode="ios">
   <!-- SPINNER DE CARGA -->
   <div class="spinner-ficha-wrapper" *ngIf="!spinner">
     <div class="spinner-ficha"></div>
@@ -78,10 +75,11 @@
               class="imagen-principal ios-main-photo"
               (click)="abrirModalImagen(auto.imagenes, auto.imagenes.indexOf(imagenSeleccionada)); $event.stopPropagation()"
             >
-              <!-- CASO AUTO NUEVO -->
+              <!-- ✅ AUTO NUEVO: fondo MAIN -->
               <ng-container *ngIf="tipo === 'nuevo'; else imagenNormal">
                 <div class="imagen-nuevo-wrapper ios-new-wrapper">
-                  <div class="fondo-nuevo ios-new-bg"></div>
+                  <!-- ESTE ES EL FONDO MAIN -->
+                  <div class="fondo-nuevo" *ngIf="tieneFondoNuevo()"></div>
 
                   <img
                     class="imagen-auto-nuevo ios-new-car"
@@ -92,7 +90,7 @@
                 </div>
               </ng-container>
 
-              <!-- CASO NORMAL -->
+              <!-- NORMAL -->
               <ng-template #imagenNormal>
                 <img
                   class="ios-photo"
@@ -109,7 +107,7 @@
               </div>
 
               <!-- flechas desktop -->
-              <ng-container *ngIf="!esDispositivoMovil">
+              <ng-container *ngIf="!esDispositivoMovil && auto.imagenes?.length > 1">
                 <button
                   class="flecha izquierda ios-arrow"
                   (click)="cambiarImagen('anterior'); $event.stopPropagation()"
@@ -129,11 +127,10 @@
             </div>
           </div>
 
-          <!-- ✅ MINIATURAS ABAJO EN FILA -->
-          <div class="ios-thumbs-row">
+          <!-- MINIATURAS -->
+          <div class="ios-thumbs-row" *ngIf="auto.imagenes?.length">
             <div class="ios-thumbs-scroll">
               <ng-container *ngFor="let img of auto.imagenes; let i = index">
-
                 <button
                   type="button"
                   class="ios-thumb-row"
@@ -152,7 +149,6 @@
                     <div class="spinner_miniatura"></div>
                   </div>
                 </button>
-
               </ng-container>
 
               <button
@@ -182,7 +178,7 @@
         </ion-col>
       </ion-col>
 
-      <!-- PRECIO / DETALLES -->
+      <!-- DETALLE -->
       <ion-col size="12" size-md="6" class="ios-col">
         <div *ngIf="auto.estadoVehiculo === 'disponible'" class="card-detalle ios-card ios-detail-card">
 
@@ -253,27 +249,21 @@
                         <div class="spec-item ios-item" *ngIf="esp.motor">
                           <span>Motor</span><span>{{ esp.motor }}</span>
                         </div>
-
                         <div class="spec-item ios-item" *ngIf="esp.cilindros">
                           <span>Cilindros</span><span>{{ esp.cilindros }}</span>
                         </div>
-
                         <div class="spec-item ios-item" *ngIf="esp.traccion">
                           <span>Tracción</span><span>{{ esp.traccion }}</span>
                         </div>
-
                         <div class="spec-item ios-item" *ngIf="esp.transmision">
                           <span>Transmisión</span><span>{{ esp.transmision }}</span>
                         </div>
-
                         <div class="spec-item ios-item" *ngIf="esp.pasajeros">
                           <span>Pasajeros</span><span>{{ esp.pasajeros }}</span>
                         </div>
-
                         <div class="spec-item ios-item" *ngIf="esp.rines">
                           <span>Rines</span><span>{{ esp.rines }}</span>
                         </div>
-
                         <div class="spec-item ios-item" *ngIf="esp.anio">
                           <span>Año</span><span>{{ esp.anio }}</span>
                         </div>
@@ -354,7 +344,9 @@
         <div class="overlay" *ngIf="auto.estadoVehiculo === 'vendido'">
           <img src="/assets/icon/vendido.png" alt="Vendido" />
         </div>
+
       </ion-col>
+
     </ion-row>
 
     <!-- MAPA móvil -->
@@ -370,6 +362,7 @@
         </ion-card>
       </ion-col>
     </ion-row>
+
   </ion-grid>
 
   <div class="vehiculo-no-disponible" *ngIf="!auto">
@@ -380,12 +373,13 @@
   <app-footer></app-footer>
 </ion-content>
 
-<!-- ✅ FOOTER móvil: WhatsApp + Arrendar lado a lado -->
+<!-- FOOTER móvil -->
 <ion-footer *ngIf="!esMio && esDispositivoMovil" class="footer-acciones ios-footer">
   <ion-toolbar class="ios-footerbar" mode="ios">
     <ion-grid>
       <ion-row class="ios-footer-row">
 
+        <!-- si es nuevo: 2 botones -->
         <ion-col size="6" *ngIf="tipo === 'nuevo'" class="ion-text-center">
           <ion-button
             fill="solid"
@@ -412,7 +406,7 @@
           </ion-button>
         </ion-col>
 
-        <!-- si NO es nuevo: whatsapp ocupa todo -->
+        <!-- si NO es nuevo: whatsapp full -->
         <ion-col size="12" *ngIf="tipo !== 'nuevo'" class="ion-text-center">
           <ion-button
             fill="solid"
