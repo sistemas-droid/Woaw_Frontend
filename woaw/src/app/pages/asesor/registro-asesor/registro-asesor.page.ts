@@ -42,6 +42,8 @@ export class RegistroAsesorPage implements OnInit {
   openedAtMs: number | null = null;
   registerDeadlineMs: number | null = null;
   usedKey: string | null = null;
+  verPassword = false;
+  verConfirmPassword = false;
 
   constructor(
     private asesoresService: AsesoresService,
@@ -141,7 +143,11 @@ export class RegistroAsesorPage implements OnInit {
     if (!this.inviteToken) {
       this.bloqueado = true;
       this.motivoBloqueo = 'Este registro requiere un link de invitación.';
-      this.toast(this.motivoBloqueo);
+      this.generalService.alert(
+        'Invitación requerida',
+        this.motivoBloqueo,
+        'warning'
+      );
       return;
     }
 
@@ -150,7 +156,11 @@ export class RegistroAsesorPage implements OnInit {
     if (!payload || payload?.purpose !== 'asesor_register' || !payload?.nonce) {
       this.bloqueado = true;
       this.motivoBloqueo = 'Link inválido.';
-      this.toast(this.motivoBloqueo);
+      this.generalService.alert(
+        'Link inválido',
+        this.motivoBloqueo,
+        'danger'
+      );
       return;
     }
 
@@ -161,7 +171,11 @@ export class RegistroAsesorPage implements OnInit {
     if (localStorage.getItem(this.usedKey) === '1') {
       this.bloqueado = true;
       this.motivoBloqueo = 'Este link ya fue usado.';
-      this.toast(this.motivoBloqueo);
+      this.generalService.alert(
+        'Link usado',
+        this.motivoBloqueo,
+        'warning'
+      );
       return;
     }
 
@@ -202,7 +216,11 @@ export class RegistroAsesorPage implements OnInit {
     } catch (e: any) {
       this.bloqueado = true;
       this.motivoBloqueo = 'No pude validar el link (hora del servidor).';
-      this.toast(this.motivoBloqueo);
+      this.generalService.alert(
+        'Error de validación',
+        this.motivoBloqueo,
+        'danger'
+      );
     }
   }
 
@@ -217,7 +235,11 @@ export class RegistroAsesorPage implements OnInit {
     if (localStorage.getItem(usedKey) === '1') {
       this.bloqueado = true;
       this.motivoBloqueo = 'Este link ya fue usado.';
-      this.toast(this.motivoBloqueo);
+      this.generalService.alert(
+        'Link usado',
+        this.motivoBloqueo,
+        'warning'
+      );
       return false;
     }
 
@@ -247,7 +269,11 @@ export class RegistroAsesorPage implements OnInit {
     } catch {
       this.bloqueado = true;
       this.motivoBloqueo = 'No pude validar el tiempo del link.';
-      this.toast(this.motivoBloqueo);
+      this.generalService.alert(
+        'Error de validación',
+        this.motivoBloqueo,
+        'danger'
+      );
       return false;
     }
   }
@@ -343,15 +369,27 @@ export class RegistroAsesorPage implements OnInit {
     const telefono = (this.form.telefono || '').trim();
 
     if (!nombre || !apellidos || !email || !telefono) {
-      this.toast('Completa nombre, apellidos, correo y teléfono');
+      this.generalService.alert(
+        'Datos incompletos',
+        'Completa nombre, apellidos, correo y teléfono.',
+        'warning'
+      );
       return;
     }
     if (!this.emailValido(email)) {
-      this.toast('Correo inválido');
+      this.generalService.alert(
+        'Correo inválido',
+        'Ingresa un correo con formato válido.',
+        'warning'
+      );
       return;
     }
     if (!this.telefonoValido(telefono)) {
-      this.toast('Teléfono inválido (mínimo 10 dígitos)');
+      this.generalService.alert(
+        'Teléfono inválido',
+        'El teléfono debe tener mínimo 10 dígitos.',
+        'warning'
+      );
       return;
     }
 
@@ -366,11 +404,19 @@ export class RegistroAsesorPage implements OnInit {
       next: () => {
         this.cargando = false;
         this.paso = 2;
-        this.toast('Te enviamos un código a tu correo');
+        this.generalService.alert(
+          'Código enviado',
+          'Te enviamos un código a tu correo.',
+          'success'
+        );
       },
       error: (err) => {
         this.cargando = false;
-        this.toast(err.error?.message || 'Error al enviar código');
+        this.generalService.alert(
+          'Error',
+          err.error?.message || 'Error al enviar código.',
+          'danger'
+        );
       }
     });
   }
@@ -383,7 +429,11 @@ export class RegistroAsesorPage implements OnInit {
     const code = (this.form.code || '').trim();
 
     if (!code) {
-      this.toast('Ingresa el código');
+      this.generalService.alert(
+        'Código requerido',
+        'Ingresa el código de verificación.',
+        'warning'
+      );
       return;
     }
 
@@ -392,11 +442,19 @@ export class RegistroAsesorPage implements OnInit {
       next: () => {
         this.cargando = false;
         this.paso = 3;
-        this.toast('Código validado. Crea tu contraseña');
+        this.generalService.alert(
+          'Código validado',
+          'Código validado. Crea tu contraseña.',
+          'success'
+        );
       },
       error: (err) => {
         this.cargando = false;
-        this.toast(err.error?.message || 'Código inválido');
+        this.generalService.alert(
+          'Código inválido',
+          err.error?.message || 'Código inválido.',
+          'danger'
+        );
       }
     });
   }
@@ -407,13 +465,21 @@ export class RegistroAsesorPage implements OnInit {
 
     const password = (this.form.password || '').trim();
     if (!this.passwordValida(password)) {
-      this.toast('La contraseña debe tener mínimo 6 caracteres');
+      this.generalService.alert(
+        'Contraseña inválida',
+        'La contraseña debe tener mínimo 6 caracteres.',
+        'warning'
+      );
       return;
     }
 
     const confirm = (this.form.confirmPassword || '').trim();
     if (password !== confirm) {
-      this.toast('Las contraseñas no coinciden');
+      this.generalService.alert(
+        'Contraseñas no coinciden',
+        'Asegúrate de que ambas contraseñas sean iguales.',
+        'warning'
+      );
       return;
     }
 
@@ -427,20 +493,16 @@ export class RegistroAsesorPage implements OnInit {
       password,
     }).subscribe({
       next: (res) => {
-        // localStorage.setItem('token', res.token);
-        // localStorage.setItem('user', JSON.stringify(res.user));
-        // this.marcarUsadoLocal();
-        // this.toast('Registro exitoso');
-        // setTimeout(() => {
-        //   window.location.href = '/home';
-        // }, 300);
-
         this.generalService.guardarCredenciales(res.token, res.user);
         this.marcarUsadoLocal();
       },
       error: (err) => {
         this.cargando = false;
-        this.toast(err.error?.message || 'Error al registrar');
+        this.generalService.alert(
+          'Registro fallido',
+          err.error?.message || 'Error al registrar.',
+          'danger'
+        );
       }
     });
   }
@@ -455,4 +517,17 @@ export class RegistroAsesorPage implements OnInit {
       this.form.password = '';
     }
   }
+
+  togglePassword() {
+    this.verPassword = !this.verPassword;
+  }
+
+  toggleConfirmPassword() {
+    this.verConfirmPassword = !this.verConfirmPassword;
+  }
+
+  get mostrarAyudaPassword(): boolean {
+    return (this.form.password || '').length > 0;
+  }
+
 }

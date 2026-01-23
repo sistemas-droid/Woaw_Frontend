@@ -23,7 +23,6 @@
       </div>
     </div>
 
-
     <!-- ✅ TODO EL FORMULARIO SOLO SI NO ESTÁ BLOQUEADO -->
     <ng-container *ngIf="!bloqueado">
 
@@ -125,14 +124,33 @@
             <h2 class="panel-title">Crea tu cuenta</h2>
             <p class="panel-sub">Ya casi. Una contraseña y vámonos.</p>
 
-            <ion-item class="i" lines="none">
-              <ion-input label="Contraseña" labelPlacement="stacked" type="password"
-                [(ngModel)]="form.password"></ion-input>
+            <ion-item class="i password-item" lines="none">
+              <ion-input label="Contraseña" labelPlacement="stacked" [type]="verPassword ? 'text' : 'password'"
+                [(ngModel)]="form.password">
+              </ion-input>
+
+              <ion-button class="eye-btn" fill="clear" slot="end" type="button" (click)="togglePassword()"
+                aria-label="Mostrar u ocultar contraseña">
+                <ion-icon [name]="verPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+              </ion-button>
             </ion-item>
 
-            <ion-item class="i" lines="none">
-              <ion-input label="Confirmar contraseña" labelPlacement="stacked" type="password"
-                [(ngModel)]="form.confirmPassword"></ion-input>
+            <p class="password-hint" *ngIf="mostrarAyudaPassword">
+              La contraseña debe tener <strong>mínimo 6 caracteres</strong>, incluir
+              <strong>un número</strong> y <strong>un carácter especial</strong>.
+              <br />
+              <span class="example">Ejemplo: <code>Woaw$123</code></span>
+            </p>
+
+            <ion-item class="i password-item" lines="none">
+              <ion-input label="Confirmar contraseña" labelPlacement="stacked"
+                [type]="verConfirmPassword ? 'text' : 'password'" [(ngModel)]="form.confirmPassword">
+              </ion-input>
+
+              <ion-button class="eye-btn" fill="clear" slot="end" type="button" (click)="toggleConfirmPassword()"
+                aria-label="Mostrar u ocultar confirmación">
+                <ion-icon [name]="verConfirmPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+              </ion-button>
             </ion-item>
 
             <div class="actions">
