@@ -406,7 +406,6 @@ export class PdfService {
         }
     }
 
-
     // NUEVO: Función para formatear fechas de manera formal con meses abreviados
     private formatFechaFormal(fecha: Date): string {
         const meses = [

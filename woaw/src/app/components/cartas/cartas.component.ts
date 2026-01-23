@@ -150,7 +150,7 @@ export class CartasComponent implements OnInit {
     const urlActual = this.router.url;
     const esDesdeBusqueda = /^\/search\/vehiculos\/[^\/]+$/.test(urlActual);
     localStorage.setItem('origenFicha', String(esDesdeBusqueda));
-    console.log('Navegando a la ficha del vehículo con ID:', auto._id, 'y tipo:', auto.vehiculo);
+    // console.log('Navegando a la ficha del vehículo con ID:', auto._id, 'y tipo:', auto.vehiculo);
     if (auto.vehiculo === 'auto') {
       this.router.navigate(['/fichas/autos', auto._id]);
     } else if (auto.vehiculo === 'moto') {

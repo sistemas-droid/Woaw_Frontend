@@ -5,6 +5,9 @@ import { Observable, from } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 import { HeadersService } from './headers.service';
 
+
+const WOAW_ASESOR_DATA_KEY = 'woaw_asesor_data';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -136,14 +139,6 @@ export class RegistroService {
   }
 
 
-  datos_asesor(): Observable<any> {
-    return from(this.headersService.obtenerToken()).pipe(
-      switchMap((token) => {
-        const headers = this.headersService.getJsonHeaders(token);
-        return this.http.post(`${this.baseUrl}/enlazar`,{},  { headers });
-      }),
-      catchError((error) => this.headersService.handleError(error))
-    );
-  }
+
 
 }

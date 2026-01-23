@@ -44,7 +44,7 @@
 
     <ion-buttons slot="end">
       
-    <ion-badge aria-label="Estado asesor" (click)="eliminarAsesor()" mode="ios" class="asesor-dot" [color]="tieneAsesor ? 'success' : 'danger'">
+    <ion-badge aria-label="Estado asesor" *ngIf="MyRole !== 'admin' && MyRole !== 'asesor'" (click)="eliminarAsesor()" mode="ios" class="asesor-dot" [color]="tieneAsesor ? 'success' : 'danger'">
     </ion-badge>
 
       <ng-container *ngIf="!esDispositivoMovil">

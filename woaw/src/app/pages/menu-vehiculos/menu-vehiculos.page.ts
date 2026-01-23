@@ -34,6 +34,7 @@ interface AutoCard {
   combustible?: string;
   kilometraje?: number | null;
   [k: string]: any;
+  estadoVehiculo?: string
 }
 
 @Component({

@@ -453,6 +453,33 @@
                   padding: 2px 5px;
                 }
               }
+
+
+              .overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(255, 255, 255, 0.571);
+                background-image: url('/assets/icon/vendido.png');
+                background-repeat: no-repeat;
+                background-position: center 20%;
+                background-size: 40%;
+                pointer-events: none;
+                border-radius: inherit;
+                z-index: 1;
+
+                @media (max-width: 1024px) {
+                  background-size: 30%;
+                  background-position: center 40%;
+                }
+
+                @media (max-width: 720px) {
+                  background-size: 20%;
+                  background-position: center 40%;
+                }
+              }
             }
 
             .card-body {

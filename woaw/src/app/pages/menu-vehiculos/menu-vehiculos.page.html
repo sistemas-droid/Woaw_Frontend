@@ -70,6 +70,8 @@
                     <img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
                       [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'" />
                     <span class="ribbon ribbon--red">Usado</span>
+                    <!-- Capa de oscurecimiento si está vendido -->
+                    <div class="overlay" *ngIf="a.estadoVehiculo === 'vendido'"></div>
                   </div>
                   <div class="card-body">
                     <h4 class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</h4>
@@ -99,9 +101,9 @@
                   <div class="card-media">
 
                     <img [src]="getImagen(a)" [alt]="a.marca + ' ' + a.modelo" (error)="onImgError($event, a)" />
-
-
                     <span class="ribbon ribbon--amber">Seminuevo</span>
+                    <!-- Capa de oscurecimiento si está vendido -->
+                    <div class="overlay" *ngIf="a.estadoVehiculo === 'vendido'"></div>
                   </div>
                   <div class="card-body">
                     <h1 class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</h1>
@@ -132,6 +134,8 @@
                     <img [src]="a.imagenPrincipal || '/assets/home/no-image.jpeg'"
                       [alt]="(a.marca + ' ' + a.modelo) || 'Vehículo'" />
                     <span class="ribbon ribbon--green">Nuevo</span>
+                    <!-- Capa de oscurecimiento si está vendido -->
+                    <div class="overlay" *ngIf="a.estadoVehiculo === 'vendido'"></div>
                   </div>
                   <div class="card-body">
                     <h4 class="title">{{ a.marca }} - {{ a.modelo }} {{ a.anio }}</h4>
@@ -158,7 +162,6 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-
 
     <ion-grid class="contenedor_native" *ngIf="isNative">
       <div class="native-cats">

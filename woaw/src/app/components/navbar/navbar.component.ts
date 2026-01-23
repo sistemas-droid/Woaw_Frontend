@@ -43,6 +43,7 @@ export class NavbarComponent implements OnInit {
   mostrarBuscador = false;
 
   public tieneAsesor: boolean = false;
+  public MyRole: string | null = null;
 
   constructor(
     private menu: MenuController,
@@ -57,7 +58,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     // Detectar tipo de dispositivo
     this.generalService.dispositivo$.subscribe((tipo) => {
-      this.esDispositivoMovil = tipo === "telefono" || tipo === "tablet" ;
+      this.esDispositivoMovil = tipo === "telefono" || tipo === "tablet";
     });
 
     // Detectar ruta actual
@@ -83,6 +84,9 @@ export class NavbarComponent implements OnInit {
       this.tieneAsesor = estado;
     });
 
+    this.generalService.tipoRol$.subscribe((rol) => {
+      this.MyRole = rol;
+    })
     // Leer usuario/foto del storage
     this.leerUsuarioLocal();
   }

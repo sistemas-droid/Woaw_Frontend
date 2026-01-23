@@ -321,7 +321,7 @@ export class FichaAutoPage implements OnInit {
           );
         },
         complete: () => {
-          this.generalService.loadingDismiss();
+          // this.generalService.loadingDismiss();
         },
       });
   }
@@ -377,7 +377,7 @@ export class FichaAutoPage implements OnInit {
     this.carsService.getCar(id).subscribe({
       next: async (res: any) => {
         this.auto = res;
-        console.log('AUTO', this.auto);
+        // console.log('AUTO', this.auto);
         this.tipoAlSubir = this.auto.lote == null ? "particular" : "lote";
         const storage = localStorage.getItem("user");
         const usuario = storage ? JSON.parse(storage) : null;
@@ -391,7 +391,7 @@ export class FichaAutoPage implements OnInit {
         // this.generalService.alert("Error", mensaje, "danger");
       },
       complete: () => {
-        this.generalService.loadingDismiss();
+        // this.generalService.loadingDismiss();
       },
     });
   }

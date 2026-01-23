@@ -18,6 +18,7 @@ import { Capacitor } from '@capacitor/core';
 
 const WOAW_ASESOR_CODE_KEY = 'woaw_asesor_code';
 const WOAW_ASESOR_CODE_AT_KEY = 'woaw_asesor_code_at';
+const WOAW_ASESOR_DATA_KEY = 'woaw_asesor_data';
 
 @Injectable({
   providedIn: 'root',
@@ -184,8 +185,6 @@ export class GeneralService {
     this.asesorAsignadoSubject.next(false);
   }
 
-
-
   guardarCredenciales(token: string, user: any): void {
     try {
       localStorage.setItem('token', token);
@@ -195,8 +194,8 @@ export class GeneralService {
       this.tokenSubject.next(true);
       this.rolSubject.next(user?.rol || null);
 
-      const telefono = this.getTelefonoUsuario(user);
-      const rutaActual = (this.router.url || '').split('?')[0] || '/inicio';
+      // const telefono = this.getTelefonoUsuario(user);
+      // const rutaActual = (this.router.url || '').split('?')[0] || '/inicio';
 
       // if (!telefono) {
       //   const next = rutaActual || '/inicio';
@@ -205,6 +204,17 @@ export class GeneralService {
       //     { queryParams: { next }, replaceUrl: true }
       //   );
       // } else {
+
+      // si soy admin o asesor elimino el estorage de asesor 
+      const rol = user?.rol?.toLowerCase();
+      if (rol === 'admin' || rol === 'asesor') {
+        localStorage.removeItem(WOAW_ASESOR_DATA_KEY);
+        localStorage.removeItem(WOAW_ASESOR_CODE_KEY);
+        localStorage.removeItem(WOAW_ASESOR_CODE_AT_KEY);
+      }
+
+      // console.log('Datos asesor eliminados');
+
 
       // if (rutaActual !== '/inicio') {
       this.router.navigate(['/inicio'], { replaceUrl: true });

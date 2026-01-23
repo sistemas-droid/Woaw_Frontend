@@ -77,8 +77,10 @@ ion-content {
 
   .overlay-container {
     position: relative;
+    max-width: 1800px;
     width: 100%;
-    height: 470px;
+    height: 470px;  
+    margin: 0px auto;
     overflow: hidden;
 
     @media (max-width: 768px) {

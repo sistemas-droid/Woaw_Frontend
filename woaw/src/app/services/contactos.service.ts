@@ -20,21 +20,30 @@ import { PopUpComponent } from '../components/modal/pop-up/pop-up.component';
 import { HeadersService } from './headers.service';
 import { switchMap, catchError } from 'rxjs/operators';
 import { query } from '@angular/animations';
+import { firstValueFrom } from 'rxjs';
 
 const WOAW_ASESOR_CODE_KEY = 'woaw_asesor_code';
 const WOAW_ASESOR_DATA_KEY = 'woaw_asesor_data';
+const WOAW_ASESOR_CODE_AT_KEY = 'woaw_asesor_code_at';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContactosService {
+  //  Base de la API disponible como propiedad pública para tu componente
+  private readonly _baseUrl = this.normalizeBaseUrl(environment.api_key);
+  public get baseUrl(): string {
+    return this._baseUrl;
+  }
+  private normalizeBaseUrl(url: string): string {
+    return (url || '').replace(/\/+$/, '');
+  }
 
-  private telefonoFijo: string = this.hasAsesor() || environment.telefonoFijo;
-  private telefonojoli: string = this.hasAsesor() || environment.telefonoJoli;
-  private telefonoArrendamiento: string = this.hasAsesor() || environment.telefonoArrendamiento;
-  private telefonoJefe: string = this.hasAsesor() || environment.telefonoJefe;
-
+  private telefonoFijo: string = environment.telefonoFijo;
+  private telefonojoli: string = environment.telefonoJoli;
+  private telefonoArrendamiento: string = environment.telefonoArrendamiento;
+  private telefonoJefe: string = environment.telefonoJefe;
 
   private sistemaOperativoSubject = new BehaviorSubject<string>('Desconocido');
   public sistemaOperativo$ = this.sistemaOperativoSubject.asObservable();
@@ -65,15 +74,24 @@ export class ContactosService {
     });
   }
 
-  hasAsesor(): string | false {
+  async hasAsesor(): Promise<string | false> {
     try {
       const asesorCode = localStorage.getItem(WOAW_ASESOR_DATA_KEY);
+      // no tengo asesor asicnado 
       if (!asesorCode) return false;
+
+      const response = await firstValueFrom(this.datos_asesor());
+      if (!response) {
+        // quiere decir que el asesor ya no exixte 
+        return false;
+      }
+
       const asesor = JSON.parse(asesorCode);
-      // console.log('Asesor encontrado:', asesor);
+      // console.log('Asesor encontrado en local storage:', asesor);
+      // Te regresa el telefono del asesor
       return `${asesor.lada}${asesor.telefono}`;
     } catch (error) {
-      console.error('Error al obtener asesor:', error);
+      this.eliminarAsesorTodo();
       return false;
     }
   }
@@ -143,9 +161,12 @@ export class ContactosService {
   async contactarWOAW(
     auto: any,
     tipo_veiculo: string
-  ) {
+  ): Promise<void> {
+
+    await this.initTelefonosConAsesor();
+
     // console.log(auto, tipo_veiculo)
-    let telefonoVariable: string = '';
+    let telefonoVariable = '';
 
     var nombre: string | null = null
     var id: string | null = null
@@ -247,7 +268,7 @@ export class ContactosService {
     }
 
     const url = `${baseUrl}?${params.toString()}`;
-    console.log(url)
+    // console.log(url)
     this.http.get(url).subscribe({
       next: (res) => {
         // console.log('✅ Contador enviado con éxito:', res);
@@ -344,13 +365,16 @@ export class ContactosService {
     }
   }
 
-  contactarPorPublicacionParticular(
+  async contactarPorPublicacionParticular(
     anioAuto: number | string,
     marcaAuto: string,
     modeloAuto: string,
     precioEstimado?: number,
     tipoFactura?: string
-  ): void {
+  ): Promise<void> {
+
+    await this.initTelefonosConAsesor();
+
     // Validaciones básicas
     if (!anioAuto || !marcaAuto || !modeloAuto) {
       this.generalService?.alert?.(
@@ -416,7 +440,10 @@ export class ContactosService {
     window.open(url, '_blank');
   }
 
-  ArrendamientoAuto(auto: any): void {
+  async ArrendamientoAuto(auto: any): Promise<void> {
+
+    await this.initTelefonosConAsesor();
+
     if (!auto || !auto._id || !auto.tipoVenta) {
       console.warn('❌ Datos del auto inválidos.');
       return;
@@ -452,7 +479,10 @@ export class ContactosService {
     window.open(url, '_blank');
   }
 
-  ArrendamientoAutoPge(modelo: string, marca: string): void {
+  async ArrendamientoAutoPge(modelo: string, marca: string): Promise<void> {
+
+    await this.initTelefonosConAsesor();
+
     if (!modelo || !marca) {
       console.warn('❌ Datos del auto inválidos.');
       return;
@@ -520,7 +550,7 @@ export class ContactosService {
     window.open(url, '_blank');
   }
 
-  envio_solicitus_credito(data: {
+  async envio_solicitus_credito(data: {
     coche: any;
     precio: any;
     version: string;
@@ -529,7 +559,8 @@ export class ContactosService {
     plazo: number;
     mensualidad: number;
     tasa: number;
-  }): void {
+  }): Promise<void> {
+    await this.initTelefonosConAsesor();
     const storage = localStorage.getItem('user');
     let nombreCompleto = '';
 
@@ -597,7 +628,11 @@ export class ContactosService {
     );
   }
 
-  Arrendamiento_enviarPorWhatsApp(body: any): void {
+  async Arrendamiento_enviarPorWhatsApp(body: any): Promise<void> {
+
+
+    await this.initTelefonosConAsesor();
+
     const baseUrl = `${environment.api_key}/arrendamiento`;
     const key = 'arr_whats_count';
     const count = (Number(localStorage.getItem(key)) || 0) + 1;
@@ -648,7 +683,7 @@ export class ContactosService {
     window.open(url, '_blank');
   }
 
-  cotizaSeguro(data: {
+  async cotizaSeguro(data: {
     tipo?: string;
     marca: string;
     modelo: string;
@@ -659,7 +694,10 @@ export class ContactosService {
     estadoCivil: string;
     fechaNacimiento: string;
     codigoPostal: string | number;
-  }): void {
+  }): Promise<void> {
+
+    await this.initTelefonosConAsesor();
+
     const storage = localStorage.getItem('user');
     let nombreCompleto = '';
 
@@ -686,4 +724,75 @@ export class ContactosService {
     const url = `https://api.whatsapp.com/send?phone=${this.telefonoJefe}&text=${mensaje}`;
     window.open(url, '_blank');
   }
+
+
+
+
+
+
+
+
+
+
+
+  // ASESOR ---- 
+  datos_asesor(): Observable<any> {
+    return from(this.headersService.obtenerToken()).pipe(
+      switchMap((token) => {
+        const headers = this.headersService.getJsonHeaders(token);
+        return this.http.post(`${this.baseUrl}/enlazar`, {}, { headers });
+      }),
+      // catchError((error) => this.headersService.handleError(error))
+    );
+  }
+
+  guardarAsesorDatos(asesor: any): void {
+    if (!asesor) return;
+
+    localStorage.setItem(
+      WOAW_ASESOR_DATA_KEY,
+      JSON.stringify(asesor)
+    );
+
+    // console.log('Datos asesor guardados:', asesor);
+  }
+
+  eliminarAsesorTodo(): void {
+    localStorage.removeItem(WOAW_ASESOR_DATA_KEY);
+    localStorage.removeItem(WOAW_ASESOR_CODE_KEY);
+    localStorage.removeItem(WOAW_ASESOR_CODE_AT_KEY);
+    // console.log('Datos asesor eliminados');
+  }
+
+  async guardarCodigoAsesor(code: string): Promise<void> {
+    localStorage.setItem(WOAW_ASESOR_CODE_KEY, code);
+    localStorage.setItem(WOAW_ASESOR_CODE_AT_KEY, new Date().toISOString());
+
+    const saved = localStorage.getItem(WOAW_ASESOR_CODE_KEY);
+    if (saved !== code) {
+      throw new Error('No se pudo persistir el asesor code en localStorage');
+    }
+  }
+
+  private async initTelefonosConAsesor(): Promise<void> {
+    const tel = await this.hasAsesor();
+    if (!tel) {
+      // Quiere decir q mi asesor ya no exixte o no tengo ningun asesor asicnado 
+      await this.TelfonosFijos();
+      return;
+    } else {
+      this.telefonoFijo =
+        this.telefonojoli =
+        this.telefonoArrendamiento =
+        this.telefonoJefe = tel;
+    }
+  }
+
+  private async TelfonosFijos() {
+    this.telefonoFijo = environment.telefonoFijo;
+    this.telefonojoli = environment.telefonoJoli;
+    this.telefonoArrendamiento = environment.telefonoArrendamiento;
+    this.telefonoJefe = environment.telefonoJefe;
+  }
+
 }

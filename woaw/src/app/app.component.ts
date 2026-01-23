@@ -18,16 +18,11 @@ import { firstValueFrom } from 'rxjs';
 import { App } from '@capacitor/app';
 import { PushService } from './services/push.service';
 import { AppUpdate, AppUpdateAvailability } from '@capawesome/capacitor-app-update';
-import { RegistroService } from 'src/app/services/registro.service';
 
 declare let gtag: Function;
 
 const WOALF_STORAGE_KEY = 'woalf_last_shown';
 
-// variables asesores 
-const WOAW_ASESOR_CODE_KEY = 'woaw_asesor_code';
-const WOAW_ASESOR_CODE_AT_KEY = 'woaw_asesor_code_at';
-const WOAW_ASESOR_DATA_KEY = 'woaw_asesor_data';
 
 
 // Helper: reemplazo de Object.fromEntries para TS < ES2019
@@ -71,7 +66,6 @@ export class AppComponent {
     private actionSheetCtrl: ActionSheetController,
     private alertCtrl: AlertController,
     private push: PushService,
-    private registroService: RegistroService
   ) {
     this.initializeApp();
 
@@ -178,18 +172,32 @@ export class AppComponent {
 
   async initializeApp() {
     await this.platform.ready();
-    if (this.platform.is('android')) {
-      await StatusBar.setOverlaysWebView({ overlay: false });
-      await StatusBar.setBackgroundColor({ color: '#D62828' });
-      await StatusBar.setStyle({ style: Style.Dark });
+
+    // ✅ En web no hay StatusBar plugin
+    if (!this.platform.is('hybrid')) {
+      this.startUpdateCheckLoop();
+      return;
     }
-    if (this.platform.is('ios')) {
-      await StatusBar.setOverlaysWebView({ overlay: false });
-      await StatusBar.setStyle({ style: Style.Dark });
+
+    try {
+      if (this.platform.is('android')) {
+        await StatusBar.setOverlaysWebView({ overlay: false });
+        await StatusBar.setBackgroundColor({ color: '#D62828' });
+        await StatusBar.setStyle({ style: Style.Dark });
+      }
+
+      if (this.platform.is('ios')) {
+        await StatusBar.setOverlaysWebView({ overlay: false });
+        await StatusBar.setStyle({ style: Style.Dark });
+      }
+    } catch (e) {
+      // Por si el plugin no está disponible por alguna razón
+      // console.warn('[App] StatusBar no disponible', e);
     }
 
     this.startUpdateCheckLoop();
   }
+
 
   private registerHardwareBack() {
     this.platform.backButton.subscribeWithPriority(9999, async () => {
@@ -373,7 +381,7 @@ export class AppComponent {
       await alert.present();
 
     } catch (err) {
-      console.error('[App] Error al comprobar actualización nativa', err);
+      // console.error('[App] Error al comprobar actualización nativa', err);
     }
   }
 
@@ -427,23 +435,19 @@ export class AppComponent {
       if (rol === 'asesor' || rol === 'admin') return;
 
       // 1) Guardar + verificar storage
-      await this.guardarAsesorEnStorage(code);
+      await this.contactosService.guardarCodigoAsesor(code);
 
       // 2) Después hacer la petición
       try {
-        const res: any = await firstValueFrom(this.registroService.datos_asesor());
-
-        if (res?.asesor) {
-          localStorage.setItem(
-            WOAW_ASESOR_DATA_KEY,
-            JSON.stringify(res.asesor)
-          );
-        }
-
-        console.log('Datos asesor guardados:', res?.asesor);
+        const res: any = await firstValueFrom(
+          this.contactosService.datos_asesor()
+        );
+        this.contactosService.guardarAsesorDatos(res?.asesor);
       } catch (err) {
-        console.warn('Error datos_asesor:', err);
+        this.contactosService.eliminarAsesorTodo();
+        // console.warn('Error datos_asesor:', err);
       }
+
 
 
       // 3) Limpiar query param si es navegación Angular
@@ -457,15 +461,6 @@ export class AppComponent {
     }
   }
 
-  private async guardarAsesorEnStorage(code: string): Promise<void> {
-    localStorage.setItem(WOAW_ASESOR_CODE_KEY, code);
-    localStorage.setItem(WOAW_ASESOR_CODE_AT_KEY, new Date().toISOString());
-
-    const saved = localStorage.getItem(WOAW_ASESOR_CODE_KEY);
-    if (saved !== code) {
-      throw new Error('No se pudo persistir el asesor code en localStorage');
-    }
-  }
 
 
 
