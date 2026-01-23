@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       setTimeout(() => this.router.navigate(['/seguros/poliza']), 1200);
     } else {
       setTimeout(() => this.router.navigate(['/home']), 1200);
-      this.generalService.alert('Bienvenido a WOAW', 'Inicio de sesión exitoso', 'success');
+      // this.generalService.alert('Bienvenido a WOAW', 'Inicio de sesión exitoso', 'success');
     }
   }
 
@@ -194,7 +194,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             setTimeout(() => this.router.navigate(['/seguros/poliza']), 1200);
           } else {
             setTimeout(() => this.router.navigate(['/home']), 1200);
-            this.generalService.alert('Bienvenido a WOAW', 'Inicio de sesión exitoso', 'success');
+            // this.generalService.alert('Bienvenido a WOAW', 'Inicio de sesión exitoso', 'success');
           }
         } else {
           this.generalService.alert('Error de conexión', 'Ups, algo salió mal, vuelve a intentarlo', 'danger');
@@ -219,7 +219,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             setTimeout(() => this.router.navigate(['/seguros/poliza']), 1200);
           } else {
             setTimeout(() => this.router.navigate(['/home']), 1200);
-            this.generalService.alert('Bienvenido a WOAW', 'Inicio de sesión exitoso', 'success');
+            // this.generalService.alert('Bienvenido a WOAW', 'Inicio de sesión exitoso', 'success');
           }
         } else {
           this.generalService.alert(' Error en registro', 'Ups, algo salió mal, vuelve a intentarlo', 'danger');

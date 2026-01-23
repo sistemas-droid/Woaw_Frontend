@@ -3,6 +3,7 @@ import { AsesoresService } from 'src/app/services/asesores.service';
 import { ToastController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { GeneralService } from '../../../services/general.service';
 type Paso = 1 | 2 | 3;
 
 @Component({
@@ -47,7 +48,8 @@ export class RegistroAsesorPage implements OnInit {
     private toastCtrl: ToastController,
     private router: Router,
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private generalService: GeneralService,
   ) { }
 
   ngOnInit(): void {
@@ -145,12 +147,13 @@ export class RegistroAsesorPage implements OnInit {
 
     const payload = this.b64urlDecode(this.inviteToken);
 
-    if (!payload || payload?.purpose !== 'asesor_register' || !payload?.nonce || !payload?.expOpen || !payload?.expMax) {
+    if (!payload || payload?.purpose !== 'asesor_register' || !payload?.nonce) {
       this.bloqueado = true;
       this.motivoBloqueo = 'Link inválido.';
       this.toast(this.motivoBloqueo);
       return;
     }
+
 
     this.invitePayload = payload;
     this.usedKey = this.getUsedKey(payload.nonce);
@@ -165,12 +168,12 @@ export class RegistroAsesorPage implements OnInit {
     try {
       const now = await this.fetchServerNow();
 
-      if (now > Number(payload.expOpen)) {
-        this.bloqueado = true;
-        this.motivoBloqueo = 'Link expirado. Pídele al admin uno nuevo.';
-        this.toast(this.motivoBloqueo);
-        return;
-      }
+      // if (now > Number(payload.expOpen)) {
+      //   this.bloqueado = true;
+      //   this.motivoBloqueo = 'Link expirado. Pídele al admin uno nuevo.';
+      //   this.toast(this.motivoBloqueo);
+      //   return;
+      // }
 
       const openedKey = this.getSessionKey(payload.nonce);
       const storedOpened = sessionStorage.getItem(openedKey);
@@ -184,14 +187,15 @@ export class RegistroAsesorPage implements OnInit {
 
       const windowMin = Number(payload.windowMin || 30);
       const deadline = this.openedAtMs + windowMin * 60_000;
-      this.registerDeadlineMs = Math.min(deadline, Number(payload.expMax));
+      // this.registerDeadlineMs = Math.min(deadline, Number(payload.expMax));
+      this.registerDeadlineMs = null;
 
-      if (now > this.registerDeadlineMs) {
-        this.bloqueado = true;
-        this.motivoBloqueo = 'Se acabó tu ventana de registro (30 min). Pide un link nuevo.';
-        this.toast(this.motivoBloqueo);
-        return;
-      }
+      // if (now > this.registerDeadlineMs) {
+      //   this.bloqueado = true;
+      //   this.motivoBloqueo = 'Se acabó tu ventana de registro (30 min). Pide un link nuevo.';
+      //   this.toast(this.motivoBloqueo);
+      //   return;
+      // }
 
       this.bloqueado = false;
       this.motivoBloqueo = '';
@@ -225,15 +229,16 @@ export class RegistroAsesorPage implements OnInit {
         const storedOpened = sessionStorage.getItem(openedKey);
         const openedAt = storedOpened ? Number(storedOpened) : now;
         const deadline = openedAt + 30 * 60_000;
-        this.registerDeadlineMs = Math.min(deadline, Number(this.invitePayload.expMax));
+        // this.registerDeadlineMs = Math.min(deadline, Number(this.invitePayload.expMax));
+        this.registerDeadlineMs = null;
       }
 
-      if (now > this.registerDeadlineMs) {
-        this.bloqueado = true;
-        this.motivoBloqueo = 'Se acabó tu ventana de registro. Pide un link nuevo.';
-        this.toast(this.motivoBloqueo);
-        return false;
-      }
+      // if (now > this.registerDeadlineMs) {
+      //   this.bloqueado = true;
+      //   this.motivoBloqueo = 'Se acabó tu ventana de registro. Pide un link nuevo.';
+      //   this.toast(this.motivoBloqueo);
+      //   return false;
+      // }
 
       this.bloqueado = false;
       this.motivoBloqueo = '';
@@ -422,13 +427,16 @@ export class RegistroAsesorPage implements OnInit {
       password,
     }).subscribe({
       next: (res) => {
-        localStorage.setItem('token', res.token);
-        localStorage.setItem('user', JSON.stringify(res.user));
+        // localStorage.setItem('token', res.token);
+        // localStorage.setItem('user', JSON.stringify(res.user));
+        // this.marcarUsadoLocal();
+        // this.toast('Registro exitoso');
+        // setTimeout(() => {
+        //   window.location.href = '/home';
+        // }, 300);
+
+        this.generalService.guardarCredenciales(res.token, res.user);
         this.marcarUsadoLocal();
-        this.toast('Registro exitoso');
-        setTimeout(() => {
-          window.location.href = '/home';
-        }, 300);
       },
       error: (err) => {
         this.cargando = false;

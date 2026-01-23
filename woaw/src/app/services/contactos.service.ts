@@ -21,13 +21,19 @@ import { HeadersService } from './headers.service';
 import { switchMap, catchError } from 'rxjs/operators';
 import { query } from '@angular/animations';
 
+const WOAW_ASESOR_CODE_KEY = 'woaw_asesor_code';
+const WOAW_ASESOR_DATA_KEY = 'woaw_asesor_data';
+
+
 @Injectable({
   providedIn: 'root',
 })
 export class ContactosService {
-  telefonoFijo: string = environment.telefonoFijo;
-  telefonojoli: string = environment.telefonoJoli;
-  telefonoArrendamiento: string = environment.telefonoArrendamiento;
+
+  private telefonoFijo: string = this.hasAsesor() || environment.telefonoFijo;
+  private telefonojoli: string = this.hasAsesor() || environment.telefonoJoli;
+  private telefonoArrendamiento: string = this.hasAsesor() || environment.telefonoArrendamiento;
+  private telefonoJefe: string = this.hasAsesor() || environment.telefonoJefe;
 
 
   private sistemaOperativoSubject = new BehaviorSubject<string>('Desconocido');
@@ -58,6 +64,21 @@ export class ContactosService {
       this.dispositivo = tipo;
     });
   }
+
+  hasAsesor(): string | false {
+    try {
+      const asesorCode = localStorage.getItem(WOAW_ASESOR_DATA_KEY);
+      if (!asesorCode) return false;
+      const asesor = JSON.parse(asesorCode);
+      // console.log('Asesor encontrado:', asesor);
+      return `${asesor.lada}${asesor.telefono}`;
+    } catch (error) {
+      console.error('Error al obtener asesor:', error);
+      return false;
+    }
+  }
+
+
   detectarSistemaOperativo() {
     const userAgent =
       navigator.userAgent || navigator.vendor || (window as any).opera;
@@ -85,6 +106,7 @@ export class ContactosService {
 
     this.sistemaOperativoSubject.next(sistema);
   }
+
   async contactarDueno(
     numero: string,
     marca: string,
@@ -118,8 +140,6 @@ export class ContactosService {
     window.open(url, '_blank');
   }
 
-
-
   async contactarWOAW(
     auto: any,
     tipo_veiculo: string
@@ -150,27 +170,27 @@ export class ContactosService {
       tipo_veiculo == 'motos'
     ) {
       // se va al jefe / NUMERO DE ARRENDAR
-      telefonoVariable = environment.telefonoArrendamiento;
+      telefonoVariable = this.telefonoArrendamiento;
     } else if (
       auto.lote === null &&
       auto.usuarioId?.email === 'joel0558fonseca@gmail.com' &&
       auto.tipoVenta != 'nuevo'
     ) {
       // se va al jefe / NUMERO DE ARRENDAR
-      telefonoVariable = environment.telefonoArrendamiento;
+      telefonoVariable = this.telefonoArrendamiento;
     } else if (
       tipo_veiculo == 'autos' &&
       auto.tipoVenta == 'nuevo'
     ) {
       // se va al jefe / NUMERO DE ARRENDAR
-      telefonoVariable = environment.telefonoArrendamiento;
+      telefonoVariable = this.telefonoArrendamiento;
     } else if (
       auto.lote === null &&
       auto.usuarioId?.rol?.name === 'admin' &&
       auto.tipoVenta != 'nuevo'
     ) {
       // a WOAW
-      telefonoVariable = environment.telefonoFijo;
+      telefonoVariable = this.telefonoFijo;
     } else if (
       auto.lote === null &&
       auto.usuarioId?.rol?.name != 'admin'
@@ -210,6 +230,7 @@ export class ContactosService {
     const url = `https://api.whatsapp.com/send?phone=${telefonoVariable}&text=${mensaje}`;
     window.open(url, '_blank');
   }
+
   envioContador(nombre: string | null, id: string | null): void {
 
     // console.log(nombre, id);
@@ -236,7 +257,6 @@ export class ContactosService {
       },
     });
   }
-
 
   llamar() {
     window.location.href = `tel:${this.telefonoFijo}`;
@@ -395,6 +415,7 @@ export class ContactosService {
 
     window.open(url, '_blank');
   }
+
   ArrendamientoAuto(auto: any): void {
     if (!auto || !auto._id || !auto.tipoVenta) {
       console.warn('❌ Datos del auto inválidos.');
@@ -430,6 +451,7 @@ export class ContactosService {
 
     window.open(url, '_blank');
   }
+
   ArrendamientoAutoPge(modelo: string, marca: string): void {
     if (!modelo || !marca) {
       console.warn('❌ Datos del auto inválidos.');
@@ -638,7 +660,6 @@ export class ContactosService {
     fechaNacimiento: string;
     codigoPostal: string | number;
   }): void {
-    const telefonoJefe = '+524424736940';
     const storage = localStorage.getItem('user');
     let nombreCompleto = '';
 
@@ -662,7 +683,7 @@ export class ContactosService {
       `📮 Código postal: *${data.codigoPostal}*`
     );
 
-    const url = `https://api.whatsapp.com/send?phone=${telefonoJefe}&text=${mensaje}`;
+    const url = `https://api.whatsapp.com/send?phone=${this.telefonoJefe}&text=${mensaje}`;
     window.open(url, '_blank');
   }
 }

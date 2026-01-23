@@ -172,6 +172,7 @@ const routes: Routes = [
           import("./pages/eliminacion-cuenta/eliminacion-cuenta.module").then(
             (m) => m.EliminacionCuentaPageModule
           ),
+        canActivate: [AuthGuard],
       },
       {
         path: "menu-vehiculos/:tipo",

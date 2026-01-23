@@ -57,7 +57,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     // Detectar tipo de dispositivo
     this.generalService.dispositivo$.subscribe((tipo) => {
-      this.esDispositivoMovil = tipo === "telefono" || tipo === "tablet";
+      this.esDispositivoMovil = tipo === "telefono" || tipo === "tablet" ;
     });
 
     // Detectar ruta actual

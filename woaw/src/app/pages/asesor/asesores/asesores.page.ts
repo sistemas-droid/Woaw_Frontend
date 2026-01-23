@@ -179,17 +179,14 @@ export class AsesoresPage implements OnInit {
           purpose: 'asesor_register',
           nonce: this.randomNonce(22),
           iat: serverNow,
-          expOpen,     // si no se abre antes de esto, muere
-          expMax,      // límite máximo duro
-          windowMin: 30
         };
 
         const invite = this.b64urlEncode(payload);
         const origin = window.location.origin || 'https://wo-aw.com';
         this.inviteLink = `${origin}/registro-asesor?invite=${invite}`;
-        this.inviteExpira = new Date(expOpen);
         this.generandoLink = false;
-        this.toast('Link generado (15 min). Al abrir: 30 min para registrarse.', 'success');
+        this.inviteExpira = null;
+        this.toast('Link generado.', 'success'); 
       },
       error: (err) => {
         console.error('❌ hora-servidor:', err);

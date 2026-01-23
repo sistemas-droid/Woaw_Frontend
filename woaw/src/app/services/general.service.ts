@@ -187,28 +187,40 @@ export class GeneralService {
 
 
   guardarCredenciales(token: string, user: any): void {
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('sesionActiva', new Date().toISOString());
+    try {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('sesionActiva', new Date().toISOString());
 
-    this.tokenSubject.next(true);
-    this.rolSubject.next(user?.rol || null);
+      this.tokenSubject.next(true);
+      this.rolSubject.next(user?.rol || null);
 
-    const telefono = this.getTelefonoUsuario(user);
-    const rutaActual = (this.router.url || '').split('?')[0] || '/inicio';
+      const telefono = this.getTelefonoUsuario(user);
+      const rutaActual = (this.router.url || '').split('?')[0] || '/inicio';
 
-    // if (!telefono) {
-    //   const next = rutaActual || '/inicio';
-    //   this.router.navigate(
-    //     ['/autenticacion-user'],
-    //     { queryParams: { next }, replaceUrl: true }
-    //   );
-    // } else {
+      // if (!telefono) {
+      //   const next = rutaActual || '/inicio';
+      //   this.router.navigate(
+      //     ['/autenticacion-user'],
+      //     { queryParams: { next }, replaceUrl: true }
+      //   );
+      // } else {
 
-    // if (rutaActual !== '/inicio') {
-    this.router.navigate(['/inicio'], { replaceUrl: true });
-    // }
-    // }
+      // if (rutaActual !== '/inicio') {
+      this.router.navigate(['/inicio'], { replaceUrl: true });
+      this.alert('Bienvenido a WOAW', 'Inicio de sesión exitoso', 'success');
+      // }
+      // }
+
+    } catch (error) {
+      console.error('Error al guardar credenciales:', error);
+
+      this.alert(
+        'Error',
+        'Ocurrió un problema al iniciar sesión. Intenta nuevamente.',
+        'danger'
+      );
+    }
   }
 
   // === Helper robusto para extraer/validar el teléfono del usuario ===

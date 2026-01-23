@@ -1,21 +1,12 @@
 <div class="popover-wrap">
   <!-- fila superior: buscador + botón X -->
   <div class="top-row">
-    <ion-searchbar
-      class="searchbar-soft"
-      placeholder="Buscar..."
-      [debounce]="150"
-      [value]="query"
-      (ionInput)="onSearchChange($event)"
-      (ionClear)="onClear()">
+    <ion-searchbar class="searchbar-soft" placeholder="Buscar..." [debounce]="150" [value]="query"
+      (ionInput)="onSearchChange($event)" (ionClear)="onClear()">
     </ion-searchbar>
 
     <!-- botón X (quitar filtro) -->
-    <button
-      class="icon-clear"
-      (click)="seleccionar({ quitar: true })"
-      title="Quitar filtro"
-      aria-label="Quitar filtro">
+    <button class="icon-clear" (click)="seleccionar({ quitar: true })" title="Quitar filtro" aria-label="Quitar filtro">
       <ion-icon name="close-outline"></ion-icon>
     </button>
   </div>
@@ -24,32 +15,22 @@
 
   <div class="contenedor-scroll-marcas">
     <ion-list>
-      <ion-item
-        *ngFor="let opcion of opcionesFiltradas; trackBy: trackByKey"
-        (click)="seleccionar(opcion)">
+      <ion-item *ngFor="let opcion of opcionesFiltradas; trackBy: trackByKey" (click)="seleccionar(opcion)">
 
         <ng-container *ngIf="!opcion.quitar; else quitar">
 
           <!-- Dot de color -->
-          <div
-            *ngIf="tipo === 'color'"
-            class="color-dot"
+          <div *ngIf="tipo === 'color'" class="color-dot"
             [ngStyle]="{ 'background-color': obtenerColorHex(opcion.label) }">
           </div>
 
           <!-- Logo de marca -->
-          <img
-            *ngIf="tipo === 'marca' && opcion.imageUrl"
-            [src]="opcion.imageUrl"
-            alt=""
-            class="logo-marca"
+          <img *ngIf="tipo === 'marca' && opcion.imageUrl" [src]="opcion.imageUrl" alt="" class="logo-marca"
             (error)="ocultarImagen($event)" />
 
           <!-- ✅ SOLO ICONO para tipoVehiculoGeneral -->
           <ng-container *ngIf="tipo === 'tipoVehiculoGeneral'; else textoNormal">
-            <ion-icon
-              class="vehiculo-icon"
-              [name]="getVehiculoIcon(opcion)">
+            <ion-icon class="vehiculo-icon" [name]="getVehiculoIcon(opcion)">
             </ion-icon>
           </ng-container>
 
