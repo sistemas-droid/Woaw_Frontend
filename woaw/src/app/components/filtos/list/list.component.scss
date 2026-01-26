@@ -1,140 +1,317 @@
-/* Contenedor general del popover */
-.popover-wrap {
-  padding: 8px 10px 6px;
-  min-width: 260px;
-}
+  /* =========================
+    POPOVER (lista de opciones)
+    ========================= */
 
-/* Fila superior: buscador + X */
-.top-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 4px; /* 🔹 espacio lateral para que no pegue a los bordes */
-}
+  /* Contenedor general del popover */
+  .popover-wrap {
+    padding: 8px 10px 8px;
+    min-width: 260px;
 
-/* Searchbar compacto y suave */
-.searchbar-soft {
-  flex: 1 1 auto;
-  --background: #f6f7f8;
-  --color: #1f2937;
-  --placeholder-color: #9ca3af;
-  --icon-color: #9ca3af;
-  --clear-button-color: #9ca3af;
-  --border-radius: 10px;
-  --box-shadow: 0 1px 0 rgba(0,0,0,0.04), inset 0 0 0 1px #e5e7eb;
-  margin: 0;
-  /* opcional: altura más chica */
-  /* --height: 40px; */
-}
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
 
-/* Botón X (quitar filtro) al lado del buscador */
-.icon-clear {
-  flex: 0 0 auto;
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border-radius: 8px;
-  border: 1px solid #f1c3c3;
-  background: #fff5f5;
-  color: #b91c1c;
-  cursor: pointer;
-  transition: all .16s ease-in-out;
-  margin-right: 2px; /* 🔹 espacio extra respecto al borde */
+    box-shadow:
+      0 12px 28px rgba(17, 24, 39, 0.12),
+      0 2px 6px rgba(17, 24, 39, 0.08);
 
-  ion-icon {
-    font-size: 18px;
-    pointer-events: none;
+    /* ✅ que el popover no se haga infinito */
+    max-height: 78vh;
+    display: flex;
+    flex-direction: column;
+
+    /* evita scroll feo del contenedor padre */
+    overflow: hidden;
   }
 
-  &:hover {
-    background: #fee2e2;
-    border-color: #fca5a5;
+  /* Fila superior: buscador + X */
+  .top-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 4px;
+
+    /* ✅ sticky dentro del popover */
+    position: sticky;
+    top: 0;
+    z-index: 3;
+
+    background: #ffffff;
+    padding-top: 6px;
+    padding-bottom: 8px;
+  }
+
+  /* Searchbar compacto y suave */
+  .searchbar-soft {
+    flex: 1 1 auto;
+
+    --background: #f9fafb;
+    --color: #111827;
+    --placeholder-color: #9ca3af;
+    --icon-color: #9ca3af;
+    --clear-button-color: #9ca3af;
+
+    --border-radius: 12px;
+    --box-shadow: inset 0 0 0 1px #e5e7eb;
+
+    margin: 0;
+
+    ::part(container) {
+      min-height: 38px;
+    }
+
+    ::part(input) {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.1px;
+    }
+  }
+
+  /* Botón X (quitar filtro) */
+  .icon-clear {
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #6b7280;
+
+    cursor: pointer;
+    transition: transform .14s ease, background .14s ease, border-color .14s ease, box-shadow .14s ease, color .14s ease;
+
+    ion-icon {
+      font-size: 18px;
+      pointer-events: none;
+    }
+
+    &:hover {
+      background: #f9fafb;
+      border-color: #d1d5db;
+      color: #111827;
+      box-shadow: 0 6px 16px rgba(17, 24, 39, 0.08);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: none;
+    }
+  }
+
+  /* Línea divisora sutil */
+  .divider {
+    height: 1px;
+    background: #eef2f7;
+    margin: 0 0 6px;
+
+    /* ✅ también sticky para que se vea limpio */
+    position: sticky;
+    top: 56px; /* aprox: altura de top-row */
+    z-index: 2;
+  }
+
+  /* Lista */
+  ion-list {
+    padding: 0;
+    background: transparent;
+  }
+
+  /* ✅ AQUÍ controlas el scroll real (lista interna) */
+  .contenedor-scroll-marcas {
+    /* ocupa el resto del popover */
+    flex: 1 1 auto;
+
+    /* scroll interno controlado */
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* elige el alto máximo real de la lista */
+    max-height: calc(78vh - 56px - 12px); /* popover - header aprox */
+
+    padding: 2px 0 2px;
+
+    /* scroll suave y “estable” */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain; /* ✅ evita que “jale” el fondo */
+    scroll-behavior: smooth;
+
+    /* scrollbar más limpio */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(17, 24, 39, 0.22) transparent;
+  }
+
+  .contenedor-scroll-marcas::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .contenedor-scroll-marcas::-webkit-scrollbar-thumb {
+    background-color: rgba(17, 24, 39, 0.22);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .contenedor-scroll-marcas::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(17, 24, 39, 0.32);
+  }
+
+  /* Items */
+  ion-item {
+    --border-style: none;
+    --inner-border-width: 0px;
+
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --min-height: 44px;
+
+    margin: 3px 6px;
+    border-radius: 12px;
+
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
+
+    --background: transparent;
+    transition: background .12s ease, transform .12s ease, box-shadow .12s ease;
+    box-shadow: inset 0 0 0 1px rgba(229,231,235,0);
+  }
+
+  ion-item:hover {
+    --background: #f9fafb;
+    box-shadow: inset 0 0 0 1px #eef2f7;
     transform: translateY(-1px);
   }
-  &:active {
-    transform: translateY(0);
+
+  /* Texto */
+  ion-item ion-label {
+    margin: 0;
+    font-weight: 600;
+    color: #374151;
   }
-}
 
-/* Línea divisora sutil */
-.divider {
-  height: 1px;
-  background: #ededed;
-  margin: 8px 0 6px;
-}
+  /* Logo de marca */
+  .logo-marca {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
 
-/* Lista y items */
-ion-list {
-  padding: 0;
-}
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 2px;
+    box-shadow: inset 0 0 0 1px #e5e7eb;
 
-ion-item {
-  --border-style: none;
-  --inner-border-width: 0px;
-  --padding-start: 12px;
-  --padding-end: 12px;
-  --min-height: 46px;
-  font-size: 15.5px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  transition: background-color 0.16s ease-in-out, transform 0.12s ease-in-out;
-  border-radius: 8px;
-}
+    transition: transform 0.14s ease;
+  }
 
-ion-item:hover {
-  --background: #fdf2f2;
-  transform: translateY(-1px);
-}
+  ion-item:hover .logo-marca {
+    transform: scale(1.05);
+  }
 
-ion-item ion-label {
-  margin: 0;
-  font-weight: 500;
-  color: #374151;
-}
+  /* Dot de color */
+  .color-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(17, 24, 39, 0.12);
 
-/* Logo de marca */
-.logo-marca {
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
-  background: white;
-  transition: transform 0.16s ease;
-  margin-right: 2px;
-}
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.35),
+      0 1px 2px rgba(17,24,39,0.12);
+  }
 
-ion-item:hover .logo-marca {
-  transform: scale(1.06);
-}
+  /* Sin resultados */
+  ion-item ion-label {
+    line-height: 1.1;
+  }
 
-/* Scroll del listado */
-.contenedor-scroll-marcas {
-  max-height: 50vh;
-  overflow-y: auto;
-  padding: 4px 0 2px;
-  scrollbar-width: thin;
-}
+  /* =========================
+    📱 MOBILE: popover compacto y scroll bonito
+    ========================= */
+  @media (max-width: 768px) {
+    .popover-wrap {
+      min-width: auto;
+      width: min(92vw, 340px);
+      padding: 6px;
+      border-radius: 12px;
 
-.contenedor-scroll-marcas::-webkit-scrollbar {
-  width: 6px;
-}
+      /* ✅ ocupa pantalla sin verse infinito */
+      max-height: 82vh;
+    }
 
-.contenedor-scroll-marcas::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.18);
-  border-radius: 4px;
-}
+    .top-row {
+      gap: 6px;
+      padding: 6px 4px 8px;
+    }
 
-/* Dot de color */
-.color-dot {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  margin-right: 10px;
-  border: 1px solid #d1d5db;
-  display: inline-block;
-}
+    .searchbar-soft {
+      --border-radius: 10px;
 
-/* (Opcional) – si tenías un .btn-clear anterior, ya no se usa.
-   Lo puedes borrar o dejar por si lo reutilizas en otro popover. */
+      ::part(container) { min-height: 32px; }
+      ::part(input) { font-size: 12.5px; }
+    }
+
+    .icon-clear {
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+
+      ion-icon { font-size: 16px; }
+    }
+
+    .divider {
+      top: 52px;
+    }
+
+    .contenedor-scroll-marcas {
+      /* ✅ altura visible: lista controlada */
+      max-height: calc(82vh - 52px - 14px);
+
+      /* más cómodo para dedo */
+      padding: 2px 0 2px;
+    }
+
+    ion-item {
+      --min-height: 38px;
+      --padding-start: 10px;
+      --padding-end: 10px;
+
+      margin: 2px 4px;
+      border-radius: 10px;
+      font-size: 12.5px;
+    }
+
+    .logo-marca {
+      width: 20px;
+      height: 20px;
+      border-radius: 7px;
+    }
+
+    .color-dot {
+      width: 12px;
+      height: 12px;
+    }
+
+    /* en touch, hover no sirve y molesta */
+    ion-item:hover {
+      transform: none;
+    }
+  }
+
+  /* extra mini phones */
+  @media (max-width: 380px) {
+    .popover-wrap {
+      width: min(94vw, 320px);
+    }
+
+    ion-item {
+      --min-height: 36px;
+      font-size: 12px;
+    }
+  }
