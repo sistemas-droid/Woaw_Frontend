@@ -43,9 +43,6 @@
     </ion-buttons>
 
     <ion-buttons slot="end">
-      
-    <ion-badge aria-label="Estado asesor" *ngIf="MyRole !== 'admin' && MyRole !== 'asesor'" (click)="eliminarAsesor()" mode="ios" class="asesor-dot" [color]="tieneAsesor ? 'success' : 'danger'">
-    </ion-badge>
 
       <ng-container *ngIf="!esDispositivoMovil">
         <ion-button fill="clear" [ngClass]="{ 'activo': isActive('home') }" (click)="redirecion('home')">
@@ -97,8 +94,8 @@
         </button>
 
         <!-- USUARIO (con foto de Google si existe) -->
-        <div class="usuario-info" *ngIf="isLoggedIn" (click)="abrirModalPerfil()">
-          <img *ngIf="!esDispositivoMovil" src="assets/icon/mexico.png" alt="MX" class="icono-bandera" />
+        <div class="usuario-info" (click)="abrirModalPerfil()" >
+          <img *ngIf="!esDispositivoMovil && isLoggedIn" src="assets/icon/mexico.png" alt="MX" class="icono-bandera" />
           <div class="contenedor-nombre">
             <ng-container *ngIf="fotoPerfil; else iconoDefault">
               <img [src]="fotoPerfil" alt="Foto de perfil" width="20" height="20"
@@ -108,7 +105,7 @@
             <ng-template #iconoDefault>
               <ion-icon name="person-outline" class="icono-user"></ion-icon>
             </ng-template>
-            <span class="nombre-usuario">{{ usuario }}</span>
+            <span *ngIf="isLoggedIn" class="nombre-usuario">{{ usuario }}</span>
           </div>
         </div>
         <!-- /USUARIO -->

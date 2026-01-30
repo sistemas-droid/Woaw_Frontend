@@ -76,13 +76,22 @@ export class ContactosService {
 
   async hasAsesor(): Promise<string | false> {
     try {
+      const asesorBD = await this.obtenerAsesor()
+      if (asesorBD) {
+        const { lada, telefono } = asesorBD;
+        const asesorUid  = asesorBD;
+        this.guardarAsesorDatos(asesorBD);
+        this.guardarCodigoAsesor(asesorUid);
+        return `${lada}${telefono}`;
+      }
+
       const asesorCode = localStorage.getItem(WOAW_ASESOR_DATA_KEY);
       // no tengo asesor asicnado 
       if (!asesorCode) return false;
 
       const response = await firstValueFrom(this.datos_asesor());
       if (!response) {
-        // quiere decir que el asesor ya no exixte 
+        // quiere decir que el asesor ya no exixte fue eliminado / no exixte en la BD  
         return false;
       }
 
@@ -727,14 +736,6 @@ export class ContactosService {
 
 
 
-
-
-
-
-
-
-
-
   // ASESOR ---- 
   datos_asesor(): Observable<any> {
     return from(this.headersService.obtenerToken()).pipe(
@@ -746,6 +747,34 @@ export class ContactosService {
     );
   }
 
+  saber_si_temgo_asesor(): Observable<any> {
+    return from(this.headersService.obtenerToken()).pipe(
+      switchMap((token) => {
+        const headers = this.headersService.getJsonHeaders(token);
+        return this.http.get(`${this.baseUrl}/users/profile`, { headers });
+      }),
+      // catchError((error) => this.headersService.handleError(error))
+    );
+  }
+
+  async obtenerAsesor(): Promise<any | false> {
+    try {
+      const data = await firstValueFrom(
+        this.saber_si_temgo_asesor()
+      );
+
+      const asesor = data?.asesor;
+
+      if (asesor) {
+        return asesor;
+      }
+
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
+
   guardarAsesorDatos(asesor: any): void {
     if (!asesor) return;
 
@@ -753,7 +782,6 @@ export class ContactosService {
       WOAW_ASESOR_DATA_KEY,
       JSON.stringify(asesor)
     );
-
     // console.log('Datos asesor guardados:', asesor);
   }
 

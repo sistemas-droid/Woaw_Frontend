@@ -15,11 +15,320 @@
 }
 
 .contenedor-asesores {
-  max-width: 1100px;
+  max-width: 1300px;
+  width: 100%;
   margin: 0 auto;
   padding: 16px 14px 70px;
   box-sizing: border-box;
 }
+
+.kpi-card {
+  background: transparent;
+  border-radius: 16px;
+  padding: 18px;
+  // box-shadow: 0 10px 30px rgba(0, 0, 0, 0.079);
+
+  .kpi-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .kpi-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .kpi-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: #f11919;
+  }
+
+  .kpi-title {
+    color: #000000;
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .kpi-right {
+    text-align: right;
+  }
+
+  .kpi-value {
+    color: #e61e1e;
+    font-size: 42px;
+    line-height: 1;
+    font-weight: 800;
+  }
+
+  .kpi-sub {
+    color: #383838;
+    margin-top: 4px;
+    font-size: 13px;
+  }
+
+  .kpi-chart {
+    width: 100%;
+    height: 360px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+.tabla-asesores-wrapper {
+  width: 100%;
+  overflow-x: auto;
+
+
+
+  .tabla-asesores {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .tabla-asesores th,
+  .tabla-asesores td {
+    padding: 12px 14px;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  .tabla-asesores thead th {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    background: #f4f4f4;
+    color: #222;
+  }
+
+  .tabla-asesores tbody tr+tr td {
+    border-top: 1px solid #eee;
+  }
+
+  .th-acciones,
+  .td-acciones {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .td-asesor .asesor-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .asesor-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: #000000;
+    color: #2a7de1;
+    font-weight: 800;
+    overflow: hidden;
+    flex: 0 0 auto;
+  }
+
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .asesor-nombre .nombre {
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .asesor-nombre .sub {
+    font-size: 12px;
+    color: #777;
+    margin-top: 2px;
+  }
+
+  .muted {
+    color: #888;
+  }
+
+  /* Botones: mínimos, sin drama */
+  .td-acciones button {
+    margin-left: 8px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid #e6e6e6;
+    background: #fff;
+    cursor: pointer;
+  }
+
+  .td-acciones button[disabled] {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  /* ✅ RESPONSIVE real: a "cards" en móvil */
+  @media (max-width: 720px) {
+    .tabla-asesores {
+      border: 0;
+      background: transparent;
+    }
+
+    .tabla-asesores thead {
+      display: none;
+    }
+
+    .tabla-asesores tbody tr {
+      display: block;
+      background: #fff;
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .tabla-asesores tbody td {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      border: 0 !important;
+      padding: 10px 6px;
+    }
+
+    /* Labels automáticos sin tocar tu HTML */
+    .tabla-asesores tbody td:nth-child(1)::before {
+      content: "Asesor";
+    }
+
+    .tabla-asesores tbody td:nth-child(2)::before {
+      content: "Teléfono";
+    }
+
+    .tabla-asesores tbody td:nth-child(3)::before {
+      content: "Email";
+    }
+
+    .tabla-asesores tbody td:nth-child(4)::before {
+      content: "Acciones";
+    }
+
+    .tabla-asesores tbody td::before {
+      font-size: 12px;
+      font-weight: 700;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      flex: 0 0 90px;
+    }
+
+    .td-acciones {
+      white-space: normal;
+      text-align: left;
+    }
+
+    .td-acciones button {
+      margin-left: 0;
+      margin-right: 8px;
+      margin-top: 6px;
+    }
+  }
+}
+
+.paginacion {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px 0;
+  flex-wrap: wrap;
+
+
+
+  .paginacion button {
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid #e6e6e6;
+    background: #fff;
+    cursor: pointer;
+  }
+
+  .paginacion button[disabled] {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  .paginacion button.active {
+    border-color: #2a7de1;
+    color: #2a7de1;
+    font-weight: 700;
+  }
+
+  .paginacion-info {
+    margin-left: 8px;
+    color: #666;
+    font-size: 12px;
+  }
+
+}
+
+.acciones-tabla {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+
+
+  .btn-exportar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid #e6e6e6;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .btn-exportar ion-icon {
+    font-size: 18px;
+  }
+
+  .btn-exportar:hover {
+    border-color: #2a7de1;
+    color: #2a7de1;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .encabezado-asesores {
   display: flex;

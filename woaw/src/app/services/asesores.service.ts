@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { switchMap, catchError } from 'rxjs/operators';
+import { GeneralService } from '../services/general.service';
+import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { HeadersService } from './headers.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +15,13 @@ import { environment } from 'src/environments/environment';
 export class AsesoresService {
   private readonly baseUrl = `${environment.api_key}/asesores`;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private generalService: GeneralService,
+    private router: Router,
+    private headersService: HeadersService) {
+
+  }
 
   preRegister(data: {
     nombre: string;
@@ -50,10 +62,38 @@ export class AsesoresService {
     });
   }
 
-  getAsesorById(id: string, token: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`, {
-      headers: this.authHeaders(token),
-    });
+  // getAsesorById(id: string, token: string): Observable<any> {
+  //   return this.http.get(`${this.baseUrl}/${id}`, {
+  //     headers: this.authHeaders(token),
+  //   });
+  // }
+
+
+  getAsesorById(id: string): Observable<any> {
+    return from(this.headersService.obtenerToken()).pipe(
+      switchMap(token => {
+        const headers = this.headersService.getFormDataHeaders(token);
+        return this.http.get(
+          `${this.baseUrl}/${id}`,
+          { headers }
+        );
+      }),
+      catchError(error => this.headersService.handleError(error))
+    );
+  }
+
+
+  getAsesoresCont(): Observable<any> {
+    return from(this.headersService.obtenerToken()).pipe(
+      switchMap(token => {
+        const headers = this.headersService.getFormDataHeaders(token);
+        return this.http.get(
+          `${environment.api_key}/asesor-contador`,
+          { headers }
+        );
+      }),
+      catchError(error => this.headersService.handleError(error))
+    );
   }
 
   updateAsesor(

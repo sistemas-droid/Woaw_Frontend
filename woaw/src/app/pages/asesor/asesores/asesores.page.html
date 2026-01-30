@@ -2,47 +2,59 @@
 
 <ion-content [fullscreen]="true" class="bg-asesores">
 
-  <div class="contenedor-asesores">
-    <!-- ENCABEZADO -->
-    <div class="encabezado-asesores">
-      <div class="heading-left">
-        <h1>Nuestros asesores</h1>
-        <p>Selecciona al asesor que se encargará de brindarte la mejor atención.</p>
+  <!-- ENCABEZADO -->
+  <div class="encabezado-asesores contenedor-asesores">
+    <div class="heading-left">
+      <h1>Nuestros asesores</h1>
+      <p>Selecciona al asesor que se encargará de brindarte la mejor atención.</p>
 
-        <!-- ✅ ADMIN: GENERAR LINK TEMPORAL -->
-        <div *ngIf="isAdmin" class="admin-invite">
-          <div class="admin-actions">
-            <ion-button size="small" color="danger" (click)="generarLinkInvitacion()" [disabled]="generandoLink">
-              <ion-icon name="link-outline" slot="start"></ion-icon>
-              <span *ngIf="!generandoLink">Generar link de registro</span>
-              <span *ngIf="generandoLink">Generando…</span>
-            </ion-button>
-          </div>
+      <!-- ✅ ADMIN: GENERAR LINK TEMPORAL -->
+      <div *ngIf="isAdmin" class="admin-invite">
 
-          <div *ngIf="inviteLink" class="invite-box">
-            <div class="invite-head">
-              <div class="invite-title">
-                <ion-icon name="time-outline"></ion-icon>
-                <span>Link temporal</span>
-              </div>
-            </div>
+        <div class="admin-actions">
+          <ion-button size="small" color="danger" (click)="generarLinkInvitacion()" [disabled]="generandoLink">
+            <ion-icon name="link-outline" slot="start"></ion-icon>
+            <span *ngIf="!generandoLink">Generar link de registro</span>
+            <span *ngIf="generandoLink">Generando…</span>
+          </ion-button>
 
-            <div class="invite-url-row">
-              <div class="invite-url" title="{{ inviteLink }}">
-                {{ inviteLink }}
-              </div>
+          <ion-button size="small" color="danger" *ngIf="!graficaEstatus" (click)="generarGraficas()">
+            <ion-icon name="podium" slot="start"></ion-icon>
+            Grafica
+          </ion-button>
 
-              <button type="button" class="btn-copy-link" (click)="copiarInvite()">
-                <ion-icon name="copy-outline"></ion-icon>
-              </button>
-            </div>
-
-          </div>
+          <ion-button size="small" color="danger" *ngIf="graficaEstatus" (click)="generarGraficas()">
+            <ion-icon name="logo-apple-ar" slot="start"></ion-icon>
+            Lista
+          </ion-button>
         </div>
 
-      </div>
-    </div>
+        <div *ngIf="inviteLink" class="invite-box">
+          <div class="invite-head">
+            <div class="invite-title">
+              <ion-icon name="time-outline"></ion-icon>
+              <span>Link temporal</span>
+            </div>
+          </div>
 
+          <div class="invite-url-row">
+            <div class="invite-url" title="{{ inviteLink }}">
+              {{ inviteLink }}
+            </div>
+
+            <button type="button" class="btn-copy-link" (click)="copiarInvite()">
+              <ion-icon name="copy-outline"></ion-icon>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LIsta de asesores  -->
+  <div class="contenedor-asesores" *ngIf="!graficaEstatus">
     <!-- LOADING -->
     <div class="loading" *ngIf="cargando">
       <ion-spinner name="crescent"></ion-spinner>
@@ -55,47 +67,69 @@
       <ion-button size="small" (click)="cargarAsesores()">Reintentar</ion-button>
     </div>
 
-    <!-- GRID DE ASESORES -->
-    <ion-grid class="grid-asesores">
-      <ion-row>
-        <ion-col size="12" sizeMd="10" sizeLg="8" sizeXl="6" class="col-asesor" *ngFor="let asesor of asesores">
+    <!-- TABLA DE ASESORES -->
+    <div class="tabla-asesores-wrapper">
 
-          <div class="tarjeta-asesor">
+      <div class="acciones-tabla">
+        <button type="button" class="btn-exportar" (click)="exportarExcel()">
+          <ion-icon name="download-outline"></ion-icon>
+          <span>Descargar Excel</span>
+        </button>
+      </div>
 
-            <div class="asesor-avatar">
-              <img *ngIf="asesor?.foto" [src]="asesor.foto" alt="Foto asesor" class="avatar-img" />
-              <span *ngIf="!asesor?.foto">{{ getIniciales(nombreCompleto(asesor)) }}</span>
-            </div>
+      <table class="tabla-asesores">
+        <thead>
+          <tr>
+            <th>Asesor</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th class="th-acciones">Acciones</th>
+          </tr>
+        </thead>
 
-            <div class="asesor-info">
-              <h2>{{ nombreCompleto(asesor) }}</h2>
-              <p class="rol">{{ asesor.rol || 'Asesor Comercial' }}</p>
+        <tbody>
+          <tr *ngFor="let asesor of asesoresPaginados">
 
-              <p class="dato" *ngIf="asesor.telefono">
+            <td class="td-asesor">
+              <div class="asesor-cell">
+                <div class="asesor-avatar">
+                  <img *ngIf="asesor?.foto" [src]="asesor.foto" alt="Foto asesor" class="avatar-img" />
+                  <span *ngIf="!asesor?.foto">{{ getIniciales(nombreCompleto(asesor)) }}</span>
+                </div>
+
+                <div class="asesor-nombre">
+                  <div class="nombre">{{ nombreCompleto(asesor) }}</div>
+                  <div class="sub">{{ asesor.rol || 'Asesor Comercial' }}</div>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <span *ngIf="asesor.telefono; else sinTel">
                 <ion-icon name="call-outline"></ion-icon>
-                {{ asesor.telefono }}
-              </p>
+                ({{asesor.lada}}){{ asesor.telefono }}
+              </span>
+              <ng-template #sinTel>
+                <span class="muted">-</span>
+              </ng-template>
+            </td>
 
-              <p class="dato" *ngIf="asesor.email">
+            <td>
+              <span *ngIf="asesor.email; else sinMail">
                 <ion-icon name="mail-outline"></ion-icon>
                 {{ asesor.email }}
-              </p>
-            </div>
+              </span>
+              <ng-template #sinMail>
+                <span class="muted">-</span>
+              </ng-template>
+            </td>
 
-            <!-- SOLO QR aquí -->
-            <div class="asesor-qr">
-              <div class="qr-wrapper">
-                <img src="/assets/autos/QR.png" [alt]="'Código QR de ' + nombreCompleto(asesor)" />
-              </div>
-            </div>
-
-            <!-- BOTONES abajo -->
-            <div class="acciones-asesor">
-              <button type="button" class="btn-link-qr" (click)="abrirLink(asesor.telefono)"
+            <td class="td-acciones">
+              <!-- <button type="button" class="btn-link-qr" (click)="abrirLink(asesor.telefono)"
                 [disabled]="!asesor.telefono">
                 <ion-icon name="link-outline"></ion-icon>
                 <span>Ver enlace</span>
-              </button>
+              </button> -->
 
               <button type="button" class="btn-editar-asesor" (click)="editarAsesor(asesor)" [disabled]="!asesor._id">
                 <ion-icon name="create-outline"></ion-icon>
@@ -108,16 +142,55 @@
                 <span *ngIf="eliminandoId !== asesor._id">Eliminar</span>
                 <span *ngIf="eliminandoId === asesor._id">Eliminando…</span>
               </button>
-            </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="paginacion" *ngIf="totalPaginas > 1">
+        <button type="button" (click)="prevPage()" [disabled]="paginaActual === 1">
+          Anterior
+        </button>
 
-          </div>
+        <button type="button" *ngFor="let p of paginasVisibles" (click)="goToPage(p)"
+          [class.active]="p === paginaActual">
+          {{ p }}
+        </button>
 
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+        <button type="button" (click)="nextPage()" [disabled]="paginaActual === totalPaginas">
+          Siguiente
+        </button>
+
+        <span class="paginacion-info">
+          {{ paginaActual }} / {{ totalPaginas }} · {{ asesores.length }} asesores
+        </span>
+      </div>
+
+    </div>
+
 
   </div>
 
+  <!-- Grafica  -->
+  <div *ngIf="graficaEstatus" class="contenedor-asesores">
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <div class="kpi-left">
+          <div class="kpi-dot"></div>
+          <div class="kpi-title">Asesores</div>
+        </div>
+
+        <div class="kpi-right">
+          <div class="kpi-value">{{ totalAsesores }}</div>
+          <div class="kpi-sub">total asesores</div>
+        </div>
+      </div>
+
+      <div id="chartAsesores" class="kpi-chart"></div>
+    </div>
+  </div>
+
+  <!-- modal  -->
   <ion-modal [isOpen]="modalEliminarOpen" (didDismiss)="cerrarModalEliminar()" cssClass="woaw-modal-eliminar">
     <ng-template>
       <div class="woaw-modal-center">

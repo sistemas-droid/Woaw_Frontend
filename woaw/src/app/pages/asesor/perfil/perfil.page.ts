@@ -45,20 +45,6 @@ export class PerfilPage implements OnInit {
     try { return JSON.parse(raw); } catch { return null; }
   }
 
-  private getAsesorIdDesdeUser(user: any): string | null {
-    if (!user) return null;
-
-    // cubrimos varias formas comunes
-    return (
-      user?._id ||
-      user?.id ||
-      user?.userId ||
-      user?.uid ||
-      user?.asesor?._id ||
-      user?.asesorId ||
-      null
-    );
-  }
   private buildBaseUrl(): string {
     const origin = window?.location?.origin || '';
     return origin.includes('http') ? origin : 'https://woaw.mx';
@@ -73,18 +59,9 @@ export class PerfilPage implements OnInit {
     this.cargando = true;
     this.error = false;
 
-    const token = this.generalService.obtenerToken();
     const user = this.getUserLocal();
-    const id = this.getAsesorIdDesdeUser(user);
 
-    if (!token || !id) {
-      this.error = true;
-      this.cargando = false;
-      this.toast('No encontré tu sesión completa. Inicia sesión de nuevo.');
-      return;
-    }
-
-    this.asesoresService.getAsesorById(id, token).subscribe({
+    this.asesoresService.getAsesorById(user._id).subscribe({
       next: (res: any) => {
         this.asesor = res?.asesor || res || null;
         const code = this.asesor?.asesorUid;

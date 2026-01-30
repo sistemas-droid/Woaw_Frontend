@@ -139,25 +139,17 @@ ion-card:not(.card-cambio) .perfil-grid ion-item ion-label p {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(8px, 2vw, 12px);
+  font-size: 15px;
   font-weight: 800;
-  font-size: clamp(16px, 2.4vw, 20px);
-  color: #2c3e50;
+  color: #c10000;
   margin: 0;
 }
+
 
 .titulo-acordeon {
   display: inline-flex;
   align-items: center;
   gap: clamp(6px, 1vw, 8px);
-}
-
-.titulo-acordeon ion-icon {
-  color: #ff4757;
-  font-size: clamp(16px, 2vw, 18px);
-  padding: 2px 3px;
-  border-radius: 8px;
-  background: radial-gradient(120% 120% at 30% 30%, rgba(255, 71, 87, .18), rgba(255, 71, 87, .06));
 }
 
 .cabecera-acordeon ion-card-title>ion-icon:last-child {

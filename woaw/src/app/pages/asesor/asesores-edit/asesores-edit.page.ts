@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AsesoresEditPage implements OnInit {
 
-  asesorId: string | null = null;
+  asesorId: any = null;
 
   cargando = true;
   guardando = false;
@@ -153,15 +153,7 @@ export class AsesoresEditPage implements OnInit {
     this.cargando = true;
     this.error = false;
 
-    const token = localStorage.getItem('token');
-    if (!token || !this.asesorId) {
-      this.error = true;
-      this.cargando = false;
-      this.toast('No hay sesión o no se encontró el asesor.', 'danger');
-      return;
-    }
-
-    this.asesoresService.getAsesorById(this.asesorId, token).subscribe({
+    this.asesoresService.getAsesorById(this.asesorId).subscribe({
       next: (res: any) => {
         const a = res?.asesor || res?.data || res;
 

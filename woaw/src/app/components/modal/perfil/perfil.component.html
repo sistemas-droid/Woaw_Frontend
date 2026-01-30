@@ -16,7 +16,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-card *ngIf="!mostrarCambio">
+  <ion-card *ngIf="!mostrarCambio && isLoggedIn">
     <ion-list class="perfil-grid" lines="none">
       <ion-item>
         <ion-avatar slot="start">
@@ -56,7 +56,7 @@
   </ion-card>
 
   <!-- ## ----- ----- -->
-  <ion-card class="card-cambio" [class.is-open]="mostrarCambio">
+  <ion-card *ngIf="isLoggedIn" class="card-cambio" [class.is-open]="mostrarCambio">
     <ion-card-header (click)="mostrarCambio = !mostrarCambio" class="cabecera-acordeon">
       <ion-card-title class="ion-align-items-center ion-justify-content-between">
         <div class="titulo-acordeon">
@@ -109,16 +109,60 @@
   </ion-card>
 
   <!-- CARD: Eliminar cuenta (idéntico diseño, actúa como botón/link) -->
-  <ion-card class="card-cambio" (click)="goEliminarCuenta()" *ngIf="MyRole !== 'admin' && MyRole !== 'lotero'">
+  <ion-card class="card-cambio" *ngIf="MyRole === 'asesor' && isLoggedIn">
     <ion-card-header class="cabecera-acordeon">
-      <ion-card-title class="ion-align-items-center ion-justify-content-between">
-        <div class="titulo-acordeon">
-          Eliminar cuenta
-          <ion-icon name="trash-outline"></ion-icon>
-        </div>
-        <ion-icon name="chevron-forward-outline"></ion-icon>
+      <ion-card-title >
+        {{linkComision}}
+        <ion-button type="button" color="danger" (click)="copiar(linkComision)">Copiar</ion-button>
       </ion-card-title>
     </ion-card-header>
   </ion-card>
+
+  <ion-card *ngIf="asesor && MyRole !== 'asesor' ">
+    <ion-card-content>
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+
+          <!-- COLUMNA IZQUIERDA: FOTO + NOMBRE -->
+          <ion-col size="12" size-md="4" class="ion-text-center">
+            <ion-avatar style="margin: 0 auto 10px; width: 50px; height: 50px">
+              <img [src]="asesor.foto ? asesor.foto : 'assets/icon/woalf1.png'" alt="Asesor" />
+            </ion-avatar>
+
+            <ion-text>
+              <h1>{{ asesor.nombre }} {{ asesor.apellidos }}</h1>
+              <p>Asesor asignado</p>
+            </ion-text>
+          </ion-col>
+
+          <!-- COLUMNA DERECHA: INFO -->
+          <ion-col size="12" size-md="8">
+            <ion-item lines="none">
+              <ion-icon name="mail-outline" slot="start"></ion-icon>
+              <ion-label>
+                {{ asesor.email }}
+              </ion-label>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-icon name="call-outline" slot="start"></ion-icon>
+              <ion-label>
+                {{ asesor.lada }} {{ asesor.telefono }}
+              </ion-label>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-icon name="id-card-outline" slot="start"></ion-icon>
+              <ion-label>
+                UID: {{ asesor.asesorUid }}
+              </ion-label>
+            </ion-item>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
 
 </ion-content>

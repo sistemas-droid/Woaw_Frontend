@@ -181,6 +181,7 @@ export class GeneralService {
     try {
       localStorage.removeItem(WOAW_ASESOR_CODE_KEY);
       localStorage.removeItem(WOAW_ASESOR_CODE_AT_KEY);
+      localStorage.removeItem(WOAW_ASESOR_DATA_KEY);
     } catch { }
     this.asesorAsignadoSubject.next(false);
   }

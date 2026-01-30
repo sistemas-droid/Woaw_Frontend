@@ -414,9 +414,6 @@ export class AppComponent {
     });
   }
 
-
-
-
   private async captureAsesorFromAnyUrl(urlLike: string) {
     try {
       if (!urlLike.includes('code=')) return;
@@ -448,8 +445,6 @@ export class AppComponent {
         // console.warn('Error datos_asesor:', err);
       }
 
-
-
       // 3) Limpiar query param si es navegación Angular
       if (!urlLike.startsWith('http') && !urlLike.startsWith('woaw:')) {
         this.zone.run(() => {
@@ -460,14 +455,4 @@ export class AppComponent {
       console.warn('[WOAW] No se pudo capturar asesor code', e);
     }
   }
-
-
-
-
-
-
-
-
-
-
 }

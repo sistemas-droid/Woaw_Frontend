@@ -4,12 +4,15 @@ import { IonicModule, MenuController, AlertController, ModalController } from "@
 import { Router, RouterModule } from "@angular/router";
 import { RegistroService } from "../../../services/registro.service";
 import { GeneralService } from "../../../services/general.service";
+import { AsesoresService } from 'src/app/services/asesores.service';
 import {
   FormBuilder,
   FormGroup,
   Validators,
   ReactiveFormsModule,
 } from "@angular/forms";
+
+const WOAW_ASESOR_DATA_KEY = 'woaw_asesor_data';
 
 @Component({
   selector: "app-perfil",
@@ -24,7 +27,10 @@ export class PerfilComponent implements OnInit {
   fotoPerfil: string | null = null;
   formCambio: FormGroup;
   mostrarCambio: boolean = false;
+  asesor: any = null;
+  linkComision: string = '';
 
+  public isLoggedIn: boolean = false;
   verActual: boolean = true;
   verNuevas: boolean = true;
 
@@ -37,12 +43,17 @@ export class PerfilComponent implements OnInit {
     private generalService: GeneralService,
     private fb: FormBuilder,
     private alertCtrl: AlertController,
-    private router: Router
+    private router: Router,
+    private asesoresService: AsesoresService
   ) {
     this.formCambio = this.fb.group({
       password: ["", [Validators.required]],
       newPassword: ["", [Validators.required, this.validarPassword]],
       newPasswordconf: ["", [Validators.required]],
+    });
+
+    this.generalService.tokenExistente$.subscribe((estado) => {
+      this.isLoggedIn = estado;
     });
   }
 
@@ -80,22 +91,78 @@ export class PerfilComponent implements OnInit {
       this.fotoPerfil = "assets/icon/woalf1.png";
     }
 
+    this.obtenerAsesor();
 
     this.generalService.tipoRol$.subscribe((rol) => {
       this.MyRole = rol;
     });
+    this.cargarPerfil()
   }
+
   // ⟵ NUEVO: usar en (click) del ion-card de "Eliminar cuenta"
-  async goEliminarCuenta() {
+  // async goEliminarCuenta() {
+  //   try {
+  //     // Si el modal está abierto, lo cerramos con pequeña espera
+  //     await this.modalCtrl.dismiss();
+  //     setTimeout(() => {
+  //       this.router.navigateByUrl("/eliminacion-cuenta");
+  //     }, 150); // 🔹 pequeño delay para transición limpia
+  //   } catch (err) {
+  //     // Si no hay modal, igual navega
+  //     this.router.navigateByUrl("/eliminacion-cuenta");
+  //   }
+  // }
+
+
+  private getUserLocal(): any | null {
+    const raw = localStorage.getItem('user');
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch { return null; }
+  }
+
+
+  cargarPerfil() {
+    const user = this.getUserLocal();
+
+    this.asesoresService.getAsesorById(user._id).subscribe({
+      next: (res: any) => {
+        this.asesor = res?.asesor;
+        const code = this.asesor?.asesorUid;
+        this.linkComision = code ? this.buildLinkComision(code) : '';
+      },
+      error: () => {
+      }
+    });
+  }
+
+  async copiar(valor: string) {
     try {
-      // Si el modal está abierto, lo cerramos con pequeña espera
-      await this.modalCtrl.dismiss();
-      setTimeout(() => {
-        this.router.navigateByUrl("/eliminacion-cuenta");
-      }, 150); // 🔹 pequeño delay para transición limpia
-    } catch (err) {
-      // Si no hay modal, igual navega
-      this.router.navigateByUrl("/eliminacion-cuenta");
+      await navigator.clipboard.writeText(valor);
+      this.generalService.alert('Copiado', 'Link copiado correctamente', 'success');
+    } catch {
+      this.generalService.alert('error','No se pudo copiar', 'danger');
+    }
+  }
+
+  private buildLinkComision(code: string): string {
+    const base = this.buildBaseUrl();
+    return `${base}/home?code=${encodeURIComponent(code)}`;
+  }
+
+  private buildBaseUrl(): string {
+    const origin = window?.location?.origin || '';
+    return origin.includes('http') ? origin : 'https://woaw.mx';
+  }
+
+  obtenerAsesor() {
+    const data = localStorage.getItem(WOAW_ASESOR_DATA_KEY);
+    if (data) {
+      try {
+        this.asesor = JSON.parse(data);
+        // console.log(this.asesor)
+      } catch {
+        this.asesor = null;
+      }
     }
   }
 

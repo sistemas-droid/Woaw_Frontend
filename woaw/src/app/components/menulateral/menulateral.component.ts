@@ -43,6 +43,8 @@ export class MenulateralComponent implements OnInit, OnDestroy {
     return this.isLoggedIn && this.ALLOWED_ROLES.has(this.MyRole || "");
   }
 
+  public tieneAsesor: boolean = false;
+
   // ✔️ Admin
   get isAdmin(): boolean {
     return this.MyRole === "admin";
@@ -125,6 +127,11 @@ export class MenulateralComponent implements OnInit, OnDestroy {
         }
       })
     );
+
+
+    this.generalService.asesorAsignado$.subscribe((estado) => {
+      this.tieneAsesor = estado;
+    });
   }
 
   ngOnDestroy(): void {

@@ -63,6 +63,15 @@ npm install @capawesome/capacitor-app-update
 npm install ngx-image-cropper
 
 
+npm uninstal datatables.net datatables.net-dt
+npm uninstal datatables.net-buttons datatables.net-buttons-dt
+npm uninstal jszip file-saver
+
+
+
+
+
+
 crearUrlYIr() {
   this.http
     .get<any>('https://worldtimeapi.org/api/timezone/America/Mexico_City')
