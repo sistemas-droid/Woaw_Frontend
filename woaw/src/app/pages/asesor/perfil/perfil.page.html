@@ -78,6 +78,11 @@
 
     </div>
 
+    <button type="button" class="btn-flyer" (click)="descargarFlyer()" [disabled]="generandoPdf">
+      <ion-icon name="download-outline"></ion-icon>
+      <span>{{ generandoPdf ? 'Generando…' : 'Descargar flyer' }}</span>
+    </button>
+
   </div>
 
   <app-footer></app-footer>

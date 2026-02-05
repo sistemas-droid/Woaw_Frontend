@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AsesoresService } from 'src/app/services/asesores.service';
 import { GeneralService } from 'src/app/services/general.service';
+import { PdfFlyerService } from 'src/app/services/pdf-flyer.service';
 
 @Component({
   selector: 'app-perfil',
@@ -17,14 +17,15 @@ export class PerfilPage implements OnInit {
   linkComision: string = '';
   cargando = false;
   error = false;
-
+  generandoPdf = false;
   asesor: any = null;
 
   constructor(
     private generalService: GeneralService,
     private asesoresService: AsesoresService,
-    private toastCtrl: ToastController,
-    private router: Router
+    private router: Router,
+    private pdfFlyer: PdfFlyerService
+
   ) { }
 
   ngOnInit() {
@@ -71,7 +72,9 @@ export class PerfilPage implements OnInit {
       error: () => {
         this.error = true;
         this.cargando = false;
-        this.toast('No se pudo cargar tu perfil.');
+        this.generalService.alert('No se pudo cargar tu perfil.', 
+          'Intenta de nuevo más tarde.',
+          'danger');
       }
     });
   }
@@ -89,21 +92,16 @@ export class PerfilPage implements OnInit {
     return (a + b).toUpperCase() || 'A';
   }
 
-  async toast(msg: string) {
-    const t = await this.toastCtrl.create({
-      message: msg,
-      duration: 1800,
-      position: 'top',
-    });
-    t.present();
-  }
-
   async copiar(valor: string) {
     try {
       await navigator.clipboard.writeText(valor);
-      this.toast('Copiado ✅');
-    } catch {
-      this.toast('No se pudo copiar');
+      this.generalService.alert('Copiado ✅', 
+        'El enlace de comisión ha sido copiado al portapapeles.',
+        'success',);
+    } catch (e) {
+      this.generalService.alert('No se pudo copiar', 
+        'Intenta de nuevo más tarde.',
+        'danger',);
     }
   }
 
@@ -116,4 +114,41 @@ export class PerfilPage implements OnInit {
 
     // Si tu ruta es diferente, dime cuál y te lo dejo exacto.
   }
+
+  async descargarFlyer() {
+    if (!this.asesor?._id || this.generandoPdf) return;
+    this.generandoPdf = true;
+
+    const flyers = [
+      '/assets/flyers/IMAGEN_1.png',
+      '/assets/flyers/IMAGEN_2.png',
+    ];
+
+    const plantillaUrl = flyers[Math.floor(Math.random() * flyers.length)];
+
+    try {
+      await this.pdfFlyer.generarFlyer({
+        asesor: this.asesor,
+        telefono: this.asesor?.telefono || '',
+        linkComision: this.linkComision,
+        plantillaUrl,
+        logoUrl: '/assets/icon/LOGO-CROMADO.png',
+        nombreArchivo: this.nombreCompleto(this.asesor),
+      });
+
+      this.generalService.alert('PDF listo',
+        'El flyer ha sido generado correctamente.',
+        'success',
+      );
+    } catch (e) {
+      console.error(e);
+      this.generalService.alert('No se pudo generar el PDF',
+        'Intenta de nuevo más tarde.',
+        'danger',
+      );
+    } finally {
+      this.generandoPdf = false;
+    }
+  }
+
 }
