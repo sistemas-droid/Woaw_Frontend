@@ -11,8 +11,13 @@
   </ion-header>
 
   <ion-content class="ion-padding">
-    <app-spinner *ngIf="mostrar_spinnet"></app-spinner>
     <ion-list>
+
+      <!-- Para otros roles: modal -->
+      <ion-item (click)="abrirModalPerfil()" button lines="none">
+        <ion-icon name="person-circle-outline" color="danger"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-item>
 
       <!-- Administración (solo Admin) -->
       <div *ngIf="isAdmin" class="menu-section" [class.expanded]="expandedSections.admin"
@@ -133,39 +138,27 @@
       </div>
 
       <!-- ✅ ASESOR (solo rol asesor) -->
-      <div *ngIf="isAsesor" class="menu-section" [class.expanded]="expandedSections.asesor"
+      <!-- <div *ngIf="isAsesor" class="menu-section" [class.expanded]="expandedSections.asesor"
         (click)="toggleSection('asesor')" [attr.aria-expanded]="expandedSections.asesor">
         <span>Asesor</span>
         <ion-icon [name]="expandedSections.asesor ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
       </div>
 
       <div *ngIf="isAsesor" class="menu-items" [class.expanded]="expandedSections.asesor">
-        <ion-item (click)="redirecion('perfil')" button lines="none">
+        <ion-item (click)="redirecion('asesor/perfil')" button lines="none">
           <ion-icon name="person-circle-outline" color="danger"></ion-icon>
           <ion-label>Mi perfil</ion-label>
         </ion-item>
-      </div>
+      </div> -->
 
       <!-- Cuenta (solo si hay sesión) -->
       <div *ngIf="isLoggedIn" class="menu-section" [class.expanded]="expandedSections.configuracion"
         (click)="toggleSection('configuracion')" [attr.aria-expanded]="expandedSections.configuracion">
-        <span>Cuenta</span>
+        <span>Configuración</span>
         <ion-icon [name]="expandedSections.configuracion ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
       </div>
 
       <div *ngIf="isLoggedIn" class="menu-items" [class.expanded]="expandedSections.configuracion">
-        <!-- Para asesor: mejor ir a la page -->
-        <ion-item *ngIf="isAsesor" (click)="redirecion('perfil')" button lines="none">
-          <ion-icon name="person-circle-outline" color="danger"></ion-icon>
-          <ion-label>Perfil</ion-label>
-        </ion-item>
-
-        <!-- Para otros roles: modal -->
-        <ion-item *ngIf="!isAsesor" (click)="abrirModalPerfil()" button lines="none">
-          <ion-icon name="person-circle-outline" color="danger"></ion-icon>
-          <ion-label>Perfil</ion-label>
-        </ion-item>
-
         <ion-item (click)="redirecion('eliminacion-cuenta')" button lines="none">
           <ion-icon name="trash-bin-outline"></ion-icon>
           <ion-label>Eliminar cuenta</ion-label>
@@ -202,10 +195,14 @@
   </ion-header>
 
   <ion-content>
-    <app-spinner *ngIf="mostrar_spinnet"></app-spinner>
 
     <ion-list inset="true">
       <ion-accordion-group [multiple]="true">
+
+        <ion-item button lines="none" (click)="abrirModalPerfil()">
+          <ion-icon slot="start" name="id-card-outline"></ion-icon>
+          <ion-label>Perfil</ion-label>
+        </ion-item>
 
         <!-- ADMIN (solo admin) -->
         <ion-accordion *ngIf="isAdmin" value="admin">
@@ -330,40 +327,28 @@
         </ion-accordion>
 
         <!-- ✅ ASESOR (solo asesor) -->
-        <ion-accordion *ngIf="isAsesor" value="asesor">
+        <!-- <ion-accordion *ngIf="isAsesor" value="asesor">
           <ion-item slot="header" lines="none" detail="false" class="accordion-header-danger">
             <ion-icon slot="start" name="person-circle-outline"></ion-icon>
             <ion-label>Asesor</ion-label>
           </ion-item>
 
           <div slot="content">
-            <ion-item button lines="none" (click)="redirecion('perfil')">
+            <ion-item button lines="none" (click)="redirecion('asesor/perfil')">
               <ion-icon slot="start" name="id-card-outline"></ion-icon>
               <ion-label>Mi perfil</ion-label>
             </ion-item>
           </div>
-        </ion-accordion>
+        </ion-accordion> -->
 
         <!-- CUENTA -->
         <ion-accordion *ngIf="isLoggedIn" value="cuenta">
           <ion-item slot="header" lines="none" detail="false" class="accordion-header-danger">
             <ion-icon slot="start" name="person-circle-outline"></ion-icon>
-            <ion-label>Cuenta</ion-label>
+            <ion-label>Configuración</ion-label>
           </ion-item>
 
           <div slot="content">
-            <!-- Asesor: page -->
-            <ion-item *ngIf="isAsesor" button lines="none" (click)="redirecion('perfil')">
-              <ion-icon slot="start" name="id-card-outline"></ion-icon>
-              <ion-label>Perfil</ion-label>
-            </ion-item>
-
-            <!-- Otros: modal -->
-            <ion-item *ngIf="!isAsesor" button lines="none" (click)="abrirModalPerfil()">
-              <ion-icon slot="start" name="id-card-outline"></ion-icon>
-              <ion-label>Perfil</ion-label>
-            </ion-item>
-
             <ion-item button lines="none" (click)="redirecion('eliminacion-cuenta')">
               <ion-icon slot="start" name="trash-bin-outline"></ion-icon>
               <ion-label>Eliminar cuenta</ion-label>

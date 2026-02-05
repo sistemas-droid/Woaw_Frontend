@@ -414,7 +414,7 @@ const routes: Routes = [
       },
 
       {
-        path: 'perfil',
+        path: 'asesor/perfil',
         loadChildren: () => import('./pages/asesor/perfil/perfil.module').then(m => m.PerfilPageModule)
       },
 

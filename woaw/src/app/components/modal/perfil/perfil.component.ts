@@ -5,6 +5,10 @@ import { Router, RouterModule } from "@angular/router";
 import { RegistroService } from "../../../services/registro.service";
 import { GeneralService } from "../../../services/general.service";
 import { AsesoresService } from 'src/app/services/asesores.service';
+import { QrService } from 'src/app/services/qr.service';
+import { Capacitor } from '@capacitor/core';
+
+
 import {
   FormBuilder,
   FormGroup,
@@ -33,6 +37,7 @@ export class PerfilComponent implements OnInit {
   public isLoggedIn: boolean = false;
   verActual: boolean = true;
   verNuevas: boolean = true;
+  qrLink: string = '';
 
   public MyRole: string | null = null;
   // public MyRole: 'admin' | 'lotero' | 'vendedor' | 'cliente' | 'asesor' | null = null;
@@ -44,7 +49,8 @@ export class PerfilComponent implements OnInit {
     private fb: FormBuilder,
     private alertCtrl: AlertController,
     private router: Router,
-    private asesoresService: AsesoresService
+    private asesoresService: AsesoresService,
+    private qrService: QrService
   ) {
     this.formCambio = this.fb.group({
       password: ["", [Validators.required]],
@@ -129,6 +135,11 @@ export class PerfilComponent implements OnInit {
         this.asesor = res?.asesor;
         const code = this.asesor?.asesorUid;
         this.linkComision = code ? this.buildLinkComision(code) : '';
+
+        this.qrLink = this.linkComision
+          ? this.qrService.generarQR(this.linkComision)
+          : '';
+
       },
       error: () => {
       }
@@ -140,7 +151,7 @@ export class PerfilComponent implements OnInit {
       await navigator.clipboard.writeText(valor);
       this.generalService.alert('Copiado', 'Link copiado correctamente', 'success');
     } catch {
-      this.generalService.alert('error','No se pudo copiar', 'danger');
+      this.generalService.alert('error', 'No se pudo copiar', 'danger');
     }
   }
 
@@ -150,9 +161,13 @@ export class PerfilComponent implements OnInit {
   }
 
   private buildBaseUrl(): string {
-    const origin = window?.location?.origin || '';
-    return origin.includes('http') ? origin : 'https://woaw.mx';
+    const platform = Capacitor.getPlatform();
+    if (platform === 'web') {
+      return window.location.origin;
+    }
+    return 'https://woaw.mx';
   }
+
 
   obtenerAsesor() {
     const data = localStorage.getItem(WOAW_ASESOR_DATA_KEY);

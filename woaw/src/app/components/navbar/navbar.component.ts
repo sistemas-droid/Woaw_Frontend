@@ -243,18 +243,26 @@ export class NavbarComponent implements OnInit {
 
   async abrirModalPerfil() {
     this.mostrar_spinnet = true;
+
+    if (this.MyRole === 'asesor') {
+      this.router.navigate(["/asesor/perfil"]);
+      this.mostrar_spinnet = false;
+      return; 
+    }
+
     setTimeout(async () => {
       this.mostrar_spinnet = false;
       const modal = await this.modalCtrl.create({
         component: PerfilComponent,
-        breakpoints: [0, 0.5, 0.8, 1],
+        breakpoints: [0, 0.5, 0.8, 0.9, 1],
         cssClass: "modal-perfil",
-        initialBreakpoint: 0.8,
+        initialBreakpoint: 0.9,
         handle: true,
         showBackdrop: true,
       });
       await modal.present();
     }, 1000);
+
   }
 
   regresar() {

@@ -23,13 +23,12 @@ type SectionKey =
   templateUrl: "./menulateral.component.html",
   styleUrls: ["./menulateral.component.scss"],
   standalone: true,
-  imports: [IonicModule, CommonModule, SpinnerComponent],
+  imports: [IonicModule, CommonModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MenulateralComponent implements OnInit, OnDestroy {
   public isLoggedIn = false;
   public MyRole: string | null = null;
-  mostrar_spinnet: boolean = false;
 
   private readonly MENU_CLOSE_DELAY_MS = 250;
   private subs: Subscription[] = [];
@@ -197,11 +196,18 @@ export class MenulateralComponent implements OnInit, OnDestroy {
   }
 
   async abrirModalPerfil() {
+
+    if (this.MyRole === 'asesor') {
+      this.router.navigate(["/asesor/perfil"]);
+      return;
+    }
+
+
     const modal = await this.modalCtrl.create({
       component: PerfilComponent,
-      breakpoints: [0, 0.5, 0.8, 1],
+      breakpoints: [0, 0.5, 0.8, 0.9, 1],
       cssClass: "modal-perfil",
-      initialBreakpoint: 0.8,
+      initialBreakpoint: 0.9,
       handle: true,
       showBackdrop: true,
     });
